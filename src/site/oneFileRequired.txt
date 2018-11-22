@@ -1,0 +1,1 @@
+Au moins un fichier est requis dans ce dossier afin que ce dossier ne soit pas vide car si ce dossier est vide alors il ne sera pas commité.
