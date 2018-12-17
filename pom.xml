@@ -7,5 +7,6 @@
   <modules>
   	<module>monitrackGUI</module>
   	<module>monitrackService</module>
+  	<module>monitrackCommons</module>
   </modules>
 </project>
