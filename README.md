@@ -61,5 +61,8 @@
 6. Enfin clic-droit sur 'monitrack', Team > Push To Upstream
 
 # Si des erreurs apparaissent
-- En cas de problèmes lors de l'exportation du projet Maven en fichier .jar, vous pouvez consulter ce site(#https://www.codejava.net/coding/how-to-create-executable-jar-file-with-resources-and-dependencies-using-maven-in-eclipse)se
-"Error when trying to fetch or push" (Source : https://stackoverflow.com/questions/22824170/eclipse-egit-error-when-trying-to-fetch-or-push) : - Clique-droit sur le projet -> Team -> Remote -> Configure push to upstream->URI, Change-> Add authentication detailsls
+- En cas de problèmes lors de l'exportation du projet Maven en fichier .jar, vous pouvez consulter le site suivant :
+https://www.codejava.net/coding/how-to-create-executable-jar-file-with-resources-and-dependencies-using-maven-in-eclipse
+
+- "Error when trying to fetch or push" (Source : https://stackoverflow.com/questions/22824170/eclipse-egit-error-when-trying-to-fetch-or-push) :
+	Clique-droit sur le projet -> Team -> Remote -> Configure push to upstream->URI, Change-> Add authentication detailsls
