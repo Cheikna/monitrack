@@ -6,4 +6,11 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>monitrackGUI</artifactId>
+  <dependencies>
+  	<dependency>
+  		<groupId>com.monitrack</groupId>
+  		<artifactId>monitrackCommons</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  </dependencies>
 </project>
