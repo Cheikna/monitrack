@@ -22,7 +22,7 @@
 1. Cliquez sur le bouton + (situé à côté du nom de la branche courante)
 2. Cliquez sur 'New branch'
 3. Vous serez redirigez vers une fenêtre qui vous demandera d'indiquer le nom de votre nouvelle branche. Ce nom doit être le nom de l'évolution de manière succinte et les mots seront séparés par des underscores. Vous devrez également sélectionner la branche  partir de laquelle vous voulez créer la branche : vérifiez que c'est bien la branche master (ou une autre branche si elle est bien à jour)
-4. Puis pour travailler sur cette branche dans Eclipse, suivez mettez à jour le projet(#mettre-a-jour-son-repertoire-git-local-avec-le-repertoire-distant) et changez de branche(#changer-de-branche-git-dans-eclipse).
+4. Puis pour travailler sur cette branche dans Eclipse, [mettez à jour le projet](#mettre-a-jour-son-repertoire-git-local-avec-le-repertoire-distant) et [changez de branche](#changer-de-branche-git-dans-eclipse).
 
 # Importer le projet git dans Eclipse
 1. Copiez le lien suivant : https://gitlab.com/climg/monitrack.git (Ce lien apparait lorsque vous cliquez sur le bouton clone en haut à droite de la page puis dans la partie 'Clone with HTTPS')
@@ -36,7 +36,7 @@
 9. Une fois que le projet apparaît dans la fenêtre 'Git Repositories', faites une clique-droit sur le projet puis 'Import projects'
 
 # Changer de branche git dans Eclipse
-1. Assurez-vous d'avoir mis à jour votre répertoire avec le répertoire distant(#mettre-a-jour-son-repertoire-git-local-avec-le-repertoire-distant)
+1. Assurez-vous d'avoir [mis à jour votre répertoire avec le répertoire distant](#mettre-a-jour-son-repertoire-git-local-avec-le-repertoire-distant)
 2. Dans 'Project Explorer', faites un clic-droit sur 'monitrack', puis Team > Switch To > Other
 
 	- Si vous n'avez pas utilisé la branche dans le projet :
@@ -54,7 +54,7 @@
 2. Puis clic-droit sur 'monitrack', Team > Pull
 
 # Fusionner les modifications faites sur une autre branche avec la branche courante
-1. Assurez-vous d'avoir mis à jour votre répertoire avec le répertoire distant(#mettre-a-jour-son-repertoire-git-local-avec-le-repertoire-distant)
+1. Assurez-vous d'avoir [mis à jour votre répertoire avec le répertoire distant](#mettre-a-jour-son-repertoire-git-local-avec-le-repertoire-distant)
 2. Puis clic-droit sur 'monitrack', Team > Merge
 3. Sélectionnez la branche que vous voulez copier
 4. Cliquez sur 'Merge'
