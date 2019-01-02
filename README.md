@@ -8,42 +8,45 @@
 - [Changer de branche git dans Eclipse](#changer-de-branche-git-dans-eclipse)
 - [Mettre a jour son repertoire git local avec le repertoire distant](#mettre-a-jour-son-repertoire-git-local-avec-le-repertoire-distant)
 - [Fusionner les modifications faites sur une autre branche avec la branche courante](#fusionner-les-modifications-faites-sur-une-autre-branche-avec-la-branche-courante)
+- [Generation de l’artefact JAVA : JAR](#generation-de-l-artefact-java-jar)
+	- [Generation sans ressources](#generation-sans-ressources)
+	- [Generation avec les ressources (images ou autres)](#generation-avec-les-ressources-images-ou-autres)
 - [Si des erreurs apparaissent](#si-des-erreurs-apparaissent)
 
 # Avant de commencer
-- Dans certains dossiers, vous trouverez un fichier oneFileIsRequired.txt. Vous pourrez supprimer ces fichiers lorsque le dossier contiendra au moins un autre fichier (par exemple un fichier .java). Si vous supprimez ce fichier .txt et que le dossier devient vide, alors le dossier ne pourra pas Ãªtre 'commit' ce qui pourra entraÃ®ner des erreurs de compilation.
-- N'oubliez pas de faire des commits rÃ©guliers afin que les autres membres du groupe puissent connaitre votre avancement.
+- Dans certains dossiers, vous trouverez un fichier oneFileIsRequired.txt. Vous pourrez supprimer ces fichiers lorsque le dossier contiendra au moins un autre fichier (par exemple un fichier .java). Si vous supprimez ce fichier .txt et que le dossier devient vide, alors le dossier ne pourra pas ètre 'commit' ce qui pourra entraîner des erreurs de compilation.
+- N'oubliez pas de faire des commits réguliers afin que les autres membres du groupe puissent connaitre votre avancement.
 
 # Quelques conventions de nommages
 - Le nom des variables ainsi que le nom des fonctions sont en anglais
-- Le nom des interfaces java dÃ©butera toujours par un 'I'
+- Le nom des interfaces java débutera toujours par un 'I'
 
 # Creation de branches pour les evolutions
-1. Cliquez sur le bouton + (situÃ© Ã  cÃ´tÃ© du nom de la branche courante)
+1. Cliquez sur le bouton + (situé à côté du nom de la branche courante)
 2. Cliquez sur 'New branch'
-3. Vous serez redirigez vers une fenÃªtre qui vous demandera d'indiquer le nom de votre nouvelle branche. Ce nom doit Ãªtre le nom de l'Ã©volution de maniÃ¨re succinte et les mots seront sÃ©parÃ©s par des underscores. Vous devrez Ã©galement sÃ©lectionner la branche  partir de laquelle vous voulez crÃ©er la branche : vÃ©rifiez que c'est bien la branche master (ou une autre branche si elle est bien Ã  jour)
-4. Puis pour travailler sur cette branche dans Eclipse, [mettez Ã  jour le projet](#mettre-a-jour-son-repertoire-git-local-avec-le-repertoire-distant) et [changez de branche](#changer-de-branche-git-dans-eclipse).
+3. Vous serez redirigez vers une fenètre qui vous demandera d'indiquer le nom de votre nouvelle branche. Ce nom doit ètre le nom de l'évolution de manière succinte et les mots seront séparés par des underscores. Vous devrez également sélectionner la branche  partir de laquelle vous voulez créer la branche : vérifiez que c'est bien la branche master (ou une autre branche si elle est bien à jour)
+4. Puis pour travailler sur cette branche dans Eclipse, [mettez à jour le projet](#mettre-a-jour-son-repertoire-git-local-avec-le-repertoire-distant) et [changez de branche](#changer-de-branche-git-dans-eclipse).
 
 # Importer le projet git dans Eclipse
-1. Copiez le lien suivant : https://gitlab.com/climg/monitrack.git (Ce lien apparait lorsque vous cliquez sur le bouton clone en haut Ã  droite de la page puis dans la partie 'Clone with HTTPS')
+1. Copiez le lien suivant : https://gitlab.com/climg/monitrack.git (Ce lien apparait lorsque vous cliquez sur le bouton clone en haut à droite de la page puis dans la partie 'Clone with HTTPS')
 2. Rendez-vous dans Eclipse
 3. Cliquez sur Window > Perspective > Open Perspective > Git
-4. Cliquez sur Clone (soit le petit nuage avec une flÃ¨che verte ou alors un lien qui s'affiche)
-5. Dans l'URI, collez le lien que vous avez copier prÃ©cÃ©demment.
+4. Cliquez sur Clone (soit le petit nuage avec une flèche verte ou alors un lien qui s'affiche)
+5. Dans l'URI, collez le lien que vous avez copier précédemment.
 6. Renseignez votre user (prenom.nom) et votre password.
-7. SÃ©lectionnez toutes les branches, puis faites 'Next'.
+7. Sélectionnez toutes les branches, puis faites 'Next'.
 8. Choisissez l'emplacement du projet, puis faites'Finish'.
-9. Une fois que le projet apparaÃ®t dans la fenÃªtre 'Git Repositories', faites une clique-droit sur le projet puis 'Import projects'
+9. Une fois que le projet apparaît dans la fenètre 'Git Repositories', faites une clique-droit sur le projet puis 'Import projects'
 
 # Changer de branche git dans Eclipse
-1. Assurez-vous d'avoir [mis Ã  jour votre rÃ©pertoire avec le rÃ©pertoire distant](#mettre-a-jour-son-repertoire-git-local-avec-le-repertoire-distant)
+1. Assurez-vous d'avoir [mis à jour votre répertoire avec le répertoire distant](#mettre-a-jour-son-repertoire-git-local-avec-le-repertoire-distant)
 2. Dans 'Project Explorer', faites un clic-droit sur 'monitrack', puis Team > Switch To > Other
 
-	- Si vous n'avez pas utilisÃ© la branche dans le projet :
-		-> cherchez dans le dossier 'Local'	et la sÃ©lectionner
-	- Si vous avez dÃ©jÃ  utilisÃ© la branche : 
+	- Si vous n'avez pas utilisé la branche dans le projet :
+		-> cherchez dans le dossier 'Local'	et la sélectionner
+	- Si vous avez déjà utilisé la branche : 
 		-> cherchez dans le dossier 'Remote Tracking'
-		-> SÃ©lectionnez la branche puis cliquez sur 'Checkout as a new Local Branch'
+		-> Sélectionnez la branche puis cliquez sur 'Checkout as a new Local Branch'
 3. Faites un clic-droit sur monitrack > Maven > Update Project
 4. Puis clic-droit sur monitrack > Run As > Maven Clean
 5. Puis clic-droit sur monitrack > Run As > Maven Install
@@ -54,16 +57,24 @@
 2. Puis clic-droit sur 'monitrack', Team > Pull
 
 # Fusionner les modifications faites sur une autre branche avec la branche courante
-1. Assurez-vous d'avoir [mis Ã  jour votre rÃ©pertoire avec le rÃ©pertoire distant](#mettre-a-jour-son-repertoire-git-local-avec-le-repertoire-distant)
+1. Assurez-vous d'avoir [mis à jour votre répertoire avec le répertoire distant](#mettre-a-jour-son-repertoire-git-local-avec-le-repertoire-distant)
 2. Puis clic-droit sur 'monitrack', Team > Merge
-3. SÃ©lectionnez la branche que vous voulez copier
+3. Sélectionnez la branche que vous voulez copier
 4. Cliquez sur 'Merge'
-5. Si des conflits apparaissent, rÃ©glez-les
+5. Si des conflits apparaissent, réglez-les en conservant les parties que vous souhaitez garder
 6. Enfin clic-droit sur 'monitrack', Team > Push To Upstream
 
+# Generation de l’artefact JAVA (JAR)
+## Generation sans ressources
+### TODO
+
+## Generation avec les ressources (images ou autres)
+Source : https://www.codejava.net/coding/how-to-create-executable-jar-file-with-resources-and-dependencies-using-maven-in-eclipse
+### TODO
+
 # Si des erreurs apparaissent
-- En cas de problÃ¨mes lors de l'exportation du projet Maven en fichier .jar, vous pouvez consulter le site suivant :
+- En cas de problèmes lors de l'exportation du projet Maven en fichier .jar, vous pouvez consulter le site suivant :
 https://www.codejava.net/coding/how-to-create-executable-jar-file-with-resources-and-dependencies-using-maven-in-eclipse
 
 - "Error when trying to fetch or push" (Source : https://stackoverflow.com/questions/22824170/eclipse-egit-error-when-trying-to-fetch-or-push) :
-	Clique-droit sur le projet -> Team -> Remote -> Configure push to upstream->URI, Change-> Add authentication detailsls
+	Clique-droit sur le projet -> Team -> Remote -> Configure push to upstream->URI, Change-> Add authentication details
