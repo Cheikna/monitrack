@@ -9,8 +9,11 @@
 - [Mettre a jour son repertoire git local avec le repertoire distant](#mettre-a-jour-son-repertoire-git-local-avec-le-repertoire-distant)
 - [Fusionner les modifications faites sur une autre branche avec la branche courante](#fusionner-les-modifications-faites-sur-une-autre-branche-avec-la-branche-courante)
 - [Generation de l’artefact JAVA : JAR](#generation-de-l-artefact-java-jar)
-	- [Generation sans ressources](#generation-sans-ressources)
-	- [Generation avec les ressources (images ou autres)](#generation-avec-les-ressources-images-ou-autres)
+	- [Prerequis](#prerequis)
+	- [Etapes de generation](#etapes-de-generation)
+		- [generation via Eclipse](#generation-via-eclipse)
+		- [generation en ligne de commande](#generation-en-ligne-de-commande)
+- [Scenario de demonstration pour R1](#scenario-de-demonstration-pour-r1)
 - [Si des erreurs apparaissent](#si-des-erreurs-apparaissent)
 
 # Avant de commencer
@@ -65,12 +68,72 @@
 6. Enfin clic-droit sur 'monitrack', Team > Push To Upstream
 
 # Generation de l’artefact JAVA (JAR)
-## Generation sans ressources
-### TODO
-
-## Generation avec les ressources (images ou autres)
 Source : https://www.codejava.net/coding/how-to-create-executable-jar-file-with-resources-and-dependencies-using-maven-in-eclipse
-### TODO
+## Prerequis
+1.Assurez-vous d'avoir cette partie de code xml dans le fichier pom.xml du module que vous allez exporter au format .jar
+```xml
+<build>
+	<plugins>
+		<plugin>
+			<artifactId>maven-assembly-plugin</artifactId>
+			<configuration>
+				<archive>
+					<manifest>
+						<mainClass>[package de la classe contenant la fonction main].[nom
+							de la classe contenant la méthode main]</mainClass>
+					</manifest>
+				</archive>
+				<descriptorRefs>
+					<descriptorRef>jar-with-dependencies</descriptorRef>
+				</descriptorRefs>
+			</configuration>
+		</plugin>
+	</plugins>
+</build>
+```
+
+## Etapes de generation
+### Generation via Eclipse
+1. Faites : clic-droit sur le projet Monitrack > Run As > Run Configurations
+![image](https://drive.google.com/uc?export=view&id=1JKQCFFMCMsfCDiVzvwkVdmby03sFkPm9)
+
+2. Dans la fenêtre qui va s'ouvrir et dans la partie Maven Build, sélectionnez le module que vous voulez générer
+3. Dans la partie goals, y écrire :
+
+```
+assembly:single
+```
+![image](https://drive.google.com/uc?export=view&id=13ITCwIcN86TdpqeYqLgScUV-zd9kkOsC)
+
+4. N'hésitez pas à changer le nom de la configuration afin de faciliter les Run ultérieurs
+5. Appuyez sur le bouton "Apply" en bas, puis Run.
+6. Sur la console devrait s'afficher les différentes étapes
+7. Une fois que le "Run" a terminé avec succès, vous pourrez trouver votre fichier .jar généré en suivant le chemin indiqué après "Building jar"
+![image](https://drive.google.com/uc?export=view&id=1RPDmLLlS__I3e628636povbH-AkUbaH_)
+ 
+
+
+### Generation en ligne de commande
+1. Assurez-vous d'avoir installé Maven sur votre ordinateur
+2. Rendez- vous dans le dossier du module du projet que vous voulez générer en .jar
+3. Ouvrez la console en faisant "Shift + Clic-Droit" dans le dossier courant
+4. Lancer la commande suivante :
+
+```
+D:\GitHub\PDS_ESIPE_CYCLE_INGENIEUR\monitrack\monitrackGUI> mvn clean compile assembly:single
+```
+![image](https://drive.google.com/uc?export=view&id=13GuC_9-UF1D1ohc8cM2zj-ORsN1_8QAz)
+
+5. Enfin pour trouver le fichier .jar généré, il vous suffira de suivre le chemin indiqué après "Building jar"
+
+
+# Scenario de demonstration pour R1
+1. Lancer la machine virtuelle contenant la base de données de production
+2. Ouvrir, l'IHM sur un ordinateur (en local)
+3. Remplir le champ nom et appuyer sur le bouton "valider" (ce qui devrait envoyer une requête à la base de données)
+4. Refaire l'étape 3 avec plusieurs nom différents
+5. Appuyer sur le boutons "Tout voir"
+6. Une liste avec tous les noms qui ont été ajoutés précédemment devrait apparaître
 
 # Si des erreurs apparaissent
 - En cas de problèmes lors de l'exportation du projet Maven en fichier .jar, vous pouvez consulter le site suivant :
@@ -78,3 +141,8 @@ https://www.codejava.net/coding/how-to-create-executable-jar-file-with-resources
 
 - "Error when trying to fetch or push" (Source : https://stackoverflow.com/questions/22824170/eclipse-egit-error-when-trying-to-fetch-or-push) :
 	Clique-droit sur le projet -> Team -> Remote -> Configure push to upstream->URI, Change-> Add authentication details
+	
+[Revenir en haut de la page](#sommaire)
+	
+![bas de page](https://drive.google.com/uc?export=view&id=1lVkDmyl7kpe0XZHS8s5atJ4CMEI7vSSa)
+
