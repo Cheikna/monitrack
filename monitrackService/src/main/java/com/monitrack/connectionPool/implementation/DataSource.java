@@ -1,4 +1,4 @@
-package com.monitrack.connectionPool;
+package com.monitrack.connectionPool.implementation;
 
 import java.sql.Connection;
 
@@ -22,7 +22,7 @@ public class DataSource {
 	}
 	
 	/**
-	 * putConnection : remet une connexion dans l'attribut connectionPool
+	 * Remet une connexion dans l'attribut connectionPool
 	 * 
 	 * @param connection
 	 */
@@ -32,7 +32,7 @@ public class DataSource {
 	}
 	
 	/**
-	 * closeConnectionPool : clôt l'attribut connectionPool
+	 * Clôt l'attribut connectionPool
 	 */
 	public static void closeConnectionPool()
 	{
