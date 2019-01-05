@@ -3,6 +3,7 @@
 # Sommaire
 - [Avant de commencer](#avant-de-commencer)
 - [Quelques conventions de nommages](#quelques-conventions-de-nommages)
+- [Quelques conseils](#quelques-conseils)
 - [Creation de branches pour les evolutions](#creation-de-branches-pour-les-evolutions)
 - [Importer le projet git dans Eclipse](#importer-le-projet-git-dans-eclipse)
 - [Changer de branche git dans Eclipse](#changer-de-branche-git-dans-eclipse)
@@ -23,8 +24,18 @@
 4. N'oubliez pas de faire des commits réguliers afin que les autres membres du groupe puissent connaitre votre avancement.
 
 # Quelques conventions de nommages
-- Le nom des variables ainsi que le nom des fonctions seront en anglais
+- Le nom des variables ainsi que le nom des méthodes seront en anglais
 - Le nom des interfaces java débutera toujours par un 'I'
+
+# Quelques conseils
+- Dans les cas où vous devez concaténer plusieurs plusieurs variables dans une chaîne de caractères, la méthode suivante peut être utile :
+
+```java
+int id = 1;
+String firstName = "John";
+String lastName = "Doe";
+String query = String.format("INSERT INTO PERSON (id, first_name, last_name) VALUES (%d, %s, %s)", id, firstName, lastName);
+```
 
 # Creation de branches pour les evolutions
 1. Cliquez sur le bouton + (situé à côté du nom de la branche courante)
@@ -81,7 +92,7 @@ Source : https://www.codejava.net/coding/how-to-create-executable-jar-file-with-
 			<configuration>
 				<archive>
 					<manifest>
-						<mainClass>[package de la classe contenant la fonction main].[nom
+						<mainClass>[package de la classe contenant la méthode main].[nom
 							de la classe contenant la méthode main]</mainClass>
 					</manifest>
 				</archive>
