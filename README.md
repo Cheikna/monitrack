@@ -17,29 +17,29 @@
 - [Si des erreurs apparaissent](#si-des-erreurs-apparaissent)
 
 # Avant de commencer
-- Dans certains dossiers, vous trouverez un fichier oneFileIsRequired.txt. Vous pourrez supprimer ces fichiers lorsque le dossier contiendra au moins un autre fichier (par exemple un fichier .java). Si vous supprimez ce fichier .txt et que le dossier devient vide, alors le dossier ne pourra pas ètre 'commit' ce qui pourra entraîner des erreurs de compilation.
+- Dans certains dossiers, vous trouverez un fichier oneFileIsRequired.txt. Vous pourrez supprimer ces fichiers lorsque le dossier contiendra au moins un autre fichier (par exemple un fichier .java). Si vous supprimez ce fichier .txt et que le dossier devient vide, alors le dossier ne pourra pas être 'commit' ce qui pourra entraîner des erreurs de compilation.
 - N'oubliez pas de faire des commits réguliers afin que les autres membres du groupe puissent connaitre votre avancement.
 
 # Quelques conventions de nommages
-- Le nom des variables ainsi que le nom des fonctions sont en anglais
+- Le nom des variables ainsi que le nom des fonctions seront en anglais
 - Le nom des interfaces java débutera toujours par un 'I'
 
 # Creation de branches pour les evolutions
 1. Cliquez sur le bouton + (situé à côté du nom de la branche courante)
 2. Cliquez sur 'New branch'
-3. Vous serez redirigez vers une fenètre qui vous demandera d'indiquer le nom de votre nouvelle branche. Ce nom doit ètre le nom de l'évolution de manière succinte et les mots seront séparés par des underscores. Vous devrez également sélectionner la branche  partir de laquelle vous voulez créer la branche : vérifiez que c'est bien la branche master (ou une autre branche si elle est bien à jour)
+3. Vous serez rediriger vers une fenêtre qui vous demandera d'indiquer le nom de votre nouvelle branche. Ce nom doit être le nom de l'évolution de manière succincte et les mots seront séparés par des underscores. Vous devrez également sélectionner la branche  partir de laquelle vous voulez créer la branche : vérifiez que c'est bien la branche master (ou une autre branche si elle est bien à jour)
 4. Puis pour travailler sur cette branche dans Eclipse, [mettez à jour le projet](#mettre-a-jour-son-repertoire-git-local-avec-le-repertoire-distant) et [changez de branche](#changer-de-branche-git-dans-eclipse).
 
 # Importer le projet git dans Eclipse
-1. Copiez le lien suivant : https://gitlab.com/climg/monitrack.git (Ce lien apparait lorsque vous cliquez sur le bouton clone en haut à droite de la page puis dans la partie 'Clone with HTTPS')
+1. Copiez le lien suivant : https://gitlab.com/climg/monitrack.git (Ce lien apparaît lorsque vous cliquez sur le bouton clone en haut à droite de la page puis dans la partie 'Clone with HTTPS')
 2. Rendez-vous dans Eclipse
 3. Cliquez sur Window > Perspective > Open Perspective > Git
 4. Cliquez sur Clone (soit le petit nuage avec une flèche verte ou alors un lien qui s'affiche)
-5. Dans l'URI, collez le lien que vous avez copier précédemment.
+5. Dans l'URI, collez le lien que vous avez copié précédemment.
 6. Renseignez votre user (prenom.nom) et votre password.
 7. Sélectionnez toutes les branches, puis faites 'Next'.
 8. Choisissez l'emplacement du projet, puis faites'Finish'.
-9. Une fois que le projet apparaît dans la fenètre 'Git Repositories', faites une clique-droit sur le projet puis 'Import projects'
+9. Une fois que le projet apparaît dans la fenêtre 'Git Repositories', faites une clic-droit sur le projet puis 'Import projects'
 
 # Changer de branche git dans Eclipse
 1. Assurez-vous d'avoir [mis à jour votre répertoire avec le répertoire distant](#mettre-a-jour-son-repertoire-git-local-avec-le-repertoire-distant)
@@ -57,7 +57,7 @@
 
 # Mettre a jour son repertoire git local avec le repertoire distant
 1. Dans 'Project Explorer', faites un clic-droit sur 'monitrack', puis Team > Fetch from Upstream
-2. Puis clic-droit sur 'monitrack', Team > Pull
+2. Enfin clic-droit sur 'monitrack', Team > Pull
 
 # Fusionner les modifications faites sur une autre branche avec la branche courante
 1. Assurez-vous d'avoir [mis à jour votre répertoire avec le répertoire distant](#mettre-a-jour-son-repertoire-git-local-avec-le-repertoire-distant)
@@ -124,15 +124,20 @@ D:\GitHub\PDS_ESIPE_CYCLE_INGENIEUR\monitrack\monitrackGUI> mvn clean compile as
 ```
 ![image](https://drive.google.com/uc?export=view&id=13GuC_9-UF1D1ohc8cM2zj-ORsN1_8QAz)
 
-5. Enfin pour trouver le fichier .jar généré, il vous suffira de suivre le chemin indiqué après "Building jar"
+5. Enfin pour trouver le fichier .jar généré, il vous suffira de suivre le chemin indiqué après "Building jar" ou alors vous pouvez exécuter la commande suivante :
+
+```
+D:\GitHub\PDS_ESIPE_CYCLE_INGENIEUR\monitrack\monitrackGUI> java -jar <chemin complet du jar indiqué après "Building jar">
+```
+![image](https://drive.google.com/uc?export=view&id=1ZCq0y3x-RnhTh-vBt6nWiXexaDG1ODuY)
 
 
 # Scenario de demonstration pour R1
 1. Lancer la machine virtuelle contenant la base de données de production
 2. Ouvrir, l'IHM sur un ordinateur (en local)
 3. Remplir le champ nom et appuyer sur le bouton "valider" (ce qui devrait envoyer une requête à la base de données)
-4. Refaire l'étape 3 avec plusieurs nom différents
-5. Appuyer sur le boutons "Tout voir"
+4. Refaire l'étape 3 avec plusieurs noms différents
+5. Appuyer sur le bouton "Tout voir"
 6. Une liste avec tous les noms qui ont été ajoutés précédemment devrait apparaître
 
 # Si des erreurs apparaissent
