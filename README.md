@@ -17,8 +17,10 @@
 - [Si des erreurs apparaissent](#si-des-erreurs-apparaissent)
 
 # Avant de commencer
-- Dans certains dossiers, vous trouverez un fichier oneFileIsRequired.txt. Vous pourrez supprimer ces fichiers lorsque le dossier contiendra au moins un autre fichier (par exemple un fichier .java). Si vous supprimez ce fichier .txt et que le dossier devient vide, alors le dossier ne pourra pas être 'commit' ce qui pourra entraîner des erreurs de compilation.
-- N'oubliez pas de faire des commits réguliers afin que les autres membres du groupe puissent connaitre votre avancement.
+1. La branche master ne sera utilisée que pour faire des "merge" dessus. Par conséquent, il faut éviter au maximum de modifier directement les fichiers à partir de la branche master, il faut [créer des branches](#creation-de-branches-pour-les-evolutions).
+2. Dans certains dossiers, vous trouverez un fichier oneFileIsRequired.txt. Vous pourrez supprimer ces fichiers lorsque le dossier contiendra au moins un autre fichier (par exemple un fichier .java). Si vous supprimez ce fichier .txt et que le dossier devient vide, alors le dossier ne pourra pas être 'commit' ce qui pourra entraîner des erreurs de compilation.
+3. N'oubliez pas de faire des "Fetch" et des "Pull" lorsque vous changez de branche.
+4. N'oubliez pas de faire des commits réguliers afin que les autres membres du groupe puissent connaitre votre avancement.
 
 # Quelques conventions de nommages
 - Le nom des variables ainsi que le nom des fonctions seront en anglais
@@ -42,7 +44,7 @@
 9. Une fois que le projet apparaît dans la fenêtre 'Git Repositories', faites une clic-droit sur le projet puis 'Import projects'
 
 # Changer de branche git dans Eclipse
-1. Assurez-vous d'avoir [mis à jour votre répertoire avec le répertoire distant](#mettre-a-jour-son-repertoire-git-local-avec-le-repertoire-distant)
+1. Assurez-vous d'avoir [mis à jour votre répertoire avec le répertoire distant] #mettre-a-jour-son-repertoire-git-local-avec-le-repertoire-distant)
 2. Dans 'Project Explorer', faites un clic-droit sur 'monitrack', puis Team > Switch To > Other
 
 	- Si vous n'avez pas utilisé la branche dans le projet :
