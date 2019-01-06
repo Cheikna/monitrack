@@ -15,7 +15,7 @@ public class DataSource {
 	 * @return Connection :
 	 * 		retourne une connexion de l'attribut connectionPool
 	 */
-	public static Connection getConnection()
+	public static Connection getInstance()
 	{
 		//TODO
 		return null;

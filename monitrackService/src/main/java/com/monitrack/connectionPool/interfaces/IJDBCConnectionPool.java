@@ -19,7 +19,7 @@ public interface IJDBCConnectionPool {
 	 * @return
 	 * 		retourne une connexion de l'attribut connections
 	 */
-	public Connection getConnection();
+	public Connection getInstance();
 	
 	
 	/**
