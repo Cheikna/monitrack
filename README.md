@@ -4,6 +4,7 @@
 - [Avant de commencer](#avant-de-commencer)
 - [Quelques conventions de nommages](#quelques-conventions-de-nommages)
 - [Quelques conseils](#quelques-conseils)
+- [Organisation du projet Maven](#organisation-du-projet-maven) 
 - [Creation de branches pour les evolutions](#creation-de-branches-pour-les-evolutions)
 - [Importer le projet git dans Eclipse](#importer-le-projet-git-dans-eclipse)
 - [Changer de branche git dans Eclipse](#changer-de-branche-git-dans-eclipse)
@@ -28,7 +29,7 @@
 - Le nom des interfaces java débutera toujours par un 'I'
 
 # Quelques conseils
-- Dans les cas où vous devez concaténer plusieurs plusieurs variables dans une chaîne de caractères, la méthode suivante peut être utile :
+- Dans les cas où vous devez concaténer plusieurs plusieurs variables dans une chaîne de caractères, la méthode **String.format(format, args)** peut être utile. Voici un example ci-dessous :
 
 ```java
 int id = 1;
@@ -36,6 +37,15 @@ String firstName = "John";
 String lastName = "Doe";
 String query = String.format("INSERT INTO PERSON (id, first_name, last_name) VALUES (%d, %s, %s)", id, firstName, lastName);
 ```
+
+# Organisation du projet Maven
+Pour le moment, le projet Maven se découpe en 3 modules distincts :
+
+- monitrackCommons : contient tous les éléments communs aux deux modules ci-dessus comme les entités, des méthodes utiles qui permettent de lire dans un fichier ou encore des classes qui permettent de sérialiser (passage d'un objet JAVA à du JSON) ou de les desérialiser (passer du JSON à un objet JAVA)
+	
+- monitrackGUI : contient tous les éléments qui seront destinés à la réalisation de l'interface graphique pour le client (comme les JPanel, JFrame, ...)
+	
+- monitrackService : contient tous les éléments qui vont nous permettre d'accéder à la base de données et d'effectuer des requêtes (récupération de données, ajout, suppression,...)
 
 # Creation de branches pour les evolutions
 1. Cliquez sur le bouton + (situé à côté du nom de la branche courante)
