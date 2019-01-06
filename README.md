@@ -29,7 +29,7 @@
 - Le nom des interfaces java débutera toujours par un 'I'
 
 # Quelques conseils
-- Dans les cas où vous devez concaténer plusieurs plusieurs variables dans une chaîne de caractères, la méthode **String.format(format, args)** peut être utile. Voici un example ci-dessous :
+- Dans les cas où vous devez concaténer plusieurs plusieurs variables dans une chaîne de caractères, la méthode **String.format(format, args)** peut être utile. Voici un exemple :
 
 ```java
 int num = 1;
