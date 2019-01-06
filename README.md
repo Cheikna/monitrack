@@ -15,7 +15,7 @@
 	- [Etapes de generation](#etapes-de-generation)
 		- [generation via Eclipse](#generation-via-eclipse)
 		- [generation en ligne de commande](#generation-en-ligne-de-commande)
-- [Scenario de demonstration pour R1](#scenario-de-demonstration-pour-r1)
+- [Scenario de demonstration pour la release 1 (R1)](#scenario-de-demonstration-pour-la-release-1-r1)
 - [Si des erreurs apparaissent](#si-des-erreurs-apparaissent)
 
 # Avant de commencer
@@ -32,20 +32,23 @@
 - Dans les cas où vous devez concaténer plusieurs plusieurs variables dans une chaîne de caractères, la méthode **String.format(format, args)** peut être utile. Voici un example ci-dessous :
 
 ```java
-int id = 1;
+int num = 1;
 String firstName = "John";
 String lastName = "Doe";
-String query = String.format("INSERT INTO PERSON (id, first_name, last_name) VALUES (%d, %s, %s)", id, firstName, lastName);
+String str = String.format("%d) My name is %s %s", num, firstName, lastName);
+System.out.println(str);
+
+Sortie : 1) My name is John Doe
 ```
 
 # Organisation du projet Maven
 Pour le moment, le projet Maven se découpe en 3 modules distincts :
 
-- monitrackCommons : contient tous les éléments communs aux deux modules ci-dessus comme les entités, des méthodes utiles qui permettent de lire dans un fichier ou encore des classes qui permettent de sérialiser (passage d'un objet JAVA à du JSON) ou de les desérialiser (passer du JSON à un objet JAVA)
+**- monitrackCommons :** contient tous les éléments communs aux deux modules ci-dessus comme les entités, des méthodes utiles qui permettent de lire dans un fichier ou encore des classes qui permettent de sérialiser (passage d'un objet JAVA à du JSON) ou de les desérialiser (passer du JSON à un objet JAVA)
 	
-- monitrackGUI : contient tous les éléments qui seront destinés à la réalisation de l'interface graphique pour le client (comme les JPanel, JFrame, ...)
+**- monitrackGUI :** contient tous les éléments qui seront destinés à la réalisation de l'interface graphique pour le client (comme les JPanel, JFrame, ...)
 	
-- monitrackService : contient tous les éléments qui vont nous permettre d'accéder à la base de données et d'effectuer des requêtes (récupération de données, ajout, suppression,...)
+**- monitrackService :** contient tous les éléments qui vont nous permettre d'accéder à la base de données et d'effectuer des requêtes (récupération de données, ajout, suppression,...)
 
 # Creation de branches pour les evolutions
 1. Cliquez sur le bouton + (situé à côté du nom de la branche courante)
@@ -155,7 +158,7 @@ D:\GitHub\PDS_ESIPE_CYCLE_INGENIEUR\monitrack\monitrackGUI> java -jar <chemin co
 ![image](https://drive.google.com/uc?export=view&id=1ZCq0y3x-RnhTh-vBt6nWiXexaDG1ODuY)
 
 
-# Scenario de demonstration pour R1
+# Scenario de demonstration pour la release 1 (R1)
 1. Lancer la machine virtuelle contenant la base de données de production
 2. Ouvrir, l'IHM sur un ordinateur (en local)
 3. Remplir le champ nom et appuyer sur le bouton "valider" (ce qui devrait envoyer une requête à la base de données)
