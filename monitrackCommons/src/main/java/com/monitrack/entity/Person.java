@@ -4,36 +4,39 @@ import java.sql.Date;
 
 public class Person {
 
-	int id_person;
-	String name_person;
-	Date createDate;
+	private int idPerson;
+	private String namePerson;
+	private Date createDate;
 	
 	public Person() {
 		
 	}
-	
 
-	public Person(int id_person, String name_person, Date createDate) {
+	public Person(int idPerson, String namePerson, Date createDate) {
+		this(namePerson, createDate);
+		this.idPerson = idPerson;
+	}
+ 
+	public Person(String namePerson, Date createDate) {
 		super();
-		this.id_person = id_person;
-		this.name_person = name_person;
+		this.namePerson = namePerson;
 		this.createDate = createDate;
 	}
 
-	public int getId_person() {
-		return id_person;
+	public int getIdPerson() {
+		return idPerson;
 	}
 
-	public void setId_person(int id_person) {
-		this.id_person = id_person;
+	public void setIdPerson(int idPerson) {
+		this.idPerson = idPerson;
 	}
 
-	public String getName_person() {
-		return name_person;
+	public String getNamePerson() {
+		return namePerson;
 	}
 
-	public void setName_person(String name_person) {
-		this.name_person = name_person;
+	public void setNamePerson(String namePerson) {
+		this.namePerson = namePerson;
 	}
 
 	public Date getCreateDate() {
@@ -46,4 +49,6 @@ public class Person {
 	
 	
 
+	
+	
 }
