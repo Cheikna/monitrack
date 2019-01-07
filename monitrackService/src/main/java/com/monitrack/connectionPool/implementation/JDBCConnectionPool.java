@@ -21,7 +21,7 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 		
 	}
 
-	public Connection getInstance() {
+	public Connection getConnection() {
 		// TODO Auto-generated method stub
 		return null;
 	}
