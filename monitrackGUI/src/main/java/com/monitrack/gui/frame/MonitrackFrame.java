@@ -4,13 +4,20 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import com.monitrack.dao.implementation.PersonDAO;
+import com.monitrack.entity.Person;
 
 public class MonitrackFrame extends JFrame implements ActionListener
 {
@@ -25,6 +32,9 @@ public class MonitrackFrame extends JFrame implements ActionListener
 	JButton jbOverview = new JButton("Tout voir");
 	//Zone de texte ou JTextArea
 	JTextArea jTArea = new JTextArea();
+	// DAO pour les requêtes
+	PersonDAO personDAO = new PersonDAO();
+	
 	public MonitrackFrame()
 	{
 		jbValidate.addActionListener(this);
@@ -52,11 +62,27 @@ public class MonitrackFrame extends JFrame implements ActionListener
 	{
 		if(e.getSource()==jbValidate)
 		{
-			System.out.println("JBVALIDATE");
+			String name = jtfName.getText().trim();
+			if(name.length() <= 0)
+			{
+				JOptionPane.showMessageDialog(null, "Nom incorrect");
+			}
+			else
+			{
+				java.sql.Date sqlCurrentDate = (java.sql.Date)(new Date());
+				Person person = new Person(name, sqlCurrentDate);
+				personDAO.create(person);
+			}
 		}
 		if(e.getSource()==jbOverview)
 		{
-			System.out.println("JBOVERVIEW");
+			List<Person> persons = personDAO.findAll();
+			String personsText = "";
+			for(Person person : persons)
+			{
+				personsText += person.getNamePerson() + " ---- " + person.getCreateDate() + "\n";
+			}
+			jTArea.setText(personsText);
 		}
 	}
 }
