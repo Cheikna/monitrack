@@ -23,7 +23,7 @@ public class PersonDAO implements IPersonDAO {
 	public void create(Person person) {
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO PERSON (NAME, CREATION_DATE) VALUES (? , ?)");
-			preparedStatement.setString(1, person.getNamePerson());
+			preparedStatement.setString(1, person.getNamePerson()); 
 			preparedStatement.setDate(2, person.getCreateDate());
 			preparedStatement.execute();
 		} catch (SQLException e) {
