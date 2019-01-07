@@ -16,7 +16,7 @@ public class Person {
 		this(namePerson, createDate);
 		this.idPerson = idPerson;
 	}
- 
+  
 	public Person(String namePerson, Date createDate) {
 		super();
 		this.namePerson = namePerson;
