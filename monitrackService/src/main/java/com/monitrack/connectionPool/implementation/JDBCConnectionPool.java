@@ -20,7 +20,7 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 	
 	public JDBCConnectionPool() {
 		// TODO : créer l'instance de l'attribut connections
-	}
+	} 
 	
 
 	public void fillConnectionsList(int numberOfConnections) {
