@@ -4,7 +4,7 @@ import java.sql.Connection;
 
 public class DataSource {
 	
-	private static JDBCConnectionPool connectionPool;
+	private static JDBCConnectionPool connectionPool = new JDBCConnectionPool();
 
 	public DataSource() {
 		// TODO Auto-generated constructor stub
@@ -17,8 +17,7 @@ public class DataSource {
 	 */
 	public static Connection getConnection()
 	{
-		//TODO
-		return null;
+		return connectionPool.getConnection();
 	}
 	
 	/**

@@ -11,27 +11,51 @@ import com.monitrack.util.Util;
 
 public class JDBCConnectionPool implements IJDBCConnectionPool {
 	
-    private Vector<Connection> pool;
-    private static final String URL             = "//192.168.1.1:5432/moniTrack";
+    private Vector<Connection> connections;
+    private static final String URL             =  Util.getPropertyValueFromPropertiesFile("url_dev");
     private static final String DRIVER          =  Util.getPropertyValueFromPropertiesFile("driver");
     private static final String USER            =  Util.getPropertyValueFromPropertiesFile("username_dev");
     private static final String PSWD            =  Util.getPropertyValueFromPropertiesFile("password_dev");
-	private ArrayList<Connection> connections;
 	
 	public JDBCConnectionPool() {
-		// TODO : créer l'instance de l'attribut connections
+		connections = new Vector<Connection>();
+		fillConnectionsList(1);
+		System.out.println(Util.getPropertyValueFromPropertiesFile("password_dev"));
 	} 
 	
 
 	public void fillConnectionsList(int numberOfConnections) {
-        pool = new Vector<Connection>();
         for (int i=0; i<numberOfConnections; i++ ){
-            pool.addElement(this.getConnection());
+            connections.addElement(this.createConnection());
         }
 	}
 
 	public Connection getConnection() {
-		System.out.println("-------- MySQL "
+		Connection connection = connections.lastElement();
+        connections.removeElement(connection);
+        return connection;      
+	}
+
+	public void putConnection(Connection connection) {
+		connections.addElement(connection);		
+	}
+
+	public boolean closeAllConnections() {
+		for(Connection connection : connections)
+		{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return false;
+			}
+		}
+		return true;
+	}
+	
+    private Connection createConnection(){
+    	/*System.out.println("-------- MySQL "
                 + "JDBC Connection Testing ------------");
         try {
             Class.forName("org.mysql.Driver");
@@ -41,12 +65,12 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
             e.printStackTrace();
             
         }
-        System.out.println("MySQL JDBC Driver Registered!");
+        System.out.println("MySQL JDBC Driver Registered!");*/
         Connection connection = null;
         try {
-            String lien = "jdbc:"+ DRIVER+":"+ URL;
+            String lien = Util.getPropertyValueFromPropertiesFile("complete_link_dev");
             connection = DriverManager.getConnection(
-                    lien, USER,
+                    "jdbc:mysql://127.0.0.1:5432/moinitrack_dev", USER,
                     PSWD);
         } catch (SQLException e) {
             System.out.println("Connection Failed! Check output console");
@@ -60,31 +84,7 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
             System.out.println("Failed to make connection!");
             return null;
         }
-        
-
-	}
-
-	public void putConnection(Connection connection) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public boolean closeAllConnections() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-    public Connection giveCo(){
-        Connection togive = (Connection) pool.lastElement();
-        pool.removeElementAt(pool.indexOf(togive));
-        return togive;
-    }
-    
-    
-    public void getBackCo(Connection co){
-        pool.addElement(co);
-    }
-    
+    }  
 
 	
 
