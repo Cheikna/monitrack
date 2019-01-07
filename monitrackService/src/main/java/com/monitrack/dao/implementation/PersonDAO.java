@@ -19,7 +19,6 @@ public class PersonDAO implements IPersonDAO {
 
 	}
 
-	@Override
 	public void create(Person person) {
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO PERSON (NAME, CREATION_DATE) VALUES (? , ?)");
@@ -31,12 +30,11 @@ public class PersonDAO implements IPersonDAO {
 		}
 	}
 
-	@Override
 	public List<Person> findAll() {
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM PERSON");
 			ResultSet rs = preparedStatement.executeQuery();
-			List<Person> persons = new ArrayList<>();
+			List<Person> persons = new ArrayList<Person>();
 			Person person;
 			while (rs.next()) {
 				person = new Person(rs.getInt("id"), rs.getString("name"), rs.getDate("creation_date"));
