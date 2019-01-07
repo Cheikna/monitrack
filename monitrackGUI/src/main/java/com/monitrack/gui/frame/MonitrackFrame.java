@@ -4,8 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
+import java.sql.Date;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -69,7 +69,7 @@ public class MonitrackFrame extends JFrame implements ActionListener
 			}
 			else
 			{
-				java.sql.Date sqlCurrentDate = (java.sql.Date)(new Date());
+				Date sqlCurrentDate = new Date(Calendar.getInstance().getTime().getTime());
 				Person person = new Person(name, sqlCurrentDate);
 				personDAO.create(person);
 			}
@@ -80,7 +80,7 @@ public class MonitrackFrame extends JFrame implements ActionListener
 			String personsText = "";
 			for(Person person : persons)
 			{
-				personsText += person.getNamePerson() + " ---- " + person.getCreateDate() + "\n";
+				personsText += person.getIdPerson() + ") " + person.getNamePerson() + " ---- " + person.getCreateDate() + "\n";
 			}
 			jTArea.setText(personsText);
 		}
