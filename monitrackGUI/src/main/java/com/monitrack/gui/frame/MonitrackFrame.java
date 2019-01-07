@@ -1,26 +1,16 @@
 package com.monitrack.gui.frame;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
 
 public class MonitrackFrame extends JFrame implements ActionListener
 {
@@ -34,7 +24,7 @@ public class MonitrackFrame extends JFrame implements ActionListener
 	JButton jbValidate     = new JButton("Valider");
 	JButton jbOverview = new JButton("Tout voir");
 	//Zone de texte ou JTextArea
-	JTextArea JTArea = new JTextArea();
+	JTextArea jTArea = new JTextArea();
 	public MonitrackFrame()
 	{
 		jbValidate.addActionListener(this);
@@ -42,8 +32,9 @@ public class MonitrackFrame extends JFrame implements ActionListener
 		north.add(jlName);
 		north.add(jtfName);
 		north.add(jbValidate);
+		jTArea.setEditable(false);
 		this.getContentPane().add(north, BorderLayout.NORTH);
-		this.getContentPane().add(JTArea, BorderLayout.CENTER);
+		this.getContentPane().add(jTArea, BorderLayout.CENTER);
 		this.getContentPane().add(jbOverview, BorderLayout.SOUTH);
 		this.setTitle("MONITRACK");
 		this.setSize(600, 300);
@@ -56,7 +47,7 @@ public class MonitrackFrame extends JFrame implements ActionListener
 	{
 		MonitrackFrame monitrack = new MonitrackFrame();
 	}
-	@Override
+
 	public void actionPerformed(ActionEvent e)
 	{
 		if(e.getSource()==jbValidate)
