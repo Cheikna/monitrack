@@ -157,6 +157,7 @@ D:\GitHub\PDS_ESIPE_CYCLE_INGENIEUR\monitrack\monitrackGUI> java -jar <chemin co
 ```
 ![image](https://drive.google.com/uc?export=view&id=1ZCq0y3x-RnhTh-vBt6nWiXexaDG1ODuY)
 
+**Attention : Si vous décidez d'ouvrir l'artefact jar à partir de la l'invite de commande (ou le PowerShell) , faîtes très attention car si vous fermer votre invite de commande alors l'application se fermera aussi.**
 
 # Scenario de demonstration pour la release 1 (R1)
 1. Lancer la machine virtuelle contenant la base de données de production
