@@ -52,11 +52,6 @@ public class MonitrackFrame extends JFrame implements ActionListener
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setVisible(true);
 	}
-		//PLACEMENT DES COMPOSANTS GRAPHIQUES
-	public static void main(String[] args)
-	{
-		MonitrackFrame monitrack = new MonitrackFrame();
-	}
 
 	public void actionPerformed(ActionEvent e)
 	{

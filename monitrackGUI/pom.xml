@@ -26,7 +26,7 @@
 			<configuration>
 				<archive>
 					<manifest>
-						<mainClass>com.monitrack.gui.frame.MonitrackFrame</mainClass>
+						<mainClass>com.monitrack.main.MonitrackMain</mainClass>
 					</manifest>
 				</archive>
 				<descriptorRefs>
