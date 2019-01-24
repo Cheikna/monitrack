@@ -1,4 +1,4 @@
-package com.monitrack.constant;
+package com.monitrack.enumeration;
 
 import java.awt.Image;
 import java.net.URL;
@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 
 public enum Images {
 
+	/**** Les différentes images (placées dans le dosssier src > main > resources > pictures)  ****/
 	PROJECT_LOGO("monitrack_logo.png"),
 	
 	GROUP_LOGO("climg_logo.png");
