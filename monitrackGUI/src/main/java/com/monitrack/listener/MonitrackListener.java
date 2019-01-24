@@ -16,7 +16,7 @@ import com.monitrack.dao.implementation.PersonDAO;
 import com.monitrack.entity.Person;
 import com.monitrack.gui.frame.MonitrackFrame;
 
-public class BasicIHMListener implements ActionListener {
+public class MonitrackListener implements ActionListener {
 	
 	private MonitrackFrame monitrackFrame;
 	private PersonDAO personDAO;
@@ -25,7 +25,7 @@ public class BasicIHMListener implements ActionListener {
 	 * 
 	 * @param monitrackFrame
 	 */
-	public BasicIHMListener(MonitrackFrame monitrackFrame) {
+	public MonitrackListener(MonitrackFrame monitrackFrame) {
 		personDAO = new PersonDAO();
 		//TODO
 	}	
@@ -35,7 +35,7 @@ public class BasicIHMListener implements ActionListener {
 		/* En fonction des différents boutons cliqués (qui seront accessible grâce aux getters/setters,
 		 * il faut effectuer l'action appropriée.
 		 * Il suffit de copier-coller la méthode actionPerformed de la classe MonitrackFrame et d'accéder aux
-		 * boutons grâces aux getters et setters		 * 
+		 * boutons grâces aux getters et setters
 		 */
 	}
 
