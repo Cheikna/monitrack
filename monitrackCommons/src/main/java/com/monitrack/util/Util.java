@@ -33,5 +33,31 @@ public class Util {
 		}
 		return propertyValue;
 	}	
+	
+	/**
+	 * Cette méthode permettra de mettre la première lettre en majuscule et les autres en minuscule
+	 * 
+	 * @param stringToCapitalize
+	 * @return
+	 * 		le mot passé en paramètre avec sa première lettre en majuscule et les autres en minuscule
+	 */
+	public static String capitalize(String stringToCapitalize)
+	{
+		String stringCapitalized = "";
+		stringToCapitalize = stringToCapitalize.trim().toUpperCase();
+		int stringLength = stringToCapitalize.length();
+		
+		if(stringLength > 0)
+		{
+			stringCapitalized += stringToCapitalize.charAt(0);
+			
+			if(stringLength > 1)
+			{				
+				stringCapitalized += stringToCapitalize.substring(1, stringLength).toLowerCase();
+			}
+		}
+		
+		return stringCapitalized;
+	}
 
 }
