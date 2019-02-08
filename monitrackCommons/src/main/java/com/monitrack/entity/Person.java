@@ -13,25 +13,25 @@ public class Person {
 	}
 
 	/**
-	 * Constructeur utilisé lors de la récupération 
-	 * à partir de la base de données ou d'un JSON
+	 * Constructor used to retrieved a Person from the database
+	 * We cannot call the other constructor in this one, 
+	 * otherwise it will replace the creationDate retrieved from the database with the current time
 	 * 
 	 * @param idPerson
 	 * @param namePerson
 	 * @param creationDate
 	 */
 	public Person(int idPerson, String namePerson, Timestamp creationDate) {
-		this(namePerson);
 		this.idPerson = idPerson;
+		this.namePerson = namePerson;
 		this.creationDate = creationDate;
 	}
   
 	/**
-	 * Constructeur utilisé lors de la création d'une nouvelle instance via l'Interface Homme Machine
-	 * Il n'y a que l'attribut namePerson car 'creationDate' est défini grâce à une fonction java
-	 * et 'idPerson' est calculé directement dans la base 
-	 * (c'est une valeur auto-incrémentée donc accessible uniquement lors de la création en base).
-	 * Sa valeur n'est pas connue à l'avance
+	 * Constructor used to register a Person into the database (
+	 * 		the id is auto-generated when the Person is inserted into the database
+	 * 		and the creation_date is retrieved thanks to a java.sql.Date method
+	 * )
 	 * 
 	 * @param namePerson
 	 */
