@@ -167,9 +167,13 @@ toto@ubuntu:~$ sudo iptables-restore < /etc/iptables_prod.rules
 ```
 *Cette commande aura pour but de nous permettre d'accéder à la base de données se situant sur une autre machine virtuelle d'un réseau privée*u
 3. Ouvrir, l'IHM sur un ordinateur (en local)
+
 4. Remplir le champ nom et appuyer sur le bouton "valider" (ce qui devrait envoyer une requête à la base de données)
+
 5. Refaire l'étape 3 avec plusieurs noms différents
+
 6. Appuyer sur le bouton "Tout voir"
+
 7. Une liste avec tous les noms qui ont été saisis précédemment devrait apparaîtree
 
 # Si des erreurs apparaissent
