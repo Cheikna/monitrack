@@ -82,8 +82,7 @@ Pour le moment, le projet Maven se découpe en 3 modules distincts :
 6. Vous pouvez ensuite travailler sur cette branche
 
 # Mettre a jour son repertoire git local avec le repertoire distant
-1. Dans 'Project Explorer', faites un clic-droit sur 'monitrack', puis Team > Fetch from Upstream
-2. Enfin clic-droit sur 'monitrack', Team > Pull
+1. Dans 'Project Explorer', faites un clic-droit sur 'monitrack', puis Team > Pull
 
 # Fusionner les modifications faites sur une autre branche avec la branche courante
 1. Assurez-vous d'avoir [mis à jour votre répertoire avec le répertoire distant](#mettre-a-jour-son-repertoire-git-local-avec-le-repertoire-distant)
@@ -160,21 +159,26 @@ D:\GitHub\PDS_ESIPE_CYCLE_INGENIEUR\monitrack\monitrackGUI> java -jar <chemin co
 **Attention : Si vous décidez d'ouvrir l'artefact jar à partir de la l'invite de commande (ou le PowerShell) , faîtes très attention car si vous fermer votre invite de commande alors l'application se fermera aussi.**
 
 # Scenario de demonstration pour la release 1 (R1)
-1. Lancer la machine virtuelle contenant la base de données de production
-2. Ouvrir, l'IHM sur un ordinateur (en local)
-3. Remplir le champ nom et appuyer sur le bouton "valider" (ce qui devrait envoyer une requête à la base de données)
-4. Refaire l'étape 3 avec plusieurs noms différents
-5. Appuyer sur le bouton "Tout voir"
-6. Une liste avec tous les noms qui ont été ajoutés précédemment devrait apparaître
+1. Lancer les machines virtuelles MONITRACK_NETWORK et MONITRACK_BDD_PROD
+2. Une fois ces machines virtuelles allumées, lancer la commande suivante sur la machine virtuelle MONITRACK_NETWORK :
+
+```
+toto@ubuntu:~$ sudo iptables-restore < /etc/iptables_prod.rules
+```
+*Cette commande aura pour but de nous permettre d'accéder à la base de données se situant sur une autre machine virtuelle d'un réseau privée*u
+3. Ouvrir, l'IHM sur un ordinateur (en local)
+4. Remplir le champ nom et appuyer sur le bouton "valider" (ce qui devrait envoyer une requête à la base de données)
+5. Refaire l'étape 3 avec plusieurs noms différents
+6. Appuyer sur le bouton "Tout voir"
+7. Une liste avec tous les noms qui ont été saisis précédemment devrait apparaîtree
 
 # Si des erreurs apparaissent
-- En cas de problèmes lors de l'exportation du projet Maven en fichier .jar, vous pouvez consulter le site suivant :
-https://www.codejava.net/coding/how-to-create-executable-jar-file-with-resources-and-dependencies-using-maven-in-eclipse
 
-- "Error when trying to fetch or push" (Source : https://stackoverflow.com/questions/22824170/eclipse-egit-error-when-trying-to-fetch-or-push) :
+- En cas de problèmes lors de l'exportation du projet Maven en fichier .jar, vous pouvez consulter le site suivant :
+https://www.codejava.net/coding/how-to-create-executable-jar-file-with-resources-and-dependencies-using-maven-in-eclipsee
+- "Error when trying to fetch or push" (Source : https://stackoverflow.com/questions/22824170/eclipse-egit-error-when-trying-to-fetch-or-push) 
 	Clique-droit sur le projet -> Team -> Remote -> Configure push to upstream->URI, Change-> Add authentication details
-	
-[Revenir en haut de la page](#sommaire)
-	
-![bas de page](https://drive.google.com/uc?export=view&id=1lVkDmyl7kpe0XZHS8s5atJ4CMEI7vSSa)
+
+[Revenir en haut de la page](#sommaire))	
+![bas de page](https://drive.google.com/uc?export=view&id=1lVkDmyl7kpe0XZHS8s5atJ4CMEI7vSSa))
 
