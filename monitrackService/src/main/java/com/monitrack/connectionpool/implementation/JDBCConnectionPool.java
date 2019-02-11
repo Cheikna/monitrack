@@ -19,7 +19,6 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 	
 	public JDBCConnectionPool() {
 		connections = new Vector<Connection>();
-		fillConnectionsList();
 	} 
 	
 
