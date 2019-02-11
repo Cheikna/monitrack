@@ -65,7 +65,7 @@ public class MonitrackFrame extends JFrame implements ActionListener
 			else
 			{
 				Date sqlCurrentDate = new Date(Calendar.getInstance().getTime().getTime());
-				Person person = new Person(name, sqlCurrentDate);
+				Person person = new Person(name);
 				personDAO.create(person);
 			}
 		}
@@ -75,7 +75,7 @@ public class MonitrackFrame extends JFrame implements ActionListener
 			String personsText = "";
 			for(Person person : persons)
 			{
-				personsText += person.getIdPerson() + ") " + person.getNamePerson() + " ---- " + person.getCreateDate() + "\n";
+				personsText += person + "\n";
 			}
 			jTArea.setText(personsText);
 		}

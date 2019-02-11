@@ -1,26 +1,43 @@
 package com.monitrack.entity;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Person {
 
 	private int idPerson;
 	private String namePerson;
-	private Date createDate;
+	private Timestamp creationDate;
 	
 	public Person() {
 		
 	}
 
-	public Person(int idPerson, String namePerson, Date createDate) {
-		this(namePerson, createDate);
+	/**
+	 * Constructor used to retrieved a Person from the database
+	 * We cannot call the other constructor in this one, 
+	 * otherwise it will replace the creationDate retrieved from the database with the current time
+	 * 
+	 * @param idPerson
+	 * @param namePerson
+	 * @param creationDate
+	 */
+	public Person(int idPerson, String namePerson, Timestamp creationDate) {
 		this.idPerson = idPerson;
+		this.namePerson = namePerson;
+		this.creationDate = creationDate;
 	}
   
-	public Person(String namePerson, Date createDate) {
-		super();
+	/**
+	 * Constructor used to register a Person into the database (
+	 * 		the id is auto-generated when the Person is inserted into the database
+	 * 		and the creation_date is retrieved thanks to a java.sql.Date method
+	 * )
+	 * 
+	 * @param namePerson
+	 */
+	public Person(String namePerson) {
 		this.namePerson = namePerson;
-		this.createDate = createDate;
+		this.creationDate = new Timestamp(System.currentTimeMillis());
 	}
 
 	public int getIdPerson() {
@@ -37,18 +54,20 @@ public class Person {
 
 	public void setNamePerson(String namePerson) {
 		this.namePerson = namePerson;
+	}	
+
+	public Timestamp getCreationDate() {
+		return creationDate;
 	}
 
-	public Date getCreateDate() {
-		return createDate;
+	public void setCreationDate(Timestamp creationDate) {
+		this.creationDate = creationDate;
 	}
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
+	@Override
+	public String toString() {
+		return "Person [idPerson=" + idPerson + ", namePerson=" + namePerson + ", creationDate=" + creationDate
+				+ "]";
 	}
-	
-	
-
-	
 	
 }
