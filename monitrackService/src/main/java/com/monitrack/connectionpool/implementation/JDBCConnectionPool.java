@@ -28,6 +28,7 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 		try
 		{
 			numberOfConnections = Integer.parseInt(Util.getPropertyValueFromPropertiesFile("number_of_connections"));
+			log.info(numberOfConnections + " connection(s) will be put inside the connection pool.");
 		}
 		catch(Exception e)
 		{
