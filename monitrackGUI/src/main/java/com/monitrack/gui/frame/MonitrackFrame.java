@@ -34,7 +34,7 @@ public class MonitrackFrame extends JFrame implements ActionListener
 	JTextArea jTArea = new JTextArea();
 	// DAO pour les requêtes
 	PersonDAO personDAO = new PersonDAO();
-	
+
 	public MonitrackFrame()
 	{
 		jbValidate.addActionListener(this);
@@ -79,6 +79,54 @@ public class MonitrackFrame extends JFrame implements ActionListener
 			}
 			jTArea.setText(personsText);
 		}
+	}
+
+	public JPanel getNorth() {
+		return north;
+	}
+
+	public void setNorth(JPanel north) {
+		this.north = north;
+	}
+
+	public JLabel getJlName() {
+		return jlName;
+	}
+
+	public void setJlName(JLabel jlName) {
+		this.jlName = jlName;
+	}
+
+	public JTextField getJtfName() {
+		return jtfName;
+	}
+
+	public void setJtfName(JTextField jtfName) {
+		this.jtfName = jtfName;
+	}
+
+	public JButton getJbValidate() {
+		return jbValidate;
+	}
+
+	public void setJbValidate(JButton jbValidate) {
+		this.jbValidate = jbValidate;
+	}
+
+	public JButton getJbOverview() {
+		return jbOverview;
+	}
+
+	public void setJbOverview(JButton jbOverview) {
+		this.jbOverview = jbOverview;
+	}
+
+	public JTextArea getjTArea() {
+		return jTArea;
+	}
+
+	public void setjTArea(JTextArea jTArea) {
+		this.jTArea = jTArea;
 	}
 }
 
