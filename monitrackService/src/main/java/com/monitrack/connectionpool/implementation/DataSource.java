@@ -2,6 +2,7 @@ package com.monitrack.connectionpool.implementation;
 
 import java.sql.Connection;
 
+import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,8 +59,11 @@ public class DataSource {
 	public static boolean isConnectionPoolFilled() {
 		return isConnectionPoolFilled;
 	}
-
 	
+	
+	public static int getRemaningConnections(){
+		return connectionPool.getRemaningNumberOfConnections();
+	}
 	
 
 }

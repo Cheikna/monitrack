@@ -102,6 +102,8 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
         return connection;
     }  
 
-	
+	public int getRemaningNumberOfConnections(){
+		return connections.size();
+	}
 
 }
