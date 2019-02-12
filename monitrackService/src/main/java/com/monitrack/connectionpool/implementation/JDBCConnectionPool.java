@@ -79,8 +79,14 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 			}
 		}
 	}
+		
 	
-    private Connection createConnection(){
+    public Vector<Connection> getConnections() {
+		return connections;
+	}
+
+
+	private Connection createConnection(){
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(URL, USER, PSWD);
