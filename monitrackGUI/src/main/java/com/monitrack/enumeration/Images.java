@@ -7,20 +7,20 @@ import javax.swing.ImageIcon;
 
 public enum Images {
 
-	/**** Les différentes images (placées dans le dosssier src > main > resources > pictures)  ****/
+	/**** The different pictures (src > main > resources > pictures)  ****/
 	PROJECT_LOGO("monitrack_logo.png"),
 	
 	GROUP_LOGO("climg_logo.png");
 
-	/***** Attributs de l'énumération *****/
+	/***** attribut of enums *****/
 	private URL url;
 
 	/**
-	 * La chaîne de caractères passée en paramètre dans ce constructeur de cette enum va être utiliser 
-	 * afin de construire l'URL de l'image, son chemin.
+	 * The chain of character past in parameters in this constructor is used for build 
+	 * URL and path of the picture.
 	 * 
 	 * @param imageName
-	 * 			nom de l'image (se trouvant dans le dossier src/main/resources/images)
+	 * 			name of the picture (located in the file src/main/resources/images)
 	 */
 	Images(String imageName)
 	{
