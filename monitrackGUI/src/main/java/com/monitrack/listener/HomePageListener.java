@@ -54,7 +54,7 @@ public class HomePageListener implements ActionListener
 			
 			try {
 				int id = Integer.parseInt(idInString);
-				//personDAO.delete(id);
+				personDAO.delete(id);
 			}
 			catch(Exception exp)
 			{
@@ -75,7 +75,7 @@ public class HomePageListener implements ActionListener
 						, "Suppression", JOptionPane.QUESTION_MESSAGE);
 				
 				Person personToUpdate = new Person(id, newPersonName, null);				
-				//personDAO.update(person);
+				personDAO.update(personToUpdate);
 			}
 			catch(Exception exp)
 			{

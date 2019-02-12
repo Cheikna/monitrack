@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JOptionPane;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.monitrack.connectionpool.implementation.DataSource;
@@ -57,7 +60,7 @@ public class PersonDAO implements IPersonDAO {
 					} catch (Exception e) {
 						log.error("An error occurred during the creation of a person : " + e.getMessage());
 						e.printStackTrace();
-					    JOptionPane.showMessageDialog(parent, "La suppression n'as pas Ã©tÃ© effectuÃ©e");
+					    JOptionPane.showMessageDialog(null, "La suppression n'a pas été effectuée");
 					}
 					// Puts the connection in the connection Pool because we've finished with it and we do not want to waste it
 					DataSource.putConnection(connection);
@@ -73,13 +76,13 @@ public class PersonDAO implements IPersonDAO {
 		{
 			try {
 				PreparedStatement preparedStatement = connection
-						.prepareStatement("UPDATE PERSON SET NAME = ? WHERE id ="+person.getId());
+						.prepareStatement("UPDATE PERSON SET NAME = ? WHERE id =" + person.getIdPerson());
 				preparedStatement.setString(1, person.getNamePerson());
 				preparedStatement.execute();
 			} catch (Exception e) {
 				log.error("An error occurred during the creation of a person : " + e.getMessage());
 				e.printStackTrace();
-			    JOptionPane.showMessageDialog(parent, "La modification n'as pas Ã©tÃ© effectuÃ©e");
+			    JOptionPane.showMessageDialog(null, "La modification n'a pas été effectuée");
 			}
 			
 			// Puts the connection in the connection Pool because we've finished with it and we do not want to waste it
