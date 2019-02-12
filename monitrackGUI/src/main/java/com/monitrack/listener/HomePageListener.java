@@ -2,21 +2,20 @@ package com.monitrack.listener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
-import java.util.Calendar;
 import java.util.List;
-
 import javax.swing.JOptionPane;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.monitrack.dao.implementation.PersonDAO;
 import com.monitrack.entity.Person;
-import com.monitrack.gui.frame.MonitrackFrame;
 import com.monitrack.gui.panel.HomePage;
 
 public class HomePageListener implements ActionListener
 {
+	private static final Logger log = LoggerFactory.getLogger(HomePageListener.class);
+	
 	private HomePage homePage;
-	// DAO for request
+	// DAO for requests
 	private PersonDAO personDAO = new PersonDAO();
 	public HomePageListener(HomePage homePage)
 	{
@@ -33,7 +32,6 @@ public class HomePageListener implements ActionListener
 			}
 			else
 			{
-				Date sqlCurrentDate = new Date(Calendar.getInstance().getTime().getTime());
 				Person person = new Person(name);
 				personDAO.create(person);
 			}
@@ -47,6 +45,43 @@ public class HomePageListener implements ActionListener
 				personsText += person + "\n";
 			}
 			homePage.getjTArea().setText(personsText);
+		}
+
+		if(e.getSource() == homePage.getJbDelete())
+		{
+			String idInString = JOptionPane.showInputDialog(null, "Veuillez indiquez l'ID de la personne à supprimer :"
+					, "Suppression", JOptionPane.QUESTION_MESSAGE);
+			
+			try {
+				int id = Integer.parseInt(idInString);
+				//personDAO.delete(id);
+			}
+			catch(Exception exp)
+			{
+				log.error("The convertion into a Integer did not work");
+				JOptionPane.showMessageDialog(null, "Vous n'avez pas entré un bon entier", "Conversion Impossible", JOptionPane.WARNING_MESSAGE);
+			}
+		}
+		
+		if(e.getSource() == homePage.getJbUpdate())
+		{
+			String idInString = JOptionPane.showInputDialog(null, "Veuillez indiquez l'ID de la personne à modifier :"
+					, "Suppression", JOptionPane.QUESTION_MESSAGE);
+			
+			try {
+				int id = Integer.parseInt(idInString);
+				
+				String newPersonName = JOptionPane.showInputDialog(null, "Veuillez entrer le nouveau nom de la personne :"
+						, "Suppression", JOptionPane.QUESTION_MESSAGE);
+				
+				Person personToUpdate = new Person(id, newPersonName, null);				
+				//personDAO.update(person);
+			}
+			catch(Exception exp)
+			{
+				log.error("The convertion into a Integer did not work");
+				JOptionPane.showMessageDialog(null, "Vous n'avez pas entré un bon entier", "Conversion Impossible", JOptionPane.WARNING_MESSAGE);
+			}
 		}
 	}
 

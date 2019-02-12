@@ -17,8 +17,8 @@ public class OpeningPageListener implements KeyListener {
 	public void keyTyped(KeyEvent e) {}
 
 	public void keyPressed(KeyEvent e) {
-		
-		//monitrackFrame.changePage("YELLOW" );
+		// Changes the pages in order to have the home page
+		monitrackFrame.changePage(monitrackFrame.getHomePageName());
 		//Updates the monitrackFrame
 		monitrackFrame.setVisible(true);	
 	}
