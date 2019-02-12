@@ -18,7 +18,8 @@ public class JDBCConnectionPoolTest {
 	private JDBCConnectionPool pool = new JDBCConnectionPool();
 	
 	@Before
-	public void setUp() throws Exception {
+	public void initialize() throws Exception {
+		pool.fillConnectionsList();
 	}
 // Si on crée une nouvelle connnexion et qu'elle ne soit pas null 
 	
