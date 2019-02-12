@@ -54,7 +54,6 @@ public class HomePage extends JPanel
 		
 		jTArea.setEditable(false);
 		jTArea.setFont(textAreaFont);
-		jTArea.setText("Test");
 		scroll = new JScrollPane(jTArea);
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		this.add(scroll, BorderLayout.CENTER);
