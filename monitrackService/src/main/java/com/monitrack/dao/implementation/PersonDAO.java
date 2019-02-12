@@ -41,6 +41,54 @@ public class PersonDAO implements IPersonDAO {
 		}		
 		
 	}
+	
+	public void delete(int personId){
+		// Retrieves a connection from the connectionPool and allows us to use it
+				Connection connection = DataSource.getConnection();
+
+				// Checks if the connection is not null before using it
+				if(connection != null)
+				{
+					try {
+						PreparedStatement preparedStatement = connection
+								.prepareStatement("DELETE FROM PERSON where id=(?)");
+						preparedStatement.setInt(1, personId);
+						preparedStatement.execute();
+					} catch (Exception e) {
+						log.error("An error occurred during the creation of a person : " + e.getMessage());
+						e.printStackTrace();
+					    JOptionPane.showMessageDialog(parent, "La suppression n'as pas été effectuée");
+					}
+					// Puts the connection in the connection Pool because we've finished with it and we do not want to waste it
+					DataSource.putConnection(connection);
+				}		
+	}
+	
+	public void update(Person person) {
+		// Retrieves a connection from the connectionPool and allows us to use it
+		Connection connection = DataSource.getConnection();
+
+		// Checks if the connection is not null before using it
+		if(connection != null)
+		{
+			try {
+				PreparedStatement preparedStatement = connection
+						.prepareStatement("UPDATE PERSON SET NAME = ? WHERE id ="+person.getId());
+				preparedStatement.setString(1, person.getNamePerson());
+				preparedStatement.execute();
+			} catch (Exception e) {
+				log.error("An error occurred during the creation of a person : " + e.getMessage());
+				e.printStackTrace();
+			    JOptionPane.showMessageDialog(parent, "La modification n'as pas été effectuée");
+			}
+			
+			// Puts the connection in the connection Pool because we've finished with it and we do not want to waste it
+			DataSource.putConnection(connection);
+		}
+		
+	}
+	
+	
 
 	public List<Person> findAll() {
 		// Retrieves a connection from the connectionPool and allows us to use it
