@@ -19,7 +19,7 @@ public class DataSourceTest {
 	
 	@Before
 	public void initializeDataSource() throws Exception {
-		DataSource.startConectionPool();
+		DataSource.startConnectionPool();
 		numberOfConnections= DataSource.getRemaningConnections();
 	}
 

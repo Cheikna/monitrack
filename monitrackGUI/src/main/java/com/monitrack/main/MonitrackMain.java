@@ -20,7 +20,7 @@ public class MonitrackMain {
 		Thread connectionPoolThread  = new  Thread(new Runnable() {
 			
 			public void run() {	
-				DataSource.startConectionPool();
+				DataSource.startConnectionPool();
 			}			
 		});		
 		connectionPoolThread.start();		
