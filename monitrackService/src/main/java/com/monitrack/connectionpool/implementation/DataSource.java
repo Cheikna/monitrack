@@ -1,8 +1,8 @@
 package com.monitrack.connectionpool.implementation;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
-import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +35,7 @@ public class DataSource {
 	 * 
 	 * @param connection
 	 */
-	public static void putConnection(Connection connection)
+	public static synchronized void putConnection(Connection connection)
 	{
 		connectionPool.putConnection(connection);
 	}
@@ -48,8 +48,13 @@ public class DataSource {
 		connectionPool.closeAllConnections();
 	}
 	
-	public static void startConectionPool() {
-		connectionPool.fillConnectionsList();
+	public static void startConnectionPool() {
+		try {
+			connectionPool.fillConnectionsList();
+		} catch (SQLException e) {
+			log.error(e.getMessage());
+			e.printStackTrace();
+		}
 		isConnectionPoolFilled = true;
 	}
 

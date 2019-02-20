@@ -22,7 +22,7 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 	} 
 	
 
-	public void fillConnectionsList() {
+	public void fillConnectionsList() throws SQLException {
 		int numberOfConnections = 0;
 		
 		try
@@ -38,7 +38,19 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 		
         for (int i = 0; i < numberOfConnections; i++ )
         {
-            connections.addElement(this.createConnection());
+        	Connection createdConnection = this.createConnection(); 
+        	if(createdConnection != null) {
+                connections.addElement(createdConnection);
+                log.info("A connection has been created and is being added to the pool. (" + ( (i+1) + "/" + numberOfConnections) + ")" );
+        	}
+        	else {
+        		log.error("An error occurs during the creation of a connection because the connection equals to null !");
+        		/*
+        		 * An error occured, so we will stop the creation of the connection 
+        		 * in order to avoid other problems
+        		 */
+        		throw new SQLException("A connection is equal to null !");
+        	}
         }
 	}
 
@@ -60,7 +72,7 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 		if(connection != null)
 		{
 			connections.addElement(connection);	
-			log.info("A connection is being added to the conection pool.");			
+			log.info("A connection is being added to the connection pool.");			
 		}
 		
 	}
@@ -93,12 +105,6 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
         } catch (SQLException e) {
             log.error("A SQL Exception has been raised during the creation of a connection :\n" + e.getMessage());
         }
-        if (connection != null) {
-            log.info("A connection has been created.");
-        } else {
-            log.error("An error occurs during the creation of a connection because the connection equals to null !");
-        }
-
         return connection;
     }  
 

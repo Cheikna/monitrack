@@ -1,13 +1,15 @@
 package com.monitrack.connectionpool.interfaces;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 public interface IJDBCConnectionPool {
 	
 	/**
 	 * Fills the connections attribute
+	 * @throws SQLException : this error is raised when a connection is equal to null
 	 */
-	public void fillConnectionsList();
+	public void fillConnectionsList() throws SQLException;
 	
 	
 	/**
