@@ -127,18 +127,30 @@ Source : https://www.codejava.net/coding/how-to-create-executable-jar-file-with-
 1. Faites : clic-droit sur le projet Monitrack > Run As > Run Configurations
 ![image](https://drive.google.com/uc?export=view&id=1JKQCFFMCMsfCDiVzvwkVdmby03sFkPm9)
 
-2. Dans la fenêtre qui va s'ouvrir et dans la partie Maven Build, sélectionnez le module que vous voulez générer
-3. Dans la partie goals, y écrire :
+2. Cliquer sur **Maven Build (1)** dans la liste des configurations, puis sur l’icône **New launch configuration (2)**
+![image](https://drive.google.com/uc?export=view&id=1QFu-CEjMZTYxUphX74TC4voqSggsJYMZ)
+
+3. Une nouvelle fenêtre s’affiche _(voir photo ci-dessous)_
+![image](https://drive.google.com/uc?export=view&id=1djItXE_SBkXEtn5b1mg_Jiqyr1KhLH8H)
+
+4. Appuyer sur le bouton « Workspace » où vous serez invité à choisir le module Maven (contenant une méthode « main » principale que vous voudrez exporter au format .jar
+Choisir le module correspondant. Dans notre cas, nous aurons à choisir un des 2 modules suivants :
+	- le module monitrackGUI pour le client JAVA
+	- le module monirtackService pour tester le pool de connexions
+_Dans notre cas nous avons choisi le module monitrackGUI_
+![image](https://drive.google.com/uc?export=view&id=1mYVyanwlR8x5VxOpUoGOTSphaBOjtra0)
+
+5. Dans la partie goals, y écrire :
 
 ```
-assembly:single
+clean assembly:single
 ```
 ![image](https://drive.google.com/uc?export=view&id=13ITCwIcN86TdpqeYqLgScUV-zd9kkOsC)
 
-4. N'hésitez pas à changer le nom de la configuration afin de faciliter les Run ultérieurs
-5. Appuyez sur le bouton "Apply" en bas, puis Run.
-6. Sur la console devrait s'afficher les différentes étapes
-7. Une fois que le "Run" a terminé avec succès, vous pourrez trouver votre fichier .jar généré en suivant le chemin indiqué après "Building jar"
+6. N'hésitez pas à changer le nom de la configuration afin de faciliter les Run ultérieurs
+7. Appuyez sur le bouton "Apply" en bas, puis Run.
+8. Sur la console devrait s'afficher les différentes étapes
+9. Une fois que le "Run" a terminé avec succès, vous pourrez trouver votre fichier .jar généré en suivant le chemin indiqué après "Building jar"
 ![image](https://drive.google.com/uc?export=view&id=1RPDmLLlS__I3e628636povbH-AkUbaH_)
  
 
