@@ -137,15 +137,15 @@ Source : https://www.codejava.net/coding/how-to-create-executable-jar-file-with-
 Choisir le module correspondant. Dans notre cas, nous aurons à choisir un des 2 modules suivants :
 	- le module monitrackGUI pour le client JAVA
 	- le module monirtackService pour tester le pool de connexions
-	
 _Dans notre cas nous avons choisi le module monitrackGUI_
 ![image](https://drive.google.com/uc?export=view&id=1mYVyanwlR8x5VxOpUoGOTSphaBOjtra0)
 
-5. Dans la partie goals, y écrire (comme sur l'image ci-dessus) :
+5. Dans la partie goals, y écrire :
 
 ```
 clean assembly:single
 ```
+![image](https://drive.google.com/uc?export=view&id=13ITCwIcN86TdpqeYqLgScUV-zd9kkOsC)
 
 6. N'hésitez pas à changer le nom de la configuration afin de faciliter les Run ultérieurs
 7. Appuyez sur le bouton "Apply" en bas, puis Run.
