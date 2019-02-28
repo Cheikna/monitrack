@@ -21,7 +21,7 @@ public class MonitrackServiceMain {
 			 */
 			if(i > numberOfConnections)
 			{
-				System.out.println("We are try to access to the connection n°" + i + " whereas there were only " + numberOfConnections + " available at the beginning on the DataSource.");
+				System.out.println("We are trying to access to the connection n°" + i + " whereas there were only " + numberOfConnections + " available at the beginning on the DataSource.");
 				System.out.println("Normally, the next connection should be null !");
 			}
 			if(connection != null)
