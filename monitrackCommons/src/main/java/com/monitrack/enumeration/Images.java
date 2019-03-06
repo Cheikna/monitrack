@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 
 public enum Images {
 
-	/**** The different pictures (src > main > resources > pictures)  ****/
+	/**** The different pictures (located in the folder src/main/resources/images)  ****/
 	PROJECT_LOGO("monitrack_logo.png"),
 	
 	GROUP_LOGO("climg_logo.png");
@@ -20,7 +20,7 @@ public enum Images {
 	 * URL and path of the picture.
 	 * 
 	 * @param imageName
-	 * 			name of the picture (located in the file src/main/resources/images)
+	 * 			name of the picture with its extension
 	 */
 	Images(String imageName)
 	{

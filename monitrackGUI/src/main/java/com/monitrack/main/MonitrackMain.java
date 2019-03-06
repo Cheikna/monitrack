@@ -3,7 +3,6 @@ package com.monitrack.main;
 import javax.swing.SwingUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.monitrack.connectionpool.implementation.DataSource;
 import com.monitrack.gui.frame.MonitrackFrame;
 
