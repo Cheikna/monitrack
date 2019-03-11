@@ -9,8 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-
-import com.monitrack.connectionpool.implementation.DataSource;
 import com.monitrack.enumeration.Images;
 import com.monitrack.gui.frame.MonitrackFrame;
 import com.monitrack.listener.OpeningPageListener;
@@ -58,12 +56,11 @@ public class OpeningPage extends JPanel {
 		{
 			Font font = new Font("Arial", Font.BOLD, 25);
 			g2.setFont(font);
-			//g2.drawString("Création des connexions pour le pool de connexions en cours...", 12, 200);
-			//g2.drawString("Appuyez sur une touche pour continuer...", 130, 200);		
-			if(DataSource.isConnectionPoolFilled())
+			
+			/*if(DataSource.isConnectionPoolFilled())
 				g2.drawString("Création des connexions terminées, appuyez sur une touche...", 12, 200);
 			else
-				g2.drawString("Création des connexions pour le pool de connexions en cours...", 12, 200);
+				g2.drawString("Création des connexions pour le pool de connexions en cours...", 12, 200);*/
 			g2.drawImage(groupLogoImage, 300, 220, null);		
 		}
 

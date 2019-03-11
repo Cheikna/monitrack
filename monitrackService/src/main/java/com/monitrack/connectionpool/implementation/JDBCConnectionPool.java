@@ -12,30 +12,30 @@ import com.monitrack.util.Util;
 public class JDBCConnectionPool implements IJDBCConnectionPool {
 	
     private Vector<Connection> connections;
-    private static final Logger log = LoggerFactory.getLogger(JDBCConnectionPool.class);
-    private static final String URL             =  Util.getPropertyValueFromPropertiesFile("url");
+    private final Logger log = LoggerFactory.getLogger(JDBCConnectionPool.class);
+    private static final String URL             =  Util.getPropertyValueFromPropertiesFile("url_dev");
     private static final String USER            =  Util.getPropertyValueFromPropertiesFile("username");
     private static final String PSWD            =  Util.getPropertyValueFromPropertiesFile("password");
+    private int numberOfConnections;
 	
 	public JDBCConnectionPool() {
 		connections = new Vector<Connection>();
-	} 
-	
-
-	public void fillConnectionsList() throws SQLException {
-		int numberOfConnections = 0;
-		
 		try
 		{
 			numberOfConnections = Integer.parseInt(Util.getPropertyValueFromPropertiesFile("number_of_connections"));
-			log.info(numberOfConnections + " connection(s) will be put inside the connection pool.");
 		}
 		catch(Exception e)
 		{
 			log.error("The number of connections could not be read from the .properties file. Consequently, we will create 10 connections !");
 			numberOfConnections = 10;
 		}
-		
+
+		log.info(numberOfConnections + " connection(s) will be put inside the connection pool.");
+	} 
+	
+
+	public void fillConnectionsList() throws SQLException {		
+				
         for (int i = 0; i < numberOfConnections; i++ )
         {
         	Connection createdConnection = this.createConnection(); 
@@ -52,6 +52,7 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
         		throw new SQLException("A connection is equal to null !");
         	}
         }
+        displayConnectionPoolState();
 	}
 
 	public Connection getConnection() throws Exception {
@@ -60,6 +61,7 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 			Connection connection = connections.lastElement();
 	        connections.removeElement(connection);
 			log.info("A connection is being retrieved from the conection pool.");
+			displayConnectionPoolState();
 	        return connection; 
 		}
 		else
@@ -74,6 +76,7 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 			connections.addElement(connection);	
 			log.info("A connection is being added to the connection pool.");			
 		}
+		displayConnectionPoolState();
 		
 	}
 
@@ -111,5 +114,17 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 	public int getRemaningNumberOfConnections(){
 		return connections.size();
 	}
+	
+	public void displayConnectionPoolState()
+	{
+		//LOG
+		log.info("---------------------------------------------------");
+		log.info("Number of connection(s) created   : " + numberOfConnections);
+		log.info("Number of client(s) connected     : " + "e"); // LOG remplacer le "e" par un getnumberOfClients
+		log.info("     REMAINIG CONNECTION(S)       : " + getRemaningNumberOfConnections());
+		log.info("---------------------------------------------------");
+	}
+	
+	
 
 }

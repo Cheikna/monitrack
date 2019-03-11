@@ -6,7 +6,6 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.monitrack.dao.implementation.PersonDAO;
 import com.monitrack.entity.Person;
 import com.monitrack.gui.panel.HomePage;
 
@@ -16,7 +15,8 @@ public class HomePageListener implements ActionListener
 	
 	private HomePage homePage;
 	// DAO for requests
-	private PersonDAO personDAO = new PersonDAO();
+	// FIXME private PersonDAO personDAO = new PersonDAO();
+	
 	public HomePageListener(HomePage homePage)
 	{
 		this.homePage = homePage;
@@ -33,12 +33,12 @@ public class HomePageListener implements ActionListener
 			else
 			{
 				Person person = new Person(name);
-				personDAO.create(person);
+				// FIXME personDAO.create(person);
 			}
 		}
 		if(e.getSource()==homePage.getJbOverview())
 		{
-			List<Person> persons = personDAO.findAll();
+			List<Person> persons = null; // FIXME = personDAO.findAll();
 			String personsText = "";
 			for(Person person : persons)
 			{
@@ -54,7 +54,7 @@ public class HomePageListener implements ActionListener
 			
 			try {
 				int id = Integer.parseInt(idInString);
-				personDAO.delete(id);
+				// FIXME personDAO.delete(id);
 			}
 			catch(Exception exp)
 			{
@@ -75,7 +75,7 @@ public class HomePageListener implements ActionListener
 						, "Suppression", JOptionPane.QUESTION_MESSAGE);
 				
 				Person personToUpdate = new Person(id, newPersonName, null);				
-				personDAO.update(personToUpdate);
+				// FIXME personDAO.update(personToUpdate);
 			}
 			catch(Exception exp)
 			{

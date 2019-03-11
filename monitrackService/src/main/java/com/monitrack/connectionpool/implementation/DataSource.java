@@ -10,7 +10,6 @@ public class DataSource {
 	
 	private static final Logger log = LoggerFactory.getLogger(DataSource.class);
 	private static JDBCConnectionPool connectionPool = new JDBCConnectionPool();
-	private static boolean isConnectionPoolFilled = false;
 
 	public DataSource() {}
 	
@@ -55,16 +54,7 @@ public class DataSource {
 			log.error(e.getMessage());
 			e.printStackTrace();
 		}
-		isConnectionPoolFilled = true;
-	}
-
-	/**
-	 * @return the isConnectionPoolFilled
-	 */
-	public static boolean isConnectionPoolFilled() {
-		return isConnectionPoolFilled;
-	}
-	
+	}	
 	
 	public static int getRemaningConnections(){
 		return connectionPool.getRemaningNumberOfConnections();

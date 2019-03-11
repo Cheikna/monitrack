@@ -43,7 +43,6 @@ public class JDBCConnectionPoolTest {
 		try {
 			assertNotNull("The connection from the pool is not null", pool.getConnection());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			fail();
 		}
 	}
@@ -58,7 +57,6 @@ public class JDBCConnectionPoolTest {
 					fail("One connection has not been closed");
 				}
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				fail("An exception has occured when verifying if all connections has been closed ");
 			}
 		}

@@ -1,42 +1,31 @@
 package com.monitrack.listener;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Date;
-import java.util.Calendar;
-import java.util.List;
-
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-
-import com.monitrack.dao.implementation.PersonDAO;
-import com.monitrack.entity.Person;
+import java.awt.event.WindowEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.awt.event.WindowAdapter;
 import com.monitrack.gui.frame.MonitrackFrame;
+import com.monitrack.shared.MonitrackGUIAttribute;
 
-public class MonitrackListener implements ActionListener {
+public class MonitrackListener extends WindowAdapter {
 	
+	private static Logger log = LoggerFactory.getLogger(MonitrackListener.class);
+			
 	private MonitrackFrame monitrackFrame;
-	private PersonDAO personDAO;
 
 	/**
 	 * 
 	 * @param monitrackFrame
 	 */
 	public MonitrackListener(MonitrackFrame monitrackFrame) {
-		personDAO = new PersonDAO();
-		//TODO
+		this.monitrackFrame = monitrackFrame;
 	}	
-	
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		/* En fonction des différents boutons cliqués (qui seront accessible grâce aux getters/setters,
-		 * il faut effectuer l'action appropriée.
-		 * Il suffit de copier-coller la méthode actionPerformed de la classe MonitrackFrame et d'accéder aux
-		 * boutons grâces aux getters et setters
-		 */
-	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		MonitrackGUIAttribute.setWindowClosing(true);
+		log.info("The application is closed");
+		System.exit(0);		
+	}	
 
 }
