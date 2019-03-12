@@ -7,6 +7,7 @@ import java.util.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.monitrack.connectionpool.interfaces.IJDBCConnectionPool;
+import com.monitrack.shared.MonitrackServiceAttribute;
 import com.monitrack.util.Util;
 
 public class JDBCConnectionPool implements IJDBCConnectionPool {
@@ -19,6 +20,7 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
     private int numberOfConnections;
 	
 	public JDBCConnectionPool() {
+		log.info("Database URL : " + URL);
 		connections = new Vector<Connection>();
 		try
 		{
@@ -115,14 +117,13 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 		return connections.size();
 	}
 	
-	public void displayConnectionPoolState()
+	private void displayConnectionPoolState()
 	{
-		//LOG
-		log.info("---------------------------------------------------");
-		log.info("Number of connection(s) created   : " + numberOfConnections);
-		log.info("Number of client(s) connected     : " + "e"); // LOG remplacer le "e" par un getnumberOfClients
-		log.info("     REMAINIG CONNECTION(S)       : " + getRemaningNumberOfConnections());
-		log.info("---------------------------------------------------");
+		String creation  = "- Connection(s) created   : " + numberOfConnections;
+		String connected = "- Connected client(s)     : " + MonitrackServiceAttribute.getNumberOfConnectedClients();
+		String remaining = "- REMAINING CONNECTION(S) : " + getRemaningNumberOfConnections();
+		log.info("Connection pool state :\n" + creation + "\n" + connected + "\n" + remaining + "\n");
+		log.info("---------------------------------");
 	}
 	
 	
