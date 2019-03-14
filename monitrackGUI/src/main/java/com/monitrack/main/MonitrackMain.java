@@ -1,11 +1,14 @@
 package com.monitrack.main;
 
+import java.util.Scanner;
+
 import javax.swing.SwingUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.monitrack.clientsocket.ClientSocket;
 import com.monitrack.gui.frame.MonitrackFrame;
+import com.monitrack.shared.MonitrackGUIFactory;
 
 public class MonitrackMain {
 
@@ -21,15 +24,29 @@ public class MonitrackMain {
 			@SuppressWarnings("unused")
 			public void run() {
 				log.info("Launching of Monitrack");
-				// Shows the Graphical User Interface
-				MonitrackFrame monitrack = new MonitrackFrame();	
-				
-				//Enables the communication with the server
-				ClientSocket clientSocket = new ClientSocket();
-				clientSocket.startCommunicationWithServer();
+				//Displays the Graphical User Interface
+				MonitrackFrame monitrack = new MonitrackFrame();
 			}
 		});
-
-	}
+		
+		//FIXME The bottom area needs to be deleted
+		/*Thread clientServerComm = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				ClientSocket clientSocket = new ClientSocket();
+				clientSocket.start();
+				Scanner sc = new Scanner(System.in);
+				while(true)
+				{
+					System.out.print("Write something : ");
+					String requestToSendToServer = sc.nextLine();
+					clientSocket.sendRequestToServer(requestToSendToServer);					
+				}
+				
+			}
+		});
+		clientServerComm.start();*/
+	}	
 	
 }

@@ -2,24 +2,38 @@ package com.monitrack.enumeration;
 
 public enum ConnectionState {
 
-	FAIL (-1,"The connection failed?"),
-	TRY(0, "Trying the connection"),
-	SUCCESS(1,"The connection succeeded");
+	FAIL (-1,"The connection failed !", "La connexion a échoué !"),
+	TRY(0, "Trying the connection, please wait...", "Connexion au serveur en cours, veuillez patienter..."),
+	SUCCESS(1,"The connection succeeded", "Connexion au serveur réussie");
 
 	private Integer code;
-	private String label;
+	private String englishLabel;
+	private String frenchLabel;
 	
-	ConnectionState(Integer code, String label) {
+	ConnectionState(Integer code, String englishLabel, String frenchLabel) {
 		this.code=code;
-		this.label=label;
+		this.englishLabel=englishLabel;
+		this.frenchLabel=frenchLabel;
 	}
 
 	public Integer getCode() {
 		return code;
 	}
 
-	public String getLabel() {
-		return label;
+	/**
+	 * @return the englishLabel
+	 */
+	public String getEnglishLabel() {
+		return englishLabel;
 	}
+
+	/**
+	 * @return the frenchLabel
+	 */
+	public String getFrenchLabel() {
+		return frenchLabel;
+	}
+	
+	
 	
 }
