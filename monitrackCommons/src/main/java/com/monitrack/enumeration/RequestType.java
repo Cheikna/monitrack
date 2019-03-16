@@ -4,5 +4,16 @@ public enum RequestType {
 	SELECT,
 	INSERT,
 	UPDATE,
-	DELETE
+	DELETE;
+	
+	public static RequestType getRequestType(String requestType)
+	{
+		RequestType[] values = values();
+		for(RequestType value : values)
+		{
+			if(value.toString().equalsIgnoreCase(requestType))
+				return value;
+		}
+		return null;
+	}
 }

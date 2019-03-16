@@ -4,7 +4,8 @@ public enum ConnectionState {
 
 	FAIL (-1,"The connection failed !", "La connexion a échoué !"),
 	TRY(0, "Trying the connection, please wait...", "Connexion au serveur en cours, veuillez patienter..."),
-	SUCCESS(1,"The connection succeeded", "Connexion au serveur réussie");
+	SUCCESS(1,"The connection succeeded", "Connexion au serveur réussie"),
+	NO_CONNECTION(-1, "There is no connection left ! Please try later.", "Absence de connexion disponible ! Veuillez réessayer plus tard.");
 
 	private Integer code;
 	private String englishLabel;

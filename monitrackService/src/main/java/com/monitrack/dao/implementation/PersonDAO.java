@@ -17,13 +17,15 @@ import com.monitrack.entity.Person;
 
 public class PersonDAO implements IPersonDAO {
 
-	private final Logger log = LoggerFactory.getLogger(PersonDAO.class);	
+	private final Logger log = LoggerFactory.getLogger(PersonDAO.class);
+	private Connection connection;
 	
-	public PersonDAO() {}
+	public PersonDAO(Connection connection) 
+	{
+		this.connection = connection;
+	}
 
 	public void create(Person person) {
-		// Retrieves a connection from the connectionPool and allows us to use it
-		Connection connection = DataSource.getConnection();
 
 		// Checks if the connection is not null before using it
 		if(connection != null)
@@ -38,16 +40,11 @@ public class PersonDAO implements IPersonDAO {
 				log.error("An error occurred during the creation of a person : " + e.getMessage());
 				e.printStackTrace();
 			}
-			
-			// Puts the connection in the connection Pool because we've finished with it and we do not want to waste it
-			DataSource.putConnection(connection);
 		}		
 		
 	}
 	
 	public void delete(int personId){
-		// Retrieves a connection from the connectionPool and allows us to use it
-				Connection connection = DataSource.getConnection();
 
 				// Checks if the connection is not null before using it
 				if(connection != null)
@@ -62,14 +59,10 @@ public class PersonDAO implements IPersonDAO {
 						e.printStackTrace();
 					    JOptionPane.showMessageDialog(null, "La suppression n'a pas été effectuée");
 					}
-					// Puts the connection in the connection Pool because we've finished with it and we do not want to waste it
-					DataSource.putConnection(connection);
 				}		
 	}
 	
 	public void update(Person person) {
-		// Retrieves a connection from the connectionPool and allows us to use it
-		Connection connection = DataSource.getConnection();
 
 		// Checks if the connection is not null before using it
 		if(connection != null)
@@ -84,9 +77,6 @@ public class PersonDAO implements IPersonDAO {
 				e.printStackTrace();
 			    JOptionPane.showMessageDialog(null, "La modification n'a pas été effectuée");
 			}
-			
-			// Puts the connection in the connection Pool because we've finished with it and we do not want to waste it
-			DataSource.putConnection(connection);
 		}
 		
 	}
@@ -94,8 +84,6 @@ public class PersonDAO implements IPersonDAO {
 	
 
 	public List<Person> findAll() {
-		// Retrieves a connection from the connectionPool and allows us to use it
-		Connection connection = DataSource.getConnection();
 		List<Person> persons = new ArrayList<Person>();
 		
 		if(connection != null)
@@ -115,8 +103,6 @@ public class PersonDAO implements IPersonDAO {
 				log.error("An error occurred when finding all of the persons : " + e.getMessage());
 				e.printStackTrace();
 			}
-			// Puts the connection in the connection Pool because we've finished with it and we do not want to waste it
-			DataSource.putConnection(connection);
 		}
 		
 		return persons;

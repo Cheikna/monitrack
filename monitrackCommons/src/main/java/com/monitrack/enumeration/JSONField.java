@@ -14,7 +14,7 @@ public enum JSONField {
 	
 	REQUESTED_FIELDS("requested_fields"),
 	
-	REQUESTED_VALUES("requested_values"),
+	REQUIRED_VALUES("required_values"),
 	
 	REQUESTED_ENTITY("requested_entity"),
 	
