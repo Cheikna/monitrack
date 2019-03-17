@@ -1,7 +1,7 @@
-create database monitrack_dev;
-use monitrack_dev;
-DROP TABLE IF EXISTS `person`;
-CREATE TABLE IF NOT EXISTS `person` (
+create database monitrack;
+use monitrack;
+DROP TABLE IF EXISTS `PERSON`;
+CREATE TABLE IF NOT EXISTS `PERSON` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(25) NOT NULL,
   `creation_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
