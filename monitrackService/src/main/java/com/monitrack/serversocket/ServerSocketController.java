@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.monitrack.connectionpool.implementation.DataSource;
 import com.monitrack.dao.abstracts.DAO;
 import com.monitrack.dao.implementation.DAOFactory;
-import com.monitrack.dao.implementation.PersonDAO;
 import com.monitrack.entity.Person;
 import com.monitrack.enumeration.ConnectionState;
 import com.monitrack.enumeration.JSONField;

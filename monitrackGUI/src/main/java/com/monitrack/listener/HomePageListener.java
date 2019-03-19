@@ -7,7 +7,8 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.monitrack.entity.Person;
+
+import com.monitrack.entity.Location;
 import com.monitrack.enumeration.JSONField;
 import com.monitrack.enumeration.RequestType;
 import com.monitrack.exception.NoAvailableConnectionException;
@@ -38,17 +39,17 @@ public class HomePageListener implements ActionListener
 				}
 				else
 				{
-					Person person = new Person(name);
-					String serializedObject = Util.serializeObject(person, person.getClass(), "");
-					String jsonRequest = Util.serializeRequest(RequestType.INSERT, Person.class, serializedObject, null, null);
+					Location location = new Location(name, "");
+					String serializedObject = Util.serializeObject(location, location.getClass(), "");
+					String jsonRequest = Util.serializeRequest(RequestType.INSERT, Location.class, serializedObject, null, null);
 					String response = MonitrackGUIFactory.getClientSocket().sendRequestToServer(jsonRequest);
 					log.info("Response from the server :\n" + Util.indentJsonOutput(response));
 					String error = Util.getJsonNodeValue(JSONField.ERROR_MESSAGE, response).trim();
 					if(error.equals(""))
 					{
-						Person personCreated = (Person)Util.deserializeObject(response);
-						int id = personCreated.getIdPerson();
-						JOptionPane.showMessageDialog(homePage, "La personne a été créée avec l'id " + id, "Personne créée", JOptionPane.INFORMATION_MESSAGE);
+						Location locationCreated = (Location)Util.deserializeObject(response);
+						int id = locationCreated.getIdLocation();
+						JOptionPane.showMessageDialog(homePage, "La location a été créée avec l'id " + id, "Location créée", JOptionPane.INFORMATION_MESSAGE);
 
 					}
 					else
@@ -64,7 +65,7 @@ public class HomePageListener implements ActionListener
 		}
 		if(e.getSource()==homePage.getJbOverview())
 		{
-			String jsonRequest = Util.serializeRequest(RequestType.SELECT, Person.class, null, null, null);
+			String jsonRequest = Util.serializeRequest(RequestType.SELECT, Location.class, null, null, null);
 			try 
 			{
 				String response = MonitrackGUIFactory.getClientSocket().sendRequestToServer(jsonRequest);
@@ -72,13 +73,13 @@ public class HomePageListener implements ActionListener
 				String error = Util.getJsonNodeValue(JSONField.ERROR_MESSAGE, response).trim();
 				if(error.equals(""))
 				{
-					List<Person> persons = (List<Person>) Util.deserializeObject(response);
-					String personsText = "";
-					for(Person person : persons)
+					List<Location> locations = (List<Location>) Util.deserializeObject(response);
+					String locationsText = "";
+					for(Location location : locations)
 					{
-						personsText += person + "\n";
+						locationsText += location + "\n";
 					}
-					homePage.getjTArea().setText(personsText);
+					homePage.getjTArea().setText(locationsText);
 				}
 				else
 				{
@@ -98,15 +99,15 @@ public class HomePageListener implements ActionListener
 
 		if(e.getSource() == homePage.getJbDelete())
 		{
-			String idInString = JOptionPane.showInputDialog(null, "Veuillez indiquez l'ID de la personne à supprimer :"
+			String idInString = JOptionPane.showInputDialog(null, "Veuillez indiquez l'ID de la location à supprimer :"
 					, "Suppression", JOptionPane.QUESTION_MESSAGE);
 
 			try {				
 				int id = Integer.parseInt(idInString);
-				Person person = new Person(id, "", null);
-				String serializedObject = Util.serializeObject(person, person.getClass(), "");
+				Location location = new Location(id, "", "", null, 0);
+				String serializedObject = Util.serializeObject(location, Location.class, "");
 				// FIXME personDAO.delete(id);
-				String jsonRequest = Util.serializeRequest(RequestType.DELETE, Person.class, serializedObject, null, null);
+				String jsonRequest = Util.serializeRequest(RequestType.DELETE, Location.class, serializedObject, null, null);
 				String response = MonitrackGUIFactory.getClientSocket().sendRequestToServer(jsonRequest);
 				log.info("Response from the server :\n" + Util.indentJsonOutput(response));
 				String error = Util.getJsonNodeValue(JSONField.ERROR_MESSAGE, response).trim();
@@ -124,18 +125,18 @@ public class HomePageListener implements ActionListener
 
 		if(e.getSource() == homePage.getJbUpdate())
 		{
-			String idInString = JOptionPane.showInputDialog(null, "Veuillez indiquer l'ID de la personne à modifier :"
+			String idInString = JOptionPane.showInputDialog(null, "Veuillez indiquer l'ID de la location à modifier :"
 					, "Suppression", JOptionPane.QUESTION_MESSAGE);
 
 			try {
 				int id = Integer.parseInt(idInString);
 
-				String newPersonName = JOptionPane.showInputDialog(null, "Veuillez entrer le nouveau nom de la personne :"
+				String newLocationName = JOptionPane.showInputDialog(null, "Veuillez entrer le nouveau nom de la location :"
 						, "Suppression", JOptionPane.QUESTION_MESSAGE);
 
-				Person personToUpdate = new Person(id, newPersonName, null);				
-				String serializedObject = Util.serializeObject(personToUpdate, personToUpdate.getClass(), "");
-				String jsonRequest = Util.serializeRequest(RequestType.UPDATE, Person.class, serializedObject, null, null);
+				Location locationToUpdate = new Location(id, newLocationName, "", null, 0);				
+				String serializedObject = Util.serializeObject(locationToUpdate, locationToUpdate.getClass(), "");
+				String jsonRequest = Util.serializeRequest(RequestType.UPDATE, Location.class, serializedObject, null, null);
 				String response = MonitrackGUIFactory.getClientSocket().sendRequestToServer(jsonRequest);
 				log.info("Response from the server :\n" + Util.indentJsonOutput(response));
 				String error = Util.getJsonNodeValue(JSONField.ERROR_MESSAGE, response).trim();

@@ -7,7 +7,7 @@ public class Location {
 	private String nameLocation;
 	private String center;
 	private Timestamp creationDate;
-	private int idSensor;
+	private int idSensor = 0;
 	
 	public Location(String nameLocation, String center) {
 		super();

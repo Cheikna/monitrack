@@ -14,7 +14,7 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 	
     private Vector<Connection> connections;
     private static final Logger log = LoggerFactory.getLogger(JDBCConnectionPool.class);
-    private final String URL             =  Util.getPropertyValueFromPropertiesFile("url_dev");
+    private final String URL             =  Util.getPropertyValueFromPropertiesFile("url_prod");
     private final String USER            =  Util.getPropertyValueFromPropertiesFile("username");
     private final String PSWD            =  Util.getPropertyValueFromPropertiesFile("password");
     private int numberOfConnections;
