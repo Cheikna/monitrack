@@ -24,6 +24,7 @@ public class Location {
 		this.creationDate = creationDate;
 		this.idSensor = idSensor;
 	}
+
 	
 	@com.fasterxml.jackson.annotation.JsonProperty("ID_LOCATION")
 	public int getIdLocation() {
@@ -81,6 +82,7 @@ public class Location {
 	}
 	
 	
+
 	
 	
 }
