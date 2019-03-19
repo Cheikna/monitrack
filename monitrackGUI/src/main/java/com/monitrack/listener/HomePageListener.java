@@ -101,9 +101,19 @@ public class HomePageListener implements ActionListener
 			String idInString = JOptionPane.showInputDialog(null, "Veuillez indiquez l'ID de la personne à supprimer :"
 					, "Suppression", JOptionPane.QUESTION_MESSAGE);
 
-			try {
+			try {				
 				int id = Integer.parseInt(idInString);
+				Person person = new Person(id, "", null);
+				String serializedObject = Util.serializeObject(person, person.getClass(), "");
 				// FIXME personDAO.delete(id);
+				String jsonRequest = Util.serializeRequest(RequestType.DELETE, Person.class, serializedObject, null, null);
+				String response = MonitrackGUIFactory.getClientSocket().sendRequestToServer(jsonRequest);
+				log.info("Response from the server :\n" + Util.indentJsonOutput(response));
+				String error = Util.getJsonNodeValue(JSONField.ERROR_MESSAGE, response).trim();
+				if(!error.equals(""))
+				{
+					JOptionPane.showMessageDialog(homePage, error, "Erreur", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 			catch(Exception exp)
 			{
@@ -114,7 +124,7 @@ public class HomePageListener implements ActionListener
 
 		if(e.getSource() == homePage.getJbUpdate())
 		{
-			String idInString = JOptionPane.showInputDialog(null, "Veuillez indiquez l'ID de la personne à modifier :"
+			String idInString = JOptionPane.showInputDialog(null, "Veuillez indiquer l'ID de la personne à modifier :"
 					, "Suppression", JOptionPane.QUESTION_MESSAGE);
 
 			try {
@@ -124,7 +134,15 @@ public class HomePageListener implements ActionListener
 						, "Suppression", JOptionPane.QUESTION_MESSAGE);
 
 				Person personToUpdate = new Person(id, newPersonName, null);				
-				// FIXME personDAO.update(personToUpdate);
+				String serializedObject = Util.serializeObject(personToUpdate, personToUpdate.getClass(), "");
+				String jsonRequest = Util.serializeRequest(RequestType.UPDATE, Person.class, serializedObject, null, null);
+				String response = MonitrackGUIFactory.getClientSocket().sendRequestToServer(jsonRequest);
+				log.info("Response from the server :\n" + Util.indentJsonOutput(response));
+				String error = Util.getJsonNodeValue(JSONField.ERROR_MESSAGE, response).trim();
+				if(!error.equals(""))
+				{
+					JOptionPane.showMessageDialog(homePage, error, "Erreur", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 			catch(Exception exp)
 			{

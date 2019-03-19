@@ -34,15 +34,15 @@ public class Server {
 		try{
 			serverSocket = new ServerSocket(PORT_NUMBER);
 			while(true)
-			{
-				/*
-				 * The socket is used to communicate with the client. Many clients will use the same port 
-				 * but different instance of socket.
-				 * While no client is not connected to this socket, the accept method of method will pause the program.
-				 */				
+			{							
 				if(DataSource.getRemaningConnections() > 0)
 				{
 					log.info("Waiting for a client connection...");
+					/*
+					 * The socket is used to communicate with the client. Many clients will use the same port 
+					 * but different instance of socket.
+					 * While no client is not connected to this socket, the accept method of method will pause the program.
+					 */	
 					Socket socket = serverSocket.accept();
 					connection = DataSource.getConnection();
 					System.out.println("A client is logged.");

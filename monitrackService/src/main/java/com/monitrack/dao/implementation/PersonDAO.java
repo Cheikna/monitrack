@@ -175,7 +175,7 @@ public class PersonDAO extends DAO<Person>{
 
 	@Override
 	public void delete(Person obj) {
-		// TODO Auto-generated method stub
+		delete(obj.getIdPerson());
 		
 	}
 

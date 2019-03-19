@@ -156,8 +156,7 @@ public class LocationDAO extends DAO<Location> {
 
 	@Override
 	public void delete(Location obj) {
-		// TODO Auto-generated method stub
-		
+		delete(obj.getIdLocation());		
 	}
 
 }
