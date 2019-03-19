@@ -12,7 +12,6 @@ public class MonitrackFrame extends JFrame
 {
 	private OpeningPage openingPage;
 	private String openingPageName;
-	
 	private HomePage homePage;
 	private String homePageName;
 	
