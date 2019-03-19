@@ -48,7 +48,7 @@ public class HomePageListener implements ActionListener
 					{
 						Person personCreated = (Person)Util.deserializeObject(response);
 						int id = personCreated.getIdPerson();
-						JOptionPane.showMessageDialog(homePage, "Personne créée", "La personne a été créée avec l'id " + id, JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(homePage, "La personne a été créée avec l'id " + id, "Personne créée", JOptionPane.INFORMATION_MESSAGE);
 
 					}
 					else
