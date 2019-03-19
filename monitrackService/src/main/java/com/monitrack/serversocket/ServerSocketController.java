@@ -45,9 +45,9 @@ public class ServerSocketController implements Runnable {
 	//For the JSON
 	//private ObjectMapper mapper;
 
-	public ServerSocketController(Socket socket) {
+	public ServerSocketController(Socket socket, Connection connection) {
 		this.socket = socket;
-		connection = DataSource.getConnection();
+		this.connection = connection;
 		//mapper = new ObjectMapper();
 	}
 
@@ -58,22 +58,13 @@ public class ServerSocketController implements Runnable {
 		{		
 			readFromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			writeToClient = new PrintWriter(socket.getOutputStream(), true);
-
-			if(connection == null)
-			{
-				String errorMessage = ConnectionState.NO_CONNECTION.getEnglishLabel();
-				writeToClient.println(errorMessage);
-				throw new NoAvailableConnectionException();
-			}
-			else
-			{
-				/*
-				 * If we do not write something to the client, he will wait until his timeout
-				 * and it will cause an exception while the client is connected
-				 */
-				writeToClient.println("");
-			}
-
+			
+			/*
+			 * If we do not write something to the client, he will wait until his timeout
+			 * and it will cause an exception while the client is connected
+			 */
+			writeToClient.println("");
+			
 			/* 
 			 * This loop will allow the server to maintain a link with the client 
 			 * unless the client stops the program

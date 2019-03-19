@@ -75,7 +75,7 @@ public class ClientSocket {
 		catch (Exception e) {
 			log.error("Disconnected from server - Client Error : " + e.getMessage());
 		}
-		return ConnectionState.FAIL;
+		return ConnectionState.NO_CONNECTION;
 	}
 
 	/**
