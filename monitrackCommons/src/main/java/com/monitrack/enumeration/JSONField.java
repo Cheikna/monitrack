@@ -21,7 +21,7 @@ public enum JSONField {
 	SERIALIZED_OBJECT("serialized_object"),
 	
 	//The message fields will allow us to know if the serialization or deserialization happened without failures
-	MESSAGE("message");
+	ERROR_MESSAGE("error_message");
 	
 	
 	private String label;

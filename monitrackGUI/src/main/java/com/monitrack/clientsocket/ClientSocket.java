@@ -1,22 +1,25 @@
 package com.monitrack.clientsocket;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.monitrack.listener.MonitrackListener;
-import com.monitrack.shared.MonitrackGUIAttribute;
+
+import com.monitrack.enumeration.ConnectionState;
+import com.monitrack.exception.NoAvailableConnectionException;
 import com.monitrack.util.Util;
 
 public class ClientSocket {
 
-	private final Logger log = LoggerFactory.getLogger(getClass());
+	private static final Logger log = LoggerFactory.getLogger(ClientSocket.class);
 	private final String SERVER_IP = Util.getPropertyValueFromPropertiesFile("server_ip");
 	private final int PORT_NUMBER = Integer.parseInt(Util.getPropertyValueFromPropertiesFile("server_port_number"));
-	private boolean isConnectionPossible = false;
+	private BufferedReader readFromServer;
+	private PrintWriter writeToServer;
 
 	/**
 	 * Maximum delay of response from the server in milliseconds.
@@ -27,8 +30,15 @@ public class ClientSocket {
 	private Socket socket;
 
 	public ClientSocket() {
+
+	}
+
+	public ConnectionState start()
+	{
 		try 
 		{
+			log.info("Connection to the server " + SERVER_IP + ":" + PORT_NUMBER + " ...");
+
 			// Connection to a socket
 			socket = new Socket(SERVER_IP, PORT_NUMBER);
 
@@ -39,45 +49,70 @@ public class ClientSocket {
 			 */
 			socket.setSoTimeout(TIMEOUT);
 
-			isConnectionPossible = true;
+			readFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			writeToServer = new PrintWriter(socket.getOutputStream(), true);		
+			
+			// Checks if we can reach the server and if it did not send an error message
+			String error = readFromServer.readLine();
+			if(error.equalsIgnoreCase(ConnectionState.NO_CONNECTION.getEnglishLabel()))
+			{
+				throw new NoAvailableConnectionException();
+			}
+			
+			log.info("Connected to the server");
+			
+			return ConnectionState.SUCCESS;
+		}
+		catch (NoAvailableConnectionException e) 
+		{
+			log.error("Disconnected from server - Client Error : " + e.getMessage());
+			return ConnectionState.NO_CONNECTION;
 		} 
 		catch (SocketTimeoutException e) 
 		{
 			log.error("The socket timed out : " + e.getMessage() + ".\nThe server cannot  be reach and cannot response to your last request !");
 		}
 		catch (Exception e) {
-			log.error("Client Error : " + e.getMessage());
+			log.error("Disconnected from server - Client Error : " + e.getMessage());
 		}
+		return ConnectionState.FAIL;
 	}
-	
-	public void startCommunicationWithServer()
+
+	/**
+	 * 
+	 * @param requestToSendToServer : the request to send to the server
+	 * @return the response from the server
+	 * @throws IOException 
+	 * @throws NoAvailableConnectionException 
+	 */
+	public String sendRequestToServer(String requestToSendToServer) throws IOException, NoAvailableConnectionException
 	{
-		try 
-		{
-			if(!isConnectionPossible)
-				throw new Exception("Cannot reach the server !");
-			
-			BufferedReader readFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			PrintWriter writeToServer = new PrintWriter(socket.getOutputStream(), true);
+		String responseFromServer = "";
+		
+		log.info("Request sent to the server :\n" + Util.indentJsonOutput(requestToSendToServer));
+		
+		// Sends the request to the server
+		writeToServer.println(requestToSendToServer);
 
-			String requestToSendToServer;
-			String responseFromServer;
-			
-			do {
-				requestToSendToServer = ""; //FIXME
-				writeToServer.println(requestToSendToServer);
-				
-				responseFromServer = readFromServer.readLine();
-				// FIXME System.out.println(responseFromServer);
-			}
-			while(!MonitrackGUIAttribute.isWindowClosing());		
+		// Receives the response from the server
+		responseFromServer = readFromServer.readLine();
+		
+		/*FIXME
+		if(responseFromServer.equalsIgnoreCase(ConnectionState.NO_CONNECTION.getEnglishLabel()))
+			throw new NoAvailableConnectionException();*/
 
+		return responseFromServer;
+	}
+
+	public void exit()
+	{
+		try {
+			readFromServer.close();
+			writeToServer.close();
 			socket.shutdownOutput();
-			
-		} 
-		catch (Exception e) 
-		{
-			log.error("There was a problem during the communication with the server !\n" + e.getMessage());
+			log.info("The communication with the server is closed");
+		} catch (IOException e) {
+			log.error(e.getMessage());
 		}
 	}
 

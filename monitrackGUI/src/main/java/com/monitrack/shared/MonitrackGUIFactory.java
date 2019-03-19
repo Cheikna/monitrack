@@ -1,22 +1,32 @@
 package com.monitrack.shared;
 
-public class MonitrackGUIAttribute {
+import com.monitrack.clientsocket.ClientSocket;
+import com.monitrack.enumeration.ConnectionState;
 
-	private static boolean isWindowClosing = false;
+public class MonitrackGUIFactory {
+
+
+	//Enables the communication with the server
+	private static ClientSocket clientSocket;
 
 	/**
-	 * @return the isWindowClosing
+	 * Initializes the socket
 	 */
-	public static boolean isWindowClosing() {
-		return isWindowClosing;
+	public static ConnectionState initializeSocket()
+	{
+		clientSocket = new ClientSocket();
+		ConnectionState socketState = clientSocket.start();
+		return socketState;
 	}
 
 	/**
-	 * @param isWindowClosing the isWindowClosing to set
+	 * @return the clientSocket
 	 */
-	public static void setWindowClosing(boolean isWindowClosing) {
-		MonitrackGUIAttribute.isWindowClosing = isWindowClosing;
+	public static ClientSocket getClientSocket() {
+		return clientSocket;
 	}
+	
+	
 	
 	
 

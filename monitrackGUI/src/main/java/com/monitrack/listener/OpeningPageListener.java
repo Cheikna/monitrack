@@ -31,13 +31,17 @@ public class OpeningPageListener implements ActionListener {
 			if(clickedButton == openingPage.getAccessToServerButton())
 			{				
 				openingPage.getConnectionStateLabel().setText(ConnectionState.TRY.getFrenchLabel());
-				JOptionPane.showMessageDialog(null, ConnectionState.TRY.getFrenchLabel(), ConnectionState.TRY.getFrenchLabel(),JOptionPane.INFORMATION_MESSAGE);
+				//JOptionPane.showMessageDialog(null, ConnectionState.TRY.getFrenchLabel(), ConnectionState.TRY.getFrenchLabel(),JOptionPane.INFORMATION_MESSAGE);
 				ConnectionState state = MonitrackGUIFactory.initializeSocket();
 				openingPage.getConnectionStateLabel().setText("");
 				switch(state)
 				{					
 					case FAIL:
-						JOptionPane.showMessageDialog(null, ConnectionState.FAIL.getFrenchLabel(), ConnectionState.FAIL.getFrenchLabel(),JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, ConnectionState.FAIL.getFrenchLabel(), ConnectionState.FAIL.getFrenchLabel(),JOptionPane.ERROR_MESSAGE);
+						break;	
+						
+					case NO_CONNECTION:
+						JOptionPane.showMessageDialog(null, ConnectionState.NO_CONNECTION.getFrenchLabel(), ConnectionState.NO_CONNECTION.getFrenchLabel(),JOptionPane.ERROR_MESSAGE);
 						break;
 	
 					case SUCCESS:

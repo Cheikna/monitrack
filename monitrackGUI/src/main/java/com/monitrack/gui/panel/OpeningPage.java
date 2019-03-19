@@ -65,7 +65,7 @@ public class OpeningPage extends JPanel {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
 		g2.drawImage(projectNameImage, 90, 20, null);
-		g2.drawImage(groupLogoImage, logoX, logoY, null);
+		//g2.drawImage(groupLogoImage, logoX, logoY, null);
 		this.revalidate();
 	}
 

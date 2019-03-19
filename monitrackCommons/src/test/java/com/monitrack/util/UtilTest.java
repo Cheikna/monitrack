@@ -5,12 +5,10 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.lang3.math.NumberUtils;
+import java.util.function.Consumer;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.monitrack.entity.Person;
@@ -50,9 +48,10 @@ public class UtilTest {
 			values.add("1");
 			values.add("Cheikna");			
 			String jsonRequest = Util.serializeRequest(RequestType.SELECT, p.getClass(), objectSerialized, fields, values);
-			System.out.println(Util.indentJsonOutput(jsonRequest));
+			System.out.println("JSON Indent 1 \n" + Util.indentJsonOutput(jsonRequest));
 			// Converts the String into a JSON Node
-			JsonNode jsonNode = mapper.readTree(jsonRequest);			
+			JsonNode jsonNode = mapper.readTree(jsonRequest);
+			//Person per = (Person) Util.deserializeObject(jsonRequest);
 			assertEquals("SELECT", jsonNode.get(JSONField.REQUEST_INFO.getLabel()).get(JSONField.REQUEST_TYPE.getLabel()).textValue());
 		} catch (Exception e) {
 			log.error(e.getMessage());
@@ -107,11 +106,31 @@ public class UtilTest {
 	@Test
 	public void testEntityDeserialization()
 	{
+		log.info("entity deserialization :");
 		Person p = new Person("climg");
 		String json = Util.serializeObject(p, p.getClass(), "");
 		Person p2 = (Person)Util.deserializeObject(json);
+		log.info("Json string : " + json);
 		assertEquals(p, p2);
-		log.info("Json : " + json);
+	}
+
+	@Test
+	public void testEntityDeserializationFromRequest() throws IOException
+	{
+		ObjectMapper mapper = new ObjectMapper();
+
+		Consumer<JsonNode> data = (JsonNode node) -> System.out.println("node => " + node.asText());
+		Person p =new Person("climg");
+		String objectSerialized = Util.serializeObject(p, p.getClass(), null);
+		String jsonRequest = Util.serializeRequest(RequestType.SELECT, p.getClass(), objectSerialized, null, null);
+		System.out.println("JSON Indented request : " + Util.indentJsonOutput(jsonRequest));
+		
+		JsonNode rootNode = mapper.readTree(jsonRequest);
+		JsonNode objectNode = rootNode.get(JSONField.SERIALIZED_OBJECT.getLabel()).get(JSONField.DATAS.getLabel());
+		System.out.println("objectNode : " + objectNode.toString());
+		Person pers = (Person) Util.deserializeObject(rootNode.get(JSONField.SERIALIZED_OBJECT.getLabel()).toString());
+		System.out.println("Person : " + pers.toString());
+		
 	}
 	
 	
@@ -157,16 +176,7 @@ public class UtilTest {
 		String message = "my own message";
 		String json = Util.serializeObject(null	, null, message);
 		System.err.println(json);
-		assertEquals(message, Util.getJsonNodeValue(JSONField.MESSAGE, json));
-	}
-	
-	@Test
-	public void testIsNumeric()
-	{
-		assertEquals(false, NumberUtils.isParsable("rzqr"));
-		assertEquals(true, NumberUtils.isParsable("1"));
-		assertEquals(true, NumberUtils.isParsable("-1"));
-		assertEquals(true, NumberUtils.isParsable("-1.32"));
+		assertEquals(message, Util.getJsonNodeValue(JSONField.ERROR_MESSAGE, json));
 	}
 
 }

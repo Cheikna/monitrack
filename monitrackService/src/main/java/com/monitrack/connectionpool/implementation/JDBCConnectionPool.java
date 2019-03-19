@@ -6,7 +6,8 @@ import java.sql.SQLException;
 import java.util.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.monitrack.connectionpool.interfaces.IJDBCConnectionPool;
+
+import com.monitrack.connectionpool.abstracts.IJDBCConnectionPool;
 import com.monitrack.util.Util;
 
 public class JDBCConnectionPool implements IJDBCConnectionPool {

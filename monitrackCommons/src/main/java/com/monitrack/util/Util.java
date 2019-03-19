@@ -98,7 +98,7 @@ public class Util {
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode node = mapper.createObjectNode();
 		message = (message == null) ? "" : message;
-		node.put(JSONField.MESSAGE.getLabel(), message);		
+		node.put(JSONField.ERROR_MESSAGE.getLabel(), message);		
 
 		try {
 
@@ -294,6 +294,11 @@ public class Util {
 		{
 			return result;
 		}
+	}
+	
+	public static boolean hasSerializedObjectError(String json)
+	{
+		return !Util.getJsonNodeValue(JSONField.ERROR_MESSAGE, json).trim().equals("");
 	}
 
 

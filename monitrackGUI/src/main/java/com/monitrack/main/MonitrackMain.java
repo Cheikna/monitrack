@@ -1,18 +1,13 @@
 package com.monitrack.main;
 
-import java.util.Scanner;
-
 import javax.swing.SwingUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.monitrack.clientsocket.ClientSocket;
 import com.monitrack.gui.frame.MonitrackFrame;
-import com.monitrack.shared.MonitrackGUIFactory;
 
 public class MonitrackMain {
 
-	private static Logger log = LoggerFactory.getLogger(MonitrackMain.class);
+	private static  final Logger log = LoggerFactory.getLogger(MonitrackMain.class);
 
 	public static void main(String[] args) {		
 		/*

@@ -5,13 +5,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.awt.event.WindowAdapter;
 import com.monitrack.gui.frame.MonitrackFrame;
-import com.monitrack.shared.MonitrackGUIAttribute;
+import com.monitrack.shared.MonitrackGUIFactory;
 
 public class MonitrackListener extends WindowAdapter {
-	
-	private static Logger log = LoggerFactory.getLogger(MonitrackListener.class);
-			
-	private MonitrackFrame monitrackFrame;
+
+	private static final Logger log = LoggerFactory.getLogger(MonitrackListener.class);
+
+	private MonitrackFrame monitrackFrame;	
 
 	/**
 	 * 
@@ -23,9 +23,18 @@ public class MonitrackListener extends WindowAdapter {
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		MonitrackGUIAttribute.setWindowClosing(true);
-		log.info("The application is closed");
-		System.exit(0);		
+		exit();
 	}	
+
+	private void exit()
+	{
+		log.info("The application is closed");
+		try {
+			MonitrackGUIFactory.getClientSocket().exit();
+		} catch (Exception e) {
+			log.error("An error occured during the closure of the socket :\n" + e.getMessage());
+		}
+		System.exit(0);		
+	}
 
 }

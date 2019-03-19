@@ -25,6 +25,8 @@ public class MonitrackFrame extends JFrame
 	{
 		cardLayout = new CardLayout();
 		setLayout(cardLayout);
+		this.setSize(800, 450);
+		
 		openingPage = new OpeningPage(this);
 		homePage = new HomePage();		
 
@@ -38,7 +40,6 @@ public class MonitrackFrame extends JFrame
 		
 		this.setTitle("MONITRACK");
 		cardLayout.show(this.getContentPane(), openingPageName);
-		this.setSize(800, 450);
 		setLocationRelativeTo(null);
 		this.addWindowListener(listener);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);

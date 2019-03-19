@@ -1,4 +1,4 @@
-package com.monitrack.dao.interfaces;
+package com.monitrack.dao.abstracts;
 
 import java.util.List;
 
