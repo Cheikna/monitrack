@@ -35,18 +35,16 @@ public class Server {
 			serverSocket = new ServerSocket(PORT_NUMBER);
 			while(true)
 			{
-				log.info("Waiting for a client connection...");
 				/*
 				 * The socket is used to communicate with the client. Many clients will use the same port 
 				 * but different instance of socket.
 				 * While no client is not connected to this socket, the accept method of method will pause the program.
-				 */
+				 */				
 				if(DataSource.getRemaningConnections() > 0)
-					connection = DataSource.getConnection();
-				
-				if(connection != null)
 				{
+					log.info("Waiting for a client connection...");
 					Socket socket = serverSocket.accept();
+					connection = DataSource.getConnection();
 					System.out.println("A client is logged.");
 					/*
 					 * After a connection from a client to a server, the client will be handle on his own Thread
@@ -54,10 +52,6 @@ public class Server {
 					ServerSocketController serverSocketController  = new ServerSocketController(socket, connection);
 					Thread clientThread = new Thread(serverSocketController);
 					clientThread.start();
-				}
-				else
-				{
-					
 				}
 
 			}
