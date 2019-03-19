@@ -7,21 +7,22 @@ import java.util.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.monitrack.connectionpool.interfaces.IJDBCConnectionPool;
-import com.monitrack.shared.MonitrackServiceAttribute;
 import com.monitrack.util.Util;
 
 public class JDBCConnectionPool implements IJDBCConnectionPool {
 	
     private Vector<Connection> connections;
-    private final Logger log = LoggerFactory.getLogger(JDBCConnectionPool.class);
-    private static final String URL             =  Util.getPropertyValueFromPropertiesFile("url_dev");
-    private static final String USER            =  Util.getPropertyValueFromPropertiesFile("username");
-    private static final String PSWD            =  Util.getPropertyValueFromPropertiesFile("password");
+    private static final Logger log = LoggerFactory.getLogger(JDBCConnectionPool.class);
+    private final String URL             =  Util.getPropertyValueFromPropertiesFile("url_dev");
+    private final String USER            =  Util.getPropertyValueFromPropertiesFile("username");
+    private final String PSWD            =  Util.getPropertyValueFromPropertiesFile("password");
     private int numberOfConnections;
+    private int numberOfConnectionsCreated;
 	
 	public JDBCConnectionPool() {
-		log.info("Database URL : " + URL);
 		connections = new Vector<Connection>();
+		numberOfConnectionsCreated = 0;
+		log.info("Database URL : " + URL);
 		try
 		{
 			numberOfConnections = Integer.parseInt(Util.getPropertyValueFromPropertiesFile("number_of_connections"));
@@ -32,7 +33,7 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 			numberOfConnections = 10;
 		}
 
-		log.info(numberOfConnections + " connection(s) will be put inside the connection pool.");
+		log.info(numberOfConnections + " connection(s) should be put inside the connection pool.");
 	} 
 	
 
@@ -107,6 +108,7 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(URL, USER, PSWD);
+            numberOfConnectionsCreated++;
         } catch (SQLException e) {
             log.error("A SQL Exception has been raised during the creation of a connection :\n" + e.getMessage());
         }
@@ -119,11 +121,10 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 	
 	private void displayConnectionPoolState()
 	{
-		String creation  = "- Connection(s) created   : " + numberOfConnections;
-		String connected = "- Connected client(s)     : " + MonitrackServiceAttribute.getNumberOfConnectedClients();
+		String creation  = "- Connection(s) created   : " + numberOfConnectionsCreated;
 		String remaining = "- REMAINING CONNECTION(S) : " + getRemaningNumberOfConnections();
-		log.info("Connection pool state :\n" + creation + "\n" + connected + "\n" + remaining + "\n");
-		log.info("---------------------------------");
+		String end 		 = "------------------------------------";
+		log.info("Connection pool state :\n" + creation + "\n" + remaining + "\n" + end + "\n");
 	}
 	
 	

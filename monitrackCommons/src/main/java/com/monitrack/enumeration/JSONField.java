@@ -18,7 +18,10 @@ public enum JSONField {
 	
 	REQUESTED_ENTITY("requested_entity"),
 	
-	SERIALIZED_OBJECT("serialized_object");
+	SERIALIZED_OBJECT("serialized_object"),
+	
+	//The message fields will allow us to know if the serialization or deserialization happened without failures
+	MESSAGE("message");
 	
 	
 	private String label;

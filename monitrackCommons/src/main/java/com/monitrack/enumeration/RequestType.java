@@ -8,7 +8,7 @@ public enum RequestType {
 	
 	public static RequestType getRequestType(String requestType)
 	{
-		RequestType[] values = values();
+		RequestType[] values = RequestType.values();
 		for(RequestType value : values)
 		{
 			if(value.toString().equalsIgnoreCase(requestType))

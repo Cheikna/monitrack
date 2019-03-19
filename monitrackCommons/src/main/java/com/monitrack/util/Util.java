@@ -1,26 +1,31 @@
 package com.monitrack.util;
 
+import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
 import javax.management.InvalidAttributeValueException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.base.GeneratorBase;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.monitrack.entity.Person;
+import com.monitrack.enumeration.JSONField;
+import com.monitrack.enumeration.RequestType;
 
 public class Util {	
 
-	private static Logger log = LoggerFactory.getLogger(Util.class);
-	
+	private static final Logger log = LoggerFactory.getLogger(Util.class);
+
 	/**
 	 * returns the value of the property which is given in the parameter
 	 * 
@@ -46,7 +51,7 @@ public class Util {
 		}
 		return propertyValue;
 	}	
-	
+
 	/**
 	 * Capitalize a word by putting the first character into upper case and the remaining ones into lowercase
 	 * 
@@ -59,78 +64,83 @@ public class Util {
 		String stringCapitalized = "";
 		stringToCapitalize = stringToCapitalize.trim().toUpperCase();
 		int stringLength = stringToCapitalize.length();
-		
+
 		if(stringLength > 0)
 		{
 			stringCapitalized += stringToCapitalize.charAt(0);
-			
+
 			if(stringLength > 1)
 			{				
 				stringCapitalized += stringToCapitalize.substring(1, stringLength).toLowerCase();
 			}
 		}
-		
+
 		return stringCapitalized;
 	}
-	
+
 	/**
 	 * Converts a JAVA Object into a JSON format String
 	 * 
 	 * @param object :
-	 * 			object to convert into JSON
+	 * 			object to convert into JSON. It can be a simple entity or a list of entity
 	 * @param objectClass :
-	 * 			the class of the object to serialize
+	 * 			the class of the object to serialize. We can not use the object parameter to determine
+	 * 			this parameter because the object parameter can be null.
 	 * @return
 	 * 			the JSON String representing the JAVA Object
 	 * @throws InvalidAttributeValueException
 	 */
-	public static String serializeObject(Object object, Class objectClass) throws InvalidAttributeValueException
-	{
+	@SuppressWarnings("rawtypes")
+	public static String serializeObject(Object object, Class objectClass, String message)
+	{		
+		String objectToJSON = null;
 
-		if(object != null)
-		{
-			ObjectMapper mapper = new ObjectMapper();
-			// Allows us to have an indented JSON on the output and not a single line
-		    mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
-			ObjectNode node = mapper.createObjectNode();		
-			String objectToJSON = null;
-			String className = objectClass.getName();
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode node = mapper.createObjectNode();
+		message = (message == null) ? "" : message;
+		node.put(JSONField.MESSAGE.getLabel(), message);		
 
-			try {
+		try {
 
+			if(object != null && objectClass != null)
+			{
 				/*
 				 * The object can be a list when we are retrieving all of the datas of a table.
 				 * This usually happens because of the 'findAll()' method
 				 */
 				if(object instanceof List)
 				{
-					node.put("is_list_of_entities", true);				
+					node.put(JSONField.IS_LIST.getLabel(), true);				
 				}
 				else
 				{
-					node.put("is_list_of_entities", false);
+					node.put(JSONField.IS_LIST.getLabel(), false);
 				}
-				
+
+				String className = objectClass.getName();
 				/*
 				 * We add the entity name in order to make the deserialization easier
 				 * because we will have one deserialization process for all of the entities
 				 */
-				node.put("entity", className);
-				node.putPOJO("datas", object);
-				objectToJSON = mapper.writeValueAsString(node);
-				log.info("Serialization into JSON succedeed :\n" + objectToJSON);
-			} catch (Exception e) {
-				log.error("Serialization into JSON failed : " + e.getStackTrace());
-			}			
+				node.put(JSONField.ENTITY.getLabel(), className);
+				node.putPOJO(JSONField.DATAS.getLabel(), object);
+				log.info("Serialization into JSON succedeed");
+			}
+			else
+			{
+				log.error("The object you want to serialize is null. Consequently, the serialization can not happen !");				
+			}
 
-			return objectToJSON;
-		}
-		else
+			objectToJSON = mapper.writeValueAsString(node);
+		} 
+		catch (Exception e) 
 		{
-			throw new InvalidAttributeValueException("The object you want to serialize is null. Consequently, the serialization can not happen !");
-		}
+			log.error("Serialization into JSON failed : " + e.getStackTrace());
+		}			
+
+		return objectToJSON;
 	}
-	
+
 	/**
 	 * Converts a JSON String into a JAVA Object
 	 * @param objectInJSONString :
@@ -141,48 +151,152 @@ public class Util {
 	public static Object deserializeObject(String objectInJSONString) {
 
 		Object jsonConvertedToObject = null;
-	    ObjectMapper mapper = new ObjectMapper();
-	    
-		try {
-			// Converts the String into a JSON Node
-		    JsonNode objectFromStringNode = mapper.readTree(objectInJSONString);
-		    // JSON Node containing the name of the entity
-		    JsonNode entityNode = objectFromStringNode.get("entity");
-		    //JSON Node containing the datas of the entity
-		    JsonNode datasNode = objectFromStringNode.get("datas");
-		    // Node which allows us to know if we have a list of entities (because of the method 'findAll()') or only one
-		    JsonNode isListNode = objectFromStringNode.get("is_list_of_entities");
-		    
-		    // Gets the name of the entity we want to deserialize
-			String className = entityNode.textValue();
-			
-			boolean isListOfEntities = isListNode.booleanValue();
+		ObjectMapper mapper = new ObjectMapper();
 
-			if(className.equalsIgnoreCase(Person.class.getName()))
-			{
-				if(isListOfEntities)
-				{
-					// java.util.LinkedHashMap cannot be cast to com.monitrack.entity.Person
-					jsonConvertedToObject = mapper.readValue(datasNode.toString(), new TypeReference<List<Person>>(){});
-				}
-				else
-				{
-					jsonConvertedToObject = mapper.readValue(datasNode.toString(), Person.class);
-				}
-			}
+		try {
+
+			if(objectInJSONString == null || objectInJSONString.trim().length() == 0)
+				throw new Exception("There is no object to deserialize !");
+
+			// Converts the String into a JSON Node
+			JsonNode objectFromStringNode = mapper.readTree(objectInJSONString);
+			// JSON Node containing the name of the entity
+			JsonNode entityNode = objectFromStringNode.get(JSONField.ENTITY.getLabel());
+			//JSON Node containing the datas of the entity
+			JsonNode datasNode = objectFromStringNode.get(JSONField.DATAS.getLabel());
+			// Node which allows us to know if we have a list of entities (because of the method 'findAll()') or only one
+			JsonNode isListNode = objectFromStringNode.get(JSONField.IS_LIST.getLabel());
+
+			// Gets the name of the entity we want to deserialize
+			String className = entityNode.textValue();
+
+			Class<?> objectClass = Class.forName(className);
+
+			boolean isListOfEntities = isListNode.booleanValue();			
+
+			if(isListOfEntities)
+				jsonConvertedToObject = mapper.readValue(datasNode.toString(), mapper.getTypeFactory().constructCollectionType(List.class, objectClass));
 			else
-			{
-				throw new Exception("The class '" + className + "' does not exist in the project ! The deserialization cannot happen.");
-			}			
-			
+				jsonConvertedToObject = mapper.readValue(datasNode.toString(), objectClass);
+
 			log.info("Deserialization into Java Object succedeed");
-			
+
 		} catch (Exception e) {
 			log.error("Deserialization into Java Object failed : " + e.getMessage());
 			e.printStackTrace();
 		} 
-		
+
 		return jsonConvertedToObject;		
 	}
+
+	/**
+	 * 
+	 * @param serializedObject
+	 * @param entityClass : allows us to know which table is concerned
+	 * @param requestedFields: especially used for select queries
+	 * @param requestedValues: especially used for select queries
+	 * @return
+	 * @throws IOException
+	 */
+	@SuppressWarnings("rawtypes")
+	public static String serializeRequest(RequestType requestType, Class entityClass,String serializedObject, 
+			List<String> requestedFields, List<String> requiredValues)
+	{
+		String objectToJSON = null;
+
+		try {
+			if(requestType == null || entityClass == null)
+				throw new IOException("The request type and the entity class cannot be null !");
+
+			objectToJSON = null;
+
+			ObjectMapper mapper = new ObjectMapper();
+
+			ObjectNode rootNode = mapper.createObjectNode();
+			ObjectNode requestNode = mapper.createObjectNode();
+
+			if(serializedObject == null)
+				serializedObject = "";
+			JsonNode serializedObjectNode = mapper.readTree(serializedObject);
+
+			requestNode.put(JSONField.REQUEST_TYPE.getLabel(), requestType.toString());		
+			requestNode.put(JSONField.REQUESTED_ENTITY.getLabel(), entityClass.getName());	
+
+			if(requestedFields != null && requiredValues != null)
+			{
+				if((requestedFields.size() != requiredValues.size()))
+				{
+					requestedFields = null;
+					requiredValues = null;
+					log.error("An error occured during the request serialization : the sizes of the fields list and the required values list are different ! Consequently, they will be set to null.");
+				}
+			}
+
+
+			/**
+			 * Those list must be added to the final json String, in order to avoid some deserialization issue on the server's side
+			 */
+			requestNode.putPOJO(JSONField.REQUESTED_FIELDS.getLabel(), requestedFields);
+			requestNode.putPOJO(JSONField.REQUIRED_VALUES.getLabel(), requiredValues);
+
+			rootNode.putPOJO(JSONField.REQUEST_INFO.getLabel(), requestNode);
+
+			rootNode.putPOJO(JSONField.SERIALIZED_OBJECT.getLabel(), serializedObjectNode);
+
+			objectToJSON = mapper.writeValueAsString(rootNode);
+		} catch (IOException e) {
+			log.error("An error occurred during the serialization of the request :\n" + e.getMessage());
+		}
+
+		return objectToJSON;
+	}	
+
+	/**
+	 * Indents a jsonString in order to be more readable
+	 * @param mapper
+	 * @param jsonString
+	 * @return the jsonString indented
+	 */
+	public static String indentJsonOutput(String jsonString)
+	{
+		ObjectMapper mapper = new ObjectMapper();
+		// Allows us to have an indented JSON on the output and not a single line
+		mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+		try 
+		{
+			JsonNode jsonNode = mapper.readTree(jsonString);
+			return mapper.writeValueAsString(jsonNode);
+		} 
+		catch (IOException e) 
+		{
+			log.error(e.getMessage());
+			return "";
+		}
+	}
+
+	@SuppressWarnings("finally")
+	public static String getJsonNodeValue(JSONField field, String json)
+	{
+		String result = "";		
+
+		try 
+		{
+			ObjectMapper mapper = new ObjectMapper();
+			JsonNode objectFromStringNode = mapper.readTree(json);
+			JsonNode dataNode = objectFromStringNode.get(field.getLabel());
+			result = dataNode.textValue();			
+		} 
+		catch (IOException e) 
+		{
+			log.error(e.getMessage());
+		}
+		finally
+		{
+			return result;
+		}
+	}
+
+
+
 
 }
