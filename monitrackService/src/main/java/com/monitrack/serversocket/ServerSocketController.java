@@ -169,16 +169,17 @@ public class ServerSocketController implements Runnable {
 		return result;		
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private String executeClientInsertRequest(Class<?> entityClass, JsonNode requestNode, JsonNode serializedObjectNode) throws UnknownClassException
 	{
 		Object deserializedObject = Util.deserializeObject(serializedObjectNode.toString());
 		DAO dao = DAOFactory.getDAO(connection, entityClass);
-		Person obj = (Person) dao.create(entityClass.cast(deserializedObject));
+		Object obj = dao.create(entityClass.cast(deserializedObject));
 		String result = Util.serializeObject(entityClass.cast(obj), entityClass, "");
 		return result;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private String executeClientUpdateRequest(Class<?> entityClass, JsonNode requestNode, JsonNode dataNode) throws UnknownClassException
 	{
 		Object deserializedObject = Util.deserializeObject(dataNode.toString());		
