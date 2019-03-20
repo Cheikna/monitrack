@@ -5,9 +5,9 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <modules>
-  	<module>monitrackGUI</module>
-  	<module>monitrackService</module>
-  	<module>monitrackCommons</module>
+  	<module>monitrack-gui</module>
+  	<module>monitrack-service</module>
+  	<module>monitrack-commons</module>
   </modules>
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>

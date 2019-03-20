@@ -1,98 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.2.3" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
   realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <interface id="1" language="java" name="com.monitrack.connectionpool.abstracts.IJDBCConnectionPool" 
-    project="monitrackService" 
-    file="/monitrackService/src/main/java/com/monitrack/connectionpool/abstracts/IJDBCConnectionPool.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="172" y="152"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </interface>  
-  <class id="2" language="java" name="com.monitrack.connectionpool.implementation.DataSource" project="monitrackService" 
-    file="/monitrackService/src/main/java/com/monitrack/connectionpool/implementation/DataSource.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="943" y="152"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="3" language="java" name="com.monitrack.connectionpool.implementation.JDBCConnectionPool" 
-    project="monitrackService" 
-    file="/monitrackService/src/main/java/com/monitrack/connectionpool/implementation/JDBCConnectionPool.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="358" width="267" x="370" y="-27"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="4" language="java" name="com.monitrack.dao.abstracts.DAO" project="monitrackService" 
-    file="/monitrackService/src/main/java/com/monitrack/dao/abstracts/DAO.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="177" width="250" x="383" y="368"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="5" language="java" name="com.monitrack.dao.implementation.DAOFactory" project="monitrackService" 
-    file="/monitrackService/src/main/java/com/monitrack/dao/implementation/DAOFactory.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="106" width="214" x="62" y="394"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="6" language="java" name="com.monitrack.dao.implementation.LocationDAO" project="monitrackService" 
-    file="/monitrackService/src/main/java/com/monitrack/dao/implementation/LocationDAO.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="736" y="751"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="7" language="java" name="com.monitrack.dao.implementation.PersonDAO" project="monitrackService" 
-    file="/monitrackService/src/main/java/com/monitrack/dao/implementation/PersonDAO.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="395" y="742"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="8" language="java" name="com.monitrack.main.MonitrackServiceMain" project="monitrackService" 
-    file="/monitrackService/src/main/java/com/monitrack/main/MonitrackServiceMain.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1270" y="100"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="9" language="java" name="com.monitrack.serversocket.Server" project="monitrackService" 
-    file="/monitrackService/src/main/java/com/monitrack/serversocket/Server.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1562" y="784"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="10" language="java" name="com.monitrack.serversocket.ServerSocketController" project="monitrackService" 
-    file="/monitrackService/src/main/java/com/monitrack/serversocket/ServerSocketController.java" binary="false" 
+  <class id="1" language="java" name="com.monitrack.serversocket.ServerSocketController" project="monitrack-service" 
+    file="/monitrack-service/src/main/java/com/monitrack/serversocket/ServerSocketController.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1192" y="784"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -101,8 +11,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="com.monitrack.shared.MonitrackServiceFactory" project="monitrackService" 
-    file="/monitrackService/src/main/java/com/monitrack/shared/MonitrackServiceFactory.java" binary="false" 
+  <class id="2" language="java" name="com.monitrack.shared.MonitrackServiceFactory" project="monitrack-service" 
+    file="/monitrack-service/src/main/java/com/monitrack/shared/MonitrackServiceFactory.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1250" y="296"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -111,7 +21,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <interface id="12" language="java" name="java.lang.Runnable" project="programmationPourLaCommunication" 
+  <interface id="3" language="java" name="java.lang.Runnable" project="programmationPourLaCommunication" 
     file="C:/Program Files (x86)/Java/jdk1.8.0_161/jre/lib/rt.jar" binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1189" y="500"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -120,34 +30,10 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <realization id="13">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="1"/>  
+  <realization id="4">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="3"/>  
   </realization>  
-  <realization id="14">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="12"/>  
-  </realization>  
-  <association id="15">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="16" name="connectionPool">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="17" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="18">    
-    <end type="SOURCE" refId="7"/>    
-    <end type="TARGET" refId="4"/>  
-  </generalization>  
-  <generalization id="19">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="4"/>  
-  </generalization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    
