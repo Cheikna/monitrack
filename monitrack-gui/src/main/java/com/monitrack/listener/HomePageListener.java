@@ -14,7 +14,7 @@ import com.monitrack.enumeration.RequestType;
 import com.monitrack.exception.NoAvailableConnectionException;
 import com.monitrack.gui.panel.HomePage;
 import com.monitrack.shared.MonitrackGUIFactory;
-import com.monitrack.util.Util;
+import com.monitrack.util.JsonUtil;
 
 public class HomePageListener implements ActionListener
 {
@@ -26,6 +26,7 @@ public class HomePageListener implements ActionListener
 	{
 		this.homePage = homePage;
 	}
+	@SuppressWarnings("unchecked")
 	public void actionPerformed(ActionEvent e)
 	{
 		if(e.getSource()== homePage.getJbValidate())
@@ -40,14 +41,14 @@ public class HomePageListener implements ActionListener
 				else
 				{
 					Location location = new Location(name, "");
-					String serializedObject = Util.serializeObject(location, location.getClass(), "");
-					String jsonRequest = Util.serializeRequest(RequestType.INSERT, Location.class, serializedObject, null, null);
+					String serializedObject = JsonUtil.serializeObject(location, location.getClass(), "");
+					String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, Location.class, serializedObject, null, null);
 					String response = MonitrackGUIFactory.getClientSocket().sendRequestToServer(jsonRequest);
-					log.info("Response from the server :\n" + Util.indentJsonOutput(response));
-					String error = Util.getJsonNodeValue(JSONField.ERROR_MESSAGE, response).trim();
+					log.info("Response from the server :\n" + JsonUtil.indentJsonOutput(response));
+					String error = JsonUtil.getJsonNodeValue(JSONField.ERROR_MESSAGE, response).trim();
 					if(error.equals(""))
 					{
-						Location locationCreated = (Location)Util.deserializeObject(response);
+						Location locationCreated = (Location)JsonUtil.deserializeObject(response);
 						int id = locationCreated.getIdLocation();
 						JOptionPane.showMessageDialog(homePage, "La location a été créée avec l'id " + id, "Location créée", JOptionPane.INFORMATION_MESSAGE);
 
@@ -65,15 +66,15 @@ public class HomePageListener implements ActionListener
 		}
 		if(e.getSource()==homePage.getJbOverview())
 		{
-			String jsonRequest = Util.serializeRequest(RequestType.SELECT, Location.class, null, null, null);
+			String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Location.class, null, null, null);
 			try 
 			{
 				String response = MonitrackGUIFactory.getClientSocket().sendRequestToServer(jsonRequest);
-				log.info("Response from the server :\n" + Util.indentJsonOutput(response));
-				String error = Util.getJsonNodeValue(JSONField.ERROR_MESSAGE, response).trim();
+				log.info("Response from the server :\n" + JsonUtil.indentJsonOutput(response));
+				String error = JsonUtil.getJsonNodeValue(JSONField.ERROR_MESSAGE, response).trim();
 				if(error.equals(""))
 				{
-					List<Location> locations = (List<Location>) Util.deserializeObject(response);
+					List<Location> locations = (List<Location>) JsonUtil.deserializeObject(response);
 					String locationsText = "";
 					for(Location location : locations)
 					{
@@ -105,11 +106,11 @@ public class HomePageListener implements ActionListener
 			try {				
 				int id = Integer.parseInt(idInString);
 				Location location = new Location(id, "", "", null, 0);
-				String serializedObject = Util.serializeObject(location, Location.class, "");
-				String jsonRequest = Util.serializeRequest(RequestType.DELETE, Location.class, serializedObject, null, null);
+				String serializedObject = JsonUtil.serializeObject(location, Location.class, "");
+				String jsonRequest = JsonUtil.serializeRequest(RequestType.DELETE, Location.class, serializedObject, null, null);
 				String response = MonitrackGUIFactory.getClientSocket().sendRequestToServer(jsonRequest);
-				log.info("Response from the server :\n" + Util.indentJsonOutput(response));
-				String error = Util.getJsonNodeValue(JSONField.ERROR_MESSAGE, response).trim();
+				log.info("Response from the server :\n" + JsonUtil.indentJsonOutput(response));
+				String error = JsonUtil.getJsonNodeValue(JSONField.ERROR_MESSAGE, response).trim();
 				if(!error.equals(""))
 				{
 					JOptionPane.showMessageDialog(homePage, error, "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -134,11 +135,11 @@ public class HomePageListener implements ActionListener
 						, "Suppression", JOptionPane.QUESTION_MESSAGE);
 
 				Location locationToUpdate = new Location(id, newLocationName, "", null, 0);				
-				String serializedObject = Util.serializeObject(locationToUpdate, locationToUpdate.getClass(), "");
-				String jsonRequest = Util.serializeRequest(RequestType.UPDATE, Location.class, serializedObject, null, null);
+				String serializedObject = JsonUtil.serializeObject(locationToUpdate, locationToUpdate.getClass(), "");
+				String jsonRequest = JsonUtil.serializeRequest(RequestType.UPDATE, Location.class, serializedObject, null, null);
 				String response = MonitrackGUIFactory.getClientSocket().sendRequestToServer(jsonRequest);
-				log.info("Response from the server :\n" + Util.indentJsonOutput(response));
-				String error = Util.getJsonNodeValue(JSONField.ERROR_MESSAGE, response).trim();
+				log.info("Response from the server :\n" + JsonUtil.indentJsonOutput(response));
+				String error = JsonUtil.getJsonNodeValue(JSONField.ERROR_MESSAGE, response).trim();
 				if(!error.equals(""))
 				{
 					JOptionPane.showMessageDialog(homePage, error, "Erreur", JOptionPane.ERROR_MESSAGE);

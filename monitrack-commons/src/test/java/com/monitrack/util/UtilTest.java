@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,15 +39,15 @@ public class UtilTest {
 		
 		try {
 			Person p = new Person("Request");
-			String objectSerialized = Util.serializeObject(p, p.getClass(), "");
+			String objectSerialized = JsonUtil.serializeObject(p, p.getClass(), "");
 			List<String> fields = new ArrayList<>();
 			fields.add("id");
 			fields.add("name");	
 			List<String> values = new ArrayList<>();
 			values.add("1");
 			values.add("Cheikna");			
-			String jsonRequest = Util.serializeRequest(RequestType.SELECT, p.getClass(), objectSerialized, fields, values);
-			System.out.println("JSON Indent 1 \n" + Util.indentJsonOutput(jsonRequest));
+			String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, p.getClass(), objectSerialized, fields, values);
+			System.out.println("JSON Indent 1 \n" + JsonUtil.indentJsonOutput(jsonRequest));
 			// Converts the String into a JSON Node
 			JsonNode jsonNode = mapper.readTree(jsonRequest);
 			//Person per = (Person) Util.deserializeObject(jsonRequest);
@@ -90,14 +89,14 @@ public class UtilTest {
 		list2.add(p2);
 		list2.add(p3);
 		
-		String list1JSON = Util.serializeObject(list1, Person.class, "");
-		String list2JSON = Util.serializeObject(list2, Person.class, "");
+		String list1JSON = JsonUtil.serializeObject(list1, Person.class, "");
+		String list2JSON = JsonUtil.serializeObject(list2, Person.class, "");
 		
-		log.info("List 1 in Json :\n" + Util.indentJsonOutput(list1JSON));
-		log.info("List 2 in Json :\n" + Util.indentJsonOutput(list2JSON));
+		log.info("List 1 in Json :\n" + JsonUtil.indentJsonOutput(list1JSON));
+		log.info("List 2 in Json :\n" + JsonUtil.indentJsonOutput(list2JSON));
 		
-		List<Person> persons1 = (List<Person>) Util.deserializeObject(list1JSON);
-		List<Person> persons2 = (List<Person>) Util.deserializeObject(list2JSON);
+		List<Person> persons1 = (List<Person>) JsonUtil.deserializeObject(list1JSON);
+		List<Person> persons2 = (List<Person>) JsonUtil.deserializeObject(list2JSON);
 		
 		assertEquals(true, equalsList(persons1, persons2));
 
@@ -108,8 +107,8 @@ public class UtilTest {
 	{
 		log.info("entity deserialization :");
 		Person p = new Person("climg");
-		String json = Util.serializeObject(p, p.getClass(), "");
-		Person p2 = (Person)Util.deserializeObject(json);
+		String json = JsonUtil.serializeObject(p, p.getClass(), "");
+		Person p2 = (Person)JsonUtil.deserializeObject(json);
 		log.info("Json string : " + json);
 		assertEquals(p, p2);
 	}
@@ -119,17 +118,17 @@ public class UtilTest {
 	{
 		ObjectMapper mapper = new ObjectMapper();
 
-		Consumer<JsonNode> data = (JsonNode node) -> System.out.println("node => " + node.asText());
+		//Consumer<JsonNode> data = (JsonNode node) -> System.out.println("node => " + node.asText());
 		Person p =new Person("climg");
-		String objectSerialized = Util.serializeObject(p, p.getClass(), null);
-		String jsonRequest = Util.serializeRequest(RequestType.SELECT, p.getClass(), objectSerialized, null, null);
-		System.out.println("JSON Indented request : " + Util.indentJsonOutput(jsonRequest));
+		String objectSerialized = JsonUtil.serializeObject(p, p.getClass(), null);
+		String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, p.getClass(), objectSerialized, null, null);
+		System.out.println("JSON Indented request : " + JsonUtil.indentJsonOutput(jsonRequest));
 		
 		JsonNode rootNode = mapper.readTree(jsonRequest);
 		JsonNode objectNode = rootNode.get(JSONField.SERIALIZED_OBJECT.getLabel()).get(JSONField.DATAS.getLabel());
 		System.out.println("objectNode : " + objectNode.toString());
-		Person pers = (Person) Util.deserializeObject(rootNode.get(JSONField.SERIALIZED_OBJECT.getLabel()).toString());
-		System.out.println("Person : " + pers.toString());
+		Person pers = (Person) JsonUtil.deserializeObject(rootNode.get(JSONField.SERIALIZED_OBJECT.getLabel()).toString());
+		assertEquals(true, p.equals(pers));
 		
 	}
 	
@@ -166,17 +165,17 @@ public class UtilTest {
 	public void testObjectSerialization()
 	{
 		Person p = new Person("climg");
-		String str = Util.serializeObject(p, p.getClass(), "");
-		System.out.println(Util.indentJsonOutput(str));
+		String str = JsonUtil.serializeObject(p, p.getClass(), "");
+		System.out.println(JsonUtil.indentJsonOutput(str));
 	}
 	
 	@Test
 	public void testgetJsonNodeValue()
 	{
 		String message = "my own message";
-		String json = Util.serializeObject(null	, null, message);
+		String json = JsonUtil.serializeObject(null	, null, message);
 		System.err.println(json);
-		assertEquals(message, Util.getJsonNodeValue(JSONField.ERROR_MESSAGE, json));
+		assertEquals(message, JsonUtil.getJsonNodeValue(JSONField.ERROR_MESSAGE, json));
 	}
 
 }

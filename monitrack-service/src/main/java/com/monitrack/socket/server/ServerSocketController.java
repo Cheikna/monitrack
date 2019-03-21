@@ -7,24 +7,17 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.sql.Connection;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.monitrack.connection.pool.implementation.DataSource;
 import com.monitrack.dao.abstracts.DAO;
 import com.monitrack.dao.implementation.DAOFactory;
-import com.monitrack.entity.Person;
-import com.monitrack.enumeration.ConnectionState;
 import com.monitrack.enumeration.JSONField;
 import com.monitrack.enumeration.RequestType;
-import com.monitrack.exception.NoAvailableConnectionException;
 import com.monitrack.exception.UnknownClassException;
-import com.monitrack.util.Util;
+import com.monitrack.util.JsonUtil;
 
 /**
  * This class will have all the interaction with the database
@@ -73,9 +66,9 @@ public class ServerSocketController implements Runnable {
 			while(true)
 			{
 				String requestOfClient = readFromClient.readLine();
-				log.info("Request received from the client (" + clientName + "):\n" + Util.indentJsonOutput(requestOfClient) + "\n");
+				log.info("Request received from the client (" + clientName + "):\n" + JsonUtil.indentJsonOutput(requestOfClient) + "\n");
 				String responseToClient = executeClientRequest(requestOfClient);
-				log.info("Response to the client (" + clientName + "):\n" + Util.indentJsonOutput(responseToClient) + "\n");
+				log.info("Response to the client (" + clientName + "):\n" + JsonUtil.indentJsonOutput(responseToClient) + "\n");
 				writeToClient.println(responseToClient);
 			}
 
@@ -159,7 +152,7 @@ public class ServerSocketController implements Runnable {
 		}
 
 		DAO dao = DAOFactory.getDAO(connection, entityClass);
-		result = Util.serializeObject(dao.find(fields, requiredValues), entityClass, "");
+		result = JsonUtil.serializeObject(dao.find(fields, requiredValues), entityClass, "");
 
 		//FIXME the following if will be deleted when the thing upside works
 		/*if(entityClass.getSimpleName().equalsIgnoreCase(Person.class.getSimpleName()))
@@ -174,20 +167,20 @@ public class ServerSocketController implements Runnable {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private String executeClientInsertRequest(Class<?> entityClass, JsonNode requestNode, JsonNode serializedObjectNode) throws UnknownClassException
 	{
-		Object deserializedObject = Util.deserializeObject(serializedObjectNode.toString());
+		Object deserializedObject = JsonUtil.deserializeObject(serializedObjectNode.toString());
 		DAO dao = DAOFactory.getDAO(connection, entityClass);
 		Object obj = dao.create(entityClass.cast(deserializedObject));
-		String result = Util.serializeObject(entityClass.cast(obj), entityClass, "");
+		String result = JsonUtil.serializeObject(entityClass.cast(obj), entityClass, "");
 		return result;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private String executeClientUpdateRequest(Class<?> entityClass, JsonNode requestNode, JsonNode dataNode) throws UnknownClassException
 	{
-		Object deserializedObject = Util.deserializeObject(dataNode.toString());		
+		Object deserializedObject = JsonUtil.deserializeObject(dataNode.toString());		
 		DAO dao = DAOFactory.getDAO(connection, entityClass);
 		dao.update(entityClass.cast(deserializedObject));
-		String result = Util.serializeObject(null, entityClass, "");
+		String result = JsonUtil.serializeObject(null, entityClass, "");
 		return result;
 	}
 
@@ -195,10 +188,10 @@ public class ServerSocketController implements Runnable {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private String executeClientDeleteRequest(Class<?> entityClass, JsonNode requestNode, JsonNode dataNode) throws UnknownClassException
 	{
-		Object deserializedObject = Util.deserializeObject(dataNode.toString());
+		Object deserializedObject = JsonUtil.deserializeObject(dataNode.toString());
 		DAO dao = DAOFactory.getDAO(connection, entityClass);
 		dao.delete(entityClass.cast(deserializedObject));
-		String result = Util.serializeObject(null, entityClass, "");
+		String result = JsonUtil.serializeObject(null, entityClass, "");
 		return result;
 	}
 

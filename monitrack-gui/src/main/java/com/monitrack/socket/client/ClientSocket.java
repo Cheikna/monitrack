@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import com.monitrack.enumeration.ConnectionState;
 import com.monitrack.exception.NoAvailableConnectionException;
 import com.monitrack.shared.MonitrackGUIFactory;
+import com.monitrack.util.JsonUtil;
 import com.monitrack.util.Util;
 
 public class ClientSocket {
@@ -94,7 +95,7 @@ public class ClientSocket {
 	{
 		String responseFromServer = "";
 		
-		log.info("Request sent to the server :\n" + Util.indentJsonOutput(requestToSendToServer));
+		log.info("Request sent to the server :\n" + JsonUtil.indentJsonOutput(requestToSendToServer));
 		
 		// Sends the request to the server
 		writeToServer.println(requestToSendToServer);

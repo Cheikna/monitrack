@@ -12,10 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.monitrack.entity.Person;
 import com.monitrack.enumeration.ConnectionState;
-import com.monitrack.enumeration.JSONField;
 import com.monitrack.enumeration.RequestType;
 import com.monitrack.exception.NoAvailableConnectionException;
 import com.monitrack.socket.client.ClientSocket;
+import com.monitrack.util.JsonUtil;
 import com.monitrack.util.Util;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -42,10 +42,10 @@ public class ClientSocketTest {
 	@Test
 	public void testSendSelectRequestToServer() {
 		try {
-			String jsonRequest = Util.serializeRequest(RequestType.SELECT, Person.class, null, null, null);
-			log.info("Request : " + Util.indentJsonOutput(jsonRequest));
+			String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Person.class, null, null, null);
+			log.info("Request : " + JsonUtil.indentJsonOutput(jsonRequest));
 			String response = clientSocket.sendRequestToServer(jsonRequest);
-			List<Person> persons = (List<Person>) Util.deserializeObject(response);
+			List<Person> persons = (List<Person>) JsonUtil.deserializeObject(response);
 			displayListElements(persons);
 			assertNotNull(response);
 		}  catch (NoAvailableConnectionException e) {
