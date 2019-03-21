@@ -39,7 +39,7 @@ public class ClientSocket {
 	{
 		try 
 		{
-			log.info("Connection to the server " + SERVER_IP + ":" + PORT_NUMBER + " ...");
+			log.info("Connection to the server " + SERVER_IP + ":" + PORT_NUMBER + "...");
 
 			// Connection to a socket
 			socket = new Socket(SERVER_IP, PORT_NUMBER);
@@ -54,14 +54,8 @@ public class ClientSocket {
 			readFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			writeToServer = new PrintWriter(socket.getOutputStream(), true);		
 			
-			// Checks if we can reach the server and if it did not send an error message
-			String error = readFromServer.readLine();
-			
-			if(error.equalsIgnoreCase(ConnectionState.NO_CONNECTION.getEnglishLabel()))
-			{
-				throw new NoAvailableConnectionException();
-			}
-			
+			//We read to see if the thread has been launch on the server side 
+			readFromServer.readLine();
 			// Sends the client name to the server
 			writeToServer.println(MonitrackGUIFactory.getClientName());
 			
@@ -69,18 +63,15 @@ public class ClientSocket {
 			
 			return ConnectionState.SUCCESS;
 		}
-		catch (NoAvailableConnectionException e) 
-		{
-			log.error("Disconnected from server - Client Error : " + e.getMessage());
-			return ConnectionState.NO_CONNECTION;
-		} 
 		catch (SocketTimeoutException e) 
 		{
 			log.error("The socket timed out : " + e.getMessage() + ".\nThe server cannot  be reach and cannot response to your last request !");
 		}
 		catch (Exception e) {
-			log.error("Disconnected from server - Client Error : " + e.getMessage());
+			log.error("Disconnected from server - Client Error");
 		}
+		
+		socket = null;
 		return ConnectionState.NO_CONNECTION;
 	}
 
@@ -115,7 +106,7 @@ public class ClientSocket {
 		try {
 			readFromServer.close();
 			writeToServer.close();
-			socket.shutdownOutput();
+			socket.close();
 			log.info("The communication with the server is closed");
 		} catch (IOException e) {
 			log.error(e.getMessage());

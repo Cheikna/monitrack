@@ -56,7 +56,7 @@ public class DataSource {
 		}
 	}	
 	
-	public static int getRemaningConnections(){
+	public static synchronized int getRemaningConnections(){
 		return connectionPool.getRemaningNumberOfConnections();
 	}
 	

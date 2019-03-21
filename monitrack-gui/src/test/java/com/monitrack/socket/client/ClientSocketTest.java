@@ -1,4 +1,4 @@
-package com.monitrack.clientsocket;
+package com.monitrack.socket.client;
 
 import static org.junit.Assert.*;
 import java.io.IOException;
@@ -54,37 +54,7 @@ public class ClientSocketTest {
 			log.error("The message was not sent to the server :\n" + e.getMessage());
 		}
 	}
-	
-	@Test
-	public void testTooMuchClientSocket()
-	{
-		int numberMaxOfConnections = Integer.parseInt(Util.getPropertyValueFromPropertiesFile("number_of_connections"));
-		int i = 0;
-		ConnectionState state;
-		
-		if(clientSocket != null)
-		{
-			numberMaxOfConnections -= 1;
-		}
-		
-		if(i == numberMaxOfConnections)
-		{
-			state = new ClientSocket().start();
-			assertEquals(ConnectionState.SUCCESS, state);
-		}
-		else
-		{
-			for(i = 0; i < numberMaxOfConnections; i++)
-			{
-				state = new ClientSocket().start();
-				assertEquals(ConnectionState.SUCCESS, state);
-			}
-		}		
-		
-		state = new ClientSocket().start();
-		assertEquals(ConnectionState.NO_CONNECTION, state);
-		
-	}
+
 	
 
 	@After

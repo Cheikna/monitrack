@@ -34,13 +34,15 @@ public class ServerSocketController implements Runnable {
 
 	private Socket socket;
 	private Connection connection;
+	private String clientName;
 	//For the JSON
-	//private ObjectMapper mapper;
+	private ObjectMapper mapper;
 
 	public ServerSocketController(Socket socket, Connection connection) {
+		log.info("A Thread has been started.");
 		this.socket = socket;
 		this.connection = connection;
-		//mapper = new ObjectMapper();
+		mapper = new ObjectMapper();
 	}
 
 	@Override
@@ -51,13 +53,9 @@ public class ServerSocketController implements Runnable {
 			readFromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			writeToClient = new PrintWriter(socket.getOutputStream(), true);
 			
-			/*
-			 * If we do not write something to the client, he will wait until his timeout
-			 * and it will cause an exception while the client is connected
-			 */
-			writeToClient.println("");
-			String clientName = readFromClient.readLine();
-			System.out.println("Client name : " + clientName);
+			writeToClient.println();
+			clientName = readFromClient.readLine();
+			log.info("A client is logged. [Client name: " + clientName + "]");
 			
 			/* 
 			 * This loop will allow the server to maintain a link with the client 
@@ -90,7 +88,7 @@ public class ServerSocketController implements Runnable {
 
 		try 
 		{
-			ObjectMapper mapper = new ObjectMapper();
+			mapper = new ObjectMapper();
 			JsonNode json = mapper.readTree(jsonFormattedRequest);
 			// JSON Node containing the request info
 			JsonNode requestNode = json.get(JSONField.REQUEST_INFO.getLabel());	
@@ -135,7 +133,7 @@ public class ServerSocketController implements Runnable {
 	private String executeClientSelectRequest(Class<?> entityClass, JsonNode requestNode) throws Exception
 	{
 
-		ObjectMapper mapper = new ObjectMapper();
+		mapper = new ObjectMapper();
 		String result = "";		
 		String fieldsStringFromJson = requestNode.get(JSONField.REQUESTED_FIELDS.getLabel()).textValue();
 		String valuesStringFromJson = requestNode.get(JSONField.REQUIRED_VALUES.getLabel()).textValue();
@@ -153,13 +151,6 @@ public class ServerSocketController implements Runnable {
 
 		DAO dao = DAOFactory.getDAO(connection, entityClass);
 		result = JsonUtil.serializeObject(dao.find(fields, requiredValues), entityClass, "");
-
-		//FIXME the following if will be deleted when the thing upside works
-		/*if(entityClass.getSimpleName().equalsIgnoreCase(Person.class.getSimpleName()))
-		{
-			PersonDAO personDAO = new PersonDAO(connection);
-			result = Util.serializeObject(personDAO.findAll(), Person.class, "");
-		}*/
 
 		return result;		
 	}

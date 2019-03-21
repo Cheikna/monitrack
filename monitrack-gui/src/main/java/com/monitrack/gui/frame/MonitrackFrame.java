@@ -41,6 +41,7 @@ public class MonitrackFrame extends JFrame
 		cardLayout.show(this.getContentPane(), openingPageName);
 		setLocationRelativeTo(null);
 		this.addWindowListener(listener);
+		this.setResizable(false);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setVisible(true);
 	}

@@ -55,7 +55,7 @@ public class OpeningPage extends JPanel {
 		
 		accessToServerButton = new JButton("Accéder aux serveurs");
 		accessToServerButton.addActionListener(listener);
-		connectionStateLabel.setFont(new Font("Arial", Font.BOLD, 22));
+		connectionStateLabel.setFont(new Font("Arial", Font.BOLD, 25));
 		add(connectionStateLabel, BorderLayout.CENTER);
 		add(accessToServerButton, BorderLayout.SOUTH);
 	}

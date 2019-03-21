@@ -36,7 +36,8 @@ public class Server {
 		try{
 			serverSocket = new ServerSocket(PORT_NUMBER);
 			while(true)
-			{							
+			{				
+				
 				if(DataSource.getRemaningConnections() > 0)
 				{
 					log.info("Waiting for a client connection...");
@@ -47,13 +48,13 @@ public class Server {
 					 */	
 					Socket socket = serverSocket.accept();
 					connection = DataSource.getConnection();
-					log.info("A client is logged.");
 					/*
 					 * After a connection from a client to a server, the client will be handle on his own Thread
 					 */
 					ServerSocketController serverSocketController  = new ServerSocketController(socket, connection);
 					Thread clientThread = new Thread(serverSocketController);
 					clientThread.start();
+					clientThread = null;
 				}
 
 			}
