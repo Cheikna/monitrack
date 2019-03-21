@@ -7,8 +7,9 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import org.junit.Before;
-import org.junit.Test; 
+import org.junit.Test;
 
+import com.monitrack.connection.pool.implementation.JDBCConnectionPool;
 import com.monitrack.util.Util;
 
 import junit.framework.AssertionFailedError;

@@ -15,6 +15,7 @@ import com.monitrack.enumeration.ConnectionState;
 import com.monitrack.enumeration.JSONField;
 import com.monitrack.enumeration.RequestType;
 import com.monitrack.exception.NoAvailableConnectionException;
+import com.monitrack.socket.client.ClientSocket;
 import com.monitrack.util.Util;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)

@@ -30,6 +30,9 @@ public class OpeningPageListener implements ActionListener {
 
 			if(clickedButton == openingPage.getAccessToServerButton())
 			{				
+				
+				//FIXME Show a JOptionPane.showMessageDialog(...) so that the client can write his name
+				
 				openingPage.getConnectionStateLabel().setText(ConnectionState.TRY.getFrenchLabel());
 				//JOptionPane.showMessageDialog(null, ConnectionState.TRY.getFrenchLabel(), ConnectionState.TRY.getFrenchLabel(),JOptionPane.INFORMATION_MESSAGE);
 				ConnectionState state = MonitrackGUIFactory.initializeSocket();

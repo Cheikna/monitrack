@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.2.3" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
   realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <class id="1" language="java" name="com.monitrack.serversocket.ServerSocketController" project="monitrack-service" 
-    file="/monitrack-service/src/main/java/com/monitrack/serversocket/ServerSocketController.java" binary="false" 
+  <class id="1" language="java" name="com.monitrack.socket.server.ServerSocketController" project="monitrack-service" 
+    file="/monitrack-service/src/main/java/com/monitrack/socket/server/ServerSocketController.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1192" y="784"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

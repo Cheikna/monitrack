@@ -1,4 +1,4 @@
-package com.monitrack.serversocket;
+package com.monitrack.socket.server;
 
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -6,9 +6,8 @@ import java.sql.Connection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.monitrack.connectionpool.implementation.DataSource;
-import com.monitrack.enumeration.ConnectionState;
-import com.monitrack.exception.NoAvailableConnectionException;
+
+import com.monitrack.connection.pool.implementation.DataSource;
 import com.monitrack.shared.MonitrackServiceFactory;
 import com.monitrack.util.Util;
 
@@ -48,7 +47,7 @@ public class Server {
 					 */	
 					Socket socket = serverSocket.accept();
 					connection = DataSource.getConnection();
-					System.out.println("A client is logged.");
+					log.info("A client is logged.");
 					/*
 					 * After a connection from a client to a server, the client will be handle on his own Thread
 					 */

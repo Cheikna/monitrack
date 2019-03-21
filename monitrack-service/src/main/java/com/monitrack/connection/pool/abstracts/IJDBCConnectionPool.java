@@ -1,4 +1,4 @@
-package com.monitrack.connectionpool.abstracts;
+package com.monitrack.connection.pool.abstracts;
 
 import java.sql.Connection;
 import java.sql.SQLException;

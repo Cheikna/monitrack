@@ -1,4 +1,4 @@
-package com.monitrack.clientsocket;
+package com.monitrack.socket.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.monitrack.enumeration.ConnectionState;
 import com.monitrack.exception.NoAvailableConnectionException;
+import com.monitrack.shared.MonitrackGUIFactory;
 import com.monitrack.util.Util;
 
 public class ClientSocket {
@@ -54,10 +55,14 @@ public class ClientSocket {
 			
 			// Checks if we can reach the server and if it did not send an error message
 			String error = readFromServer.readLine();
+			
 			if(error.equalsIgnoreCase(ConnectionState.NO_CONNECTION.getEnglishLabel()))
 			{
 				throw new NoAvailableConnectionException();
 			}
+			
+			// Sends the client name to the server
+			writeToServer.println(MonitrackGUIFactory.getClientName());
 			
 			log.info("Connected to the server");
 			

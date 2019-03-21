@@ -1,4 +1,4 @@
-package com.monitrack.serversocket;
+package com.monitrack.socket.server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,7 +15,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.monitrack.connectionpool.implementation.DataSource;
+import com.monitrack.connection.pool.implementation.DataSource;
 import com.monitrack.dao.abstracts.DAO;
 import com.monitrack.dao.implementation.DAOFactory;
 import com.monitrack.entity.Person;
@@ -63,6 +63,8 @@ public class ServerSocketController implements Runnable {
 			 * and it will cause an exception while the client is connected
 			 */
 			writeToClient.println("");
+			String clientName = readFromClient.readLine();
+			System.out.println("Client name : " + clientName);
 			
 			/* 
 			 * This loop will allow the server to maintain a link with the client 
@@ -71,9 +73,9 @@ public class ServerSocketController implements Runnable {
 			while(true)
 			{
 				String requestOfClient = readFromClient.readLine();
-				log.info("Request received from the client :\n" + Util.indentJsonOutput(requestOfClient) + "\n");
+				log.info("Request received from the client (" + clientName + "):\n" + Util.indentJsonOutput(requestOfClient) + "\n");
 				String responseToClient = executeClientRequest(requestOfClient);
-				log.info("Response to the client :\n" + Util.indentJsonOutput(responseToClient) + "\n");
+				log.info("Response to the client (" + clientName + "):\n" + Util.indentJsonOutput(responseToClient) + "\n");
 				writeToClient.println(responseToClient);
 			}
 

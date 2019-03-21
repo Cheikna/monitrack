@@ -1,4 +1,4 @@
-package com.monitrack.connectionpool.implementation;
+package com.monitrack.connection.pool.implementation;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,7 +7,7 @@ import java.util.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.monitrack.connectionpool.abstracts.IJDBCConnectionPool;
+import com.monitrack.connection.pool.abstracts.IJDBCConnectionPool;
 import com.monitrack.util.Util;
 
 public class JDBCConnectionPool implements IJDBCConnectionPool {
