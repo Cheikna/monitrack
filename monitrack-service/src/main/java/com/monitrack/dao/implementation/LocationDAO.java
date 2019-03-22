@@ -9,14 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.fasterxml.jackson.core.JsonFactory;
 import com.monitrack.dao.abstracts.DAO;
 import com.monitrack.entity.Location;
 
 public class LocationDAO extends DAO<Location> {
 
 	private static final Logger log = LoggerFactory.getLogger(LocationDAO.class);	
-	private JsonFactory factory = new JsonFactory();
+	//private JsonFactory factory = new JsonFactory();
 	private final Object lock = new Object();
 
 	public LocationDAO(Connection connection) 
@@ -60,9 +59,19 @@ public class LocationDAO extends DAO<Location> {
 			// Checks if the connection is not null before using it
 			if (connection != null) {
 				try {
-					PreparedStatement preparedStatement = connection
-							.prepareStatement("DELETE FROM LOCATION where ID_LOCATION=(?)");
-					preparedStatement.setInt(1, locationId);
+					String sql = "DELETE FROM LOCATION ";
+					PreparedStatement preparedStatement = null;
+					// If the id equals to 0, it means all of the object in the table for the delete query
+					if(locationId == 0)
+					{
+						preparedStatement = connection.prepareStatement(sql);
+					}
+					else
+					{
+						preparedStatement = connection.prepareStatement(sql + " where ID_LOCATION=(?)");
+						preparedStatement.setInt(1, locationId);
+					}
+					
 					preparedStatement.execute();
 				} catch (Exception e) {
 					log.error("An error occurred during the delete of a location : " + e.getMessage());

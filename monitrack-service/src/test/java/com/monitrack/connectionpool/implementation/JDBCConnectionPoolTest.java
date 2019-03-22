@@ -5,15 +5,10 @@ import static org.junit.Assert.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Vector;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import com.monitrack.connection.pool.implementation.JDBCConnectionPool;
 import com.monitrack.util.Util;
-
-import junit.framework.AssertionFailedError;
-
 public class JDBCConnectionPoolTest {
 
 	private JDBCConnectionPool pool = new JDBCConnectionPool();
