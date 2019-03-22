@@ -53,14 +53,14 @@ public class ClientSocket {
 
 			readFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			writeToServer = new PrintWriter(socket.getOutputStream(), true);		
-			
+
 			//We read to see if the thread has been launch on the server side 
 			readFromServer.readLine();
 			// Sends the client name to the server
 			writeToServer.println(MonitrackGUIFactory.getClientName());
-			
+
 			log.info("Connected to the server");
-			
+
 			return ConnectionState.SUCCESS;
 		}
 		catch (SocketTimeoutException e) 
@@ -70,7 +70,7 @@ public class ClientSocket {
 		catch (Exception e) {
 			log.error("Disconnected from server - Client Error");
 		}
-		
+
 		socket = null;
 		return ConnectionState.NO_CONNECTION;
 	}
@@ -80,23 +80,18 @@ public class ClientSocket {
 	 * @param requestToSendToServer : the request to send to the server
 	 * @return the response from the server
 	 * @throws IOException 
-	 * @throws NoAvailableConnectionException 
 	 */
-	public String sendRequestToServer(String requestToSendToServer) throws IOException, NoAvailableConnectionException
+	public String sendRequestToServer(String requestToSendToServer) throws IOException 
 	{
 		String responseFromServer = "";
-		
+
 		log.info("Request sent to the server :\n" + JsonUtil.indentJsonOutput(requestToSendToServer));
-		
+
 		// Sends the request to the server
 		writeToServer.println(requestToSendToServer);
 
 		// Receives the response from the server
 		responseFromServer = readFromServer.readLine();
-		
-		/*FIXME
-		if(responseFromServer.equalsIgnoreCase(ConnectionState.NO_CONNECTION.getEnglishLabel()))
-			throw new NoAvailableConnectionException();*/
 
 		return responseFromServer;
 	}
@@ -106,8 +101,11 @@ public class ClientSocket {
 		try {
 			readFromServer.close();
 			writeToServer.close();
-			socket.close();
-			log.info("The communication with the server is closed");
+			if(socket != null)
+			{
+				socket.close();
+				log.info("The communication with the server is closed");
+			}
 		} catch (IOException e) {
 			log.error(e.getMessage());
 		}

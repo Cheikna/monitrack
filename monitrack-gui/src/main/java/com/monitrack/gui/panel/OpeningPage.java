@@ -20,15 +20,8 @@ public class OpeningPage extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	private Image projectNameImage;
-	private Image groupLogoImage;
+	private Image backgroundImage;
 	private OpeningPageListener listener;
-	private MonitrackFrame parentFrame;
-	private int parentFrameWidth;
-	private int parentFrameHeight;
-	private int logoWidth;
-	private int logoHeight;
-	private int logoX;
-	private int logoY;
 	private JLabel connectionStateLabel;
 	
 	private JButton accessToServerButton;
@@ -37,21 +30,12 @@ public class OpeningPage extends JPanel {
 	{
 		setLayout(new BorderLayout());
 		connectionStateLabel = new JLabel("", SwingConstants.CENTER);
-		this.parentFrame = parentFrame;
-		parentFrameWidth = parentFrame.getWidth();
-		parentFrameHeight = parentFrame.getHeight();
 		setBackground(new Color(255,255,255));
 		
 		listener = new OpeningPageListener(parentFrame, this);
 		
 		projectNameImage = Images.PROJECT_LOGO.getImage();
-		groupLogoImage = Images.GROUP_LOGO.getImage();
-		
-		logoWidth = groupLogoImage.getWidth(null);
-		logoHeight = groupLogoImage.getHeight(null);
-		
-		logoX = parentFrameWidth - logoWidth;
-		logoY = parentFrameHeight - logoHeight - 15;
+		backgroundImage = Images.BACKGROUND_HOSPITAL.getImage();
 		
 		accessToServerButton = new JButton("Accéder aux serveurs");
 		accessToServerButton.addActionListener(listener);
@@ -64,8 +48,8 @@ public class OpeningPage extends JPanel {
 	{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
-		g2.drawImage(projectNameImage, 90, 20, null);
-		//g2.drawImage(groupLogoImage, logoX, logoY, null);
+		g2.drawImage(backgroundImage, 0, -40, null);
+		g2.drawImage(projectNameImage, 200, 20, null);
 		this.revalidate();
 	}
 

@@ -7,11 +7,9 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.monitrack.entity.Location;
 import com.monitrack.enumeration.JSONField;
 import com.monitrack.enumeration.RequestType;
-import com.monitrack.exception.NoAvailableConnectionException;
 import com.monitrack.gui.panel.HomePage;
 import com.monitrack.shared.MonitrackGUIFactory;
 import com.monitrack.util.JsonUtil;
@@ -89,10 +87,6 @@ public class HomePageListener implements ActionListener
 
 			} 
 			catch (IOException e1) 
-			{
-				log.error(e1.getMessage());
-			} 
-			catch (NoAvailableConnectionException e1) 
 			{
 				log.error(e1.getMessage());
 			}

@@ -9,6 +9,8 @@ public class MonitrackGUIFactory {
 	//Enables the communication with the server
 	private static ClientSocket clientSocket;
 	
+	private static ConnectionState socketState;
+	
 	//Client name for the connection to the server
 	private static String clientName = "";
 
@@ -18,7 +20,7 @@ public class MonitrackGUIFactory {
 	public static ConnectionState initializeSocket()
 	{
 		clientSocket = new ClientSocket();
-		ConnectionState socketState = clientSocket.start();
+		socketState = clientSocket.start();
 		return socketState;
 	}
 
@@ -42,6 +44,14 @@ public class MonitrackGUIFactory {
 	public static void setClientName(String clientName) {
 		MonitrackGUIFactory.clientName = clientName;
 	}
+
+	/**
+	 * @return the socketState
+	 */
+	public static ConnectionState getSocketState() {
+		return socketState;
+	}
+	
 	
 	
 	

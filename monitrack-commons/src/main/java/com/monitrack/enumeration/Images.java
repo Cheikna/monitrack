@@ -10,7 +10,13 @@ public enum Images {
 	/**** The different pictures (located in the folder src/main/resources/images)  ****/
 	PROJECT_LOGO("monitrack_logo.png"),
 	
-	GROUP_LOGO("climg_logo.png");
+	GROUP_LOGO("climg_logo.png"),
+	
+	GROUP_LOGO_SMALL("climg_logo_60.png"),
+	
+	BACKGROUND_HOSPITAL("hospital.png"),
+	
+	SUPER("superman_batman.png");
 
 	/***** attribut of enums *****/
 	private URL url;

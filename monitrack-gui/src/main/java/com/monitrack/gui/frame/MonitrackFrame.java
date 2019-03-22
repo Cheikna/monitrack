@@ -1,9 +1,16 @@
 package com.monitrack.gui.frame;
 
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import com.monitrack.enumeration.Images;
 import com.monitrack.gui.panel.HomePage;
 import com.monitrack.gui.panel.OpeningPage;
 import com.monitrack.listener.MonitrackListener;
@@ -14,31 +21,49 @@ public class MonitrackFrame extends JFrame
 	private String openingPageName;
 	private HomePage homePage;
 	private String homePageName;
+	private JButton superUserModeButton;
+	
+	//Panel which contains the superUserModeButton
+	private JPanel northPanel;
 	
 	private CardLayout cardLayout;
+	//The center panel will keep the cardLayout
+	private JPanel centerPanel;
 	
 	private MonitrackListener listener;
 
 	
 	public MonitrackFrame()
 	{
-		cardLayout = new CardLayout();
-		setLayout(cardLayout);
-		this.setSize(800, 450);
+	    listener = new MonitrackListener(this);
+	    
+		northPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		northPanel.setBackground(Color.WHITE);
+		superUserModeButton = new JButton(Images.SUPER.getIcon());
+		superUserModeButton.addActionListener(listener);
+		superUserModeButton.setToolTipText("Mode super utilisateur");
+		northPanel.add(superUserModeButton);
 		
+		cardLayout = new CardLayout();
+		centerPanel = new JPanel(cardLayout);
+		//setLayout(cardLayout);
+				
 		openingPage = new OpeningPage(this);
 		homePage = new HomePage();		
 
 		openingPageName = "OPENING_PAGE";
-	    add(openingPage, openingPageName);
+		centerPanel.add(openingPage, openingPageName);
 	    
 	    homePageName = "HOME_PAGE";
-	    add(homePage, homePageName);
+	    centerPanel.add(homePage, homePageName);
 	    
-	    listener = new MonitrackListener(this);
 		
 		this.setTitle("MONITRACK");
-		cardLayout.show(this.getContentPane(), openingPageName);
+		cardLayout.show(centerPanel, openingPageName);
+		
+		this.getContentPane().add(centerPanel, BorderLayout.CENTER);
+		this.getContentPane().add(northPanel, BorderLayout.NORTH);
+		this.setSize(1000, 600);
 		setLocationRelativeTo(null);
 		this.addWindowListener(listener);
 		this.setResizable(false);
@@ -47,7 +72,7 @@ public class MonitrackFrame extends JFrame
 	}
 	
 	public void changePage(String pageName) {
-	    cardLayout.show(this.getContentPane(), pageName);
+	    cardLayout.show(centerPanel, pageName);
 	  }
 
 	/**
@@ -56,6 +81,15 @@ public class MonitrackFrame extends JFrame
 	public String getHomePageName() {
 		return homePageName;
 	}
+
+	/**
+	 * @return the superUserModeButton
+	 */
+	public JButton getSuperUserModeButton() {
+		return superUserModeButton;
+	}
+	
+	
 	
 	
 }

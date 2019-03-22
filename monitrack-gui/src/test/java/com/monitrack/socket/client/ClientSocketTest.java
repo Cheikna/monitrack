@@ -48,9 +48,7 @@ public class ClientSocketTest {
 			List<Person> persons = (List<Person>) JsonUtil.deserializeObject(response);
 			displayListElements(persons);
 			assertNotNull(response);
-		}  catch (NoAvailableConnectionException e) {
-			log.error(e.getMessage());
-		}catch (IOException e) {
+		}  catch (IOException e) {
 			log.error("The message was not sent to the server :\n" + e.getMessage());
 		}
 	}
