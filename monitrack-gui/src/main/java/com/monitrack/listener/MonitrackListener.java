@@ -69,8 +69,16 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 				//If the user clicks on the ok button
 				if(choice == 0)
 				{
-					//FIXME The password needs to be verify in order to enter in the super user mode
-					System.out.println("password ==> " + String.valueOf(passwordField.getPassword()));
+					String enteredPassword = String.valueOf(passwordField.getPassword());
+					if(enteredPassword.equals("climg"))
+					{
+						//FIXME The password needs to be verify in order to enter in the super user mode, encode it
+						monitrackFrame.getSuperUserModeDialog().setVisible(true);
+					}
+					else
+					{
+						JOptionPane.showMessageDialog(null, "Mot de passe incorrect", "Erreur", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			}
 			else

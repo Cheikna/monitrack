@@ -13,10 +13,8 @@ import org.slf4j.LoggerFactory;
 import com.monitrack.entity.Person;
 import com.monitrack.enumeration.ConnectionState;
 import com.monitrack.enumeration.RequestType;
-import com.monitrack.exception.NoAvailableConnectionException;
 import com.monitrack.socket.client.ClientSocket;
 import com.monitrack.util.JsonUtil;
-import com.monitrack.util.Util;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ClientSocketTest {

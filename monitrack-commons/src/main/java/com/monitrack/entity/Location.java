@@ -10,9 +10,10 @@ public class Location {
 	private int idSensor = 0;
 	
 	public Location(String nameLocation, String center) {
-		super();
-		this.nameLocation = nameLocation;
-		this.center = center;
+		this(0, nameLocation, center, new Timestamp(System.currentTimeMillis()), 0);
+		/*this.nameLocation = nameLocation;
+		this.center = center;*/
+		
 	}
 	public Location() {
 		super();

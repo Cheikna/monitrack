@@ -42,12 +42,12 @@ public class OpeningPageListener implements ActionListener {
 					{					
 					case FAIL:
 						JOptionPane.showMessageDialog(null, ConnectionState.FAIL.getFrenchLabel() + closeMessage, ConnectionState.FAIL.getFrenchLabel(),JOptionPane.ERROR_MESSAGE);
-						System.exit(0);
+						//System.exit(0);
 						break;	
 
 					case NO_CONNECTION:
 						JOptionPane.showMessageDialog(null, ConnectionState.NO_CONNECTION.getFrenchLabel() + closeMessage, ConnectionState.NO_CONNECTION.getFrenchLabel(),JOptionPane.ERROR_MESSAGE);
-						System.exit(0);
+						//System.exit(0);
 						break;
 
 					case SUCCESS:

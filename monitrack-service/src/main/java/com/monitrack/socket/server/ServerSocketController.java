@@ -64,16 +64,16 @@ public class ServerSocketController implements Runnable {
 			while(true)
 			{
 				String requestOfClient = readFromClient.readLine();
-				log.info("Request received from the client (" + clientName + "):\n" + JsonUtil.indentJsonOutput(requestOfClient) + "\n");
+				log.info("Request received from the client [" + clientName + "]:\n" + JsonUtil.indentJsonOutput(requestOfClient) + "\n");
 				String responseToClient = executeClientRequest(requestOfClient);
-				log.info("Response to the client (" + clientName + "):\n" + JsonUtil.indentJsonOutput(responseToClient) + "\n");
+				log.info("Response to the client [" + clientName + "]:\n" + JsonUtil.indentJsonOutput(responseToClient) + "\n");
 				writeToClient.println(responseToClient);
 			}
 
 		}
 		catch (Exception e) 
 		{
-			log.error("Exception : " + e.getMessage());
+			log.error("Exception : The client's [" + clientName +"] buffer is not reachable");
 		}
 		finally 
 		{			
@@ -196,7 +196,7 @@ public class ServerSocketController implements Runnable {
 			DataSource.putConnection(connection);
 			this.connection = null;
 			socket.close();
-			log.info("A client is disconnected");
+			log.info("A client [" + clientName + "] is disconnected");
 		} 
 		catch (IOException e) 
 		{

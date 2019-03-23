@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import com.monitrack.enumeration.Images;
+import com.monitrack.gui.dialog.SuperUserModeDialog;
 import com.monitrack.gui.panel.HomePage;
 import com.monitrack.gui.panel.OpeningPage;
 import com.monitrack.listener.MonitrackListener;
@@ -22,6 +23,7 @@ public class MonitrackFrame extends JFrame
 	private HomePage homePage;
 	private String homePageName;
 	private JButton superUserModeButton;
+	private SuperUserModeDialog superUserModeDialog;
 	
 	//Panel which contains the superUserModeButton
 	private JPanel northPanel;
@@ -36,6 +38,8 @@ public class MonitrackFrame extends JFrame
 	public MonitrackFrame()
 	{
 	    listener = new MonitrackListener(this);
+	    
+	    superUserModeDialog = new SuperUserModeDialog(this);
 	    
 		northPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		northPanel.setBackground(Color.WHITE);
@@ -87,6 +91,13 @@ public class MonitrackFrame extends JFrame
 	 */
 	public JButton getSuperUserModeButton() {
 		return superUserModeButton;
+	}
+
+	/**
+	 * @return the superUserModeDialog
+	 */
+	public SuperUserModeDialog getSuperUserModeDialog() {
+		return superUserModeDialog;
 	}
 	
 	

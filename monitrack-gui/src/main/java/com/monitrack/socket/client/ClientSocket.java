@@ -50,7 +50,7 @@ public class ClientSocket {
 			 * whereas the server is not accessible because of a problem.
 			 */
 			socket.setSoTimeout(TIMEOUT);
-
+			
 			readFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			writeToServer = new PrintWriter(socket.getOutputStream(), true);		
 
@@ -64,14 +64,18 @@ public class ClientSocket {
 			return ConnectionState.SUCCESS;
 		}
 		catch (SocketTimeoutException e) 
-		{
+		{			
 			log.error("The socket timed out : " + e.getMessage() + ".\nThe server cannot  be reach and cannot response to your last request !");
 		}
-		catch (Exception e) {
+		catch (Exception e) 
+		{
 			log.error("Disconnected from server - Client Error");
 		}
+		finally 
+		{
+			exit();			
+		}
 
-		socket = null;
 		return ConnectionState.NO_CONNECTION;
 	}
 
@@ -99,8 +103,10 @@ public class ClientSocket {
 	public void exit()
 	{
 		try {
-			readFromServer.close();
-			writeToServer.close();
+			if(readFromServer != null)
+				readFromServer.close();
+			if(writeToServer != null)
+				writeToServer.close();
 			if(socket != null)
 			{
 				socket.close();
