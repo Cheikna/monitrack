@@ -2,6 +2,7 @@
 
 # Sommaire
 - [Avant de commencer](#avant-de-commencer)
+	- [**Important**](#important)
 - [Quelques conventions de nommages](#quelques-conventions-de-nommages)
 - [Quelques conseils](#quelques-conseils)
 - [Organisation du projet Maven](#organisation-du-projet-maven) 
@@ -15,10 +16,15 @@
 	- [Etapes de generation](#etapes-de-generation)
 		- [generation via Eclipse](#generation-via-eclipse)
 		- [generation en ligne de commande](#generation-en-ligne-de-commande)
-- [Se connecter aux bases de donnees](#se-connecter-aux-bases-de-donnees)
+- [Se connecter a l'environnement de developpement](#se-connecter-a-l-environnement-de-developpement)
 	- [Connexion a la base de donnnes de developpement](#connexion-a-la-base-de-donnnes-de-developpement)
+	- [Connexion au serveur de developpement](#connexion-au-serveur-de-developpement)
+- [Se connecter a l'environnement de production](#se-connecter-a-l-environnement-de-production)
 	- [Connexion a la base de donnnes de production](#connexion-a-la-base-de-donnnes-de-production)
-- [Scenario de demonstration pour la release 1 (R1)](#scenario-de-demonstration-pour-la-release-1-r1)
+	- [Connexion au serveur de production](#connexion-au-serveur-de-production)
+- [Scenarios de demonstration](#scenarios-de-demonstration)
+	- [Release 1 (R1)](#release-1-r1)
+	- [Release 2 (R2)](#release-2-r2)
 - [Si des erreurs apparaissent](#si-des-erreurs-apparaissent)
 
 # Avant de commencer
@@ -26,6 +32,13 @@
 2. Dans certains dossiers, vous trouverez un fichier oneFileIsRequired.txt. Vous pourrez supprimer ces fichiers lorsque le dossier contiendra au moins un autre fichier (par exemple un fichier .java). Si vous supprimez ce fichier .txt et que le dossier devient vide, alors le dossier ne pourra pas être 'commit' ce qui pourra entraîner des erreurs de compilation.
 3. N'oubliez pas de faire des "Fetch" et des "Pull" lorsque vous changez de branche.
 4. N'oubliez pas de faire des commits réguliers afin que les autres membres du groupe puissent connaitre votre avancement.
+
+## Important
+**Si vous avez cloné le projet _monitrack_ avant le 20 mars 2019, cette section est pour vous, sinon vous pouvez la passer.**
+Lorsque vous ferez une push, vous verrez sûrement les dossiers **monitrackCommons**, **monitrackGUI** et **monitrackService** en plus des dossiers **monitrack-commons**, **monitrack-gui** et **monitrack-service** comme sur l'image ci-dessous :
+![image](https://drive.google.com/uc?export=view&id=19JF2dXPtEaYFveyLclB02l6P9P7j_bt7) 
+Si c'est le cas vous pourrez alors supprimer les dossiers **monitrackCommons**, **monitrackGUI** et **monitrackService** de votre disque dur.
+Faites également un _Maven > Update Project_ si des erreurs apparaissent.
 
 # Quelques conventions de nommages
 - Le nom des variables ainsi que le nom des méthodes seront en anglais
@@ -175,45 +188,83 @@ D:\GitHub\PDS_ESIPE_CYCLE_INGENIEUR\monitrack\monitrackGUI> java -jar <chemin co
 
 **Attention : Si vous décidez d'ouvrir l'artefact jar à partir de la l'invite de commande (ou le PowerShell) , faîtes très attention car si vous fermer votre invite de commande alors l'application se fermera aussi.**
 
-# Se connecter aux bases de donnees
-**Attention : N'oubliez pas de vérifier que vous être en train d'utiliser la base de données de développement pour les tests et la base de données de production pour les démonstrations. Lisez la suite pour savoir si vous utilisez la bonne base de données ***
+# Se connecter a l'environnement de developpement
+**Attention : N'oubliez pas de vérifier que vous être en train d'utiliser l'environnement de développement pour les tests et l'environnement de production pour les démonstrations. Lisez la suite pour savoir si vous utilisez le bon environnement ***
 
 ## Connexion a la base de donnnes de developpement
 1. Lancer les machines virtuelles *MONITRACK_NETWORK* et *MONITRACK_BDD_DEV*
 2. Une fois ces machines virtuelles allumées, lancer la commande suivante sur la machine virtuelle MONITRACK_NETWORK :
 
 ```
-toto@ubuntu:~$ sudo iptables-restore < /etc/iptables_dev.rules
+toto@ubuntu:~$ sudo iptables-restore < /etc/iptables_bdd_dev.rules
 ```
 *Cette commande aura pour but de nous permettre d'accéder à la base de données se situant sur une autre machine virtuelle d'un réseau privée*
 
 3. Se rendre sur un navigateur web et y écrire l'url suivante **192.168.20.15:80**. Vous devriez obtenir la page suivante :
 ![image](https://drive.google.com/uc?export=view&id=1_L_TRi8bQtcGEBWAHazDPLvyP7W0QI_7)
 
+## Connexion au serveur de developpement
+1. Lancer les machines virtuelles *MONITRACK_NETWORK*, *MONITRACK_SERVICE_DEV* et *MONITRACK_BDD_DEV*
+2. Une fois ces machines virtuelles allumées, lancer la commande suivante sur la machine virtuelle MONITRACK_NETWORK :
+
+```
+toto@ubuntu:~$ sudo iptables-restore < /etc/iptables_service_dev.rules
+```
+3. Télécharger sur le machine virtuelle *MONITRACK_SERVICE_DEV* la dernière version du projet disponible sur le site : http://cheikna98.free.fr/esipe/ing1/pds/dev/ 
+_Vous trouverez dans chaque dossier commençant par la lettre 'v' suivi d'un numéro de version, le .jar 'service' (qui se chargera de récupérer les données de la base de données) et le .jar 'gui' qui est l'interface graphique pour le client_
+
+# Se connecter a l'environnement de production
 ## Connexion a la base de donnnes de production
 1. Lancer les machines virtuelles *MONITRACK_NETWORK* et *MONITRACK_BDD_PROD*
 2. Une fois ces machines virtuelles allumées, lancer la commande suivante sur la machine virtuelle MONITRACK_NETWORK :
 
 ```
-toto@ubuntu:~$ sudo iptables-restore < /etc/iptables_prod.rules
+toto@ubuntu:~$ sudo iptables-restore < /etc/iptables_bdd_prod.rules
 ```
 *Cette commande aura pour but de nous permettre d'accéder à la base de données se situant sur une autre machine virtuelle d'un réseau privée*
 
 3. Se rendre sur un navigateur web et y écrire l'url suivante **192.168.20.15:80**. Vous devriez obtenir la page suivante :
 ![image](https://drive.google.com/uc?export=view&id=1CP_kG0c1NnjNVd9AC00fHqbvkcldTUHe)
 
-# Scenario de demonstration pour la release 1 (R1)
+## Connexion au serveur de production
+1. Lancer les machines virtuelles *MONITRACK_NETWORK*, *MONITRACK_SERVICE_PROD* et *MONITRACK_BDD_PROD*
+2. Une fois ces machines virtuelles allumées, lancer la commande suivante sur la machine virtuelle MONITRACK_NETWORK :
+
+```
+toto@ubuntu:~$ sudo iptables-restore < /etc/iptables_service_prod.rules
+```
+3. Télécharger sur le machine virtuelle *MONITRACK_SERVICE_PROD* la dernière version du projet disponible sur le site : http://cheikna98.free.fr/esipe/ing1/pds/prod/ 
+_Vous trouverez dans chaque dossier commençant par la lettre 'v' suivi d'un numéro de version, le .jar 'service' (qui se chargera de récupérer les données de la base de données) et le .jar 'gui' qui est l'interface graphique pour le client_
+
+# Scenarios de demonstration
+## Release 1 (R1)
 1. [Se connecter à la base de donnees de production](#connexion-a-la-base-de-donnnes-de-production).
-
 2. Ouvrir, l'IHM sur un ordinateur (en local).
-
 3. Remplir le champ nom et appuyer sur le bouton "valider" (ce qui devrait envoyer une requête à la base de données).
-
 4. Refaire l'étape 3 avec plusieurs noms différents.
-
 5. Appuyer sur le bouton "Tout voir".
-
 6. Une liste avec tous les noms (ainsi que leurs dates d'enregistrement) qui ont été saisis précédemment devrait apparaître dans la zone de texte en-dessous du champ nom.
+
+
+## Release 2 (R2)
+1. [Se connecter au serveur de production](#connexion-au-serveur-de-production).
+2. Lancer monitrack-service-vm-<numero_de_version>.jar sur la machine virtuelle *MONITRACK_SERVICE_PROD* en utilisant la commande suivante :
+
+```
+toto@ubuntu:~$ java -jar monitrack-service-vm-<numero_de_version>.jar
+```
+3. Pendant que les connexions se créées, ouvrir le .jar monitrack-gui-vm-<numero_de_version>.jar sur la machine locale.
+4. Une fois les connexions créées sur la machine virtuelle, un message devrait s'afficher : _Waiting for a client connection..._
+5. Sur l'application client, appuyer sur le bouton _Accéder aux serveurs_ et entrer son nom.
+6. Patienter pendant que le client tente d'accéder aux serveurs
+7. Un message devrait s'afficher pour indiquer que la connexion aux serveurs a été réussie.
+8. Refaire les étapes 5 à 7 sur deux autres machines, et l'une d'elles ne dravrait pas pouvoir accéder aux serveurs et un message d'erreur s'affichera.
+9. Quitter l'application d'un client qui a réussi la connexion aux serveurs.
+10. Se connecter aux serveurs avec la machine du client qui n'avait pas réussi à se connecter aux serveurx, et la connexion derait réussir.
+11. Effectuer des créations sur les deux clients simultanément.
+12. Afficher tous les éléments et on devrait voir ce que l'autre client a également fait.
+13. Sur les deux clients faire des opérations en simultané et observer les résultats.
+14. Présenter les tests effectués.
 
 # Si des erreurs apparaissent
 
