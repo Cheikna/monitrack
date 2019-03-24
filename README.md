@@ -37,6 +37,7 @@
 **Si vous avez cloné le projet _monitrack_ avant le 20 mars 2019, cette section est pour vous, sinon vous pouvez la passer.**
 Lorsque vous ferez une push, vous verrez sûrement les dossiers **monitrackCommons**, **monitrackGUI** et **monitrackService** en plus des dossiers **monitrack-commons**, **monitrack-gui** et **monitrack-service** comme sur l'image ci-dessous :
 ![image](https://drive.google.com/uc?export=view&id=19JF2dXPtEaYFveyLclB02l6P9P7j_bt7) 
+
 Si c'est le cas vous pourrez alors supprimer les dossiers **monitrackCommons**, **monitrackGUI** et **monitrackService** de votre disque dur.
 Faites également un _Maven > Update Project_ si des erreurs apparaissent.
 
@@ -62,11 +63,11 @@ Sortie : 1) My name is John Doe
 # Organisation du projet Maven
 Pour le moment, le projet Maven se découpe en 3 modules distincts :
 
-**- monitrackCommons :** contient tous les éléments communs aux deux modules ci-dessus comme les entités, des méthodes utiles qui permettent de lire dans un fichier ou encore des classes qui permettent de sérialiser (passage d'un objet JAVA à du JSON) ou de les desérialiser (passer du JSON à un objet JAVA)
+**- monitrack-commons :** contient tous les éléments communs aux deux modules ci-dessus comme les entités, des méthodes utiles qui permettent de lire dans un fichier ou encore des classes qui permettent de sérialiser (passage d'un objet JAVA à du JSON) ou de les desérialiser (passer du JSON à un objet JAVA)
 	
-**- monitrackGUI :** contient tous les éléments qui seront destinés à la réalisation de l'interface graphique pour le client (comme les JPanel, JFrame, ...)
+**- monitrack-gui :** contient tous les éléments qui seront destinés à la réalisation de l'interface graphique pour le client (comme les JPanel, JFrame, ...)
 	
-**- monitrackService :** contient tous les éléments qui vont nous permettre d'accéder à la base de données et d'effectuer des requêtes (récupération de données, ajout, suppression,...)
+**- monitrack-service :** contient tous les éléments qui vont nous permettre d'accéder à la base de données et d'effectuer des requêtes (récupération de données, ajout, suppression,...)
 
 # Creation de branches pour les evolutions
 1. Cliquez sur le bouton + (situé à côté du nom de la branche courante)
