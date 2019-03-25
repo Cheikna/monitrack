@@ -11,12 +11,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
-
-import com.monitrack.gui.frame.MonitrackFrame;
 import com.monitrack.listener.HomePageListener;
 
 public class HomePage extends JPanel
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//Graphical compenents declaration
 	private JPanel north = new JPanel(new FlowLayout());
 	//Label

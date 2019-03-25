@@ -25,6 +25,8 @@ public class MonitrackFrame extends JFrame
 	private JButton superUserModeButton;
 	private SuperUserModeDialog superUserModeDialog;
 	
+	private JButton infiniteRequestButton;
+	
 	//Panel which contains the superUserModeButton
 	private JPanel northPanel;
 	
@@ -46,11 +48,16 @@ public class MonitrackFrame extends JFrame
 		superUserModeButton = new JButton(Images.SUPER.getIcon());
 		superUserModeButton.addActionListener(listener);
 		superUserModeButton.setToolTipText("Mode super utilisateur");
+		
+		infiniteRequestButton = new JButton(Images.INFINITE_LOOP.getIcon());
+		infiniteRequestButton.addActionListener(listener);
+		infiniteRequestButton.setToolTipText("Requête en infini");
+		
 		northPanel.add(superUserModeButton);
+		northPanel.add(infiniteRequestButton);
 		
 		cardLayout = new CardLayout();
 		centerPanel = new JPanel(cardLayout);
-		//setLayout(cardLayout);
 				
 		openingPage = new OpeningPage(this);
 		homePage = new HomePage();		
@@ -98,6 +105,13 @@ public class MonitrackFrame extends JFrame
 	 */
 	public SuperUserModeDialog getSuperUserModeDialog() {
 		return superUserModeDialog;
+	}
+
+	/**
+	 * @return the infiniteRequestButton
+	 */
+	public JButton getInfiniteRequestButton() {
+		return infiniteRequestButton;
 	}
 	
 	

@@ -1,62 +1,50 @@
 package com.monitrack.shared;
 
+import java.io.IOException;
+
+import javax.swing.JOptionPane;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.monitrack.enumeration.ConnectionState;
+import com.monitrack.enumeration.JSONField;
+import com.monitrack.exception.NoAvailableConnectionException;
 import com.monitrack.socket.client.ClientSocket;
+import com.monitrack.util.JsonUtil;
 
 public class MonitrackGUIFactory {
 
-
-	//Enables the communication with the server
-	private static ClientSocket clientSocket;
+	private static final Logger log = LoggerFactory.getLogger(MonitrackGUIFactory.class);
+			
+	public static void showNoConnectionMessage() {
+		JOptionPane.showMessageDialog(null, ConnectionState.NO_CONNECTION.getFrenchLabel(), "Erreur", JOptionPane.ERROR_MESSAGE);
+	}
 	
-	private static ConnectionState socketState;
-	
-	//Client name for the connection to the server
-	private static String clientName = "";
-
-	/**
-	 * Initializes the socket
-	 */
-	public static ConnectionState initializeSocket()
+	public static String sendRequest(String jsonRequest) throws NoAvailableConnectionException, IOException
 	{
-		clientSocket = new ClientSocket();
-		socketState = clientSocket.start();
-		return socketState;
+		String response = "";
+		ClientSocket clientSocket = new ClientSocket();
+		ConnectionState state = clientSocket.start();
+		if(state == ConnectionState.SUCCESS)
+		{
+			response = clientSocket.sendRequestToServer(jsonRequest);
+			String error = JsonUtil.getJsonNodeValue(JSONField.ERROR_MESSAGE, response).trim();
+			
+			if(!error.equals(""))
+			{
+				JOptionPane.showMessageDialog(null, error, "Erreur", JOptionPane.ERROR_MESSAGE);
+				throw new NoAvailableConnectionException();
+			}
+			
+			log.info("Response from the server :\n" + JsonUtil.indentJsonOutput(response));
+			return response;
+		}
+		else
+		{
+			showNoConnectionMessage();	
+			throw new NoAvailableConnectionException();
+		}
 	}
-
-	/**
-	 * @return the clientSocket
-	 */
-	public static ClientSocket getClientSocket() {
-		return clientSocket;
-	}
-
-	/**
-	 * @return the clientName
-	 */
-	public static String getClientName() {
-		return clientName;
-	}
-
-	/**
-	 * @param clientName the clientName to set
-	 */
-	public static void setClientName(String clientName) {
-		MonitrackGUIFactory.clientName = clientName;
-	}
-
-	/**
-	 * @return the socketState
-	 */
-	public static ConnectionState getSocketState() {
-		return socketState;
-	}
-	
-	
-	
-	
-	
-	
-	
 
 }

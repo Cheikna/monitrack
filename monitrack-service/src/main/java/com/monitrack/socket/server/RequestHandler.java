@@ -22,9 +22,9 @@ import com.monitrack.util.JsonUtil;
 /**
  * This class will have all the interaction with the database
  */
-public class ServerSocketController implements Runnable {
+public class RequestHandler implements Runnable {
 
-	private static final Logger log = LoggerFactory.getLogger(ServerSocketController.class);
+	private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
 
 	//This reader will allow us to read the message received and so sent by the client
 	private BufferedReader readFromClient;
@@ -34,12 +34,10 @@ public class ServerSocketController implements Runnable {
 
 	private Socket socket;
 	private Connection connection;
-	private String clientName;
 	//For the JSON
 	private ObjectMapper mapper;
 
-	public ServerSocketController(Socket socket, Connection connection) {
-		log.info("A Thread has been started.");
+	public RequestHandler(Socket socket, Connection connection) {
 		this.socket = socket;
 		this.connection = connection;
 		mapper = new ObjectMapper();
@@ -50,30 +48,20 @@ public class ServerSocketController implements Runnable {
 
 		try 
 		{		
+			log.info("Client connected");
 			readFromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			writeToClient = new PrintWriter(socket.getOutputStream(), true);
 			
-			writeToClient.println();
-			clientName = readFromClient.readLine();
-			log.info("A client is logged. [Client name: " + clientName + "]");
-			
-			/* 
-			 * This loop will allow the server to maintain a link with the client 
-			 * unless the client stops the program
-			 */
-			while(true)
-			{
-				String requestOfClient = readFromClient.readLine();
-				log.info("Request received from the client [" + clientName + "]:\n" + JsonUtil.indentJsonOutput(requestOfClient) + "\n");
-				String responseToClient = executeClientRequest(requestOfClient);
-				log.info("Response to the client [" + clientName + "]:\n" + JsonUtil.indentJsonOutput(responseToClient) + "\n");
-				writeToClient.println(responseToClient);
-			}
+			String requestOfClient = readFromClient.readLine();
+			log.info("Request received from the client :\n" + JsonUtil.indentJsonOutput(requestOfClient) + "\n");
+			String responseToClient = executeClientRequest(requestOfClient);
+			log.info("Response to the client :\n" + JsonUtil.indentJsonOutput(responseToClient) + "\n");
+			writeToClient.println(responseToClient);
 
 		}
 		catch (Exception e) 
 		{
-			log.error("Exception : The client's [" + clientName +"] buffer is not reachable");
+			log.error("Exception : The client's buffer is not reachable. He is diconnected");
 		}
 		finally 
 		{			
@@ -196,7 +184,6 @@ public class ServerSocketController implements Runnable {
 			DataSource.putConnection(connection);
 			this.connection = null;
 			socket.close();
-			log.info("A client [" + clientName + "] is disconnected");
 		} 
 		catch (IOException e) 
 		{

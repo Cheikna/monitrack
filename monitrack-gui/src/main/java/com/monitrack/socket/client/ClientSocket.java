@@ -54,11 +54,6 @@ public class ClientSocket {
 			readFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			writeToServer = new PrintWriter(socket.getOutputStream(), true);		
 
-			//We read to see if the thread has been launch on the server side 
-			readFromServer.readLine();
-			// Sends the client name to the server
-			writeToServer.println(MonitrackGUIFactory.getClientName());
-
 			log.info("Connected to the server");
 
 			return ConnectionState.SUCCESS;
@@ -66,14 +61,12 @@ public class ClientSocket {
 		catch (SocketTimeoutException e) 
 		{			
 			log.error("The socket timed out : " + e.getMessage() + ".\nThe server cannot  be reach and cannot response to your last request !");
+			exit();
 		}
 		catch (Exception e) 
 		{
 			log.error("Disconnected from server - Client Error");
-		}
-		finally 
-		{
-			exit();			
+			exit();
 		}
 
 		return ConnectionState.NO_CONNECTION;
@@ -96,12 +89,13 @@ public class ClientSocket {
 
 		// Receives the response from the server
 		responseFromServer = readFromServer.readLine();
-
+		exit();
 		return responseFromServer;
 	}
 
-	public void exit()
+	private void exit()
 	{
+		log.info("Exit");
 		try {
 			if(readFromServer != null)
 				readFromServer.close();

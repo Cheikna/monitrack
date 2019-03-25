@@ -35,7 +35,7 @@
 
 ## Important
 **Si vous avez cloné le projet _monitrack_ avant le 20 mars 2019, cette section est pour vous, sinon vous pouvez la passer.**
-Lorsque vous ferez une push, vous verrez sûrement les dossiers **monitrackCommons**, **monitrackGUI** et **monitrackService** en plus des dossiers **monitrack-commons**, **monitrack-gui** et **monitrack-service** comme sur l'image ci-dessous :
+Lorsque vous ferez un push, vous verrez sûrement les dossiers **monitrackCommons**, **monitrackGUI** et **monitrackService** en plus des dossiers **monitrack-commons**, **monitrack-gui** et **monitrack-service** comme sur l'image ci-dessous :
 ![image](https://drive.google.com/uc?export=view&id=19JF2dXPtEaYFveyLclB02l6P9P7j_bt7) 
 
 Si c'est le cas vous pourrez alors supprimer les dossiers **monitrackCommons**, **monitrackGUI** et **monitrackService** de votre disque dur.

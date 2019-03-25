@@ -23,16 +23,12 @@ public class ClientSocketTest {
 	
 	private ClientSocket clientSocket;
 	private ConnectionState connectionState;
-
-	@Before
-	public void testClientSocket() {
-		clientSocket = new ClientSocket();	
-		connectionState = clientSocket.start();
-	}
 	
 	@Test
 	public void testClientSocketStart()
 	{		
+		clientSocket = new ClientSocket();	
+		connectionState = clientSocket.start();
 		assertEquals(ConnectionState.SUCCESS, connectionState);
 	}	
 
@@ -51,13 +47,13 @@ public class ClientSocketTest {
 		}
 	}
 
-	
+	/*
 
 	@After
 	public void testExit() {
 		clientSocket.exit();
 		clientSocket = null;		
-	}
+	}*/
 	
 	private <T> void displayListElements(List<T> elements)
 	{

@@ -40,7 +40,7 @@ public class Server {
 				
 				if(DataSource.getRemaningConnections() > 0)
 				{
-					log.info("Waiting for a client connection...");
+					log.info("Waiting for a client's request...");
 					/*
 					 * The socket is used to communicate with the client. Many clients will use the same port 
 					 * but different instance of socket.
@@ -51,10 +51,9 @@ public class Server {
 					/*
 					 * After a connection from a client to a server, the client will be handle on his own Thread
 					 */
-					ServerSocketController serverSocketController  = new ServerSocketController(socket, connection);
-					Thread clientThread = new Thread(serverSocketController);
+					RequestHandler requestHandler  = new RequestHandler(socket, connection);
+					Thread clientThread = new Thread(requestHandler);
 					clientThread.start();
-					clientThread = null;
 				}
 
 			}

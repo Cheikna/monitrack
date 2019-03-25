@@ -16,6 +16,8 @@ public enum Images {
 	
 	BACKGROUND_HOSPITAL("hospital.png"),
 	
+	INFINITE_LOOP("infinite_loop_icon.png"),
+	
 	SUPER("superman_batman.png");
 
 	/***** attribut of enums *****/
