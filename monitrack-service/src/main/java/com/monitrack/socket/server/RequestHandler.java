@@ -123,20 +123,18 @@ public class RequestHandler implements Runnable {
 
 		mapper = new ObjectMapper();
 		String result = "";		
-		String fieldsStringFromJson = requestNode.get(JSONField.REQUESTED_FIELDS.getLabel()).textValue();
-		String valuesStringFromJson = requestNode.get(JSONField.REQUIRED_VALUES.getLabel()).textValue();
+		String fieldsStringFromJson = requestNode.get(JSONField.REQUESTED_FIELDS.getLabel()).toString();
+		String valuesStringFromJson = requestNode.get(JSONField.REQUIRED_VALUES.getLabel()).toString();
 
 		List<String> fields = null;
 		List<String> requiredValues = null;
 
-		if(fieldsStringFromJson != null && valuesStringFromJson != null
-				&& fieldsStringFromJson.trim().length() > 0 && valuesStringFromJson.trim().length() > 0)
+		if(fieldsStringFromJson != null && valuesStringFromJson != null)
 		{
 			fields = mapper.readValue(fieldsStringFromJson, mapper.getTypeFactory().constructCollectionType(List.class, String.class));
-			requiredValues = mapper.readValue(valuesStringFromJson, mapper.getTypeFactory().constructCollectionType(List.class, String.class));
-
-		}
-
+			requiredValues = mapper.readValue(valuesStringFromJson, mapper.getTypeFactory().constructCollectionType(List.class, String.class));		
+		}	
+		
 		DAO dao = DAOFactory.getDAO(connection, entityClass);
 		result = JsonUtil.serializeObject(dao.find(fields, requiredValues), entityClass, "");
 

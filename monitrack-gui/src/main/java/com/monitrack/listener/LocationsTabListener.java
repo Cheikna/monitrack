@@ -4,38 +4,41 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
+
 import javax.swing.JOptionPane;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.monitrack.entity.Location;
 import com.monitrack.enumeration.RequestType;
 import com.monitrack.exception.NoAvailableConnectionException;
-import com.monitrack.gui.panel.HomePage;
+import com.monitrack.gui.panel.LocationsTab;
 import com.monitrack.shared.MonitrackGUIFactory;
 import com.monitrack.util.JsonUtil;
 
-public class HomePageListener implements ActionListener
-{
-	private static final Logger log = LoggerFactory.getLogger(HomePageListener.class);
+public class LocationsTabListener implements ActionListener {
 
-	private HomePage homePage;
+	private static final Logger log = LoggerFactory.getLogger(LocationsTabListener.class);
 
-	public HomePageListener(HomePage homePage)
+	private LocationsTab locationsTab;
+
+	public LocationsTabListener(LocationsTab locationsTab)
 	{
-		this.homePage = homePage;
+		this.locationsTab = locationsTab;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public void actionPerformed(ActionEvent e)
 	{
-		if(e.getSource()== homePage.getJbValidate())
+		if(e.getSource()== locationsTab.getJbValidate())
 		{
 			try
 			{
-				String name = homePage.getJtfName().getText().trim();
+				String name = locationsTab.getJtfName().getText().trim();
 				if(name.length() <= 0)
 				{
-					JOptionPane.showMessageDialog(homePage, "Nom incorrect");
+					JOptionPane.showMessageDialog(locationsTab, "Nom incorrect");
 				}
 				else
 				{	
@@ -47,7 +50,7 @@ public class HomePageListener implements ActionListener
 					String response = MonitrackGUIFactory.sendRequest(jsonRequest);
 					Location locationCreated = (Location)JsonUtil.deserializeObject(response);
 					int id = locationCreated.getIdLocation();
-					JOptionPane.showMessageDialog(homePage, "La location a été créée avec l'id " + id, "Location créée", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(locationsTab, "La location a été créée avec l'id " + id, "Location créée", JOptionPane.INFORMATION_MESSAGE);
 					
 				}			
 			}
@@ -56,7 +59,7 @@ public class HomePageListener implements ActionListener
 				log.error(e1.getMessage());
 			}
 		}
-		if(e.getSource()==homePage.getJbOverview())
+		if(e.getSource()==locationsTab.getJbOverview())
 		{
 			String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Location.class, null, null, null);
 			try 
@@ -68,7 +71,7 @@ public class HomePageListener implements ActionListener
 				{
 					locationsText += location + "\n";
 				}
-				homePage.getjTArea().setText(locationsText);
+				locationsTab.getjTArea().setText(locationsText);
 
 			} 
 			catch (IOException | NoAvailableConnectionException e1) 
@@ -77,7 +80,7 @@ public class HomePageListener implements ActionListener
 			}
 		}
 
-		if(e.getSource() == homePage.getJbDelete())
+		if(e.getSource() == locationsTab.getJbDelete())
 		{
 			String idInString = JOptionPane.showInputDialog(null, "Veuillez indiquez l'ID de la location à supprimer :"
 					, "Suppression", JOptionPane.QUESTION_MESSAGE);
@@ -96,7 +99,7 @@ public class HomePageListener implements ActionListener
 			}
 		}
 
-		if(e.getSource() == homePage.getJbUpdate())
+		if(e.getSource() == locationsTab.getJbUpdate())
 		{
 			String idInString = JOptionPane.showInputDialog(null, "Veuillez indiquer l'ID de la location à modifier :"
 					, "Suppression", JOptionPane.QUESTION_MESSAGE);
@@ -119,6 +122,5 @@ public class HomePageListener implements ActionListener
 			}
 		}
 	}
-
 
 }

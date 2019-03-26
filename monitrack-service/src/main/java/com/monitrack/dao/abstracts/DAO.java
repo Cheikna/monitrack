@@ -66,7 +66,7 @@ public abstract class DAO<T> {
 		if(fields != null && values != null)
 		{
 			int fieldsListSize = fields.size();
-			if(fieldsListSize == values.size())
+			if(fieldsListSize >= 1 && fieldsListSize == values.size())
 			{
 				sql += " WHERE ";
 				int i;

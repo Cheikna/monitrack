@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
+import com.monitrack.entity.Location;
+import com.monitrack.entity.Person;
 import com.monitrack.enumeration.RequestType;
 import com.monitrack.gui.dialog.SuperUserModeDialog;
 
@@ -24,6 +26,17 @@ public class SuperUserModeDialogListener implements ActionListener {
 		if(e.getSource() == superUserModeDialog.getValidateChoicesButton())
 		{
 			String entityChoice = superUserModeDialog.getEntitiesCombobox().getSelectedItem().toString();
+			Class<?> entityClass = null;
+			
+			if(entityChoice.equalsIgnoreCase("personnes"))
+			{
+				entityClass = Person.class;				
+			}
+			else if(entityChoice.equalsIgnoreCase("emplacements"))
+			{
+				entityClass = Location.class;				
+			}
+			
 			
 			if(superUserModeDialog.getFillRadioButton().isSelected())
 			{
@@ -35,7 +48,7 @@ public class SuperUserModeDialogListener implements ActionListener {
 				int choice = JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment supprimer les données de ["+ entityChoice + "]");
 				if(choice == 0)
 				{
-					//FIXME JSON Request to send through socket
+					//FIXME
 				}
 			}
 
