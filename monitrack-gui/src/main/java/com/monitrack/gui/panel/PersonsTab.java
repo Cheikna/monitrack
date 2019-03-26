@@ -4,8 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -49,9 +51,20 @@ public class PersonsTab extends JPanel {
 	private JButton modifyButton;
 	private JButton deleteButton;
 	private JButton showButton;
+	
+	/***** Dialog for updating a person *****/
+	private JPanel modifyPersonPopupPanel;
+	private JLabel idLabel;
+	private JLabel oldNameLabel;
+	private JTextField oldNameTextField;
+	private JLabel modifiedNameLabel;
+	private JTextField modifiedNameTextField;
+	
 
 	public PersonsTab() {
 		super(new BorderLayout());
+
+		listener = new PersonsTabListener(this);
 		northPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		textArea = new JTextArea();	
 		
@@ -75,8 +88,7 @@ public class PersonsTab extends JPanel {
 		northPanelForCreate.add(newNameTextField);
 		northPanelForCreate.add(createButton);	
 		
-
-		listener = new PersonsTabListener(this);	
+	
 		actionsCombobox.addActionListener(listener);
 		actionsCombobox.setSelectedItem(items[0]);
 		
@@ -125,7 +137,27 @@ public class PersonsTab extends JPanel {
 		
 		add(northPanel, BorderLayout.NORTH);
 		add(scroll, BorderLayout.CENTER);
+		
+		setModifiyPersonDialog();
 
+	}
+	
+	private void setModifiyPersonDialog()
+	{
+		modifyPersonPopupPanel = new JPanel();
+		modifyPersonPopupPanel.setLayout(new BoxLayout(modifyPersonPopupPanel, BoxLayout.Y_AXIS));
+		idLabel = new JLabel("ID : ");
+		oldNameLabel = new JLabel("Ancien nom :");
+		oldNameTextField = new JTextField(15);
+		oldNameTextField.setEditable(false);
+		modifiedNameLabel = new JLabel("Nouveau nom :");
+		modifiedNameTextField = new JTextField(15);
+		
+		modifyPersonPopupPanel.add(idLabel);
+		modifyPersonPopupPanel.add(oldNameLabel);
+		modifyPersonPopupPanel.add(oldNameTextField);
+		modifyPersonPopupPanel.add(modifiedNameLabel);
+		modifyPersonPopupPanel.add(modifiedNameTextField);
 	}
 
 	/**
@@ -252,6 +284,34 @@ public class PersonsTab extends JPanel {
 	 */
 	public JTextArea getTextArea() {
 		return textArea;
+	}
+
+	/**
+	 * @return the modifyPersonPopupPanel
+	 */
+	public JPanel getModifyPersonPopupPanel() {
+		return modifyPersonPopupPanel;
+	}
+
+	/**
+	 * @return the idLabel
+	 */
+	public JLabel getIdLabel() {
+		return idLabel;
+	}
+
+	/**
+	 * @return the oldNameTextField
+	 */
+	public JTextField getOldNameTextField() {
+		return oldNameTextField;
+	}
+
+	/**
+	 * @return the modifiedNameTextField
+	 */
+	public JTextField getModifiedNameTextField() {
+		return modifiedNameTextField;
 	}	
 	
 	

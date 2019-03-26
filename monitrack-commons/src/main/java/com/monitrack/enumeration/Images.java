@@ -18,6 +18,10 @@ public enum Images {
 	
 	INFINITE_LOOP("infinite_loop_icon.png"),
 	
+	EDIT_PERSON("edit_person_icon.png"),
+	
+	SUCCESS("success_stick.png"),
+	
 	SUPER("superman_batman.png");
 
 	/***** attribut of enums *****/

@@ -40,7 +40,8 @@ public class SuperUserModeDialogListener implements ActionListener {
 			
 			if(superUserModeDialog.getFillRadioButton().isSelected())
 			{
-				requestType = RequestType.INSERT;				
+				requestType = RequestType.INSERT;	
+				//FIXME
 			}
 			else if(superUserModeDialog.getEmptyRadioButton().isSelected())
 			{

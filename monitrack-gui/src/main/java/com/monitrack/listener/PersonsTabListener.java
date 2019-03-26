@@ -2,7 +2,6 @@ package com.monitrack.listener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,13 +14,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.monitrack.entity.Person;
-import com.monitrack.enumeration.JSONField;
+import com.monitrack.enumeration.Images;
 import com.monitrack.enumeration.RequestType;
-import com.monitrack.exception.NoAvailableConnectionException;
 import com.monitrack.gui.panel.PersonsTab;
 import com.monitrack.shared.MonitrackGUIFactory;
 import com.monitrack.util.JsonUtil;
-import com.monitrack.util.Util;
 
 public class PersonsTabListener implements ActionListener {
 
@@ -38,6 +35,7 @@ public class PersonsTabListener implements ActionListener {
 		values = new ArrayList<String>();	
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
@@ -76,11 +74,57 @@ public class PersonsTabListener implements ActionListener {
 				JButton clickedButton = (JButton)e.getSource();
 				if(clickedButton == personsTab.getCreateButton())
 				{
-					//FIXME
+					String value = personsTab.getNewNameTextField().getText().trim();
+					if(value.length() <= 0)
+					{
+						JOptionPane.showMessageDialog(personsTab, "Le nom ne peut pas être vide", "Nom incorect", JOptionPane.ERROR_MESSAGE);
+					}
+					else
+					{
+						Person newPerson = new Person(value);
+						String serializedObject = JsonUtil.serializeObject(newPerson, Person.class, "");
+						String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, Person.class, serializedObject, null, null);
+						String response = MonitrackGUIFactory.sendRequest(jsonRequest);
+						newPerson = (Person)JsonUtil.deserializeObject(response);
+						JOptionPane.showMessageDialog(personsTab, "Nouvelle personne créée avec l'id n°" + newPerson.getIdPerson(), "Succes", JOptionPane.INFORMATION_MESSAGE, Images.SUCCESS.getIcon());
+						
+					}
 				}
 				else if(clickedButton == personsTab.getModifyButton())
 				{
-					//FIXME open a JOption Pane to modify the Person
+					int comboboxIndex = personsTab.getModifyPersonsCombobox().getSelectedIndex();
+					if(comboboxIndex >= 0 && comboboxIndex < persons.size())
+					{
+						Person personToUpadte = persons.get(comboboxIndex);
+
+						// Set the id for the dalog panel
+						personsTab.getIdLabel().setText("ID : " + personToUpadte.getIdPerson());
+						//Set the name of the person in the texfield for the update
+						personsTab.getOldNameTextField().setText(personToUpadte.getNamePerson());
+						//Remove old text of the new Name text field
+						personsTab.getModifiedNameTextField().setText("");
+						
+						int choice = JOptionPane.showConfirmDialog(personsTab, personsTab.getModifyPersonPopupPanel(), 
+								"Modifier", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, Images.EDIT_PERSON.getIcon());
+						
+						//If the user clicks on OK Button
+						if(choice == 0)
+						{
+							String newName = personsTab.getModifiedNameTextField().getText().trim();
+							if(newName.length() <= 0)
+							{
+								JOptionPane.showMessageDialog(personsTab, "Le nouveau nom ne peut pas être vide", "Erreur", JOptionPane.ERROR_MESSAGE);
+							}
+							else
+							{
+								personToUpadte.setNamePerson(newName);
+								String serializedObject = JsonUtil.serializeObject(personToUpadte, Person.class, "");
+								String jsonRequest = JsonUtil.serializeRequest(RequestType.UPDATE, Person.class, serializedObject, null, null);
+								MonitrackGUIFactory.sendRequest(jsonRequest);
+								setComboboxWithPersons(personsTab.getModifyPersonsCombobox());
+							}
+						}
+					}
 				}
 				else if(clickedButton == personsTab.getDeleteButton())
 				{
@@ -138,6 +182,7 @@ public class PersonsTabListener implements ActionListener {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	private void setComboboxWithPersons(JComboBox<String> combobox)
 	{
 		String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Person.class, null, null, null);
