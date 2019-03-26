@@ -69,6 +69,12 @@ public class RequestHandler implements Runnable {
 		}
 	}
 
+	/**
+	 * Filter the request in order to know which type of request it is
+	 * 
+	 * @param jsonFormattedRequest
+	 * @return
+	 */
 	@SuppressWarnings("finally")
 	public String executeClientRequest(String jsonFormattedRequest) 
 	{		
@@ -116,14 +122,24 @@ public class RequestHandler implements Runnable {
 		}
 
 	}
-
+	
+	/**
+	 * Executes a select request
+	 * 
+	 * @param entityClass
+	 * @param requestNode: contains the filters (like the required fields and values)
+	 * @return
+	 * @throws Exception
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private String executeClientSelectRequest(Class<?> entityClass, JsonNode requestNode) throws Exception
 	{
 
 		mapper = new ObjectMapper();
-		String result = "";		
+		String result = "";
+		// The fields we wants to filter
 		String fieldsStringFromJson = requestNode.get(JSONField.REQUESTED_FIELDS.getLabel()).toString();
+		// The values of the filters we want to filter
 		String valuesStringFromJson = requestNode.get(JSONField.REQUIRED_VALUES.getLabel()).toString();
 
 		List<String> fields = null;
@@ -135,26 +151,49 @@ public class RequestHandler implements Runnable {
 			requiredValues = mapper.readValue(valuesStringFromJson, mapper.getTypeFactory().constructCollectionType(List.class, String.class));		
 		}	
 		
+		// Retrieves the DAO according to the entity we want
 		DAO dao = DAOFactory.getDAO(connection, entityClass);
 		result = JsonUtil.serializeObject(dao.find(fields, requiredValues), entityClass, "");
 
 		return result;		
 	}
 
+	/**
+	 * Executes a client insert request
+	 * 
+	 * @param entityClass
+	 * @param requestNode
+	 * @param serializedObjectNode : the serialized object to Insert
+	 * @return
+	 * @throws UnknownClassException
+	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private String executeClientInsertRequest(Class<?> entityClass, JsonNode requestNode, JsonNode serializedObjectNode) throws UnknownClassException
 	{
 		Object deserializedObject = JsonUtil.deserializeObject(serializedObjectNode.toString());
+		
+		// Retrieves the DAO according to the entity we want
 		DAO dao = DAOFactory.getDAO(connection, entityClass);
 		Object obj = dao.create(entityClass.cast(deserializedObject));
 		String result = JsonUtil.serializeObject(entityClass.cast(obj), entityClass, "");
 		return result;
 	}
 
+	/**
+	 * Executes a client update request
+	 * 
+	 * @param entityClass
+	 * @param requestNode
+	 * @param serializedObjectNode : the serialized object to update
+	 * @return
+	 * @throws UnknownClassException
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private String executeClientUpdateRequest(Class<?> entityClass, JsonNode requestNode, JsonNode dataNode) throws UnknownClassException
+	private String executeClientUpdateRequest(Class<?> entityClass, JsonNode requestNode, JsonNode serializedObjectNode) throws UnknownClassException
 	{
-		Object deserializedObject = JsonUtil.deserializeObject(dataNode.toString());		
+		Object deserializedObject = JsonUtil.deserializeObject(serializedObjectNode.toString());	
+		
+		// Retrieves the DAO according to the entity we want	
 		DAO dao = DAOFactory.getDAO(connection, entityClass);
 		dao.update(entityClass.cast(deserializedObject));
 		String result = JsonUtil.serializeObject(null, entityClass, "");
@@ -162,10 +201,21 @@ public class RequestHandler implements Runnable {
 	}
 
 
+	/**
+	 * Executes a client delete request
+	 * 
+	 * @param entityClass
+	 * @param requestNode
+	 * @param serializedObjectNode : the serialized object to delete
+	 * @return
+	 * @throws UnknownClassException
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private String executeClientDeleteRequest(Class<?> entityClass, JsonNode requestNode, JsonNode dataNode) throws UnknownClassException
+	private String executeClientDeleteRequest(Class<?> entityClass, JsonNode requestNode, JsonNode serializedObjectNode) throws UnknownClassException
 	{
-		Object deserializedObject = JsonUtil.deserializeObject(dataNode.toString());
+		Object deserializedObject = JsonUtil.deserializeObject(serializedObjectNode.toString());
+
+		// Retrieves the DAO according to the entity we want
 		DAO dao = DAOFactory.getDAO(connection, entityClass);
 		dao.delete(entityClass.cast(deserializedObject));
 		String result = JsonUtil.serializeObject(null, entityClass, "");
