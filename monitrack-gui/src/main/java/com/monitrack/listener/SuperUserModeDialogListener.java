@@ -3,7 +3,6 @@ package com.monitrack.listener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
 import com.monitrack.entity.Location;

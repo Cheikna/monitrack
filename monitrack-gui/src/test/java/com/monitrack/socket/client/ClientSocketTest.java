@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import com.monitrack.entity.Person;
 import com.monitrack.enumeration.ConnectionState;
 import com.monitrack.enumeration.RequestType;
-import com.monitrack.shared.MonitrackGUIFactory;
 import com.monitrack.socket.client.ClientSocket;
 import com.monitrack.util.JsonUtil;
 
@@ -62,6 +61,7 @@ public class ClientSocketTest {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testRequestWithFilters()
 	{

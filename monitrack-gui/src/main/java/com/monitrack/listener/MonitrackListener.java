@@ -1,7 +1,6 @@
 package com.monitrack.listener;
 
 import java.awt.event.WindowEvent;
-import java.io.IOException;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -14,14 +13,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 
-import com.monitrack.entity.Location;
 import com.monitrack.enumeration.ConnectionState;
 import com.monitrack.enumeration.Images;
-import com.monitrack.enumeration.RequestType;
-import com.monitrack.exception.NoAvailableConnectionException;
 import com.monitrack.gui.frame.MonitrackFrame;
 import com.monitrack.shared.MonitrackGUIFactory;
-import com.monitrack.util.JsonUtil;
 
 public class MonitrackListener extends WindowAdapter implements ActionListener {
 

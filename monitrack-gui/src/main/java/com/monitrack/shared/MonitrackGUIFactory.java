@@ -32,11 +32,7 @@ public class MonitrackGUIFactory {
 			response = clientSocket.sendRequestToServer(jsonRequest);
 			
 			//Checks if we reserved a connection, because the response is not in json format
-			if(jsonRequest.trim().equals(ConnectionState.RESERVED_CONNECTION.getCode().toString()))
-			{
-				response = ConnectionState.RESERVED_CONNECTION.getFrenchLabel();
-			}
-			else
+			if(!jsonRequest.trim().equals(ConnectionState.RESERVED_CONNECTION.getCode().toString()))
 			{
 				String error = JsonUtil.getJsonNodeValue(JSONField.ERROR_MESSAGE, response).trim();
 				

@@ -10,8 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.monitrack.enumeration.ConnectionState;
-import com.monitrack.exception.NoAvailableConnectionException;
-import com.monitrack.shared.MonitrackGUIFactory;
 import com.monitrack.util.JsonUtil;
 import com.monitrack.util.Util;
 
@@ -82,7 +80,10 @@ public class ClientSocket {
 	{
 		String responseFromServer = "";
 
-		log.info("Request sent to the server :\n" + JsonUtil.indentJsonOutput(requestToSendToServer));
+		if(requestToSendToServer.trim().equals(ConnectionState.RESERVED_CONNECTION.getCode().toString()))
+			log.info("You are trying to reserve a connection");
+		else
+			log.info("Request sent to the server :\n" + JsonUtil.indentJsonOutput(requestToSendToServer));
 
 		// Sends the request to the server
 		writeToServer.println(requestToSendToServer);
@@ -95,7 +96,6 @@ public class ClientSocket {
 
 	private void exit()
 	{
-		log.info("Exit");
 		try {
 			if(readFromServer != null)
 				readFromServer.close();

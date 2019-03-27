@@ -58,10 +58,11 @@ public class RequestHandler implements Runnable {
 			if(requestOfClient.trim().equalsIgnoreCase(reservedConnectionCode))
 			{
 				//Sleep the Thread in order to make the connection no accessible by another person
-				int reservedTimeInMilliseconds = 10000;
+				int reservedTimeInMilliseconds = 15000;
 				String reservedTime = (new Integer(reservedTimeInMilliseconds / 1000)).toString() + " sec";
 				log.info("A client has reserved a connection for " + reservedTime + "\n");
-				writeToClient.println(reservedConnectionCode + " : Votre connexion ne sera pas utilisable par les autres durant " + reservedTime);
+				String message = "Votre connexion ne sera pas utilisable par les autres durant " + reservedTime;
+				writeToClient.println(message);
 				Thread.sleep(reservedTimeInMilliseconds);
 				log.info("A client has release its reserved connection !");
 			}
@@ -240,7 +241,7 @@ public class RequestHandler implements Runnable {
 	/**
 	 * This method will give back the connection to the pool and close the socket
 	 */
-	public void exit()
+	private void exit()
 	{
 		try 
 		{

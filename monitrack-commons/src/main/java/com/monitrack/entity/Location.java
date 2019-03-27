@@ -76,12 +76,18 @@ public class Location {
 	public void setCreationDate(Timestamp creationDate) {
 		this.creationDate = creationDate;
 	}
+	
 	@Override
 	public String toString() {
 		return idLocation + "#" + nameLocation + " - créé le " + creationDate;
 		/*return "Location [idLocation=" + idLocation + ", nameLocation=" + nameLocation + ", center=" + center
 				+ ", creationDate=" + creationDate + ", idSensor=" + idSensor + "]";*/
 	}
+	
+	public String toStringFull() {
+		return idLocation + "#" + nameLocation + " - créé le " + creationDate;
+	}
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */

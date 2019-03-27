@@ -26,6 +26,16 @@ public enum Images {
 	
 	DEVELOPER("developer.png"),
 	
+	ADD_ICON("add_icon.png"),
+	
+	MODIFY_ICON("edit_icon.png"),
+	
+	DELETE_ICON("delete_icon.png"),
+	
+	SEARCH_ICON("search_icon.png"),
+	
+	LOCATION_ICON("location_icon.png"),
+	
 	SUPER("superman_batman.png");
 
 	/***** attribut of enums *****/

@@ -7,7 +7,6 @@ import java.awt.Font;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -17,6 +16,8 @@ import javax.swing.JTextField;
 import com.monitrack.listener.PersonsTabListener;
 
 public class PersonsTab extends JPanel {
+
+	private static final long serialVersionUID = 1L;
 	
 	/***** Panels *****/
 	private JPanel northPanel;
@@ -26,32 +27,32 @@ public class PersonsTab extends JPanel {
 	private JPanel northPanelForDelete;
 	private JPanel northPanelForShow;
 	//private JPanel centerPanel;
-	
+
 	private JLabel newNameLabel;
 	private JLabel actionLabel;
-	
+
 	private JComboBox<String> actionsCombobox;
 	private JComboBox<String> modifyPersonsCombobox;
 	private JComboBox<String> deletePersonsCombobox;
 	private JComboBox<String> filter1ForShowCombobox;
 	private JComboBox<String> filter2ForShowCombobox;
-	
+
 	private PersonsTabListener listener;
 
 
 	private JTextField newNameTextField;
 	private JTextField filter1TextField;
 	private JTextField filter2TextField;
-	
+
 	private JTextArea textArea;
-	
-	
+
+
 	/***** Buttons for the CRUD (Create, Read, Update and Delete) *****/ 
 	private JButton createButton;
 	private JButton modifyButton;
 	private JButton deleteButton;
 	private JButton showButton;
-	
+
 	/***** Dialog for updating a person *****/
 	private JPanel modifyPersonPopupPanel;
 	private JLabel idLabel;
@@ -59,7 +60,7 @@ public class PersonsTab extends JPanel {
 	private JTextField oldNameTextField;
 	private JLabel modifiedNameLabel;
 	private JTextField modifiedNameTextField;
-	
+
 
 	public PersonsTab() {
 		super(new BorderLayout());
@@ -67,17 +68,38 @@ public class PersonsTab extends JPanel {
 		listener = new PersonsTabListener(this);
 		northPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		textArea = new JTextArea();	
-		
+
 		//Panel to choose the CRUD Operation to do
 		northPanelActionsChoice = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		actionLabel = new JLabel("Action : ");
 		String[] items = {"Ajouter", "Modifier", "Supprimer", "Visualiser"};
 		actionsCombobox = new JComboBox<String>(items);
 		northPanelActionsChoice.add(actionLabel);
-		northPanelActionsChoice.add(actionsCombobox);
+		northPanelActionsChoice.add(actionsCombobox);	
+
+
+		setCreateMenu();
+		setModifyMenu();
+		setShowMenu();
+		setDeleteMenu();
+
+		Font textAreaFont = new Font("Calibri", Font.PLAIN, 25);
+		textArea.setFont(textAreaFont);
+		textArea.setEditable(false);
+		JScrollPane scroll = new JScrollPane(textArea);
+
+		actionsCombobox.addActionListener(listener);
+		actionsCombobox.setSelectedItem(items[0]);
 		
-		
-		
+		add(northPanel, BorderLayout.NORTH);
+		add(scroll, BorderLayout.CENTER);
+
+		setModifyPersonDialog();
+
+	}
+
+	private void setCreateMenu()
+	{
 		//Panel for the creation operation
 		northPanelForCreate = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		createButton = new JButton("Créer");
@@ -87,11 +109,10 @@ public class PersonsTab extends JPanel {
 		northPanelForCreate.add(newNameLabel);
 		northPanelForCreate.add(newNameTextField);
 		northPanelForCreate.add(createButton);	
-		
-	
-		actionsCombobox.addActionListener(listener);
-		actionsCombobox.setSelectedItem(items[0]);
-		
+	}
+
+	private void setModifyMenu()
+	{
 		//Panel for the update operation
 		northPanelForModify = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		modifyPersonsCombobox = new JComboBox<String>();
@@ -100,18 +121,10 @@ public class PersonsTab extends JPanel {
 		northPanelForModify.add(new JLabel("Sélectionner une personne : "));
 		northPanelForModify.add(modifyPersonsCombobox);
 		northPanelForModify.add(modifyButton);
-		
-		
-		//Panel for the delete operation
-		northPanelForDelete = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		deletePersonsCombobox = new JComboBox<String>();
-		deleteButton = new JButton("Supprimer");
-		deleteButton.addActionListener(listener);
-		northPanelForDelete.add(new JLabel("Sélectionner une personne : "));
-		northPanelForDelete.add(deletePersonsCombobox);
-		northPanelForDelete.add(deleteButton);
-		
-		
+	}
+
+	private void setShowMenu()
+	{
 		//Panel for the show operation
 		northPanelForShow = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		showButton = new JButton("Visualiser");
@@ -129,20 +142,20 @@ public class PersonsTab extends JPanel {
 		northPanelForShow.add(filter2ForShowCombobox);
 		northPanelForShow.add(filter2TextField);
 		northPanelForShow.add(showButton);
-		
-		Font textAreaFont = new Font("Calibri", Font.PLAIN, 25);
-		textArea.setFont(textAreaFont);
-		textArea.setEditable(false);
-		JScrollPane scroll = new JScrollPane(textArea);
-		
-		add(northPanel, BorderLayout.NORTH);
-		add(scroll, BorderLayout.CENTER);
-		
-		setModifiyPersonDialog();
-
 	}
-	
-	private void setModifiyPersonDialog()
+
+	private void setDeleteMenu() {
+		//Panel for the delete operation
+		northPanelForDelete = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		deletePersonsCombobox = new JComboBox<String>();
+		deleteButton = new JButton("Supprimer");
+		deleteButton.addActionListener(listener);
+		northPanelForDelete.add(new JLabel("Sélectionner une personne : "));
+		northPanelForDelete.add(deletePersonsCombobox);
+		northPanelForDelete.add(deleteButton);
+	}
+
+	private void setModifyPersonDialog()
 	{
 		modifyPersonPopupPanel = new JPanel();
 		modifyPersonPopupPanel.setLayout(new BoxLayout(modifyPersonPopupPanel, BoxLayout.Y_AXIS));
@@ -152,7 +165,7 @@ public class PersonsTab extends JPanel {
 		oldNameTextField.setEditable(false);
 		modifiedNameLabel = new JLabel("Nouveau nom :");
 		modifiedNameTextField = new JTextField(15);
-		
+
 		modifyPersonPopupPanel.add(idLabel);
 		modifyPersonPopupPanel.add(oldNameLabel);
 		modifyPersonPopupPanel.add(oldNameTextField);
@@ -312,7 +325,15 @@ public class PersonsTab extends JPanel {
 	 */
 	public JTextField getModifiedNameTextField() {
 		return modifiedNameTextField;
+	}
+
+	/**
+	 * @return the actionsCombobox
+	 */
+	public JComboBox<String> getActionsCombobox() {
+		return actionsCombobox;
 	}	
 	
-	
+
+
 }

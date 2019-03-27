@@ -42,32 +42,35 @@ public class PersonsTabListener implements ActionListener {
 
 		try
 		{
-
 			personsTab.getTextArea().setText("");
 			//Case when the user chooses the CRUD Operation he wants to do
 			if(e.getSource() instanceof JComboBox)
 			{
 				JComboBox combo = (JComboBox)e.getSource();
-				personsTab.getNorthPanel().removeAll();
-				personsTab.getNorthPanel().add(personsTab.getNorthPanelActionsChoice());
-				if(combo.getSelectedItem().equals("Ajouter"))
+				if(combo == personsTab.getActionsCombobox())
 				{
-					personsTab.getNorthPanel().add(personsTab.getNorthPanelForCreate());			
+					personsTab.getNorthPanel().removeAll();
+					personsTab.getNorthPanel().add(personsTab.getNorthPanelActionsChoice());
+					if(combo.getSelectedItem().equals("Ajouter"))
+					{
+						personsTab.getNorthPanel().add(personsTab.getNorthPanelForCreate());			
+					}
+					else if(combo.getSelectedItem().equals("Modifier"))
+					{	
+						setComboboxWithPersons(personsTab.getModifyPersonsCombobox());
+						personsTab.getNorthPanel().add(personsTab.getNorthPanelForModify());				
+					}
+					else if(combo.getSelectedItem().equals("Supprimer"))
+					{
+						setComboboxWithPersons(personsTab.getDeletePersonsCombobox());
+						personsTab.getNorthPanel().add(personsTab.getNorthPanelForDelete());		
+					}
+					else if(combo.getSelectedItem().equals("Visualiser"))
+					{
+						personsTab.getNorthPanel().add(personsTab.getNorthPanelForShow());
+					}
 				}
-				else if(combo.getSelectedItem().equals("Modifier"))
-				{	
-					setComboboxWithPersons(personsTab.getModifyPersonsCombobox());
-					personsTab.getNorthPanel().add(personsTab.getNorthPanelForModify());				
-				}
-				else if(combo.getSelectedItem().equals("Supprimer"))
-				{
-					setComboboxWithPersons(personsTab.getDeletePersonsCombobox());
-					personsTab.getNorthPanel().add(personsTab.getNorthPanelForDelete());		
-				}
-				else if(combo.getSelectedItem().equals("Visualiser"))
-				{
-					personsTab.getNorthPanel().add(personsTab.getNorthPanelForShow());
-				}
+				
 			}
 			// Case when the user clicks on a confirm Button
 			else if(e.getSource() instanceof JButton)

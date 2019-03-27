@@ -249,7 +249,7 @@ _Vous trouverez dans chaque dossier commençant par la lettre 'v' suivi d'un numé
 
 
 ## Release 2 (R2)
-### Avec 2 connexions dans le pool de connexions
+### Pour cette release, il n'y aura que 1 connexion dans le pool de connexions
 1. [Se connecter au serveur de production](#connexion-au-serveur-de-production).
 2. Lancer monitrack-service-vm-<numero_de_version>.jar sur la machine virtuelle *MONITRACK_SERVICE_PROD* en utilisant la commande suivante :
 
@@ -267,7 +267,7 @@ toto@ubuntu:~$ java -jar monitrack-service-vm-<numero_de_version>.jar
 ** Attention : les opérations suivantes nécessitent d'être rapide **
 11. Sur la machine 1, appuyer le deuxième bouton (avec une image de boucle infinie) en haut à gauche. Ainsi, une connexion sera réservée par la machine 1.
 12. Sur la machine 2, appuyer sur le bouton de visualisation nommé _Visualiser_.
-13. Au bout de quelques secondes, sur la machine 2, une exception sera levée et un message sera afficher au client car aucune connexion n'est disponible.
+13. Au bout de quelques secondes, sur la machine 2, une exception sera levée et un message sera affiché au client car aucune connexion n'est disponible.
 14. Présenter les tests effectués.
 
 # Si des erreurs apparaissent
