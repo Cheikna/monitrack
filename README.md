@@ -39,6 +39,7 @@ Lorsque vous ferez un push, vous verrez sûrement les dossiers **monitrackCommons
 ![image](https://drive.google.com/uc?export=view&id=19JF2dXPtEaYFveyLclB02l6P9P7j_bt7) 
 
 Si c'est le cas vous pourrez alors supprimer les dossiers **monitrackCommons**, **monitrackGUI** et **monitrackService** de votre disque dur.
+Enfin, importer les projets **monitrack-commons**, **monitrack-gui** et **monitrack-service** (qui sont tous des projets Maven) dans votre _Workspace_.
 Faites également un _Maven > Update Project_ si des erreurs apparaissent.
 
 # Quelques conventions de nommages
@@ -248,6 +249,7 @@ _Vous trouverez dans chaque dossier commençant par la lettre 'v' suivi d'un numé
 
 
 ## Release 2 (R2)
+### Avec 2 connexions dans le pool de connexions
 1. [Se connecter au serveur de production](#connexion-au-serveur-de-production).
 2. Lancer monitrack-service-vm-<numero_de_version>.jar sur la machine virtuelle *MONITRACK_SERVICE_PROD* en utilisant la commande suivante :
 
@@ -255,16 +257,17 @@ _Vous trouverez dans chaque dossier commençant par la lettre 'v' suivi d'un numé
 toto@ubuntu:~$ java -jar monitrack-service-vm-<numero_de_version>.jar
 ```
 3. Pendant que les connexions se créées, ouvrir le .jar monitrack-gui-vm-<numero_de_version>.jar sur la machine locale.
-4. Une fois les connexions créées sur la machine virtuelle, un message devrait s'afficher : _Waiting for a client connection..._
-5. Sur l'application client, appuyer sur le bouton _Accéder aux serveurs_ et entrer son nom.
-6. Patienter pendant que le client tente d'accéder aux serveurs
-7. Un message devrait s'afficher pour indiquer que la connexion aux serveurs a été réussie.
-8. Refaire les étapes 5 à 7 sur deux autres machines, et l'une d'elles ne dravrait pas pouvoir accéder aux serveurs et un message d'erreur s'affichera.
-9. Quitter l'application d'un client qui a réussi la connexion aux serveurs.
-10. Se connecter aux serveurs avec la machine du client qui n'avait pas réussi à se connecter aux serveurx, et la connexion derait réussir.
-11. Effectuer des créations sur les deux clients simultanément.
-12. Afficher tous les éléments et on devrait voir ce que l'autre client a également fait.
-13. Sur les deux clients faire des opérations en simultané et observer les résultats.
+4. Une fois les connexions créées sur la machine virtuelle, un message devrait s'afficher : _Waiting for a client's request..._
+5. Sur l'application client, appuyer sur le bouton _Accéder à la page d'accueil_.
+6. Effectuer les opérations _d'ajout_, _de mise à jour_, _de suppression_ et_de visualisation_.
+7. Ouvrir l'IHM sur une autre machine et effectuer les mêmes opérations qu'à l'étape 7
+8. Afficher tous les éléments et on devrait voir ce que l'autre client a également fait.
+9. Sur une des deux machines clients (que l'on nommera _machine 1_), se mettre en mode administrateur en cliquant sur le bouton en haut à gauche et entrer le mot de passe.
+10. Sur l'autre machine (que l'on nommera _machine_2), choisir l'action de _Visualisation_ dans la première combobox.
+** Attention : les opérations suivantes nécessitent d'être rapide **
+11. Sur la machine 1, appuyer le deuxième bouton (avec une image de boucle infinie) en haut à gauche. Ainsi, une connexion sera réservée par la machine 1.
+12. Sur la machine 2, appuyer sur le bouton de visualisation nommé _Visualiser_.
+13. Au bout de quelques secondes, sur la machine 2, une exception sera levée et un message sera afficher au client car aucune connexion n'est disponible.
 14. Présenter les tests effectués.
 
 # Si des erreurs apparaissent

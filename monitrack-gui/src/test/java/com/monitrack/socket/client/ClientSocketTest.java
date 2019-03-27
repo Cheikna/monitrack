@@ -73,13 +73,21 @@ public class ClientSocketTest {
 			String name = "Franck";
 			values.add(name);
 			String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Person.class, null, fields, values);
-			String response = MonitrackGUIFactory.sendRequest(jsonRequest);
-			List<Person> persons = (List<Person>) JsonUtil.deserializeObject(response);
 			
-			for (Person person : persons) 
+			ConnectionState connectionState = clientSocket.start();
+			if(connectionState == ConnectionState.SUCCESS)
 			{
-				assertEquals(person.getNamePerson(), name);
-			} 
+				String response = clientSocket.sendRequestToServer(jsonRequest);
+				List<Person> persons = (List<Person>) JsonUtil.deserializeObject(response);
+				
+				for (Person person : persons) 
+				{
+					assertEquals(person.getNamePerson(), name);
+				}
+			}
+			else
+				fail("The connection with the server failed !");
+			 
 		} 
 		catch (Exception e) {
 			log.error(e.getMessage());
