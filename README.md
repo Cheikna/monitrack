@@ -236,7 +236,7 @@ toto@ubuntu:~$ sudo iptables-restore < /etc/iptables_bdd_prod.rules
 toto@ubuntu:~$ sudo iptables-restore < /etc/iptables_service_prod.rules
 ```
 3. Télécharger sur le machine virtuelle *MONITRACK_SERVICE_PROD* la dernière version du projet disponible sur le site : http://cheikna98.free.fr/esipe/ing1/pds/prod/ 
-_Vous trouverez dans chaque dossier commençant par la lettre 'v' suivi d'un numéro de version, le .jar 'service' (qui se chargera de récupérer les données de la base de données) et le .jar 'gui' qui est l'interface graphique pour le client_
+_Vous trouverez dans chaque dossier commençant par la lettre 'r' suivi d'un numéro de release, le .jar 'service' (qui se chargera de récupérer les données de la base de données) et le .jar 'gui' qui est l'interface graphique pour le client_
 
 # Scenarios de demonstration
 ## Release 1 (R1)
@@ -251,12 +251,12 @@ _Vous trouverez dans chaque dossier commençant par la lettre 'v' suivi d'un numé
 ## Release 2 (R2)
 ### Pour cette release, il n'y aura que 1 connexion dans le pool de connexions
 1. [Se connecter au serveur de production](#connexion-au-serveur-de-production).
-2. Lancer monitrack-service-vm-<numero_de_version>.jar sur la machine virtuelle *MONITRACK_SERVICE_PROD* en utilisant la commande suivante :
+2. Lancer monitrack-service-vm-2.jar sur la machine virtuelle *MONITRACK_SERVICE_PROD* en utilisant la commande suivante :
 
 ```
-toto@ubuntu:~$ java -jar monitrack-service-vm-<numero_de_version>.jar
+toto@ubuntu:~$ java -jar monitrack-service-vm-2.jar
 ```
-3. Pendant que les connexions se créées, ouvrir le .jar monitrack-gui-vm-<numero_de_version>.jar sur la machine locale.
+3. Pendant que les connexions se créées, ouvrir le .jar monitrack-gui-vm-2.jar sur la machine locale.
 4. Une fois les connexions créées sur la machine virtuelle, un message devrait s'afficher : _Waiting for a client's request..._
 5. Sur l'application client, appuyer sur le bouton _Accéder à la page d'accueil_.
 6. Effectuer les opérations _d'ajout_, _de mise à jour_, _de suppression_ et_de visualisation_.
