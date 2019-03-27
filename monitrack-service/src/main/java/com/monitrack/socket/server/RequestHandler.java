@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.monitrack.connection.pool.implementation.DataSource;
 import com.monitrack.dao.abstracts.DAO;
 import com.monitrack.dao.implementation.DAOFactory;
+import com.monitrack.enumeration.ConnectionState;
 import com.monitrack.enumeration.JSONField;
 import com.monitrack.enumeration.RequestType;
 import com.monitrack.exception.UnknownClassException;
@@ -53,10 +54,24 @@ public class RequestHandler implements Runnable {
 			writeToClient = new PrintWriter(socket.getOutputStream(), true);
 			
 			String requestOfClient = readFromClient.readLine();
-			log.info("Request received from the client :\n" + JsonUtil.indentJsonOutput(requestOfClient) + "\n");
-			String responseToClient = executeClientRequest(requestOfClient);
-			log.info("Response to the client :\n" + JsonUtil.indentJsonOutput(responseToClient) + "\n");
-			writeToClient.println(responseToClient);
+			String reservedConnectionCode = ConnectionState.RESERVED_CONNECTION.getCode().toString();
+			if(requestOfClient.trim().equalsIgnoreCase(reservedConnectionCode))
+			{
+				//Sleep the Thread in order to make the connection no accessible by another person
+				int reservedTimeInMilliseconds = 10000;
+				String reservedTime = (new Integer(reservedTimeInMilliseconds / 1000)).toString() + " sec";
+				log.info("A client has reserved a connection for " + reservedTime + "\n");
+				writeToClient.println(reservedConnectionCode + " : Votre connexion ne sera pas utilisable par les autres durant " + reservedTime);
+				Thread.sleep(reservedTimeInMilliseconds);
+				log.info("A client has release its reserved connection !");
+			}
+			else
+			{
+				log.info("Request received from the client :\n" + JsonUtil.indentJsonOutput(requestOfClient) + "\n");
+				String responseToClient = executeClientRequest(requestOfClient);
+				log.info("Response to the client :\n" + JsonUtil.indentJsonOutput(responseToClient) + "\n");
+				writeToClient.println(responseToClient);				
+			}
 
 		}
 		catch (Exception e) 

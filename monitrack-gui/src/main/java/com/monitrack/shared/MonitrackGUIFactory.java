@@ -30,20 +30,29 @@ public class MonitrackGUIFactory {
 		if(state == ConnectionState.SUCCESS)
 		{
 			response = clientSocket.sendRequestToServer(jsonRequest);
-			String error = JsonUtil.getJsonNodeValue(JSONField.ERROR_MESSAGE, response).trim();
 			
-			if(!error.equals(""))
+			//Checks if we reserved a connection, because the response is not in json format
+			if(jsonRequest.trim().equals(ConnectionState.RESERVED_CONNECTION.getCode().toString()))
 			{
-				JOptionPane.showMessageDialog(null, error, "Erreur", JOptionPane.ERROR_MESSAGE);
-				throw new NoAvailableConnectionException();
+				response = ConnectionState.RESERVED_CONNECTION.getFrenchLabel();
+			}
+			else
+			{
+				String error = JsonUtil.getJsonNodeValue(JSONField.ERROR_MESSAGE, response).trim();
+				
+				if(!error.equals(""))
+				{
+					JOptionPane.showMessageDialog(null, error, "Erreur", JOptionPane.ERROR_MESSAGE);
+					throw new NoAvailableConnectionException();
+				}
+				
+				log.info("Response from the server :\n" + JsonUtil.indentJsonOutput(response));
 			}
 			
-			log.info("Response from the server :\n" + JsonUtil.indentJsonOutput(response));
 			return response;
 		}
 		else
-		{
-			showNoConnectionMessage();	
+		{	
 			throw new NoAvailableConnectionException();
 		}
 	}

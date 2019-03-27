@@ -2,6 +2,7 @@ package com.monitrack.listener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -173,6 +174,10 @@ public class PersonsTabListener implements ActionListener {
 			//Updates the Panel
 			personsTab.revalidate();
 			personsTab.repaint();
+		}
+		catch(IOException e1)
+		{
+			MonitrackGUIFactory.showNoConnectionMessage();			
 		}
 		catch(Exception e1)
 		{

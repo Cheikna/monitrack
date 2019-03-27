@@ -1,6 +1,7 @@
 package com.monitrack.listener;
 
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -14,8 +15,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 
 import com.monitrack.entity.Location;
+import com.monitrack.enumeration.ConnectionState;
 import com.monitrack.enumeration.Images;
 import com.monitrack.enumeration.RequestType;
+import com.monitrack.exception.NoAvailableConnectionException;
 import com.monitrack.gui.frame.MonitrackFrame;
 import com.monitrack.shared.MonitrackGUIFactory;
 import com.monitrack.util.JsonUtil;
@@ -25,7 +28,6 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 	private static final Logger log = LoggerFactory.getLogger(MonitrackListener.class);
 
 	private MonitrackFrame monitrackFrame;	
-	private boolean isInfiniteRequestActive = false;
 
 	/**
 	 * 
@@ -78,36 +80,20 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 		{
 			monitrackFrame.getSuperUserModeDialog().setVisible(true);
 		}
-		else if(e.getSource() == monitrackFrame.getInfiniteRequestButton())
+		else if(e.getSource() == monitrackFrame.getReserveConnectionButton())
 		{
-			isInfiniteRequestActive = !isInfiniteRequestActive;
-			startInfiniteRequest();
+			try 
+			{
+				String response = MonitrackGUIFactory.sendRequest(ConnectionState.RESERVED_CONNECTION.getCode().toString());
+				JOptionPane.showMessageDialog(monitrackFrame, response, "Connexion réservée", JOptionPane.INFORMATION_MESSAGE);
+			} 
+			catch (Exception e1) 
+			{
+				log.error(e1.getMessage());
+			}
+			
 		}
 
-	}
-
-	public void startInfiniteRequest()
-	{
-		Thread thread = new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				while(isInfiniteRequestActive)
-				{					
-					try 
-					{
-						String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Location.class, null, null, null);
-						String response = MonitrackGUIFactory.sendRequest(jsonRequest);
-					}  
-					catch (Exception e) 
-					{
-						log.error(e.getMessage());
-					}
-				}
-
-			}
-		});
-		thread.start();
 	}
 
 }

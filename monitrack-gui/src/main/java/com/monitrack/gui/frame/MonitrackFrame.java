@@ -28,7 +28,7 @@ public class MonitrackFrame extends JFrame
 	private JButton superUserModeButton;
 	private SuperUserModeDialog superUserModeDialog;
 
-	private JButton infiniteRequestButton;
+	private JButton reserveConectionButton;
 
 	//Panel which contains the superUserModeButton
 	private JPanel northPanel;
@@ -57,9 +57,9 @@ public class MonitrackFrame extends JFrame
 		superUserModeButton.addActionListener(listener);
 		superUserModeButton.setToolTipText("Mode super utilisateur");
 
-		infiniteRequestButton = new JButton(Images.INFINITE_LOOP.getIcon());
-		infiniteRequestButton.addActionListener(listener);
-		infiniteRequestButton.setToolTipText("Requête en infini");
+		reserveConectionButton = new JButton(Images.INFINITE_LOOP.getIcon());
+		reserveConectionButton.addActionListener(listener);
+		reserveConectionButton.setToolTipText("Requête en infini");
 
 		setNorthPanel(false);
 
@@ -100,7 +100,7 @@ public class MonitrackFrame extends JFrame
 		if(isDeveloperModeActive)
 		{
 			northPanel.add(superUserModeButton);
-			northPanel.add(infiniteRequestButton);
+			northPanel.add(reserveConectionButton);
 		}
 		else
 		{
@@ -133,10 +133,10 @@ public class MonitrackFrame extends JFrame
 	}
 
 	/**
-	 * @return the infiniteRequestButton
+	 * @return the reserveConnectionButton
 	 */
-	public JButton getInfiniteRequestButton() {
-		return infiniteRequestButton;
+	public JButton getReserveConnectionButton() {
+		return reserveConectionButton;
 	}
 
 	/**
