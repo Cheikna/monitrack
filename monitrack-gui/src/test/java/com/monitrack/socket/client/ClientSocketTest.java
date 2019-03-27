@@ -2,8 +2,8 @@ package com.monitrack.socket.client;
 
 import static org.junit.Assert.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.runners.MethodSorters;
@@ -13,51 +13,84 @@ import org.slf4j.LoggerFactory;
 import com.monitrack.entity.Person;
 import com.monitrack.enumeration.ConnectionState;
 import com.monitrack.enumeration.RequestType;
+import com.monitrack.shared.MonitrackGUIFactory;
 import com.monitrack.socket.client.ClientSocket;
 import com.monitrack.util.JsonUtil;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ClientSocketTest {
 	
-	private final Logger log = LoggerFactory.getLogger(getClass());
+	private static final Logger log = LoggerFactory.getLogger(ClientSocketTest.class);
 	
 	private ClientSocket clientSocket;
-	private ConnectionState connectionState;
+	
+	@Before
+	public void initialize()
+	{
+		clientSocket = new ClientSocket();	
+	}
 	
 	@Test
 	public void testClientSocketStart()
 	{		
-		clientSocket = new ClientSocket();	
-		connectionState = clientSocket.start();
+		ConnectionState connectionState = clientSocket.start();
 		assertEquals(ConnectionState.SUCCESS, connectionState);
 	}	
 
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testSendSelectRequestToServer() {
-		try {
-			String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Person.class, null, null, null);
-			log.info("Request : " + JsonUtil.indentJsonOutput(jsonRequest));
-			String response = clientSocket.sendRequestToServer(jsonRequest);
-			List<Person> persons = (List<Person>) JsonUtil.deserializeObject(response);
-			displayListElements(persons);
-			assertNotNull(response);
-		}  catch (IOException e) {
+		try 
+		{
+			ConnectionState connectionState = clientSocket.start();
+			if(connectionState == ConnectionState.SUCCESS)
+			{
+				String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Person.class, null, null, null);
+				log.info("Request : " + JsonUtil.indentJsonOutput(jsonRequest));
+				String response = clientSocket.sendRequestToServer(jsonRequest);
+				List<Person> persons = (List<Person>) JsonUtil.deserializeObject(response);
+				displayListElements(persons);
+				assertNotNull(response);
+			}
+			else
+				fail("Error when sending the request to the server");
+			
+		}  
+		catch (IOException e) 
+		{
 			log.error("The message was not sent to the server :\n" + e.getMessage());
 		}
 	}
-
-	/*
-
-	@After
-	public void testExit() {
-		clientSocket.exit();
-		clientSocket = null;		
-	}*/
+	
+	@Test
+	public void testRequestWithFilters()
+	{
+		try 
+		{
+			List<String> fields = new ArrayList<>();
+			List<String> values = new ArrayList<>();
+			fields.add("name");
+			String name = "Franck";
+			values.add(name);
+			String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Person.class, null, fields, values);
+			String response = MonitrackGUIFactory.sendRequest(jsonRequest);
+			List<Person> persons = (List<Person>) JsonUtil.deserializeObject(response);
+			
+			for (Person person : persons) 
+			{
+				assertEquals(person.getNamePerson(), name);
+			} 
+		} 
+		catch (Exception e) {
+			log.error(e.getMessage());
+		}
+		
+	}
+	
 	
 	private <T> void displayListElements(List<T> elements)
 	{
-		if(elements != null)
+		if(elements != null && elements.size() > 0)
 		{
 			System.out.println("Displaying the elements of the list :\n");
 			for(T element : elements)

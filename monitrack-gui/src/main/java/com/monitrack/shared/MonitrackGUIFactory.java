@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.monitrack.enumeration.ConnectionState;
+import com.monitrack.enumeration.Images;
 import com.monitrack.enumeration.JSONField;
 import com.monitrack.exception.NoAvailableConnectionException;
 import com.monitrack.socket.client.ClientSocket;
@@ -18,7 +19,7 @@ public class MonitrackGUIFactory {
 	private static final Logger log = LoggerFactory.getLogger(MonitrackGUIFactory.class);
 			
 	public static void showNoConnectionMessage() {
-		JOptionPane.showMessageDialog(null, ConnectionState.NO_CONNECTION.getFrenchLabel(), "Erreur", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(null, ConnectionState.NO_CONNECTION.getFrenchLabel(), "Erreur", JOptionPane.ERROR_MESSAGE, Images.NO_CONNECTION.getIcon());
 	}
 	
 	public static String sendRequest(String jsonRequest) throws NoAvailableConnectionException, IOException

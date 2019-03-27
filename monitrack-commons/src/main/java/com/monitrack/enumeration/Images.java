@@ -22,6 +22,10 @@ public enum Images {
 	
 	SUCCESS("success_stick.png"),
 	
+	NO_CONNECTION("no_connection.png"),
+	
+	DEVELOPER("developer.png"),
+	
 	SUPER("superman_batman.png");
 
 	/***** attribut of enums *****/
