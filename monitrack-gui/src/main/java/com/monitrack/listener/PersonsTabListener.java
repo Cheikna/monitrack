@@ -9,8 +9,6 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -217,14 +215,19 @@ public class PersonsTabListener implements ActionListener {
 			String value = personsTab.getFilter1TextField().getText().trim();
 			if(value.length() > 0)
 			{
-				if(!NumberUtils.isParsable(value))
+				try 
+				{
+					Integer id = Integer.parseInt(value);
+					fields.add("id");
+					values.add(id.toString());
+				} 
+				catch (Exception e) 
 				{
 					JOptionPane.showMessageDialog(personsTab, "Le champ du filtre ID ne doit contenir que des chiffres", "Filtre ID incorrect", JOptionPane.ERROR_MESSAGE);
+					log.error("The ID is not parsable because it is not an integer !");
 					return false;
 				}
-
-				fields.add("id");
-				values.add(value);
+				
 			}
 		}
 		if(personsTab.getFilter2ForShowCombobox().getSelectedItem().equals("nom"))
