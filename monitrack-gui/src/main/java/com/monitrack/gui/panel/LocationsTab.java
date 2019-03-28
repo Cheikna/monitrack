@@ -182,7 +182,7 @@ public class LocationsTab extends JPanel {
 		createLocationPopupPanel.add(newFloorTextField);
 		createLocationPopupPanel.add(new JLabel("Aile :"));
 		createLocationPopupPanel.add(newBuildingWingTextField);
-		createLocationPopupPanel.add(new JLabel("Superficie :"));
+		createLocationPopupPanel.add(new JLabel("Superficie (en m²) :"));
 		createLocationPopupPanel.add(newLocationSizeTextField);
 	}
 
@@ -231,8 +231,8 @@ public class LocationsTab extends JPanel {
 		modifyLocationPopupPanel.add(modifiedBuildingWingTextField);
 		
 		//Line 7
-		modifyLocationPopupPanel.add(new JLabel("Ancienne superficie :"));
-		modifyLocationPopupPanel.add(new JLabel("Nouvelle superficie :"));
+		modifyLocationPopupPanel.add(new JLabel("Ancienne superficie (en m²) :"));
+		modifyLocationPopupPanel.add(new JLabel("Nouvelle superficie (en m²) :"));
 		
 		//Line 8
 		modifyLocationPopupPanel.add(oldLocationSizeTextField);

@@ -49,6 +49,7 @@ public class MonitrackGUIFactory {
 		}
 		else
 		{	
+			showNoConnectionMessage();
 			throw new NoAvailableConnectionException();
 		}
 	}

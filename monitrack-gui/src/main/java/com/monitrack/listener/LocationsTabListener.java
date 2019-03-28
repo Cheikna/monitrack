@@ -25,11 +25,16 @@ public class LocationsTabListener implements ActionListener {
 
 	private LocationsTab locationsTab;
 	private List<Location> locations;
+	private List<String> fields;
+	private List<String> values;
+	private String personText = "";	
 
 	public LocationsTabListener(LocationsTab locationsTab)
 	{
 		this.locationsTab = locationsTab;
 		locations = new ArrayList<>();
+		fields = new ArrayList<String>();
+		values = new ArrayList<String>();	
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -97,7 +102,7 @@ public class LocationsTabListener implements ActionListener {
 				int choice = JOptionPane.showConfirmDialog(locationsTab, locationsTab.getModifyLocationPopupPanel(), 
 						"Modifier un emplacement", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, Images.MODIFY_ICON.getIcon());
 				
-				//FIXME 3 préremplir les champs
+				//FIXME 3 préremplir les champs pour avoir une prévisualisation
 				
 				if(choice == 0)
 				{
