@@ -1,6 +1,6 @@
 package com.monitrack.main;
 
-import com.monitrack.serversocket.Server;
+import com.monitrack.socket.server.Server;
 
 /**
  * This main class initiates the the server

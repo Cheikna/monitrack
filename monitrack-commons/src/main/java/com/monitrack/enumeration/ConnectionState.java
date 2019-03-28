@@ -2,11 +2,12 @@ package com.monitrack.enumeration;
 
 public enum ConnectionState {
 
-	FAIL (-1,"The connection failed !", "La connexion a échoué !"),
-	TRY(0, "Trying the connection, please wait...", "Connexion au serveur en cours, veuillez patienter..."),
-	SUCCESS(1,"The connection succeeded", "Connexion au serveur réussie"),
-	NO_CONNECTION(-1, "There is no connection left ! Please try later.", "Absence de connexion disponible ! Veuillez réessayer plus tard.");
-
+	FAIL (0,"The connection failed !", "La connexion a échoué !"),
+	NO_CONNECTION(1, "There is no connection left ! Please try later.", "Absence de connexion disponible ! Veuillez réessayer plus tard."),
+	TRY(2, "Trying the connection, please wait...", "Connexion au serveur en cours, veuillez patienter..."),
+	SUCCESS(3,"The connection succeeded", "Connexion au serveur réussie"),	
+	RESERVED_CONNECTION(4, "The connection has been reserved", "La connexion a été réservée");
+	
 	private Integer code;
 	private String englishLabel;
 	private String frenchLabel;

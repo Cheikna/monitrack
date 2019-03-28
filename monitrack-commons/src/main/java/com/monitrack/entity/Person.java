@@ -14,8 +14,6 @@ public class Person {
 
 	/**
 	 * Constructor used to retrieved a Person from the database
-	 * We cannot call the other constructor in this one, 
-	 * otherwise it will replace the creationDate retrieved from the database with the current time
 	 * 
 	 * @param idPerson
 	 * @param namePerson
@@ -28,16 +26,14 @@ public class Person {
 	}
   
 	/**
-	 * Constructor used to register a Person into the database (
-	 * 		the id is auto-generated when the Person is inserted into the database
-	 * 		and the creation_date is retrieved thanks to a java.sql.Date method
-	 * )
+	 * Constructor used when creating a Person from the Graphical User Interface
 	 * 
 	 * @param namePerson
 	 */
 	public Person(String namePerson) {
-		this.namePerson = namePerson;
-		this.creationDate = new Timestamp(System.currentTimeMillis());
+		this(0, namePerson, new Timestamp(System.currentTimeMillis()));
+		/*this.namePerson = namePerson;
+		this.creationDate = new Timestamp(System.currentTimeMillis());*/
 	}
 
 	public int getIdPerson() {

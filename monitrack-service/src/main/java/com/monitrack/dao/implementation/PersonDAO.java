@@ -55,9 +55,19 @@ public class PersonDAO extends DAO<Person>{
 			// Checks if the connection is not null before using it
 			if (connection != null) {
 				try {
-					PreparedStatement preparedStatement = connection
-							.prepareStatement("DELETE FROM PERSON where id=(?)");
-					preparedStatement.setInt(1, personId);
+					String sql = "DELETE FROM PERSON ";
+					PreparedStatement preparedStatement = null;
+					// If the id equals to 0, it means all of the object in the table for the delete query
+					if(personId == 0)
+					{
+						preparedStatement = connection.prepareStatement(sql);
+					}
+					else
+					{
+						preparedStatement = connection.prepareStatement(sql + " where id=(?)");
+						preparedStatement.setInt(1, personId);
+					}
+					
 					preparedStatement.execute();
 				} catch (Exception e) {
 					log.error("An error occurred during the creation of a person : " + e.getMessage());

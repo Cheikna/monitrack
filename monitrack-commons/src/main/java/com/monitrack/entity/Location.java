@@ -10,9 +10,10 @@ public class Location {
 	private int idSensor = 0;
 	
 	public Location(String nameLocation, String center) {
-		super();
-		this.nameLocation = nameLocation;
-		this.center = center;
+		this(0, nameLocation, center, new Timestamp(System.currentTimeMillis()), 0);
+		/*this.nameLocation = nameLocation;
+		this.center = center;*/
+		
 	}
 	public Location() {
 		super();
@@ -75,12 +76,18 @@ public class Location {
 	public void setCreationDate(Timestamp creationDate) {
 		this.creationDate = creationDate;
 	}
+	
 	@Override
 	public String toString() {
 		return idLocation + "#" + nameLocation + " - créé le " + creationDate;
 		/*return "Location [idLocation=" + idLocation + ", nameLocation=" + nameLocation + ", center=" + center
 				+ ", creationDate=" + creationDate + ", idSensor=" + idSensor + "]";*/
 	}
+	
+	public String toStringFull() {
+		return idLocation + "#" + nameLocation + " - créé le " + creationDate;
+	}
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */

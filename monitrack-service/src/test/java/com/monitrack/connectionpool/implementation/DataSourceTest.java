@@ -8,8 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.monitrack.util.Util;
+import com.monitrack.connection.pool.implementation.DataSource;
 
 public class DataSourceTest {
 

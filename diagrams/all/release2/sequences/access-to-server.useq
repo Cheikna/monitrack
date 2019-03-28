@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence-diagram version="1.2.3" icons="true" automaticImage="PNG" generate-combined-fragments="true">  
+  <object id="1" language="java" name="com.monitrack.gui.panel.OpeningPage" project="monitrack-gui" 
+    file="/monitrack-gui/src/main/java/com/monitrack/gui/panel/OpeningPage.java" binary="false" label="openingPage" 
+    type="class" autoSize="false">    
+    <position height="202" width="213" x="0" y="0"/>    
+    <execution id="2">      
+      <position height="72" width="0" x="0" y="107"/>    
+    </execution>  
+  </object>  
+  <object id="5" language="java" name="com.monitrack.listener.OpeningPageListener" project="monitrack-gui" 
+    file="/monitrack-gui/src/main/java/com/monitrack/listener/OpeningPageListener.java" binary="false" 
+    label="openingPageListener" type="class" autoSize="false">    
+    <position height="178" width="243" x="213" y="0"/>    
+    <execution id="4">      
+      <position height="24" width="0" x="0" y="131"/>    
+    </execution>    
+    <execution id="6">      
+      <position height="72" width="0" x="0" y="191"/>    
+    </execution>  
+  </object>  
+  <object id="9" language="java" name="com.monitrack.shared.MonitrackGUIFactory" project="monitrack-gui" 
+    file="/monitrack-gui/src/main/java/com/monitrack/shared/MonitrackGUIFactory.java" binary="false" 
+    label="monitrackGUIFactory" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="8">      
+      <position height="24" width="0" x="0" y="215"/>    
+    </execution>    
+    <execution id="10">      
+      <position height="72" width="0" x="0" y="262"/>    
+    </execution>  
+  </object>  
+  <object id="13" language="java" name="com.monitrack.socket.client.ClientSocket" project="monitrack-gui" 
+    file="/monitrack-gui/src/main/java/com/monitrack/socket/client/ClientSocket.java" binary="false" 
+    label="clientSocket1" type="class" autoSize="true">    
+    <position height="0" width="0" x="0" y="0"/>    
+    <execution id="12">      
+      <position height="24" width="0" x="0" y="286"/>    
+    </execution>  
+  </object>  
+  <message id="3" operation="actionPerformed(java.awt.event.ActionEvent):void" asynchronous="false">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="4"/>  
+  </message>  
+  <message id="7" operation="initializeSocket():com.monitrack.enumeration.ConnectionState" asynchronous="false">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="8"/>  
+  </message>  
+  <message id="11" operation="start():com.monitrack.enumeration.ConnectionState" asynchronous="false">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="12"/>  
+  </message>
+</sequence-diagram>

@@ -10,7 +10,33 @@ public enum Images {
 	/**** The different pictures (located in the folder src/main/resources/images)  ****/
 	PROJECT_LOGO("monitrack_logo.png"),
 	
-	GROUP_LOGO("climg_logo.png");
+	GROUP_LOGO("climg_logo.png"),
+	
+	GROUP_LOGO_SMALL("climg_logo_60.png"),
+	
+	BACKGROUND_HOSPITAL("hospital.png"),
+	
+	INFINITE_LOOP("infinite_loop_icon.png"),
+	
+	EDIT_PERSON("edit_person_icon.png"),
+	
+	SUCCESS("success_stick.png"),
+	
+	NO_CONNECTION("no_connection.png"),
+	
+	DEVELOPER("developer.png"),
+	
+	ADD_ICON("add_icon.png"),
+	
+	MODIFY_ICON("edit_icon.png"),
+	
+	DELETE_ICON("delete_icon.png"),
+	
+	SEARCH_ICON("search_icon.png"),
+	
+	LOCATION_ICON("location_icon.png"),
+	
+	SUPER("superman_batman.png");
 
 	/***** attribut of enums *****/
 	private URL url;
