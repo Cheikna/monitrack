@@ -8,9 +8,13 @@ public class Location {
 	private String center;
 	private Timestamp creationDate;
 	private int idSensor = 0;
+	private int floor;
+	private String wing;
+	// The size of the room
+	private int area;
 	
-	public Location(String nameLocation, String center) {
-		this(0, nameLocation, center, new Timestamp(System.currentTimeMillis()), 0);
+	public Location(String nameLocation, String center, int floor, String wing, int area) {
+		this(0, nameLocation, center, new Timestamp(System.currentTimeMillis()), 0, floor, wing, area);
 		/*this.nameLocation = nameLocation;
 		this.center = center;*/
 		
@@ -18,12 +22,15 @@ public class Location {
 	public Location() {
 		super();
 	}
-	public Location(int idLocation, String nameLocation, String center, Timestamp creationDate, int idSensor) {
+	public Location(int idLocation, String nameLocation, String center, Timestamp creationDate, int idSensor, int floor, String wing, int area) {
 		this.idLocation = idLocation;
 		this.nameLocation = nameLocation;
 		this.center = center;
 		this.creationDate = creationDate;
 		this.idSensor = idSensor;
+		this.floor = floor;
+		this.area = area;
+		this.wing = wing;
 	}
 
 	
@@ -75,8 +82,26 @@ public class Location {
 	@com.fasterxml.jackson.annotation.JsonProperty("CREATION_DATE")
 	public void setCreationDate(Timestamp creationDate) {
 		this.creationDate = creationDate;
-	}
+	}	
 	
+	public int getFloor() {
+		return floor;
+	}
+	public void setFloor(int floor) {
+		this.floor = floor;
+	}
+	public String getWing() {
+		return wing;
+	}
+	public void setWing(String wing) {
+		this.wing = wing;
+	}
+	public int getArea() {
+		return area;
+	}
+	public void setArea(int area) {
+		this.area = area;
+	}
 	@Override
 	public String toString() {
 		return idLocation + "#" + nameLocation + " - créé le " + creationDate;
