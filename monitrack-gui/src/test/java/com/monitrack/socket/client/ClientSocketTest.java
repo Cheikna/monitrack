@@ -18,17 +18,17 @@ import com.monitrack.util.JsonUtil;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ClientSocketTest {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(ClientSocketTest.class);
-	
+
 	private ClientSocket clientSocket;
-	
+
 	@Before
 	public void initialize()
 	{
 		clientSocket = new ClientSocket();	
 	}
-	
+
 	@Test
 	public void testClientSocketStart()
 	{		
@@ -53,14 +53,14 @@ public class ClientSocketTest {
 			}
 			else
 				fail("Error when sending the request to the server");
-			
+
 		}  
 		catch (IOException e) 
 		{
 			log.error("The message was not sent to the server :\n" + e.getMessage());
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testRequestWithFilters()
@@ -73,29 +73,65 @@ public class ClientSocketTest {
 			String name = "Franck";
 			values.add(name);
 			String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Person.class, null, fields, values);
-			
+
 			ConnectionState connectionState = clientSocket.start();
 			if(connectionState == ConnectionState.SUCCESS)
 			{
 				String response = clientSocket.sendRequestToServer(jsonRequest);
 				List<Person> persons = (List<Person>) JsonUtil.deserializeObject(response);
-				
+
 				for (Person person : persons) 
 				{
-					assertEquals(person.getNamePerson(), name);
+					assertEquals(name, person.getNamePerson());
 				}
 			}
 			else
 				fail("The connection with the server failed !");
-			 
+
 		} 
 		catch (Exception e) {
 			log.error(e.getMessage());
 		}
-		
+
 	}
-	
-	
+
+	@Test
+	public void testReservedConnection()
+	{
+
+		ClientSocket clientSocketReserver = new ClientSocket();
+		ClientSocket clientSocketFail = new ClientSocket();
+
+		Thread client1 = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try 
+				{
+					ConnectionState reservedState = clientSocketReserver.start();
+					clientSocketReserver.sendRequestToServer(ConnectionState.RESERVED_CONNECTION.getCode().toString());
+					assertEquals(ConnectionState.SUCCESS, reservedState);
+				} 
+				catch (IOException e) 
+				{
+					log.error(e.getMessage());
+				}
+			}
+		});
+		client1.start();
+
+		Thread client2 = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				ConnectionState failState = clientSocketFail.start();
+				assertEquals(ConnectionState.NO_CONNECTION, failState);
+			}
+		});
+		client2.start();
+	}
+
+
 	private <T> void displayListElements(List<T> elements)
 	{
 		if(elements != null && elements.size() > 0)

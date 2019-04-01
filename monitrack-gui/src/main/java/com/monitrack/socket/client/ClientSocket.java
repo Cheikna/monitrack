@@ -50,8 +50,10 @@ public class ClientSocket {
 			socket.setSoTimeout(TIMEOUT);
 			
 			readFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			writeToServer = new PrintWriter(socket.getOutputStream(), true);		
-
+			writeToServer = new PrintWriter(socket.getOutputStream(), true);	
+			//Try to read from the server before the timeout end
+			readFromServer.readLine();			
+			
 			log.info("Connected to the server");
 
 			return ConnectionState.SUCCESS;

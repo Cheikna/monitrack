@@ -21,7 +21,7 @@ import com.monitrack.exception.UnknownClassException;
 import com.monitrack.util.JsonUtil;
 
 /**
- * This class will have all the interaction with the database
+ * This class will execute the client request
  */
 public class RequestHandler implements Runnable {
 
@@ -52,17 +52,20 @@ public class RequestHandler implements Runnable {
 			log.info("Client connected");
 			readFromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			writeToClient = new PrintWriter(socket.getOutputStream(), true);
+			writeToClient.println();
 			
 			String requestOfClient = readFromClient.readLine();
 			String reservedConnectionCode = ConnectionState.RESERVED_CONNECTION.getCode().toString();
+			
+			//Checks if the client (= super user) wants to reserve the connection
 			if(requestOfClient.trim().equalsIgnoreCase(reservedConnectionCode))
 			{
-				//Sleep the Thread in order to make the connection no accessible by another person
-				int reservedTimeInMilliseconds = 15000;
-				String reservedTime = (new Integer(reservedTimeInMilliseconds / 1000)).toString() + " sec";
-				log.info("A client has reserved a connection for " + reservedTime + "\n");
-				String message = "Votre connexion ne sera pas utilisable par les autres durant " + reservedTime;
+				int reservedTimeInMilliseconds = 17000;
+				String reservedTime = (new Integer(reservedTimeInMilliseconds / 1000)).toString();
+				log.info("A client has reserved a connection for " + reservedTime + " sec\n");
+				String message = "Votre connexion ne sera pas utilisable par les autres durant " + reservedTime + " sec-" + reservedTime;
 				writeToClient.println(message);
+				//Sleeps the Thread in order to make the connection no accessible by another person
 				Thread.sleep(reservedTimeInMilliseconds);
 				log.info("A client has release its reserved connection !");
 			}
@@ -77,7 +80,7 @@ public class RequestHandler implements Runnable {
 		}
 		catch (Exception e) 
 		{
-			log.error("Exception : The client's buffer is not reachable. He is diconnected");
+			log.error("Exception : The client is disconnected");
 		}
 		finally 
 		{			
@@ -110,21 +113,21 @@ public class RequestHandler implements Runnable {
 			
 			switch(requestType)
 			{
-			case SELECT:
-				result = executeClientSelectRequest(entityClass, requestNode);
-				break;
-			case INSERT:
-				result = executeClientInsertRequest(entityClass, requestNode, serializedObjectNode);
-				break;
-			case UPDATE:
-				result = executeClientUpdateRequest(entityClass, requestNode, serializedObjectNode);
-				break;
-			case DELETE:
-				result = executeClientDeleteRequest(entityClass, requestNode, serializedObjectNode);
-				break;
-			default:
-				log.error("The request type does not exist !");
-				break;
+				case SELECT:
+					result = executeClientSelectRequest(entityClass, requestNode);
+					break;
+				case INSERT:
+					result = executeClientInsertRequest(entityClass, requestNode, serializedObjectNode);
+					break;
+				case UPDATE:
+					result = executeClientUpdateRequest(entityClass, requestNode, serializedObjectNode);
+					break;
+				case DELETE:
+					result = executeClientDeleteRequest(entityClass, requestNode, serializedObjectNode);
+					break;
+				default:
+					log.error("The request type does not exist !");
+					break;
 			}
 
 		} 
@@ -169,6 +172,9 @@ public class RequestHandler implements Runnable {
 		
 		// Retrieves the DAO according to the entity we want
 		DAO dao = DAOFactory.getDAO(connection, entityClass);
+		/* The dao.find() method will return a list of object that we serialize directly.
+		 * We serialize the list directly in order to avoid to cast the object
+		 */
 		result = JsonUtil.serializeObject(dao.find(fields, requiredValues), entityClass, "");
 
 		return result;		
@@ -190,6 +196,7 @@ public class RequestHandler implements Runnable {
 		
 		// Retrieves the DAO according to the entity we want
 		DAO dao = DAOFactory.getDAO(connection, entityClass);
+		// The result is the object we sent plus its id set according to the database
 		Object obj = dao.create(entityClass.cast(deserializedObject));
 		String result = JsonUtil.serializeObject(entityClass.cast(obj), entityClass, "");
 		return result;
@@ -211,6 +218,7 @@ public class RequestHandler implements Runnable {
 		
 		// Retrieves the DAO according to the entity we want	
 		DAO dao = DAOFactory.getDAO(connection, entityClass);
+		//We cast the object with the class type so that we do not have write a case for each entity
 		dao.update(entityClass.cast(deserializedObject));
 		String result = JsonUtil.serializeObject(null, entityClass, "");
 		return result;
@@ -234,6 +242,7 @@ public class RequestHandler implements Runnable {
 		// Retrieves the DAO according to the entity we want
 		DAO dao = DAOFactory.getDAO(connection, entityClass);
 		dao.delete(entityClass.cast(deserializedObject));
+		//We cast the object with the class type so that we do not have write a case for each entity
 		String result = JsonUtil.serializeObject(null, entityClass, "");
 		return result;
 	}
@@ -245,9 +254,12 @@ public class RequestHandler implements Runnable {
 	{
 		try 
 		{
+			//Give back to connection to the pool
 			DataSource.putConnection(connection);
 			this.connection = null;
 			socket.close();
+			readFromClient.close();
+			writeToClient.close();
 		} 
 		catch (IOException e) 
 		{
