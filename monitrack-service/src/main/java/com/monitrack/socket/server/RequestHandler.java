@@ -3,6 +3,7 @@ package com.monitrack.socket.server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.sql.Connection;
@@ -50,8 +51,8 @@ public class RequestHandler implements Runnable {
 		try 
 		{		
 			log.info("Client connected");
-			readFromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			writeToClient = new PrintWriter(socket.getOutputStream(), true);
+			readFromClient = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
+			writeToClient = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true);
 			writeToClient.println();
 			
 			String requestOfClient = readFromClient.readLine();

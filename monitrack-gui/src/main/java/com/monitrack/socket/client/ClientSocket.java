@@ -3,6 +3,7 @@ package com.monitrack.socket.client;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -49,8 +50,8 @@ public class ClientSocket {
 			 */
 			socket.setSoTimeout(TIMEOUT);
 			
-			readFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			writeToServer = new PrintWriter(socket.getOutputStream(), true);	
+			readFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
+			writeToServer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true);	
 			//Try to read from the server before the timeout end
 			readFromServer.readLine();			
 			
