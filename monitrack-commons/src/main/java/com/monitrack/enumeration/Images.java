@@ -36,6 +36,12 @@ public enum Images {
 	
 	LOCATION_ICON("location_icon.png"),
 	
+	COMING_SOON("coming_soon.png"),
+	
+	LOG_FILE("log.png"),
+	
+	CLOCK("clock.png"),
+	
 	SUPER("superman_batman.png");
 
 	/***** attribut of enums *****/
