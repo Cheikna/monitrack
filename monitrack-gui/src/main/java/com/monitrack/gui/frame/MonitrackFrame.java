@@ -5,13 +5,14 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.monitrack.enumeration.Images;
-import com.monitrack.gui.dialog.SuperUserModeDialog;
 import com.monitrack.gui.panel.HomePage;
 import com.monitrack.gui.panel.OpeningPage;
 import com.monitrack.listener.MonitrackListener;
@@ -25,10 +26,17 @@ public class MonitrackFrame extends JFrame
 	private HomePage homePage;
 	private String homePageName;
 	private JButton developerModeButton;
+	
+	//Button to generate some random values according to the entity selected
 	private JButton superUserModeButton;
-	private SuperUserModeDialog superUserModeDialog;
 
+	//Button to reserve a connection
 	private JButton reserveConectionButton;
+	//Label to indication the remaining time before the reserved connection is released
+	private JLabel timerLabel;
+	
+	//Button to open the .log file
+	private JButton openLogFileButton;
 
 	//Panel which contains the superUserModeButton
 	private JPanel northPanel;
@@ -44,8 +52,6 @@ public class MonitrackFrame extends JFrame
 	{
 		listener = new MonitrackListener(this);
 
-		superUserModeDialog = new SuperUserModeDialog(this);
-
 		northPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		northPanel.setBackground(Color.WHITE);
 
@@ -55,11 +61,20 @@ public class MonitrackFrame extends JFrame
 
 		superUserModeButton = new JButton(Images.SUPER.getIcon());
 		superUserModeButton.addActionListener(listener);
-		superUserModeButton.setToolTipText("Mode super utilisateur");
+		superUserModeButton.setToolTipText("Générer des valeurs aléatoires");
 
 		reserveConectionButton = new JButton(Images.INFINITE_LOOP.getIcon());
 		reserveConectionButton.addActionListener(listener);
-		reserveConectionButton.setToolTipText("Requête en infini");
+		reserveConectionButton.setToolTipText("Réserver une connexion");
+		
+		openLogFileButton = new JButton(Images.LOG_FILE.getIcon());
+		openLogFileButton.addActionListener(listener);
+		openLogFileButton.setToolTipText("Ouvrir le fichier monitrack.log");		
+
+		timerLabel = new JLabel("");
+		timerLabel.setIcon(Images.CLOCK.getIcon());
+		timerLabel.setFont(new Font("Calibri", Font.PLAIN, 25));
+		timerLabel.setVisible(false);
 
 		setNorthPanel(false);
 
@@ -101,6 +116,8 @@ public class MonitrackFrame extends JFrame
 		{
 			northPanel.add(superUserModeButton);
 			northPanel.add(reserveConectionButton);
+			northPanel.add(openLogFileButton);
+			northPanel.add(timerLabel);
 		}
 		else
 		{
@@ -126,13 +143,6 @@ public class MonitrackFrame extends JFrame
 	}
 
 	/**
-	 * @return the superUserModeDialog
-	 */
-	public SuperUserModeDialog getSuperUserModeDialog() {
-		return superUserModeDialog;
-	}
-
-	/**
 	 * @return the reserveConnectionButton
 	 */
 	public JButton getReserveConnectionButton() {
@@ -146,4 +156,18 @@ public class MonitrackFrame extends JFrame
 		return developerModeButton;
 	}
 
+	/**
+	 * @return the openLogFileButton
+	 */
+	public JButton getOpenLogFileButton() {
+		return openLogFileButton;
+	}
+
+	/**
+	 * @return the timerLabel
+	 */
+	public JLabel getTimerLabel() {
+		return timerLabel;
+	}
+	
 }
