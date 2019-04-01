@@ -23,7 +23,7 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 	public JDBCConnectionPool() {
 		connections = new Vector<Connection>();
 		numberOfConnectionsCreated = 0;
-		log.info("Database URL : " + URL);
+		log.info("Database URL :\n" + URL);
 		try
 		{
 			numberOfConnections = Integer.parseInt(Util.getPropertyValueFromPropertiesFile("number_of_connections"));

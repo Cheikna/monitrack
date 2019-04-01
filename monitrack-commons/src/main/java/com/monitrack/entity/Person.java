@@ -2,6 +2,9 @@ package com.monitrack.entity;
 
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 public class Person {
 
 	private int idPerson;
@@ -36,26 +39,32 @@ public class Person {
 		this.creationDate = new Timestamp(System.currentTimeMillis());*/
 	}
 
+	@JsonGetter("id")
 	public int getIdPerson() {
 		return idPerson;
 	}
 
+	@JsonSetter("id")
 	public void setIdPerson(int idPerson) {
 		this.idPerson = idPerson;
 	}
 
+	@JsonGetter("name")
 	public String getNamePerson() {
 		return namePerson;
 	}
 
+	@JsonSetter("name")
 	public void setNamePerson(String namePerson) {
 		this.namePerson = namePerson;
 	}	
 
+	@JsonGetter("creation_date")
 	public Timestamp getCreationDate() {
 		return creationDate;
 	}
 
+	@JsonSetter("creation_date")
 	public void setCreationDate(Timestamp creationDate) {
 		this.creationDate = creationDate;
 	}
@@ -106,7 +115,5 @@ public class Person {
 			return false;
 		return true;
 	}
-	
-	
-	
+
 }

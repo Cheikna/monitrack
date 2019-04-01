@@ -30,12 +30,15 @@ public class LocationDAO extends DAO<Location> {
 			if (connection != null) {
 				try {
 					PreparedStatement preparedStatement = connection
-							.prepareStatement("INSERT INTO LOCATION (NAME, CENTER, ID_SENSOR, CREATION_DATE)"
-									+ " VALUES (? , ? , ? , ? )", Statement.RETURN_GENERATED_KEYS);
+							.prepareStatement("INSERT INTO LOCATION (NAME, CENTER, ID_SENSOR, CREATION_DATE, FLOOR, WING, AREA)"
+									+ " VALUES (? , ? , ? , ? , ? , ? , ?)", Statement.RETURN_GENERATED_KEYS);
 					preparedStatement.setString(1, location.getNameLocation());
 					preparedStatement.setString(2, location.getCenter());
-					preparedStatement.setInt(3, location.getIdLocation());
+					preparedStatement.setInt(3, location.getIdSensor());
 					preparedStatement.setTimestamp(4, location.getCreationDate());
+					preparedStatement.setInt(5, location.getFloor());
+					preparedStatement.setString(6, location.getWing());
+					preparedStatement.setInt(7, location.getArea());
 					preparedStatement.execute();
 					ResultSet rs = preparedStatement.getGeneratedKeys();
 					int lastCreatedId = 0;
@@ -53,25 +56,16 @@ public class LocationDAO extends DAO<Location> {
 
 	}
 
-	public void delete(int locationId){
+	@Override
+	public void delete(Location obj){
 
 		synchronized (lock) {
 			// Checks if the connection is not null before using it
 			if (connection != null) {
 				try {
-					String sql = "DELETE FROM LOCATION ";
 					PreparedStatement preparedStatement = null;
-					// If the id equals to 0, it means all of the object in the table for the delete query
-					if(locationId == 0)
-					{
-						preparedStatement = connection.prepareStatement(sql);
-					}
-					else
-					{
-						preparedStatement = connection.prepareStatement(sql + " where ID_LOCATION=(?)");
-						preparedStatement.setInt(1, locationId);
-					}
-					
+					preparedStatement = connection.prepareStatement("DELETE FROM LOCATION where ID_LOCATION=(?)");
+					preparedStatement.setInt(1, obj.getIdLocation());					
 					preparedStatement.execute();
 				} catch (Exception e) {
 					log.error("An error occurred during the delete of a location : " + e.getMessage());
@@ -81,14 +75,21 @@ public class LocationDAO extends DAO<Location> {
 		}		
 	}
 
+	@Override
 	public void update(Location location) {
 		synchronized (lock) {
 			// Checks if the connection is not null before using it
 			if (connection != null) {
 				try {
 					PreparedStatement preparedStatement = connection.prepareStatement(
-							"UPDATE LOCATION SET NAME = ? WHERE ID_LOCATION =" + location.getIdLocation());
+							"UPDATE LOCATION SET NAME = ?, CENTER = ?, FLOOR = ?, WING = ?, AREA = ?"
+							+ " WHERE ID_LOCATION = ?");
 					preparedStatement.setString(1, location.getNameLocation());
+					preparedStatement.setString(2, location.getCenter());
+					preparedStatement.setInt(3, location.getFloor());
+					preparedStatement.setString(4, location.getWing());
+					preparedStatement.setInt(5, location.getArea());
+					preparedStatement.setInt(6, location.getIdLocation());
 					preparedStatement.execute();
 				} catch (Exception e) {
 					log.error("An error occurred during the update of a location : " + e.getMessage());
@@ -99,9 +100,8 @@ public class LocationDAO extends DAO<Location> {
 
 	}
 
-
 	@SuppressWarnings("finally")
-	private Location getPersonFromResultSet(ResultSet rs)
+	private Location getLocationFromResultSet(ResultSet rs)
 	{
 		Location location = null;
 		try {
@@ -126,7 +126,7 @@ public class LocationDAO extends DAO<Location> {
 					ResultSet rs = preparedStatement.executeQuery();
 					Location location;
 					while (rs.next()) {
-						location = getPersonFromResultSet(rs);
+						location = getLocationFromResultSet(rs);
 						if (location != null) {
 							locations.add(location);
 						}
@@ -138,13 +138,6 @@ public class LocationDAO extends DAO<Location> {
 			}
 			return locations;
 		}
-	}
-
-	@Override
-	public void delete(Location obj) {
-		synchronized (lock) {
-			delete(obj.getIdLocation());
-		}		
 	}
 
 }
