@@ -58,7 +58,7 @@ public class LocationsTab extends JPanel {
 	private JTextField newLocationSizeTextField;
 	private JTextField newBuildingWingTextField;
 
-	/***** Dialog for updating a location *****/ //FIXME add other fields like etage, ailes, superficie
+	/***** Dialog for updating a location *****/
 	private JPanel modifyLocationPopupPanel;
 	private JTextField oldNameTextField;
 	private JTextField modifiedNameTextField;

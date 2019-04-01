@@ -17,6 +17,10 @@ import com.monitrack.util.JsonUtil;
 public class MonitrackGUIFactory {
 
 	private static final Logger log = LoggerFactory.getLogger(MonitrackGUIFactory.class);
+	
+	public static void showComingSoonMesage() {
+		JOptionPane.showMessageDialog(null, "Cette fonctionnalité sera bientôt disponible.", "Bientôt disponible", JOptionPane.INFORMATION_MESSAGE, Images.COMING_SOON.getIcon());
+	}
 			
 	public static void showNoConnectionMessage() {
 		JOptionPane.showMessageDialog(null, ConnectionState.NO_CONNECTION.getFrenchLabel(), "Erreur", JOptionPane.ERROR_MESSAGE, Images.NO_CONNECTION.getIcon());
