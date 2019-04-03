@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.monitrack.enumeration.JSONField;
 import com.monitrack.enumeration.RequestType;
 
@@ -36,7 +35,6 @@ public class JsonUtil {
 		String objectToJSON = null;
 
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.getFactory().configure(JsonGenerator.Feature.ESCAPE_NON_ASCII, true);
 		ObjectNode node = mapper.createObjectNode();
 		message = (message == null) ? "" : message;
 		node.put(JSONField.ERROR_MESSAGE.getLabel(), message);		

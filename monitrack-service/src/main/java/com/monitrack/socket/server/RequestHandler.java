@@ -18,7 +18,9 @@ import com.monitrack.dao.implementation.DAOFactory;
 import com.monitrack.enumeration.ConnectionState;
 import com.monitrack.enumeration.JSONField;
 import com.monitrack.enumeration.RequestType;
+import com.monitrack.exception.DeprecatedVersionException;
 import com.monitrack.exception.UnknownClassException;
+import com.monitrack.shared.MonitrackServiceFactory;
 import com.monitrack.util.JsonUtil;
 
 /**
@@ -53,8 +55,21 @@ public class RequestHandler implements Runnable {
 			log.info("Client connected");
 			readFromClient = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
 			writeToClient = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true);
-			writeToClient.println();
 			
+			//Check client application version
+			String clientVersion = readFromClient.readLine();
+			String serverVersion = MonitrackServiceFactory.getApplicationVersion();
+			if(!clientVersion.equalsIgnoreCase("v" + serverVersion))
+			{
+				writeToClient.println(ConnectionState.DEPRECATED_VERSION.getCode() + "v" + serverVersion);
+				throw new DeprecatedVersionException(serverVersion);
+			}
+			else
+			{
+				writeToClient.println("");
+			}
+			
+			//Handle client request if he has the good version of the application
 			String requestOfClient = readFromClient.readLine();
 			String reservedConnectionCode = ConnectionState.RESERVED_CONNECTION.getCode().toString();
 			
@@ -78,6 +93,10 @@ public class RequestHandler implements Runnable {
 				writeToClient.println(responseToClient);				
 			}
 
+		}
+		catch (DeprecatedVersionException e) 
+		{
+			log.error(e.getMessage());
 		}
 		catch (Exception e) 
 		{

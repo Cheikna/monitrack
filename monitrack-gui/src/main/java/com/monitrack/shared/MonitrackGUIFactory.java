@@ -10,13 +10,18 @@ import org.slf4j.LoggerFactory;
 import com.monitrack.enumeration.ConnectionState;
 import com.monitrack.enumeration.Images;
 import com.monitrack.enumeration.JSONField;
+import com.monitrack.exception.DeprecatedVersionException;
 import com.monitrack.exception.NoAvailableConnectionException;
 import com.monitrack.socket.client.ClientSocket;
 import com.monitrack.util.JsonUtil;
+import com.monitrack.util.Util;
 
 public class MonitrackGUIFactory {
 
 	private static final Logger log = LoggerFactory.getLogger(MonitrackGUIFactory.class);
+	
+	private static final String APPLICATION_VERSION = Util.getPropertyValueFromPropertiesFile("version");
+	private static String serverVersion = "";
 	
 	public static void showComingSoonMesage() {
 		JOptionPane.showMessageDialog(null, "Cette fonctionnalité sera bientôt disponible.", "Bientôt disponible", JOptionPane.INFORMATION_MESSAGE, Images.COMING_SOON.getIcon());
@@ -26,7 +31,7 @@ public class MonitrackGUIFactory {
 		JOptionPane.showMessageDialog(null, ConnectionState.NO_CONNECTION.getFrenchLabel(), "Erreur", JOptionPane.ERROR_MESSAGE, Images.NO_CONNECTION.getIcon());
 	}
 	
-	public static String sendRequest(String jsonRequest) throws NoAvailableConnectionException, IOException
+	public static String sendRequest(String jsonRequest) throws NoAvailableConnectionException, IOException, DeprecatedVersionException
 	{
 		String response = "";
 		ClientSocket clientSocket = new ClientSocket();
@@ -51,11 +56,34 @@ public class MonitrackGUIFactory {
 			
 			return response;
 		}
+		else if(state == ConnectionState.DEPRECATED_VERSION)
+		{
+			String message = ConnectionState.DEPRECATED_VERSION.getFrenchLabel() + "\n";
+			message += "Vous devez utiliser la version " + serverVersion + " de l'application";
+			JOptionPane.showMessageDialog(null, message, "Version obselète", JOptionPane.ERROR_MESSAGE);
+			throw new DeprecatedVersionException(serverVersion);
+		}
 		else
 		{	
 			showNoConnectionMessage();
 			throw new NoAvailableConnectionException();
 		}
 	}
+
+	/**
+	 * @return the applicationVersion
+	 */
+	public static String getApplicationVersion() {
+		return APPLICATION_VERSION;
+	}
+
+	/**
+	 * @param serverVersion the serverVersion to set
+	 */
+	public static void setServerVersion(String serverVersion) {
+		MonitrackGUIFactory.serverVersion = serverVersion;
+	}
+	
+	
 
 }

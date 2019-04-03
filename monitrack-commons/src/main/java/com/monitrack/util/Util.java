@@ -60,10 +60,5 @@ public class Util {
 
 		return stringCapitalized;
 	}
-
 	
-
-
-
-
 }

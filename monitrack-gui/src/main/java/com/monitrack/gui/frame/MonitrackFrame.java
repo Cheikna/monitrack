@@ -16,6 +16,7 @@ import com.monitrack.enumeration.Images;
 import com.monitrack.gui.panel.HomePage;
 import com.monitrack.gui.panel.OpeningPage;
 import com.monitrack.listener.MonitrackListener;
+import com.monitrack.shared.MonitrackGUIFactory;
 
 public class MonitrackFrame extends JFrame
 {
@@ -91,7 +92,7 @@ public class MonitrackFrame extends JFrame
 		centerPanel.add(homePage, homePageName);
 
 
-		this.setTitle("MONITRACK");
+		this.setTitle("MONITRACK version " + MonitrackGUIFactory.getApplicationVersion());
 		cardLayout.show(centerPanel, openingPageName);
 
 		this.getContentPane().add(centerPanel, BorderLayout.CENTER);

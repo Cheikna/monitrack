@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.monitrack.enumeration.ConnectionState;
+import com.monitrack.exception.DeprecatedVersionException;
+import com.monitrack.shared.MonitrackGUIFactory;
 import com.monitrack.util.JsonUtil;
 import com.monitrack.util.Util;
 
@@ -34,8 +36,11 @@ public class ClientSocket {
 
 	}
 
+	@SuppressWarnings("finally")
 	public ConnectionState start()
 	{
+		ConnectionState connectionState = ConnectionState.NO_CONNECTION;
+		
 		try 
 		{
 			log.info("Connection to the server " + SERVER_IP + ":" + PORT_NUMBER + "...");
@@ -52,12 +57,33 @@ public class ClientSocket {
 			
 			readFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
 			writeToServer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true);	
-			//Try to read from the server before the timeout end
-			readFromServer.readLine();			
 			
-			log.info("Connected to the server");
+			//Send the client application version to the server. The letter 'v' will indicate that it is the version that we are sending
+			writeToServer.println("v" + MonitrackGUIFactory.getApplicationVersion());
+			
+			//Check if we are using the good version of the application
+			String[] serverCheck = readFromServer.readLine().split("v");
+			if(serverCheck.length >= 2)
+			{
+				String code = serverCheck[0];
+				String serverVersion = serverCheck[1];
+				if(code.equalsIgnoreCase(ConnectionState.DEPRECATED_VERSION.getCode().toString()))
+				{
+					MonitrackGUIFactory.setServerVersion(serverVersion);
+					throw new DeprecatedVersionException(serverVersion);
+				}
+				
+			}
+			
+			log.info("You are connected to the server for your next request");
 
-			return ConnectionState.SUCCESS;
+			connectionState = ConnectionState.SUCCESS;
+		}
+		catch(DeprecatedVersionException e)
+		{
+			log.error(e.getMessage());
+			connectionState = ConnectionState.DEPRECATED_VERSION;
+			exit();
 		}
 		catch (SocketTimeoutException e) 
 		{			
@@ -66,11 +92,13 @@ public class ClientSocket {
 		}
 		catch (Exception e) 
 		{
-			log.error("Disconnected from server - Client Error");
+			log.error("Disconnected from server - Client Error - " + e.getMessage());
 			exit();
 		}
-
-		return ConnectionState.NO_CONNECTION;
+		finally
+		{
+			return connectionState;
+		}
 	}
 
 	/**

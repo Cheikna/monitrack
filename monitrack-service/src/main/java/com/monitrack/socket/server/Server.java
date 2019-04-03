@@ -28,9 +28,9 @@ public class Server {
 	 */
 	public void start()
 	{
-		log.info("Launching of the server...");
+		log.info("Launching of the server version " + MonitrackServiceFactory.getApplicationVersion() + "...");
 		//Displays Monitrack Server on the console
-		MonitrackServiceFactory.displayTitle();
+		System.out.println(MonitrackServiceFactory.getASCII("title.txt"));
 		DataSource.startConnectionPool();
 
 		try{

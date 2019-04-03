@@ -1,25 +1,59 @@
 package com.monitrack.shared;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.net.URL;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.monitrack.util.Util;
+
 /**
  * 
  * Class which contains the shared attributes between all of the classes
  *
  */
-public class MonitrackServiceFactory {
+public class MonitrackServiceFactory 
+{	
+	private static final Logger log = LoggerFactory.getLogger(MonitrackServiceFactory.class);
+			
+	private static final String APPLICATION_VERSION = Util.getPropertyValueFromPropertiesFile("version");
 
-	public static void displayTitle()
+	public static String getASCII(String name)
 	{
-		System.out.println(" __  __             _ _                  _    ");		
-		System.out.println("|  \\/  | ___  _ __ (_) |_ _ __ __ _  ___| | __");		
-		System.out.println("| |\\/| |/ _ \\| '_ \\| | __| '__/ _` |/ __| |/ /");
-		System.out.println("| |  | | (_) | | | | | |_| | | (_| | (__|   < ");
-		System.out.println("|_|  |_|\\___/|_| |_|_|\\__|_|  \\__,_|\\___|_|\\_\\");
-		System.out.println(" ____  _____ ______     _______ ____    ");      
-		System.out.println("/ ___|| ____|  _ \\ \\   / / ____|  _ \\ ");        
-		System.out.println("\\___ \\|  _| | |_) \\ \\ / /|  _| | |_) |  ");      
-		System.out.println(" ___) | |___|  _ < \\ V / | |___|  _ < ");        
-		System.out.println("|____/|_____|_| \\_\\ \\_/  |_____|_| \\_\\  ");    
+		String ascii = "";
+		URL url = MonitrackServiceFactory.class.getClassLoader().getResource("ascii/" + name);
+		try 
+		{
+			FileReader fileReader = new FileReader(url.getFile());
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			
+			//Only the first line contains names
+			String line = null;
+			while((line = bufferedReader.readLine()) != null)
+			{
+				ascii += line + "\n";
+			}
+			
+			fileReader.close();
+			bufferedReader.close();
+		} 
+		catch (Exception e) 
+		{
+			log.error("Error when getting the ASCII of '" + name + "'");
+		}
+		return ascii;
 	}
+
+	/**
+	 * @return the applicationVersion
+	 */
+	public static String getApplicationVersion() {
+		return APPLICATION_VERSION;
+	}
+	
+	
 
 
 }
