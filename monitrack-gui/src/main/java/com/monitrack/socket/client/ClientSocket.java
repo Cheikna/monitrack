@@ -83,7 +83,6 @@ public class ClientSocket {
 		{
 			log.error(e.getMessage());
 			connectionState = ConnectionState.DEPRECATED_VERSION;
-			exit();
 		}
 		catch (SocketTimeoutException e) 
 		{			

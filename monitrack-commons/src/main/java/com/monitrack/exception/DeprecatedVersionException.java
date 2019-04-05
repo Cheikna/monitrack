@@ -9,7 +9,7 @@ public class DeprecatedVersionException extends Exception {
 	 */
 	public DeprecatedVersionException(String minimumVersion) 
 	{
-		super("The client application is a deprecated version. The version application must at least be " + minimumVersion + " !");
+		super("The client application is a deprecated version. The version of the application must at least be the " + minimumVersion + " ! The server will be accessible but some functionnalities will not work.");
 	}
 
 }

@@ -151,6 +151,7 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 			@Override
 			public void run() {
 				monitrackFrame.getTimerLabel().setVisible(true);
+				monitrackFrame.getReserveConnectionButton().setEnabled(false);
 				try 
 				{
 					int timeLeft = Integer.parseInt(time);
@@ -165,6 +166,8 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 				{
 					log.error(e.getMessage());
 				}
+
+				monitrackFrame.getReserveConnectionButton().setEnabled(true);
 				monitrackFrame.getTimerLabel().setVisible(false);
 				
 			}

@@ -36,8 +36,17 @@ public class MonitrackGUIFactory {
 		String response = "";
 		ClientSocket clientSocket = new ClientSocket();
 		ConnectionState state = clientSocket.start();
-		if(state == ConnectionState.SUCCESS)
+		
+		
+		if(state == ConnectionState.SUCCESS || state == ConnectionState.DEPRECATED_VERSION)
 		{
+			if(state == ConnectionState.DEPRECATED_VERSION)
+			{
+				String message = ConnectionState.DEPRECATED_VERSION.getFrenchLabel() + "\n";
+				message += "Vous devez utiliser la version " + serverVersion + " de l'application car certaines fonctionnalités risquent de ne pas fonctionner.";
+				JOptionPane.showMessageDialog(null, message, "Version obselète", JOptionPane.INFORMATION_MESSAGE);
+			}
+			
 			response = clientSocket.sendRequestToServer(jsonRequest);
 			
 			//Checks if we reserved a connection, because the response is not in json format
@@ -55,13 +64,6 @@ public class MonitrackGUIFactory {
 			}
 			
 			return response;
-		}
-		else if(state == ConnectionState.DEPRECATED_VERSION)
-		{
-			String message = ConnectionState.DEPRECATED_VERSION.getFrenchLabel() + "\n";
-			message += "Vous devez utiliser la version " + serverVersion + " de l'application";
-			JOptionPane.showMessageDialog(null, message, "Version obselète", JOptionPane.ERROR_MESSAGE);
-			throw new DeprecatedVersionException(serverVersion);
 		}
 		else
 		{	

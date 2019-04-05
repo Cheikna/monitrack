@@ -18,7 +18,6 @@ import com.monitrack.dao.implementation.DAOFactory;
 import com.monitrack.enumeration.ConnectionState;
 import com.monitrack.enumeration.JSONField;
 import com.monitrack.enumeration.RequestType;
-import com.monitrack.exception.DeprecatedVersionException;
 import com.monitrack.exception.UnknownClassException;
 import com.monitrack.shared.MonitrackServiceFactory;
 import com.monitrack.util.JsonUtil;
@@ -59,10 +58,11 @@ public class RequestHandler implements Runnable {
 			//Check client application version
 			String clientVersion = readFromClient.readLine();
 			String serverVersion = MonitrackServiceFactory.getApplicationVersion();
+			
+			//Check if the client has the same version than the server
 			if(!clientVersion.equalsIgnoreCase("v" + serverVersion))
 			{
 				writeToClient.println(ConnectionState.DEPRECATED_VERSION.getCode() + "v" + serverVersion);
-				throw new DeprecatedVersionException(serverVersion);
 			}
 			else
 			{
@@ -93,10 +93,6 @@ public class RequestHandler implements Runnable {
 				writeToClient.println(responseToClient);				
 			}
 
-		}
-		catch (DeprecatedVersionException e) 
-		{
-			log.error(e.getMessage());
 		}
 		catch (Exception e) 
 		{

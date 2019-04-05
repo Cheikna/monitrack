@@ -213,7 +213,7 @@ toto@ubuntu:~$ sudo iptables-restore < /etc/iptables_bdd_dev.rules
 toto@ubuntu:~$ sudo iptables-restore < /etc/iptables_service_dev.rules
 ```
 3. Télécharger sur le machine virtuelle *MONITRACK_SERVICE_DEV* la dernière version du projet disponible sur le site : http://cheikna98.free.fr/esipe/ing1/pds/dev/ 
-_Vous trouverez dans chaque dossier commençant par la lettre 'v' suivi d'un numéro de version, le .jar 'service' (qui se chargera de récupérer les données de la base de données) et le .jar 'gui' qui est l'interface graphique pour le client_
+_Vous trouverez dans chaque dossier commençant par la lettre 'v' suivi d'un numéro de version, le .jar 'service' (qui fera le lien entre la base de données et l'interface graphique du client) et le .jar 'gui' qui est l'interface graphique pour le client_
 
 # Se connecter a l'environnement de production
 ## Connexion a la base de donnnes de production
@@ -235,8 +235,8 @@ toto@ubuntu:~$ sudo iptables-restore < /etc/iptables_bdd_prod.rules
 ```
 toto@ubuntu:~$ sudo iptables-restore < /etc/iptables_service_prod.rules
 ```
-3. Télécharger sur le machine virtuelle *MONITRACK_SERVICE_PROD* la dernière version du projet disponible sur le site : http://cheikna98.free.fr/esipe/ing1/pds/prod/ 
-_Vous trouverez dans chaque dossier commençant par la lettre 'r' suivi d'un numéro de release, le .jar 'service' (qui se chargera de récupérer les données de la base de données) et le .jar 'gui' qui est l'interface graphique pour le client_
+3. Télécharger sur lA machine virtuelle *MONITRACK_SERVICE_PROD* la dernière version du projet disponible sur le site : http://cheikna98.free.fr/esipe/ing1/pds/prod/ 
+_Vous trouverez dans chaque dossier commençant par la lettre 'r' suivi d'un numéro de release, le .jar 'service' (qui fera le lien entre la base de données et l'interface graphique du client) et le .jar 'gui' qui est l'interface graphique pour le client_
 
 # Scenarios de demonstration
 ## Release 1 (R1)
