@@ -1,8 +1,8 @@
 package com.monitrack.shared;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
-import java.net.URL;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,21 +23,20 @@ public class MonitrackServiceFactory
 	public static String getASCII(String name)
 	{
 		String ascii = "";
-		URL url = MonitrackServiceFactory.class.getClassLoader().getResource("ascii/" + name);
+
 		try 
 		{
-			FileReader fileReader = new FileReader(url.getFile());
-			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			InputStream inputStream = MonitrackServiceFactory.class.getClassLoader().getResourceAsStream("ascii/" + name);
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
 			
 			//Only the first line contains names
 			String line = null;
 			while((line = bufferedReader.readLine()) != null)
 			{
-				ascii += line + "\n";
+				ascii += line + "\n";				
 			}
 			
-			fileReader.close();
-			bufferedReader.close();
+			inputStream.close();
 		} 
 		catch (Exception e) 
 		{

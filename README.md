@@ -251,10 +251,11 @@ _Vous trouverez dans chaque dossier commençant par la lettre 'r' suivi d'un numé
 ## Release 2 (R2)
 ### Pour cette release, il y aura 2 connexions dans le pool de connexions
 1. [Se connecter au serveur de production](#connexion-au-serveur-de-production).
-2. Lancer monitrack-service-vm-2.jar sur la machine virtuelle *MONITRACK_SERVICE_PROD* en utilisant la commande suivante :
+2. Lancer monitrack-service-vm-2.jar sur la machine virtuelle *MONITRACK_SERVICE_PROD* en utilisant les commandes suivantes :
 
 ```
-toto@ubuntu:~$ java -jar monitrack-service-vm-2.jar
+toto@ubuntu:~$ cd Bureau
+toto@ubuntu:~/Bureau$ java -jar monitrack-service-vm-2.jar
 ```
 3. Pendant que les connexions se créées, ouvrir le .jar monitrack-gui-vm-2.jar sur la machine locale.
 **Le fichier .jar est téléchargeable [ici](http://cheikna98.free.fr/esipe/ing1/pds/prod/r2/monitrack-gui-vm-2.jar)**

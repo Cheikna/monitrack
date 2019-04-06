@@ -3,8 +3,8 @@ package com.monitrack.listener;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.net.URL;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
@@ -31,7 +31,6 @@ import com.monitrack.shared.MonitrackGUIFactory;
 import com.monitrack.util.JsonUtil;
 import com.monitrack.util.Util;
 
-@SuppressWarnings("resource")
 public class MonitrackListener extends WindowAdapter implements ActionListener {
 
 	private static final Logger log = LoggerFactory.getLogger(MonitrackListener.class);
@@ -178,11 +177,10 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 
 	private static void generateRandomPersons()
 	{
-		URL url = MonitrackListener.class.getClassLoader().getResource("mocks/persons.txt");
 		try 
 		{
-			FileReader fileReader = new FileReader(url.getFile());
-			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			InputStream inputStream = MonitrackListener.class.getClassLoader().getResourceAsStream("mocks/persons.txt");
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 			Person person = null;
 			
 			//Only the first line contains names
@@ -195,6 +193,7 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 				String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, Person.class, serializedObject, null, null);
 				MonitrackGUIFactory.sendRequest(jsonRequest);
 			}
+			inputStream.close();
 		} 
 		catch (Exception e) 
 		{
@@ -207,8 +206,8 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 	{
 		try 
 		{
-			URL url = MonitrackListener.class.getClassLoader().getResource("mocks/locations.csv");
-			BufferedReader bufferedReader = new BufferedReader(new FileReader(url.getFile()));
+			InputStream inputStream = MonitrackListener.class.getClassLoader().getResourceAsStream("mocks/locations.csv");
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 			Location location = null;
 			//This will skip the first line which contains the headers
 			String line = bufferedReader.readLine();
@@ -226,6 +225,7 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 				String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, Location.class, serializedObject, null, null);
 				MonitrackGUIFactory.sendRequest(jsonRequest);
 			} 
+			inputStream.close();
 		} 
 		catch (Exception e) 
 		{
