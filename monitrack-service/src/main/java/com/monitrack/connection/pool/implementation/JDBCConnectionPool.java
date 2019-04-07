@@ -15,7 +15,7 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 	
     private Vector<Connection> connections;
     private static final Logger log = LoggerFactory.getLogger(JDBCConnectionPool.class);
-    private final String URL             =  Util.getPropertyValueFromPropertiesFile("url_prod");
+    private final String URL             =  Util.getPropertyValueFromPropertiesFile("url_dev");
     private final String USER            =  Util.getPropertyValueFromPropertiesFile("username");
     private final String PSWD            =  Util.getPropertyValueFromPropertiesFile("password");
     private int numberOfConnections;
@@ -24,14 +24,13 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
     // For display
     private String[] asciiCharacters;
     private int numberOfAsciiCharacters;
-    private final String CREATED_ASCII = MonitrackServiceFactory.getASCII("created.txt");
-    private final String FREE_ASCII = MonitrackServiceFactory.getASCII("free.txt");
+    private final String FREE_CREATED_ASCII = MonitrackServiceFactory.getASCII("free_created.txt");
 	
 	public JDBCConnectionPool() {
 		connections = new Vector<Connection>();
 		
 		//Loads the ascii number for a beautiful display
-		asciiCharacters = MonitrackServiceFactory.getASCII("numbers.txt").split("--new-number--\n");
+		asciiCharacters = MonitrackServiceFactory.getASCII("remaining_max_numbers.txt").split("--new-number--\n");
 		numberOfAsciiCharacters = asciiCharacters.length;
 		
 		numberOfConnectionsCreated = 0;
@@ -42,8 +41,8 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 		}
 		catch(Exception e)
 		{
-			log.error("The number of connections could not be read from the .properties file. Consequently, we will create 10 connections !");
-			numberOfConnections = 5;
+			log.error("The number of connections could not be read from the .properties file. Consequently, we will create 2 connections !");
+			numberOfConnections = 2;
 		}
 
 		log.info(numberOfConnections + " connection(s) should be put inside the connection pool.");
@@ -134,16 +133,16 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 	
 	private void displayConnectionPoolState()
 	{
-		String creation  = CREATED_ASCII + convertIntegerToAsciiCharacter(numberOfConnectionsCreated);
-		String remaining = FREE_ASCII + convertIntegerToAsciiCharacter(getRemaningNumberOfConnections());
+		String legend  = FREE_CREATED_ASCII;
+		String numbers = convertIntegerToAsciiCharacter(getRemaningNumberOfConnections());
 		String end 		 = "--------------------------------------------\n";
-		log.info("Connection pool state :\n" + creation + remaining + end);
+		log.info("Connection pool state :\n" + legend + numbers + end);
 	}
 	
 	private String convertIntegerToAsciiCharacter(Integer number)
 	{
 		if(number >= numberOfAsciiCharacters)
-			return number.toString() + "\n";
+			return number.toString() + " / " + numberOfConnectionsCreated + "\n";
 		return asciiCharacters[number];
 		
 	}
