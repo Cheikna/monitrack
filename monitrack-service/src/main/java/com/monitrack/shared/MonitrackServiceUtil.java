@@ -14,9 +14,9 @@ import com.monitrack.util.Util;
  * Class which contains the shared attributes between all of the classes
  *
  */
-public class MonitrackServiceFactory 
+public class MonitrackServiceUtil 
 {	
-	private static final Logger log = LoggerFactory.getLogger(MonitrackServiceFactory.class);
+	private static final Logger log = LoggerFactory.getLogger(MonitrackServiceUtil.class);
 			
 	private static final String APPLICATION_VERSION = Util.getPropertyValueFromPropertiesFile("version");
 
@@ -26,7 +26,7 @@ public class MonitrackServiceFactory
 
 		try 
 		{
-			InputStream inputStream = MonitrackServiceFactory.class.getClassLoader().getResourceAsStream("ascii/" + name);
+			InputStream inputStream = MonitrackServiceUtil.class.getClassLoader().getResourceAsStream("ascii/" + name);
 			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
 			
 			//Only the first line contains names

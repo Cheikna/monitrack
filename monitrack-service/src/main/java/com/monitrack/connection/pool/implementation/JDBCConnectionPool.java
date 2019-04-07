@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.monitrack.connection.pool.abstracts.IJDBCConnectionPool;
-import com.monitrack.shared.MonitrackServiceFactory;
+import com.monitrack.shared.MonitrackServiceUtil;
 import com.monitrack.util.Util;
 
 public class JDBCConnectionPool implements IJDBCConnectionPool {
@@ -24,13 +24,13 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
     // For display
     private String[] asciiCharacters;
     private int numberOfAsciiCharacters;
-    private final String FREE_CREATED_ASCII = MonitrackServiceFactory.getASCII("free_created.txt");
+    private final String FREE_CREATED_ASCII = MonitrackServiceUtil.getASCII("free_created.txt");
 	
 	public JDBCConnectionPool() {
 		connections = new Vector<Connection>();
 		
 		//Loads the ascii number for a beautiful display
-		asciiCharacters = MonitrackServiceFactory.getASCII("remaining_max_numbers.txt").split("--new-number--\n");
+		asciiCharacters = MonitrackServiceUtil.getASCII("remaining_max_numbers.txt").split("--new-number--\n");
 		numberOfAsciiCharacters = asciiCharacters.length;
 		
 		numberOfConnectionsCreated = 0;
