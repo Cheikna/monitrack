@@ -144,17 +144,6 @@ public class JsonUtilTest {
 	}
 	
 	@Test
-	public void testObjectSerialization()
-	{
-		Person p = new Person("climg");
-		String str = JsonUtil.serializeObject(p, p.getClass(), "");
-		Long date = p.getCreationDate().getTime();
-		String json = "{\"error_message\":\"\",\"is_list_of_entities\":false,\"entity\":\"com.monitrack.entity.Person\",\"datas\":{\"idPerson\":0,\"namePerson\":\"climg\",\"creationDate\":"+date+"}}";
-		System.out.println("==>" + str);
-		assertEquals(json, JsonUtil.serializeObject(p, p.getClass(), ""));
-	}
-	
-	@Test
 	public void testGetJsonNodeValue()
 	{
 		String message = "my own message";

@@ -41,7 +41,7 @@
   <enumeration id="5" language="java" name="com.monitrack.enumeration.JSONField" project="monitrack-commons" 
     file="/monitrack-commons/src/main/java/com/monitrack/enumeration/JSONField.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1269" y="529"/>    
+    <position height="-1" width="-1" x="1264" y="622"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -72,7 +72,7 @@
     project="monitrack-commons" 
     file="/monitrack-commons/src/main/java/com/monitrack/exception/NoAvailableConnectionException.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="216" y="645"/>    
+    <position height="-1" width="-1" x="215" y="671"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -82,7 +82,7 @@
   <class id="9" language="java" name="com.monitrack.exception.UnknownClassException" project="monitrack-commons" 
     file="/monitrack-commons/src/main/java/com/monitrack/exception/UnknownClassException.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="494" y="656"/>    
+    <position height="-1" width="-1" x="496" y="734"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -91,7 +91,7 @@
   </class>  
   <class id="10" language="java" name="com.monitrack.util.JsonUtil" project="monitrack-commons" 
     file="/monitrack-commons/src/main/java/com/monitrack/util/JsonUtil.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="214" width="482" x="35" y="839"/>    
+    <position height="214" width="482" x="43" y="939"/>    
     <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -100,7 +100,17 @@
   </class>  
   <class id="11" language="java" name="com.monitrack.util.Util" project="monitrack-commons" 
     file="/monitrack-commons/src/main/java/com/monitrack/util/Util.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="702" y="961"/>    
+    <position height="-1" width="-1" x="703" y="1014"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="com.monitrack.exception.DeprecatedVersionException" project="monitrack-commons" 
+    file="/monitrack-commons/src/main/java/com/monitrack/exception/DeprecatedVersionException.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="218" y="786"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      

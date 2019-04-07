@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.monitrack.connection.pool.abstracts.IJDBCConnectionPool;
+import com.monitrack.shared.MonitrackServiceUtil;
 import com.monitrack.util.Util;
 
 public class JDBCConnectionPool implements IJDBCConnectionPool {
@@ -19,19 +20,29 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
     private final String PSWD            =  Util.getPropertyValueFromPropertiesFile("password");
     private int numberOfConnections;
     private int numberOfConnectionsCreated;
+    
+    // For display
+    private String[] asciiCharacters;
+    private int numberOfAsciiCharacters;
+    private final String FREE_CREATED_ASCII = MonitrackServiceUtil.getASCII("free_created.txt");
 	
 	public JDBCConnectionPool() {
 		connections = new Vector<Connection>();
+		
+		//Loads the ascii number for a beautiful display
+		asciiCharacters = MonitrackServiceUtil.getASCII("remaining_max_numbers.txt").split("--new-number--\n");
+		numberOfAsciiCharacters = asciiCharacters.length;
+		
 		numberOfConnectionsCreated = 0;
-		log.info("Database URL : " + URL);
+		log.info("Database URL :\n" + URL);
 		try
 		{
 			numberOfConnections = Integer.parseInt(Util.getPropertyValueFromPropertiesFile("number_of_connections"));
 		}
 		catch(Exception e)
 		{
-			log.error("The number of connections could not be read from the .properties file. Consequently, we will create 10 connections !");
-			numberOfConnections = 10;
+			log.error("The number of connections could not be read from the .properties file. Consequently, we will create 2 connections !");
+			numberOfConnections = 2;
 		}
 
 		log.info(numberOfConnections + " connection(s) should be put inside the connection pool.");
@@ -122,12 +133,19 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 	
 	private void displayConnectionPoolState()
 	{
-		String creation  = "- Connection(s) created   : " + numberOfConnectionsCreated;
-		String remaining = "- REMAINING CONNECTION(S) : " + getRemaningNumberOfConnections();
-		String end 		 = "------------------------------------";
-		log.info("Connection pool state :\n" + creation + "\n" + remaining + "\n" + end + "\n");
+		String legend  = FREE_CREATED_ASCII;
+		String numbers = convertIntegerToAsciiCharacter(getRemaningNumberOfConnections());
+		String end 		 = "--------------------------------------------\n";
+		log.info("Connection pool state :\n" + legend + numbers + end);
 	}
 	
+	private String convertIntegerToAsciiCharacter(Integer number)
+	{
+		if(number >= numberOfAsciiCharacters)
+			return number.toString() + " / " + numberOfConnectionsCreated + "\n";
+		return asciiCharacters[number];
+		
+	}
 	
 
 }

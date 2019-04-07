@@ -49,24 +49,16 @@ public class PersonDAO extends DAO<Person>{
 
 	}
 
-	public void delete(int personId){
+	@Override
+	public void delete(Person obj){
 
 		synchronized (lock) {
 			// Checks if the connection is not null before using it
 			if (connection != null) {
 				try {
-					String sql = "DELETE FROM PERSON ";
 					PreparedStatement preparedStatement = null;
-					// If the id equals to 0, it means all of the object in the table for the delete query
-					if(personId == 0)
-					{
-						preparedStatement = connection.prepareStatement(sql);
-					}
-					else
-					{
-						preparedStatement = connection.prepareStatement(sql + " where id=(?)");
-						preparedStatement.setInt(1, personId);
-					}
+					preparedStatement = connection.prepareStatement("DELETE FROM PERSON where id=(?)");
+					preparedStatement.setInt(1, obj.getIdPerson());
 					
 					preparedStatement.execute();
 				} catch (Exception e) {
@@ -133,14 +125,6 @@ public class PersonDAO extends DAO<Person>{
 		finally {
 			return person;
 		}
-	}
-
-	@Override
-	public void delete(Person obj) {
-		synchronized (lock) {
-			delete(obj.getIdPerson());
-		}
-
 	}
 
 }

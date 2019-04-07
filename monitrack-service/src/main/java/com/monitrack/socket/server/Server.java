@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.monitrack.connection.pool.implementation.DataSource;
-import com.monitrack.shared.MonitrackServiceFactory;
+import com.monitrack.shared.MonitrackServiceUtil;
 import com.monitrack.util.Util;
 
 public class Server {
@@ -28,9 +28,9 @@ public class Server {
 	 */
 	public void start()
 	{
-		log.info("Launching of the server...");
+		log.info("Launching of the server version " + MonitrackServiceUtil.getApplicationVersion() + "...");
 		//Displays Monitrack Server on the console
-		MonitrackServiceFactory.displayTitle();
+		System.out.println(MonitrackServiceUtil.getASCII("title.txt"));
 		DataSource.startConnectionPool();
 
 		try{

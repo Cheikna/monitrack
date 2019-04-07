@@ -213,7 +213,7 @@ toto@ubuntu:~$ sudo iptables-restore < /etc/iptables_bdd_dev.rules
 toto@ubuntu:~$ sudo iptables-restore < /etc/iptables_service_dev.rules
 ```
 3. Télécharger sur le machine virtuelle *MONITRACK_SERVICE_DEV* la dernière version du projet disponible sur le site : http://cheikna98.free.fr/esipe/ing1/pds/dev/ 
-_Vous trouverez dans chaque dossier commençant par la lettre 'v' suivi d'un numéro de version, le .jar 'service' (qui se chargera de récupérer les données de la base de données) et le .jar 'gui' qui est l'interface graphique pour le client_
+_Vous trouverez dans chaque dossier commençant par la lettre 'v' suivi d'un numéro de version, le .jar 'service' (qui fera le lien entre la base de données et l'interface graphique du client) et le .jar 'gui' qui est l'interface graphique pour le client_
 
 # Se connecter a l'environnement de production
 ## Connexion a la base de donnnes de production
@@ -235,8 +235,8 @@ toto@ubuntu:~$ sudo iptables-restore < /etc/iptables_bdd_prod.rules
 ```
 toto@ubuntu:~$ sudo iptables-restore < /etc/iptables_service_prod.rules
 ```
-3. Télécharger sur le machine virtuelle *MONITRACK_SERVICE_PROD* la dernière version du projet disponible sur le site : http://cheikna98.free.fr/esipe/ing1/pds/prod/ 
-_Vous trouverez dans chaque dossier commençant par la lettre 'r' suivi d'un numéro de release, le .jar 'service' (qui se chargera de récupérer les données de la base de données) et le .jar 'gui' qui est l'interface graphique pour le client_
+3. Télécharger sur lA machine virtuelle *MONITRACK_SERVICE_PROD* la dernière version du projet disponible sur le site : http://cheikna98.free.fr/esipe/ing1/pds/prod/ 
+_Vous trouverez dans chaque dossier commençant par la lettre 'r' suivi d'un numéro de release, le .jar 'service' (qui fera le lien entre la base de données et l'interface graphique du client) et le .jar 'gui' qui est l'interface graphique pour le client_
 
 # Scenarios de demonstration
 ## Release 1 (R1)
@@ -249,25 +249,29 @@ _Vous trouverez dans chaque dossier commençant par la lettre 'r' suivi d'un numé
 
 
 ## Release 2 (R2)
-### Pour cette release, il n'y aura que 1 connexion dans le pool de connexions
+### Pour cette release, il y aura 2 connexions dans le pool de connexions
 1. [Se connecter au serveur de production](#connexion-au-serveur-de-production).
-2. Lancer monitrack-service-vm-2.jar sur la machine virtuelle *MONITRACK_SERVICE_PROD* en utilisant la commande suivante :
+2. Lancer monitrack-service-vm-2.jar sur la machine virtuelle *MONITRACK_SERVICE_PROD* en utilisant les commandes suivantes :
 
 ```
-toto@ubuntu:~$ java -jar monitrack-service-vm-2.jar
+toto@ubuntu:~$ cd Bureau
+toto@ubuntu:~/Bureau$ java -jar monitrack-service-vm-2.jar
 ```
 3. Pendant que les connexions se créées, ouvrir le .jar monitrack-gui-vm-2.jar sur la machine locale.
+**Le fichier .jar est téléchargeable [ici](http://cheikna98.free.fr/esipe/ing1/pds/prod/r2/monitrack-gui-vm-2.jar)**
 4. Une fois les connexions créées sur la machine virtuelle, un message devrait s'afficher : _Waiting for a client's request..._
 5. Sur l'application client, appuyer sur le bouton _Accéder à la page d'accueil_.
-6. Effectuer les opérations _d'ajout_, _de mise à jour_, _de suppression_ et_de visualisation_.
-7. Ouvrir l'IHM sur une autre machine et effectuer les mêmes opérations qu'à l'étape 7
-8. Afficher tous les éléments et on devrait voir ce que l'autre client a également fait.
-9. Sur une des deux machines clients (que l'on nommera _machine 1_), se mettre en mode administrateur en cliquant sur le bouton en haut à gauche et entrer le mot de passe.
-10. Sur l'autre machine (que l'on nommera _machine_2), choisir l'action de _Visualisation_ dans la première combobox.
-** Attention : les opérations suivantes nécessitent d'être rapide **
-11. Sur la machine 1, appuyer le deuxième bouton (avec une image de boucle infinie) en haut à gauche. Ainsi, une connexion sera réservée par la machine 1.
-12. Sur la machine 2, appuyer sur le bouton de visualisation nommé _Visualiser_.
-13. Au bout de quelques secondes, sur la machine 2, une exception sera levée et un message sera affiché au client car aucune connexion n'est disponible.
+6. Effectuer les opérations **_d'ajout_, _de mise à jour_, _de suppression_ et _de visualisation_**.
+7. Ouvrir l'IHM sur 2 autres machines et effectuer les mêmes opérations qu'à l'étape 6.
+8. Afficher tous les éléments et on devrait voir ce que les autres clients ont également fait.
+9. Sur deux des trois machines clients (on les nommera **machine 1** et **machine 2**), se mettre en mode administrateur en cliquant sur le bouton en haut à gauche et entrer le mot de passe.
+10. Sur la troisième machine (que l'on nommera **machine 3**), choisir l'action de _Visualisation_ dans la première combobox.
+
+**Attention : les opérations suivantes nécessitent d'être rapide**
+
+11. Sur les **machine 1** et **machine 2**, appuyer le deuxième bouton (avec une image de boucle infinie) en haut à gauche. Ainsi, une connexion sera réservée par la machine 1 et une autre par la machine 2.
+12. Sur la **machine 3**, appuyer sur le bouton de visualisation nommé _Visualiser_.
+13. Au bout de quelques secondes, sur la machine 3, une exception sera levée et un message sera affiché au client car aucune connexion n'est disponible.
 14. Présenter les tests effectués.
 
 # Si des erreurs apparaissent

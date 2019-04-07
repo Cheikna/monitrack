@@ -2,6 +2,9 @@ package com.monitrack.entity;
 
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 public class Location {
 	private int idLocation;
 	private String nameLocation;
@@ -15,13 +18,13 @@ public class Location {
 	
 	public Location(String nameLocation, String center, int floor, String wing, int area) {
 		this(0, nameLocation, center, new Timestamp(System.currentTimeMillis()), 0, floor, wing, area);
-		/*this.nameLocation = nameLocation;
-		this.center = center;*/
 		
 	}
+	
 	public Location() {
 		super();
 	}
+	
 	public Location(int idLocation, String nameLocation, String center, Timestamp creationDate, int idSensor, int floor, String wing, int area) {
 		this.idLocation = idLocation;
 		this.nameLocation = nameLocation;
@@ -34,83 +37,98 @@ public class Location {
 	}
 
 	
-	@com.fasterxml.jackson.annotation.JsonProperty("ID_LOCATION")
+	@JsonGetter("id")
 	public int getIdLocation() {
 		return idLocation;
 	}
 	
-	@com.fasterxml.jackson.annotation.JsonProperty("ID_LOCATION")
+	@JsonSetter("id")
 	public void setIdLocation(int idLocation) {
 		this.idLocation = idLocation;
 	}
 	
-	@com.fasterxml.jackson.annotation.JsonProperty("NAME")
+	@JsonGetter("name")
 	public String getNameLocation() {
 		return nameLocation;
 	}
 	
-	@com.fasterxml.jackson.annotation.JsonProperty("NAME")
+	@JsonSetter("name")
 	public void setNameLocation(String nameLocation) {
 		this.nameLocation = nameLocation;
 	}
 	
-	@com.fasterxml.jackson.annotation.JsonProperty("CENTER")
+	@JsonGetter("center")
 	public String getCenter() {
 		return center;
 	}
 	
-	@com.fasterxml.jackson.annotation.JsonProperty("CENTER")
+	@JsonSetter("center")
 	public void setCenter(String center) {
 		this.center = center;
 	}
 	
-	@com.fasterxml.jackson.annotation.JsonProperty("ID_SENSOR")
+	@JsonGetter("id_sensor")
 	public int getIdSensor() {
 		return idSensor;
 	}
 	
-	@com.fasterxml.jackson.annotation.JsonProperty("ID_SENSOR")
+	@JsonSetter("id_sensor")
 	public void setIdSensor(int idSensor) {
 		this.idSensor = idSensor;
 	}
 	
-	@com.fasterxml.jackson.annotation.JsonProperty("CREATION_DATE")
+	@JsonGetter("creation_date")
 	public Timestamp getCreationDate() {
 		return creationDate;
 	}
 	
-	@com.fasterxml.jackson.annotation.JsonProperty("CREATION_DATE")
+	@JsonSetter("creation_date")
 	public void setCreationDate(Timestamp creationDate) {
 		this.creationDate = creationDate;
 	}	
 	
+	@JsonGetter("floor")
 	public int getFloor() {
 		return floor;
 	}
+	
+	@JsonSetter("floor")
 	public void setFloor(int floor) {
 		this.floor = floor;
 	}
+	
+	@JsonGetter("wing")
 	public String getWing() {
 		return wing;
 	}
+	
+	@JsonSetter("wing")
 	public void setWing(String wing) {
 		this.wing = wing;
 	}
+	
+	@JsonGetter("area")
 	public int getArea() {
 		return area;
 	}
+	
+	@JsonSetter("area")
 	public void setArea(int area) {
 		this.area = area;
 	}
+	
 	@Override
 	public String toString() {
-		return idLocation + "#" + nameLocation + " - créé le " + creationDate;
-		/*return "Location [idLocation=" + idLocation + ", nameLocation=" + nameLocation + ", center=" + center
-				+ ", creationDate=" + creationDate + ", idSensor=" + idSensor + "]";*/
+		return idLocation + "#" + nameLocation + " - créé le " + creationDate;		
 	}
 	
 	public String toStringFull() {
-		return idLocation + "#" + nameLocation + " - créé le " + creationDate;
+		return "- Emplacement n°" + idLocation + " :\n"
+			 + "      => Nom : " + nameLocation + "\n"
+			 + "      => Aile : " + wing + "\n"
+			 + "      => Etage : " + floor + "\n"
+			 + "      => Superficie : " + area + " m²\n"
+		     + "      => Date de création : " + creationDate + "\n";
 	}
 	
 	/* (non-Javadoc)
@@ -160,11 +178,6 @@ public class Location {
 			return false;
 		return true;
 	}
-	
-	
-	
-	
 
-	
 	
 }
