@@ -16,7 +16,7 @@ import com.monitrack.entity.Person;
 import com.monitrack.enumeration.Images;
 import com.monitrack.enumeration.RequestType;
 import com.monitrack.gui.panel.PersonsTab;
-import com.monitrack.shared.MonitrackGUIFactory;
+import com.monitrack.shared.MonitrackGuiUtil;
 import com.monitrack.util.JsonUtil;
 
 public class PersonsTabListener implements ActionListener {
@@ -86,7 +86,7 @@ public class PersonsTabListener implements ActionListener {
 						Person newPerson = new Person(value);
 						String serializedObject = JsonUtil.serializeObject(newPerson, Person.class, "");
 						String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, Person.class, serializedObject, null, null);
-						String response = MonitrackGUIFactory.sendRequest(jsonRequest);
+						String response = MonitrackGuiUtil.sendRequest(jsonRequest);
 						newPerson = (Person)JsonUtil.deserializeObject(response);
 						JOptionPane.showMessageDialog(personsTab, "Nouvelle personne créée avec l'id n°" + newPerson.getIdPerson(), "Succes", JOptionPane.INFORMATION_MESSAGE, Images.SUCCESS.getIcon());
 						
@@ -122,7 +122,7 @@ public class PersonsTabListener implements ActionListener {
 								personToUpadte.setNamePerson(newName);
 								String serializedObject = JsonUtil.serializeObject(personToUpadte, Person.class, "");
 								String jsonRequest = JsonUtil.serializeRequest(RequestType.UPDATE, Person.class, serializedObject, null, null);
-								MonitrackGUIFactory.sendRequest(jsonRequest);
+								MonitrackGuiUtil.sendRequest(jsonRequest);
 								setComboboxWithPersons(personsTab.getModifyPersonsCombobox());
 							}
 						}
@@ -136,7 +136,7 @@ public class PersonsTabListener implements ActionListener {
 						Person personToDelete = persons.get(comboboxIndex);
 						String serializedObject = JsonUtil.serializeObject(personToDelete, personToDelete.getClass(), "");
 						String jsonRequest = JsonUtil.serializeRequest(RequestType.DELETE, Person.class, serializedObject, null, null);
-						MonitrackGUIFactory.sendRequest(jsonRequest);
+						MonitrackGuiUtil.sendRequest(jsonRequest);
 						setComboboxWithPersons(personsTab.getDeletePersonsCombobox());
 					}
 				}
@@ -151,7 +151,7 @@ public class PersonsTabListener implements ActionListener {
 						personText = "";
 						String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Person.class, null, fields, values);
 						System.out.println(JsonUtil.indentJsonOutput(jsonRequest));
-						String response = MonitrackGUIFactory.sendRequest(jsonRequest);
+						String response = MonitrackGuiUtil.sendRequest(jsonRequest);
 						persons = (List<Person>)JsonUtil.deserializeObject(response);
 						
 						if(persons.size() > 0)
@@ -178,7 +178,7 @@ public class PersonsTabListener implements ActionListener {
 		}
 		catch(IOException e1)
 		{
-			MonitrackGUIFactory.showNoConnectionMessage();			
+			MonitrackGuiUtil.showNoConnectionMessage();			
 		}
 		catch(Exception e1)
 		{
@@ -194,7 +194,7 @@ public class PersonsTabListener implements ActionListener {
 		String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Person.class, null, null, null);
 		try 
 		{
-			String response = MonitrackGUIFactory.sendRequest(jsonRequest);
+			String response = MonitrackGuiUtil.sendRequest(jsonRequest);
 			persons = (List<Person>)JsonUtil.deserializeObject(response);
 			combobox.removeAllItems();
 			for(Person person : persons)

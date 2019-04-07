@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import com.monitrack.enumeration.ConnectionState;
 import com.monitrack.exception.DeprecatedVersionException;
-import com.monitrack.shared.MonitrackGUIFactory;
+import com.monitrack.shared.MonitrackGuiUtil;
 import com.monitrack.util.JsonUtil;
 import com.monitrack.util.Util;
 
@@ -59,7 +59,7 @@ public class ClientSocket {
 			writeToServer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true);	
 			
 			//Send the client application version to the server. The letter 'v' will indicate that it is the version that we are sending
-			writeToServer.println("v" + MonitrackGUIFactory.getApplicationVersion());
+			writeToServer.println("v" + MonitrackGuiUtil.getApplicationVersion());
 			
 			//Check if we are using the good version of the application
 			String[] serverCheck = readFromServer.readLine().split("v");
@@ -69,7 +69,7 @@ public class ClientSocket {
 				String serverVersion = serverCheck[1];
 				if(code.equalsIgnoreCase(ConnectionState.DEPRECATED_VERSION.getCode().toString()))
 				{
-					MonitrackGUIFactory.setServerVersion(serverVersion);
+					MonitrackGuiUtil.setServerVersion(serverVersion);
 					throw new DeprecatedVersionException(serverVersion);
 				}
 				

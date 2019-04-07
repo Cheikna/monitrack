@@ -16,9 +16,9 @@ import com.monitrack.socket.client.ClientSocket;
 import com.monitrack.util.JsonUtil;
 import com.monitrack.util.Util;
 
-public class MonitrackGUIFactory {
+public class MonitrackGuiUtil {
 
-	private static final Logger log = LoggerFactory.getLogger(MonitrackGUIFactory.class);
+	private static final Logger log = LoggerFactory.getLogger(MonitrackGuiUtil.class);
 	
 	private static final String APPLICATION_VERSION = Util.getPropertyValueFromPropertiesFile("version");
 	private static String serverVersion = "";
@@ -83,7 +83,7 @@ public class MonitrackGUIFactory {
 	 * @param serverVersion the serverVersion to set
 	 */
 	public static void setServerVersion(String serverVersion) {
-		MonitrackGUIFactory.serverVersion = serverVersion;
+		MonitrackGuiUtil.serverVersion = serverVersion;
 	}
 	
 	

@@ -123,8 +123,12 @@ public class Location {
 	}
 	
 	public String toStringFull() {
-		return "Location [idLocation=" + idLocation + ", nameLocation=" + nameLocation + ", center=" + center
-		+ ", creationDate=" + creationDate + ", idSensor=" + idSensor ;
+		return "- Emplacement n°" + idLocation + " :\n"
+			 + "      => Nom : " + nameLocation + "\n"
+			 + "      => Aile : " + wing + "\n"
+			 + "      => Etage : " + floor + "\n"
+			 + "      => Superficie : " + area + " m²\n"
+		     + "      => Date de création : " + creationDate + "\n";
 	}
 	
 	/* (non-Javadoc)

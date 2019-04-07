@@ -27,7 +27,7 @@ import com.monitrack.enumeration.ConnectionState;
 import com.monitrack.enumeration.Images;
 import com.monitrack.enumeration.RequestType;
 import com.monitrack.gui.frame.MonitrackFrame;
-import com.monitrack.shared.MonitrackGUIFactory;
+import com.monitrack.shared.MonitrackGuiUtil;
 import com.monitrack.util.JsonUtil;
 import com.monitrack.util.Util;
 
@@ -111,7 +111,7 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 		{
 			try 
 			{
-				String[] response = MonitrackGUIFactory.sendRequest(ConnectionState.RESERVED_CONNECTION.getCode().toString()).split("-");
+				String[] response = MonitrackGuiUtil.sendRequest(ConnectionState.RESERVED_CONNECTION.getCode().toString()).split("-");
 				String message = response[0];
 				String time = response[1];
 				displayConnectionTimeLeft(time);
@@ -191,7 +191,7 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 				person = new Person(name);
 				String serializedObject = JsonUtil.serializeObject(person, Person.class, "");
 				String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, Person.class, serializedObject, null, null);
-				MonitrackGUIFactory.sendRequest(jsonRequest);
+				MonitrackGuiUtil.sendRequest(jsonRequest);
 			}
 			inputStream.close();
 		} 
@@ -223,7 +223,7 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 				location = new Location(name, center, floor, wing, area);
 				String serializedObject = JsonUtil.serializeObject(location, Location.class, "");
 				String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, Location.class, serializedObject, null, null);
-				MonitrackGUIFactory.sendRequest(jsonRequest);
+				MonitrackGuiUtil.sendRequest(jsonRequest);
 			} 
 			inputStream.close();
 		} 

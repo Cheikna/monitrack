@@ -1,10 +1,12 @@
 package com.monitrack.gui.panel;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -21,6 +23,8 @@ import com.monitrack.listener.LocationsTabListener;
 public class LocationsTab extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	
+	private final String[] buildingWinds = {"NORD", "SUD", "OUEST", "EST"};
 	
 	/***** Menu Panels *****/
 	private JPanel northPanel;
@@ -56,7 +60,7 @@ public class LocationsTab extends JPanel {
 	private JTextField newLocationNameTextField;
 	private JTextField newFloorTextField;
 	private JTextField newLocationSizeTextField;
-	private JTextField newBuildingWingTextField;
+	private JComboBox<String> newBuildingWingCombobox;
 
 	/***** Dialog for updating a location *****/
 	private JPanel modifyLocationPopupPanel;
@@ -67,12 +71,12 @@ public class LocationsTab extends JPanel {
 	private JTextField oldLocationSizeTextField;
 	private JTextField modifiedLocationSizeTextField;
 	private JTextField oldBuildingWingTextField;
-	private JTextField modifiedBuildingWingTextField;
+	private JComboBox<String> modifiedBuildingWingCombobox;
 
 	public LocationsTab()
 	{
 		setLayout(new BorderLayout());
-		Font textAreaFont = new Font("Calibri", Font.PLAIN, 25);
+		Font textAreaFont = new Font("Calibri", Font.PLAIN, 20);
 		listener = new LocationsTabListener(this);
 		northPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
@@ -174,16 +178,24 @@ public class LocationsTab extends JPanel {
 		newLocationNameTextField = new JTextField(15);
 		newFloorTextField = new JTextField(15);
 		newLocationSizeTextField = new JTextField(15);
-		newBuildingWingTextField = new JTextField(15);
+		newBuildingWingCombobox = new JComboBox<>(buildingWinds);
 
-		createLocationPopupPanel.add(new JLabel("Nom du nouvel emplacement :"));
+		createLocationPopupPanel.add(new JLabel("Nom du nouvel emplacement *:"));
 		createLocationPopupPanel.add(newLocationNameTextField);
-		createLocationPopupPanel.add(new JLabel("Etage :"));
+		createLocationPopupPanel.add(Box.createRigidArea(new Dimension(0,10)));
+		createLocationPopupPanel.add(new JLabel("Etage *:"));
 		createLocationPopupPanel.add(newFloorTextField);
-		createLocationPopupPanel.add(new JLabel("Aile :"));
-		createLocationPopupPanel.add(newBuildingWingTextField);
+		createLocationPopupPanel.add(Box.createRigidArea(new Dimension(0,10)));
+		createLocationPopupPanel.add(new JLabel("Aile *:"));
+		createLocationPopupPanel.add(newBuildingWingCombobox);
+		createLocationPopupPanel.add(Box.createRigidArea(new Dimension(0,10)));
 		createLocationPopupPanel.add(new JLabel("Superficie (en m²) :"));
 		createLocationPopupPanel.add(newLocationSizeTextField);
+		createLocationPopupPanel.add(Box.createRigidArea(new Dimension(0,10)));
+
+		JLabel label = new JLabel("* Champs obligatoires");
+		label.setFont(new Font("Arial", Font.ITALIC, 12));
+		createLocationPopupPanel.add(label);
 	}
 
 	private void setModifyLocationPopupPanel()
@@ -200,7 +212,7 @@ public class LocationsTab extends JPanel {
 		
 		oldBuildingWingTextField = new JTextField(15);
 		oldBuildingWingTextField.setEditable(false);
-		modifiedBuildingWingTextField = new JTextField(15);
+		modifiedBuildingWingCombobox = new JComboBox<>(buildingWinds);
 		
 		oldLocationSizeTextField = new JTextField(15);
 		oldLocationSizeTextField.setEditable(false);
@@ -228,7 +240,7 @@ public class LocationsTab extends JPanel {
 		
 		//Line 6
 		modifyLocationPopupPanel.add(oldBuildingWingTextField);
-		modifyLocationPopupPanel.add(modifiedBuildingWingTextField);
+		modifyLocationPopupPanel.add(modifiedBuildingWingCombobox);
 		
 		//Line 7
 		modifyLocationPopupPanel.add(new JLabel("Ancienne superficie (en m²) :"));
@@ -373,13 +385,6 @@ public class LocationsTab extends JPanel {
 	}
 
 	/**
-	 * @return the newBuildingWingTextField
-	 */
-	public JTextField getNewBuildingWingTextField() {
-		return newBuildingWingTextField;
-	}
-
-	/**
 	 * @return the oldNameTextField
 	 */
 	public JTextField getOldNameTextField() {
@@ -429,13 +434,6 @@ public class LocationsTab extends JPanel {
 	}
 
 	/**
-	 * @return the modifiedBuildingWingTextField
-	 */
-	public JTextField getModifiedBuildingWingTextField() {
-		return modifiedBuildingWingTextField;
-	}
-
-	/**
 	 * @return the filter1ForShowCombobox
 	 */
 	public JComboBox<String> getFilter1ForShowCombobox() {
@@ -447,6 +445,34 @@ public class LocationsTab extends JPanel {
 	 */
 	public JComboBox<String> getFilter2ForShowCombobox() {
 		return filter2ForShowCombobox;
+	}
+
+	/**
+	 * @return the newBuildingWingCombobox
+	 */
+	public JComboBox<String> getNewBuildingWingCombobox() {
+		return newBuildingWingCombobox;
+	}
+
+	/**
+	 * @return the modifiedBuildingWingCombobox
+	 */
+	public JComboBox<String> getModifiedBuildingWingCombobox() {
+		return modifiedBuildingWingCombobox;
+	}
+
+	/**
+	 * @return the filter1TextField
+	 */
+	public JTextField getFilter1TextField() {
+		return filter1TextField;
+	}
+
+	/**
+	 * @return the filter2TextField
+	 */
+	public JTextField getFilter2TextField() {
+		return filter2TextField;
 	}
 
 }
