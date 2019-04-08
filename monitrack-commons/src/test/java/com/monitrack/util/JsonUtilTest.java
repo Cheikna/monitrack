@@ -110,7 +110,7 @@ public class JsonUtilTest {
 		
 		JsonNode rootNode = mapper.readTree(jsonRequest);
 		Person pers = (Person) JsonUtil.deserializeObject(rootNode.get(JSONField.SERIALIZED_OBJECT.getLabel()).toString());
-		assertEquals(true, p.equals(pers));
+		assertEquals(p, pers);
 		
 	}
 	

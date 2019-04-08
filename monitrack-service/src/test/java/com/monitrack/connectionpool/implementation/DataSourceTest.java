@@ -41,18 +41,18 @@ public class DataSourceTest {
 		try
 		{
 			int numberOfAvailableConnections = DataSource.getRemaningConnections();
-			int i = 1;
-			int tooMuchConnections = numberOfAvailableConnections + 3;
 			Connection connection = null;
-			while(i < tooMuchConnections) {
-				String order = i + "/" + numberOfAvailableConnections;
-				// Number of loop if the datasource contains as much connections as the tooMuchConnections variables
-				String maxLoop = "(loop n°" + i + "/" + tooMuchConnections + ").";
-				log.info("Trying to access to the connection number " + order + " of the connection pool during the test " + maxLoop);
+			
+			for(int i = 1; i <= numberOfAvailableConnections; i++)
+			{
+				String currentLoop = "(loop n°" + i + "/" + numberOfAvailableConnections + ").";
+				log.info("========== Unit test - " + currentLoop + " ================");
 				connection = DataSource.getConnection();
 				assertNotNull(connection);
-				i++;
 			}
+			log.info("========== Too much connection ================");
+			assertEquals(null, DataSource.getConnection());
+			
 		}
 		catch(Exception e)
 		{
