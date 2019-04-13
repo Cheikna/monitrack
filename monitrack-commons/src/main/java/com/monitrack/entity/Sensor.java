@@ -1,6 +1,7 @@
 package com.monitrack.entity;
 
 import com.monitrack.enumeration.SensorState;
+import com.monitrack.enumeration.SensorType;
 
 /**
  * 
@@ -10,7 +11,8 @@ import com.monitrack.enumeration.SensorState;
 public abstract class Sensor {
 	
 	private Integer id;
-	private SensorState sensorState;	
+	private SensorState sensorState;
+	private SensorType sensorType;	
 	private Location location;
 
 	public Sensor() {
