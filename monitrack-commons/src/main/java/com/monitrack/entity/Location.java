@@ -1,6 +1,7 @@
 package com.monitrack.entity;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
@@ -15,6 +16,7 @@ public class Location {
 	private String wing;
 	// The size of the room
 	private int area;
+	private List<Sensor> sensors;
 	
 	public Location(String nameLocation, String center, int floor, String wing, int area) {
 		this(0, nameLocation, center, new Timestamp(System.currentTimeMillis()), 0, floor, wing, area);
@@ -177,6 +179,22 @@ public class Location {
 		} else if (!nameLocation.equals(other.nameLocation))
 			return false;
 		return true;
+	}
+
+	/**
+	 * @return the sensors
+	 */
+	@JsonGetter("sensors")
+	public List<Sensor> getSensors() {
+		return sensors;
+	}
+
+	/**
+	 * @param sensors the sensors to set
+	 */
+	@JsonSetter("sensors")
+	public void setSensors(List<Sensor> sensors) {
+		this.sensors = sensors;
 	}
 
 	
