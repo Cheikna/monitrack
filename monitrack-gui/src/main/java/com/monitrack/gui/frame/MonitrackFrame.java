@@ -6,6 +6,7 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Frame;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -51,6 +52,7 @@ public class MonitrackFrame extends JFrame
 
 	public MonitrackFrame()
 	{
+		this.setExtendedState(Frame.MAXIMIZED_BOTH);
 		listener = new MonitrackListener(this);
 
 		northPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -97,10 +99,10 @@ public class MonitrackFrame extends JFrame
 
 		this.getContentPane().add(centerPanel, BorderLayout.CENTER);
 		this.getContentPane().add(northPanel, BorderLayout.NORTH);
-		this.setSize(1000, 600);
+		//this.setSize(1000, 600);
 		setLocationRelativeTo(null);
 		this.addWindowListener(listener);
-		this.setResizable(false);
+		//this.setResizable(false);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setVisible(true);
 	}
