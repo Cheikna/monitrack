@@ -42,8 +42,10 @@ public enum Images {
 	
 	CLOCK("clock.png"),
 	
-	SUPER("superman_batman.png");
-
+	SUPER("superman_batman.png"),
+	
+	MAP("Image_Test.png.png");
+	
 	/***** attribut of enums *****/
 	private URL url;
 
