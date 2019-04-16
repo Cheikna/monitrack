@@ -42,6 +42,10 @@ public enum Images {
 	
 	CLOCK("clock.png"),
 	
+	MAINTENANCE("maintenance.png"),
+	
+	CONFIGURER("configurer.png"),
+	
 	SUPER("superman_batman.png");
 
 	/***** attribut of enums *****/
