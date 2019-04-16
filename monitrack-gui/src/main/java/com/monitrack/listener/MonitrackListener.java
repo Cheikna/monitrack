@@ -77,7 +77,7 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 				String enteredPassword = String.valueOf(passwordField.getPassword());
 				if(enteredPassword.equals(correctPassword))
 				{
-					monitrackFrame.setNorthPanel(true);
+					monitrackFrame.setNorthPanel(true,false);
 				}
 				else
 				{
@@ -99,7 +99,7 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 				
 				if(entityChoice.equalsIgnoreCase("personnes"))
 				{
-					generateRandomPersons();				
+					//generateRandomPersons();				
 				}
 				else if(entityChoice.equalsIgnoreCase("emplacements"))
 				{
@@ -174,7 +174,7 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 		timer.start();
 		
 	}
-
+/*
 	private static void generateRandomPersons()
 	{
 		try 
@@ -201,7 +201,7 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 		}
 		
 	}
-	
+	*/
 	private static void generateRandomLocations()
 	{
 		try 
