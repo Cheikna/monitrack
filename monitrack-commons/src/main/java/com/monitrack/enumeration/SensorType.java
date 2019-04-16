@@ -21,7 +21,17 @@ public enum SensorType {
 		this.frenchLabel = frenchLabel;
 	}
 
-
+	public static SensorType getSensorType(String sensorType)
+	{
+		SensorType[] values = SensorType.values();
+		for(SensorType value : values)
+		{
+			if(value.toString().equalsIgnoreCase(sensorType))
+				return value;
+		}
+		return null;
+	}
+	
 	/**
 	 * @return the englishLabel
 	 */
