@@ -12,6 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -140,6 +142,68 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 			{
 				log.error(e1.getMessage());
 			}			
+		}
+		else if(e.getSource() == monitrackFrame.getAgentModeButton())
+		{
+			JLabel label = new JLabel("Nom d'utilisateur :\n");
+			JLabel password = new JLabel("Mot de passe :\n");
+			JTextField jtextField = new JTextField();
+			JPasswordField passwordField = new JPasswordField(15);
+			JPanel panel  = new JPanel();
+			
+			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+			panel.add(label);
+			panel.add(jtextField);
+			panel.add(password);
+			panel.add(passwordField);
+			
+			int choice = JOptionPane.showConfirmDialog(monitrackFrame, panel, "Mode agent", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, Images.MAINTENANCE.getIcon());
+			
+			//If the user clicks on the ok button
+			if(choice == 0)
+			{
+				String correctUserName = Util.getPropertyValueFromPropertiesFile("agentUserName");
+				String enteredUserName = String.valueOf(jtextField.getText());
+				String correctPassword = Util.getPropertyValueFromPropertiesFile("gui_password");
+				String enteredPassword = String.valueOf(passwordField.getPassword());
+				if(enteredPassword.equals(correctPassword) && enteredUserName.equals(correctUserName))
+				{
+					monitrackFrame.setNorthPanel(false,true);
+				}
+				else if(!enteredPassword.equals(correctPassword) && enteredUserName.equals(correctUserName)){
+					JOptionPane.showMessageDialog(null, "Nom d'utilisateur incorrect", "Erreur", JOptionPane.ERROR_MESSAGE);
+				}
+				else if(enteredPassword.equals(correctPassword) && !enteredUserName.equals(correctUserName)) {
+					JOptionPane.showMessageDialog(null, "Mot de passe incorrect", "Erreur", JOptionPane.ERROR_MESSAGE);
+				}
+				else 
+				{
+					
+					JOptionPane.showMessageDialog(null, "Nom d'utilisateur et mot de passe incorrect", "Erreur", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		} else if (e.getSource() == monitrackFrame.getConfigurationButton()) {
+			JComboBox entitiesCombobox = new JComboBox(new String[]{"Fumée", "Entrée/Sortie", "Présence"});
+			JPanel panel = new JPanel(new GridLayout(0, 1));
+			panel.add(new JLabel("Choisissez le type de capteur à configurer :"));
+			panel.add(entitiesCombobox);
+			int choice = JOptionPane.showConfirmDialog(monitrackFrame, panel, "Configuration de capteurs", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, Images.SUPER.getIcon());
+			
+			if(choice == 0)
+			{
+				String entityChoice = entitiesCombobox.getSelectedItem().toString();
+				
+				if(entityChoice.equalsIgnoreCase("Fumée"))
+				{
+					System.out.println("youhpu");
+				}
+				else if(entityChoice.equalsIgnoreCase("Entrée/Sortie"))
+				{
+							
+				} else if (entityChoice.equalsIgnoreCase("Présence")) {
+					
+				}
+			}
 		}
 	}
 	

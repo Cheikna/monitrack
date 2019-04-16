@@ -27,8 +27,15 @@ public class MonitrackFrame extends JFrame
 	private String openingPageName;
 	private HomePage homePage;
 	private String homePageName;
+	
+	//Button to access to the developer mode
 	private JButton developerModeButton;
+	
+	//Button to access to the agent mode
 	private JButton agentModeButton;
+	
+	//Button to configure different sensors
+	private JButton configurationButton;
 	
 	//Button to generate some random values according to the entity selected
 	private JButton superUserModeButton;
@@ -63,9 +70,13 @@ public class MonitrackFrame extends JFrame
 		developerModeButton.addActionListener(listener);
 		developerModeButton.setToolTipText("Mode développeur");
 		
-		agentModeButton = new JButton(Images.DEVELOPER.getIcon());
+		agentModeButton = new JButton(Images.MAINTENANCE.getIcon());
 		agentModeButton.addActionListener(listener);
 		agentModeButton.setToolTipText("Mode agent");
+		
+		configurationButton = new JButton(Images.CONFIGURER.getIcon());
+		configurationButton.addActionListener(listener);
+		configurationButton.setToolTipText("Configurer les capteurs");
 
 		superUserModeButton = new JButton(Images.SUPER.getIcon());
 		superUserModeButton.addActionListener(listener);
@@ -128,7 +139,8 @@ public class MonitrackFrame extends JFrame
 			northPanel.add(timerLabel);
 		}
 		else if(isAgentModeActive){
-			
+			northPanel.add(developerModeButton);
+			northPanel.add(configurationButton);
 		}
 		else {
 			northPanel.add(developerModeButton);
@@ -165,6 +177,14 @@ public class MonitrackFrame extends JFrame
 	 */
 	public JButton getDeveloperModeButton() {
 		return developerModeButton;
+	}
+
+	/**
+	 * 
+	 * @return the configurationButton
+	 */
+	public JButton getConfigurationButton() {
+		return configurationButton;
 	}
 
 	/**
