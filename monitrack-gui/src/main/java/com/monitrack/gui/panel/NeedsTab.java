@@ -82,10 +82,12 @@ public class NeedsTab extends JPanel implements ActionListener{
 		
 		cardPanel.setLayout(cards);
 		
-		//CardPanel.panels are generate by actionPerformed
+		
 		add(cardPanel, BorderLayout.CENTER);
 	
+		//CardPanel.panels are generate by actionPerformed
 		
+		//TESTFORPANELS
 		lblTest = new JLabel("test1");
 		JPnewHome.add(lblTest);
 		lblGrowing = new JLabel("growing");
