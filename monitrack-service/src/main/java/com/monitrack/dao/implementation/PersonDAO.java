@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.monitrack.dao.abstracts.DAO;
 import com.monitrack.entity.Person;
+import com.monitrack.enumeration.UserProfile;
 
 public class PersonDAO extends DAO<Person>{
 
@@ -118,7 +119,7 @@ public class PersonDAO extends DAO<Person>{
 	{
 		Person person = null;
 		try {
-			person = new Person(rs.getInt("id"), rs.getString("name"), rs.getTimestamp("creation_date"));
+			person = new Person(rs.getInt("id"),rs.getString("user_name"),rs.getString("password"),rs.getString("name"), UserProfile.getUserProfile("userProfile"), rs.getTimestamp("creation_date"));
 		} catch (SQLException e) {
 			log.error("An error occurred when getting one Person from the resultSet : " + e.getMessage());
 		}

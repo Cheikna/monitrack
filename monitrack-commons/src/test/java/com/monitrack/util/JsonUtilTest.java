@@ -20,7 +20,7 @@ public class JsonUtilTest {
 
 	private static final Logger log = LoggerFactory.getLogger(JsonUtilTest.class);
 	private ObjectMapper mapper = new ObjectMapper();
-	
+	/*
 	@Test
 	public void serializeRequest()
 	{
@@ -150,5 +150,6 @@ public class JsonUtilTest {
 		String json = JsonUtil.serializeObject(null	, null, message);
 		assertEquals(message, JsonUtil.getJsonNodeValue(JSONField.ERROR_MESSAGE, json));
 	}	
+	*/
 
 }

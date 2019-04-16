@@ -27,7 +27,15 @@ public class MonitrackFrame extends JFrame
 	private String openingPageName;
 	private HomePage homePage;
 	private String homePageName;
+	
+	//Button to access to the developer mode
 	private JButton developerModeButton;
+	
+	//Button to access to the agent mode
+	private JButton agentModeButton;
+	
+	//Button to configure different sensors
+	private JButton configurationButton;
 	
 	//Button to generate some random values according to the entity selected
 	private JButton superUserModeButton;
@@ -61,6 +69,14 @@ public class MonitrackFrame extends JFrame
 		developerModeButton = new JButton(Images.DEVELOPER.getIcon());
 		developerModeButton.addActionListener(listener);
 		developerModeButton.setToolTipText("Mode développeur");
+		
+		agentModeButton = new JButton(Images.MAINTENANCE.getIcon());
+		agentModeButton.addActionListener(listener);
+		agentModeButton.setToolTipText("Mode agent");
+		
+		configurationButton = new JButton(Images.CONFIGURER.getIcon());
+		configurationButton.addActionListener(listener);
+		configurationButton.setToolTipText("Configurer les capteurs");
 
 		superUserModeButton = new JButton(Images.SUPER.getIcon());
 		superUserModeButton.addActionListener(listener);
@@ -79,7 +95,7 @@ public class MonitrackFrame extends JFrame
 		timerLabel.setFont(new Font("Calibri", Font.PLAIN, 25));
 		timerLabel.setVisible(false);
 
-		setNorthPanel(false);
+		setNorthPanel(false, false);
 
 		cardLayout = new CardLayout();
 		centerPanel = new JPanel(cardLayout);
@@ -111,7 +127,7 @@ public class MonitrackFrame extends JFrame
 		cardLayout.show(centerPanel, pageName);
 	}
 	
-	public void setNorthPanel(boolean isDeveloperModeActive)
+	public void setNorthPanel(boolean isDeveloperModeActive, boolean isAgentModeActive)
 	{
 		northPanel.removeAll();
 		
@@ -122,9 +138,13 @@ public class MonitrackFrame extends JFrame
 			northPanel.add(openLogFileButton);
 			northPanel.add(timerLabel);
 		}
-		else
-		{
-			northPanel.add(developerModeButton);			
+		else if(isAgentModeActive){
+			northPanel.add(developerModeButton);
+			northPanel.add(configurationButton);
+		}
+		else {
+			northPanel.add(developerModeButton);
+			northPanel.add(agentModeButton);
 		}
 		
 		northPanel.repaint();
@@ -158,6 +178,22 @@ public class MonitrackFrame extends JFrame
 	public JButton getDeveloperModeButton() {
 		return developerModeButton;
 	}
+
+	/**
+	 * 
+	 * @return the configurationButton
+	 */
+	public JButton getConfigurationButton() {
+		return configurationButton;
+	}
+
+	/**
+	 * @return the agentModeButton
+	 */
+	public JButton getAgentModeButton() {
+		return agentModeButton;
+	}
+
 
 	/**
 	 * @return the openLogFileButton
