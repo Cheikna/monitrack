@@ -4,7 +4,7 @@ package com.monitrack.enumeration;
  * @author Cheikna
  *
  */
-public enum SensorState {
+public enum SensorConfiguration {
 	
 	ENABLED,
 	
@@ -12,10 +12,10 @@ public enum SensorState {
 	
 	NOT_CONFIGURED;
 	
-	public static SensorState getSensorState(String sensorState)
+	public static SensorConfiguration getSensorConfiguration(String sensorState)
 	{
-		SensorState[] values = SensorState.values();
-		for(SensorState value : values)
+		SensorConfiguration[] values = SensorConfiguration.values();
+		for(SensorConfiguration value : values)
 		{
 			if(value.toString().equalsIgnoreCase(sensorState))
 				return value;

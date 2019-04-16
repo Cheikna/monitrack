@@ -6,18 +6,14 @@ import java.time.LocalTime;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.monitrack.enumeration.SensorState;
+import com.monitrack.enumeration.SensorConfiguration;
 import com.monitrack.enumeration.SensorType;
 
-/**
- * 
- * @author Cheikna
- *
- */
+
 public abstract class Sensor {
 	
 	protected Integer id;
-	protected SensorState sensorState;
+	protected SensorConfiguration sensorConfiguration;
 	protected SensorType sensorType;	
 	protected Location location;
 	protected String ipAddress;
@@ -34,12 +30,12 @@ public abstract class Sensor {
 
 	
 
-	public Sensor(Integer id, SensorState sensorState, SensorType sensorType, Location location, String ipAddress,
+	public Sensor(Integer id, SensorConfiguration sensorConfiguration, SensorType sensorType, Location location, String ipAddress,
 			String macAddress, float alertThreshold, Timestamp timeChange, Time beginTime2, Time endTime2,
 			Timestamp creationDate) {
 		super();
 		this.id = id;
-		this.sensorState = sensorState;
+		this.sensorConfiguration = sensorConfiguration;
 		this.sensorType = sensorType;
 		this.location = location;
 		this.ipAddress = ipAddress;
@@ -63,19 +59,19 @@ public abstract class Sensor {
 		this.id = id;
 	}
 
-	@JsonGetter("state")
-	public SensorState getSensorState() {
-		return sensorState;
+	@JsonGetter("configuration")
+	public SensorConfiguration getsensorConfiguration() {
+		return sensorConfiguration;
 	}
 
-	@JsonSetter("state")
-	public void setSensorState(SensorState sensorState) {
-		this.sensorState = sensorState;
+	@JsonSetter("configuration")
+	public void setsensorConfiguration(SensorConfiguration sensorConfiguration) {
+		this.sensorConfiguration = sensorConfiguration;
 	}
 
 	@JsonGetter("type")
-	public SensorType getSensorType() {
-		return sensorType;
+	public SensorConfiguration getSensorType() {
+		return sensorConfiguration;
 	}
 
 	@JsonSetter("type")

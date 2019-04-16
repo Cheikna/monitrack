@@ -11,80 +11,78 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.monitrack.dao.abstracts.DAO;
-import com.monitrack.entity.Smoke;
+import com.monitrack.entity.Flow;
 import com.monitrack.enumeration.SensorConfiguration;
 import com.monitrack.enumeration.SensorType;
 
-public class SmokeDAO extends DAO<Smoke>{
+public class FlowDAO  extends DAO<Flow>{
 	
-	private static final Logger log = LoggerFactory.getLogger(SmokeDAO.class);	
+	private static final Logger log = LoggerFactory.getLogger(FlowDAO.class);	
 	//private JsonFactory factory = new JsonFactory();
 	private final Object lock = new Object();
 
-	public SmokeDAO(Connection connection) {
+	public FlowDAO(Connection connection) {
 		super(connection);
 	}
 
 	@Override
-	public Smoke create(Smoke obj) {
+	public Flow create(Flow obj) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void update(Smoke obj) {
+	public void update(Flow obj) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void delete(Smoke obj) {
+	public void delete(Flow obj) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public List<Smoke> find(List<String> fields, List<String> values) {
+	public List<Flow> find(List<String> fields, List<String> values) {
 		synchronized (lock) {
-			List<Smoke> smokes = new ArrayList<Smoke>();
-			String sql = "SELECT * FROM SMOKE" + super.getRequestFilters(fields, values);
+			List<Flow> flows = new ArrayList<Flow>();
+			String sql = "SELECT * FROM FLOW" + super.getRequestFilters(fields, values);
 			if (connection != null) {
 				try {
 					PreparedStatement preparedStatement = connection.prepareStatement(sql);
 					ResultSet rs = preparedStatement.executeQuery();
-					Smoke smoke;
+					Flow flow;
 					while (rs.next()) {
-						smoke = getSmokeSensorFromResultSet(rs);
-						if (smoke != null) {
-							smokes.add(smoke);
+						flow = getFlowSensorFromResultSet(rs);
+						if (flow != null) {
+							flows.add(flow);
 						}
 					}
 				} catch (Exception e) {
-					log.error("An error occurred when finding the smoke's sensors : " + e.getMessage());
+					log.error("An error occurred when finding the flow's sensors : " + e.getMessage());
 					e.printStackTrace();
 				}
 			}
-			return smokes;
+			return flows;
 		}
 	}
 	
 	@SuppressWarnings("finally")
-	private Smoke getSmokeSensorFromResultSet(ResultSet rs)
+	private Flow getFlowSensorFromResultSet(ResultSet rs)
 	{
-		Smoke smoke = null;
+		Flow flow = null;
 		try {
-			smoke = new Smoke(rs.getInt("id"),SensorConfiguration.getSensorConfiguration("state"),SensorType.getSensorType("type"),
+			flow = new Flow(rs.getInt("id"),SensorConfiguration.getSensorConfiguration("state"),SensorType.getSensorType("type"),
 					null, rs.getString("ip_address"),rs.getString("mac_address"),
 					rs.getFloat("alert_treshold"), rs.getTimestamp("time_change"), rs.getTime("begin_time"),
 					rs.getTime("end_time"),rs.getTimestamp("creation_date"));
 		} catch (SQLException e) {
-			log.error("An error occurred when getting one Smoke Sensor from the resultSet : " + e.getMessage());
+			log.error("An error occurred when getting one Flow Sensor from the resultSet : " + e.getMessage());
 		}
 		finally {
-			return smoke;
+			return flow;
 		}
 	}
-	
-	
 
 }

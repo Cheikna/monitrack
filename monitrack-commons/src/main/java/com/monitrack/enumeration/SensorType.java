@@ -6,7 +6,9 @@ public enum SensorType {
 	
 	INPUT_OUTPUT("input/output", "entrée/sortie"),
 	
-	FLOW("flow", "présence");
+	FLOW("flow", "présence"),
+	
+	LIGHT("light", "lumière");
 	
 	
 	private String englishLabel;
