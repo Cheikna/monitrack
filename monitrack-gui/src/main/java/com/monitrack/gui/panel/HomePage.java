@@ -17,6 +17,7 @@ public class HomePage extends JPanel
 		JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.add("Personnes", new PersonsTab());
 		tabbedPane.addTab("Emplacements surveillés", Images.LOCATION_ICON.getIcon(), new LocationsTab());
+		tabbedPane.addTab("Besoins", new NeedsTab());
 		add(tabbedPane, BorderLayout.CENTER);
 	}
 
