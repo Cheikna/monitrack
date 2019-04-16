@@ -14,8 +14,18 @@ public class DAOFactory {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static Object execute(Connection connection, Class<?> entityClass, RequestType requestType, Object object, List<String> fields, List<String> values) throws Exception
 	{
-		DAO dao = getDAO(connection, entityClass);
+		DAO dao = null;
+		
+		if(entityClass.equals(Person.class))
+			dao =  new PersonDAO(connection);
+		else if(entityClass.equals(Location.class))
+			dao = new LocationDAO(connection);
+		else
+			throw new UnknownClassException(entityClass);		
+		
+		//The code goes here if the correct DAO was found
 		Object result = null;
+		
 		switch(requestType)
 		{
 			case SELECT:
@@ -35,16 +45,6 @@ public class DAOFactory {
 		}
 		return result;
 		
-	}
-	
-	private static DAO<?> getDAO(Connection connection, Class<?> entityClass) throws UnknownClassException
-	{
-		if(entityClass.equals(Person.class))
-			return new PersonDAO(connection);
-		else if(entityClass.equals(Location.class))
-			return new LocationDAO(connection);
-		else
-			throw new UnknownClassException(entityClass);
 	}
 
 }
