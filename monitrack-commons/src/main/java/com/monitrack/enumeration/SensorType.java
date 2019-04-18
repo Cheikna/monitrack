@@ -6,7 +6,9 @@ public enum SensorType {
 	
 	INPUT_OUTPUT("input/output", "entrée/sortie"),
 	
-	FLOW("flow", "présence");
+	FLOW("flow", "présence"),
+	
+	LIGHT("light", "lumière");
 	
 	
 	private String englishLabel;
@@ -21,7 +23,17 @@ public enum SensorType {
 		this.frenchLabel = frenchLabel;
 	}
 
-
+	public static SensorType getSensorType(String sensorType)
+	{
+		SensorType[] values = SensorType.values();
+		for(SensorType value : values)
+		{
+			if(value.toString().equalsIgnoreCase(sensorType))
+				return value;
+		}
+		return null;
+	}
+	
 	/**
 	 * @return the englishLabel
 	 */
