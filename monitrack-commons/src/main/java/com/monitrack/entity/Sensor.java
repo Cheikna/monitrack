@@ -2,12 +2,12 @@ package com.monitrack.entity;
 
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.LocalTime;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.monitrack.enumeration.SensorConfiguration;
 import com.monitrack.enumeration.SensorType;
+import com.monitrack.util.MessageSender;
 
 
 public abstract class Sensor {
@@ -23,6 +23,8 @@ public abstract class Sensor {
 	protected Time beginTime;
 	protected Time endTime;
 	protected Timestamp creationDate;
+	protected Timestamp lastMessageDate;
+	protected MessageSender messageSender;
 
 	public Sensor() {
 		// TODO Auto-generated constructor stub
@@ -159,8 +161,15 @@ public abstract class Sensor {
 		this.creationDate = creationDate;
 	}
 
-	
-	
-	
+	@JsonGetter("last_message_date")
+	public Timestamp getLastMessageDate() {
+		return lastMessageDate;
+	}
+
+
+	@JsonSetter("last_message_date")
+	public void setLastMessageDate(Timestamp lastMessageDate) {
+		this.lastMessageDate = lastMessageDate;
+	}
 
 }
