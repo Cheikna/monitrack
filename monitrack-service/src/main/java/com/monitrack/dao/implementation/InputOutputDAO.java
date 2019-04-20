@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import com.monitrack.dao.abstracts.DAO;
 import com.monitrack.entity.InputOutput;
-import com.monitrack.enumeration.SensorConfiguration;
 import com.monitrack.enumeration.SensorType;
 
 public class InputOutputDAO extends DAO<InputOutput>{
@@ -71,18 +70,7 @@ public class InputOutputDAO extends DAO<InputOutput>{
 	@SuppressWarnings("finally")
 	private InputOutput getInputOutPutSensorFromResultSet(ResultSet rs)
 	{
-		InputOutput inputoutput = null;
-		try {
-			inputoutput = new InputOutput(rs.getInt("id"),SensorConfiguration.getSensorConfiguration("configuration"),SensorType.getSensorType("type"),
-					null, rs.getString("ip_address"),rs.getString("mac_address"),
-					rs.getFloat("alert_treshold"), rs.getTimestamp("time_change"), rs.getTime("begin_time"),
-					rs.getTime("end_time"),rs.getTimestamp("creation_date"));
-		} catch (SQLException e) {
-			log.error("An error occurred when getting one Flow Sensor from the resultSet : " + e.getMessage());
-		}
-		finally {
-			return inputoutput;
-		}
+		return null;
 	}
 
 }

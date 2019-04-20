@@ -1,175 +1,229 @@
 package com.monitrack.entity;
-
 import java.sql.Time;
 import java.sql.Timestamp;
-
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonSetter;
-import com.monitrack.enumeration.SensorConfiguration;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.monitrack.enumeration.SensorActivity;
 import com.monitrack.enumeration.SensorType;
-import com.monitrack.util.MessageSender;
-
 
 public abstract class Sensor {
 	
+	@JsonProperty("sensor_id")
 	protected Integer id;
-	protected SensorConfiguration sensorConfiguration;
-	protected SensorType sensorType;	
-	protected Location location;
+	@JsonProperty("sensor_activity")
+	protected SensorActivity sensorActivity;
+	@JsonProperty("sensor_type")
+	protected SensorType sensorType;
+	@JsonProperty("location_id")	
+	protected Integer locationId;
+	@JsonProperty("ip_address")
 	protected String ipAddress;
+	@JsonProperty("mac_address")
 	protected String macAddress;
-	protected float alertThreshold;
-	protected Timestamp timeChange;
-	protected Time beginTime;
-	protected Time endTime;
+	@JsonProperty("serial_number")
+	protected String serialNumber;
+	@JsonProperty("hardware_version")
+	protected Float hardwareVersion;
+	@JsonProperty("software_version")
+	protected Float softwareVersion;
+	@JsonProperty("creation_date")
 	protected Timestamp creationDate;
+	@JsonProperty("date_of_last_message")
 	protected Timestamp lastMessageDate;
-	protected MessageSender messageSender;
-
-	public Sensor() {
-		// TODO Auto-generated constructor stub
-	}
-
+	@JsonProperty("last_configuration_date")
+	protected Timestamp lastConfigurationDate;
+	@JsonProperty("time_of_begin_activity")
+	protected Time beginTime;
+	@JsonProperty("time_of_end_activity")
+	protected Time endTime;
+	//In milliseconds
+	@JsonProperty("check_frequency")
+	protected Float checkFrequency;
+	@JsonProperty("measurement_unit")
+	protected String measurementUnit;	
+	@JsonProperty("danger_threshold")
+	protected Float dangerThreshold;
+	@JsonProperty("position_x")
+	protected Float positionX;
+	@JsonProperty("position_y")
+	protected Float positionY;
 	
-
-	public Sensor(Integer id, SensorConfiguration sensorConfiguration, SensorType sensorType, Location location, String ipAddress,
-			String macAddress, float alertThreshold, Timestamp timeChange, Time beginTime2, Time endTime2,
-			Timestamp creationDate) {
-		super();
+	
+	public Sensor(Integer id, SensorActivity sensorActivity, SensorType sensorType, Integer locationId,
+			String ipAddress, String macAddress, String serialNumber, Float hardwareVersion, Float softwareVersion,
+			Timestamp creationDate, Timestamp lastMessageDate, Timestamp lastConfigurationDate, Time beginTime,
+			Time endTime, Float checkFrequency, String measurementUnit, Float dangerThreshold, Float positionX,
+			Float positionY) {
 		this.id = id;
-		this.sensorConfiguration = sensorConfiguration;
+		this.sensorActivity = sensorActivity;
 		this.sensorType = sensorType;
-		this.location = location;
+		this.locationId = locationId;
 		this.ipAddress = ipAddress;
 		this.macAddress = macAddress;
-		this.alertThreshold = alertThreshold;
-		this.timeChange = timeChange;
-		this.beginTime = beginTime2;
-		this.endTime = endTime2;
+		this.serialNumber = serialNumber;
+		this.hardwareVersion = hardwareVersion;
+		this.softwareVersion = softwareVersion;
 		this.creationDate = creationDate;
+		this.lastMessageDate = lastMessageDate;
+		this.lastConfigurationDate = lastConfigurationDate;
+		this.beginTime = beginTime;
+		this.endTime = endTime;
+		this.checkFrequency = checkFrequency;
+		this.measurementUnit = measurementUnit;
+		this.dangerThreshold = dangerThreshold;
+		this.positionX = positionX;
+		this.positionY = positionY;
 	}
 
-
-
-	@JsonGetter("id")
 	public Integer getId() {
 		return id;
 	}
 
-	@JsonSetter("id")
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	@JsonGetter("configuration")
-	public SensorConfiguration getsensorConfiguration() {
-		return sensorConfiguration;
+	public SensorActivity getSensorActivity() {
+		return sensorActivity;
 	}
 
-	@JsonSetter("configuration")
-	public void setsensorConfiguration(SensorConfiguration sensorConfiguration) {
-		this.sensorConfiguration = sensorConfiguration;
+	public void setSensorActivity(SensorActivity sensorActivity) {
+		this.sensorActivity = sensorActivity;
 	}
 
-	@JsonGetter("type")
-	public SensorConfiguration getSensorType() {
-		return sensorConfiguration;
+	public SensorType getSensorType() {
+		return sensorType;
 	}
 
-	@JsonSetter("type")
 	public void setSensorType(SensorType sensorType) {
 		this.sensorType = sensorType;
 	}
 
-	@JsonGetter("location")
-	public Location getLocation() {
-		return location;
-	}
-	
-	@JsonSetter("location")
-	public void setLocation(Location location) {
-		this.location = location;
+	public Integer getLocationId() {
+		return locationId;
 	}
 
-	@JsonGetter("ip_address")
+	public void setLocationId(Integer locationId) {
+		this.locationId = locationId;
+	}
+
 	public String getIpAddress() {
 		return ipAddress;
 	}
 
-	@JsonSetter("ip_address")
 	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
 	}
 
-	@JsonGetter("mac_address")
 	public String getMacAddress() {
 		return macAddress;
 	}
 
-	@JsonSetter("mac_address")
 	public void setMacAddress(String macAddress) {
 		this.macAddress = macAddress;
 	}
-	
-	@JsonSetter("alert_treshold")
-	public float getAlertThreshold() {
-		return alertThreshold;
+
+	public String getSerialNumber() {
+		return serialNumber;
 	}
 
-	@JsonSetter("alert_treshold")
-	public void setAlertThreshold(float alertThreshold) {
-		this.alertThreshold = alertThreshold;
+	public void setSerialNumber(String serialNumber) {
+		this.serialNumber = serialNumber;
 	}
 
-	@JsonSetter("time_change")
-	public Timestamp getTimeChange() {
-		return timeChange;
+	public Float getHardwareVersion() {
+		return hardwareVersion;
 	}
 
-	@JsonSetter("time_change")
-	public void setTimeChange(Timestamp timeChange) {
-		this.timeChange = timeChange;
+	public void setHardwareVersion(Float hardwareVersion) {
+		this.hardwareVersion = hardwareVersion;
 	}
 
-	@JsonSetter("begin_time")
-	public Time getBeginTime() {
-		return beginTime;
+	public Float getSoftwareVersion() {
+		return softwareVersion;
 	}
 
-	@JsonSetter("begin_time")
-	public void setBeginTime(Time beginTime) {
-		this.beginTime = beginTime;
+	public void setSoftwareVersion(Float softwareVersion) {
+		this.softwareVersion = softwareVersion;
 	}
 
-	@JsonSetter("end_time")
-	public Time getEndTime() {
-		return endTime;
-	}
-
-	@JsonSetter("end_time")
-	public void setEndTime(Time endTime) {
-		this.endTime = endTime;
-	}
-
-	@JsonGetter("creation_date")
 	public Timestamp getCreationDate() {
 		return creationDate;
 	}
 
-	@JsonSetter("creation_date")
 	public void setCreationDate(Timestamp creationDate) {
 		this.creationDate = creationDate;
 	}
 
-	@JsonGetter("last_message_date")
 	public Timestamp getLastMessageDate() {
 		return lastMessageDate;
 	}
 
-
-	@JsonSetter("last_message_date")
 	public void setLastMessageDate(Timestamp lastMessageDate) {
 		this.lastMessageDate = lastMessageDate;
 	}
 
+	public Timestamp getLastConfigurationDate() {
+		return lastConfigurationDate;
+	}
+
+	public void setLastConfigurationDate(Timestamp lastConfigurationDate) {
+		this.lastConfigurationDate = lastConfigurationDate;
+	}
+
+	public Time getBeginTime() {
+		return beginTime;
+	}
+
+	public void setBeginTime(Time beginTime) {
+		this.beginTime = beginTime;
+	}
+
+	public Time getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Time endTime) {
+		this.endTime = endTime;
+	}
+
+	public Float getCheckFrequency() {
+		return checkFrequency;
+	}
+
+	public void setCheckFrequency(Float checkFrequency) {
+		this.checkFrequency = checkFrequency;
+	}
+
+	public String getMeasurementUnit() {
+		return measurementUnit;
+	}
+
+	public void setMeasurementUnit(String measurementUnit) {
+		this.measurementUnit = measurementUnit;
+	}
+
+	public Float getDangerThreshold() {
+		return dangerThreshold;
+	}
+
+	public void setDangerThreshold(Float dangerThreshold) {
+		this.dangerThreshold = dangerThreshold;
+	}
+
+	public Float getPositionX() {
+		return positionX;
+	}
+
+	public void setPositionX(Float positionX) {
+		this.positionX = positionX;
+	}
+
+	public Float getPositionY() {
+		return positionY;
+	}
+	
+	public void setPositionY(Float positionY) {
+		this.positionY = positionY;
+	}
+	
 }

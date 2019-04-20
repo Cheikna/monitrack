@@ -1,14 +1,23 @@
 package com.monitrack.enumeration;
 
+
 public enum SensorType {
 	
-	SMOKE("somoke", "fumée"),
-	
-	INPUT_OUTPUT("input/output", "entrée/sortie"),
-	
-	FLOW("flow", "présence"),
-	
-	LIGHT("light", "lumière");
+	//FIXME Why do not I remove the english label and make a "this.toString().toLowerCase()" in the constructor ?
+	SMOKE("smoke", "fumée"),	
+	INPUT_OUTPUT("input/output", "entrée/sortie"),	
+	FLOW("flow", "présence"),	
+	DOOR("door", "porte"),	
+	TEMPERATURE("temperature", "température"),	
+	WINDOW("window", "fenêtre"),	
+	HUMIDITY("humidity", "humidité"),	
+	LIGHT("light", "lumière"),
+	GAS("gas", "gaz"),
+	GLASS_BREAKAGE("glass breakage", "bris de vitre"),
+	ACOUSTIC("acoustic", "sonore"),
+	MANUAL_TRIGGER("manuel trigger", "déclencheur d'alarme manuel"),
+	ACCESS_CONTROL("access controle", "contrôle d'accès"),
+	FLOOD("flood", "inondation");
 	
 	
 	private String englishLabel;

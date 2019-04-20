@@ -6,6 +6,6 @@ public enum SensorState {
 	
 	WARNING,
 	
-	ALERT;
+	DANGER;
 
 }
