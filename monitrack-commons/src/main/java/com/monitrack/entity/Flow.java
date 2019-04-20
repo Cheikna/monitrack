@@ -22,13 +22,13 @@ public class Flow extends Sensor{
 			String macAddress, String serialNumber, Float hardwareVersion, Float softwareVersion,
 			Timestamp creationDate, Timestamp lastMessageDate, Timestamp lastConfigurationDate, Time beginTime,
 			Time endTime, Float checkFrequency, String measurementUnit, Float dangerThreshold, Float positionX,
-			Float positionY, Integer flowId, Integer detected, Boolean wasSomeoneDetected, Timestamp measurementDate) {
+			Float positionY, Integer flowId, Integer detected, Timestamp measurementDate) {
 		super(id, sensorActivity, SensorType.FLOW, locationId, ipAddress, macAddress, serialNumber, hardwareVersion, softwareVersion,
 				creationDate, lastMessageDate, lastConfigurationDate, beginTime, endTime, checkFrequency, measurementUnit,
 				dangerThreshold, positionX, positionY);
 		this.flowId = flowId;
 		this.detected = detected;
-		this.wasSomeoneDetected = wasSomeoneDetected;
+		this.wasSomeoneDetected = (detected == 1);
 		this.measurementDate = measurementDate;
 	}
 
