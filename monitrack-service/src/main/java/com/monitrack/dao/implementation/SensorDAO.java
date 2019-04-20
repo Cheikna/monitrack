@@ -3,6 +3,7 @@ package com.monitrack.dao.implementation;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.monitrack.dao.abstracts.DAO;
+import com.monitrack.entity.Flow;
 import com.monitrack.entity.Sensor;
+import com.monitrack.enumeration.SensorActivity;
+import com.monitrack.enumeration.SensorType;
 
 public abstract class SensorDAO<T> extends DAO<T> {
 	
@@ -30,7 +34,7 @@ public abstract class SensorDAO<T> extends DAO<T> {
 	}
 
 	public void updateSensor(T obj) {
-		// TODO Auto-generated method stub
+		//FIXME
 		
 	}
 	
@@ -62,11 +66,11 @@ public abstract class SensorDAO<T> extends DAO<T> {
 				try {
 					PreparedStatement preparedStatement = connection.prepareStatement(sql);
 					ResultSet rs = preparedStatement.executeQuery();
-					T sensor;
+					Sensor sensor;
 					while (rs.next()) {
 						sensor = getSensorFromResultSet(rs);
 						if (sensor != null) {
-							sensors.add(sensor);
+							sensors.add((T) sensor);
 						}
 					}
 				} catch (Exception e) {
@@ -78,6 +82,22 @@ public abstract class SensorDAO<T> extends DAO<T> {
 		}
 	}
 	
-	protected abstract T getSensorFromResultSet(ResultSet rs);
+	protected Sensor getSensorFromResultSet(ResultSet rs) {
+		Sensor sensor = null;
+		try {
+			sensor = new Sensor(rs.getInt("ID_SENSOR"), SensorActivity.getSensorActivity(rs.getString("ACTIVITY")), SensorType.getSensorType(rs.getString("TYPE")),
+					rs.getInt("ID_LOCATION"), rs.getString("IP_ADDRESS"),
+					rs.getString("MAC_ADDRESS"),rs.getString("SERIAL_NUMBER"), rs.getFloat("HARDWARE_VERSION"),rs.getFloat("SOFTWARE_VERSION"),
+					rs.getTimestamp("CREATION_DATE"), rs.getTimestamp("LAST_MESSAGE_DATE"), rs.getTimestamp("LAST_CONFIGURATION_DATE"),
+					rs.getTime("START_ACTIVITY_TIME"),rs.getTime("END_ACTIVITY_TIME"),rs.getFloat("CHECK_FREQUENCY"),
+					rs.getString("MEASUREMENT_UNIT"),rs.getFloat("CURRENT_DANGER_THRESHOLD"),rs.getFloat("POSITION_X"),rs.getFloat("POSITION_Y"));
+		} catch (SQLException e) {
+			log.error("An error occurred when getting one Flow Sensor from the resultSet : " + e.getMessage());
+		}
+		finally {
+			return sensor;
+		}
+		
+	}
 
 }

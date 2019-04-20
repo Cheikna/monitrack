@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.monitrack.enumeration.SensorActivity;
 import com.monitrack.enumeration.SensorType;
 
-public abstract class Sensor {
+public class Sensor {
 	
 	@JsonProperty("sensor_id")
 	protected Integer id;
