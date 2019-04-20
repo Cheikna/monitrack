@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import com.monitrack.dao.abstracts.DAO;
 import com.monitrack.entity.Flow;
-import com.monitrack.enumeration.SensorConfiguration;
+import com.monitrack.enumeration.SensorActivity;
 import com.monitrack.enumeration.SensorType;
 
 public class FlowDAO  extends DAO<Flow>{
@@ -73,7 +73,7 @@ public class FlowDAO  extends DAO<Flow>{
 	{
 		Flow flow = null;
 		try {
-			flow = new Flow(rs.getInt("id"),SensorConfiguration.getSensorConfiguration("state"),SensorType.getSensorType("type"),
+			flow = new Flow(rs.getInt("id"),SensorActivity.getSensorActivity("state"),
 					null, rs.getString("ip_address"),rs.getString("mac_address"),
 					rs.getFloat("alert_treshold"), rs.getTimestamp("time_change"), rs.getTime("begin_time"),
 					rs.getTime("end_time"),rs.getTimestamp("creation_date"));
