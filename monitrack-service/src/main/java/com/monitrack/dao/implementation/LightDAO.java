@@ -3,86 +3,78 @@ package com.monitrack.dao.implementation;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.sql.Statement;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.monitrack.dao.abstracts.DAO;
 import com.monitrack.entity.Light;
-import com.monitrack.enumeration.SensorActivity;
-import com.monitrack.enumeration.SensorType;
 
-public class LightDAO extends DAO<Light>{
+public class LightDAO extends SensorDAO<Light>{
 	
 	private static final Logger log = LoggerFactory.getLogger(LightDAO.class);	
-	//private JsonFactory factory = new JsonFactory();
 	private final Object lock = new Object();
+	private final static String TABLE_NAME = "LIGHT";
 
 	public LightDAO(Connection connection) {
-		super(connection);
+		super(connection, TABLE_NAME);
 	}
 
 	@Override
 	public Light create(Light obj) {
-		// TODO Auto-generated method stub
-		return null;
+		int id = super.createSensor(obj);
+		obj.setId(id);
+		synchronized (lock) {
+			// Checks if the connection is not null before using it
+			if (connection != null) {
+				try {
+					PreparedStatement preparedStatement = connection
+							.prepareStatement("", Statement.RETURN_GENERATED_KEYS);
+					//FIXME
+					preparedStatement.execute();
+					ResultSet rs = preparedStatement.getGeneratedKeys();
+					int lastCreatedId = 0;
+					if (rs.next()) {
+						lastCreatedId = rs.getInt(1);
+						obj.setLightId(lastCreatedId);
+					}
+				} catch (Exception e) {
+					log.error("An error occurred during the creation of a location : " + e.getMessage());
+					e.printStackTrace();
+				}
+			}
+			return obj;
+		}
 	}
 
 	@Override
 	public void update(Light obj) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void delete(Light obj) {
-		// TODO Auto-generated method stub
-		
+		super.updateSensor(obj);
+		synchronized (lock) {
+			// Checks if the connection is not null before using it
+			if (connection != null) {
+				try {
+					PreparedStatement preparedStatement = connection.prepareStatement("");
+					//FIXME
+					preparedStatement.execute();
+				} catch (Exception e) {
+					log.error("An error occurred during the update of a location : " + e.getMessage());
+					e.printStackTrace();
+				}
+			}
+		}		
 	}
 
 	@Override
 	public List<Light> find(List<String> fields, List<String> values) {
-		synchronized (lock) {
-			List<Light> lights = new ArrayList<Light>();
-			String sql = "SELECT * FROM LIGHT" + super.getRequestFilters(fields, values);
-			if (connection != null) {
-				try {
-					PreparedStatement preparedStatement = connection.prepareStatement(sql);
-					ResultSet rs = preparedStatement.executeQuery();
-					Light light;
-					while (rs.next()) {
-						light = getLightSensorFromResultSet(rs);
-						if (light != null) {
-							lights.add(light);
-						}
-					}
-				} catch (Exception e) {
-					log.error("An error occurred when finding the light's sensors : " + e.getMessage());
-					e.printStackTrace();
-				}
-			}
-			return lights;
-		}
+		return (List<Light>)super.find(fields, values);
 	}
 	
-	@SuppressWarnings("finally")
-	private Light getLightSensorFromResultSet(ResultSet rs)
-	{
+	@Override
+	protected Light getSensorFromResultSet(ResultSet rs) {
 		Light light = null;
-		try {
-			light = new Light(rs.getInt("id"),SensorActivity.getSensorConfiguration("state"),SensorType.getSensorType("type"),
-					null, rs.getString("ip_address"),rs.getString("mac_address"),
-					rs.getFloat("alert_treshold"), rs.getTimestamp("time_change"), rs.getTime("begin_time"),
-					rs.getTime("end_time"),rs.getTimestamp("creation_date"));
-		} catch (SQLException e) {
-			log.error("An error occurred when getting one Light Sensor from the resultSet : " + e.getMessage());
-		}
-		finally {
-			return light;
-		}
+		return light;
 	}
 
 }

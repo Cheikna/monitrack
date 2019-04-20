@@ -4,7 +4,8 @@ import java.sql.Timestamp;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.monitrack.enumeration.SensorActivity;
 import com.monitrack.enumeration.SensorType;
-public class InputOutput extends Sensor{
+
+public class InputOutput extends Sensor {
 	
 	@JsonProperty("input_output_id")
 	private Integer inputOutputId;
