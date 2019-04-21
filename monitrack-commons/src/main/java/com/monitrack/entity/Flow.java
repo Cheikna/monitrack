@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.monitrack.enumeration.SensorActivity;
 import com.monitrack.enumeration.SensorType;
 
-public class Flow extends Sensor{
+public class Flow extends Sensor {
 	
 	@JsonProperty("measurement_date")
 	private Integer flowId;
@@ -30,6 +30,18 @@ public class Flow extends Sensor{
 		this.detected = detected;
 		this.wasSomeoneDetected = (detected == 1);
 		this.measurementDate = measurementDate;
+	}
+	
+	public Flow(Sensor motherSensor, Integer flowId, Integer detected, Timestamp measurementDate) {
+		super(motherSensor.id, motherSensor.sensorActivity, SensorType.FLOW, motherSensor.locationId, motherSensor.ipAddress, 
+				motherSensor.macAddress, motherSensor.serialNumber, motherSensor.hardwareVersion, motherSensor.softwareVersion,
+				motherSensor.creationDate, motherSensor.lastMessageDate, motherSensor.lastConfigurationDate, 
+				motherSensor.beginTime, motherSensor.endTime, motherSensor.checkFrequency, motherSensor.measurementUnit,
+				motherSensor.dangerThreshold, motherSensor.positionX, motherSensor.positionY);
+		this.flowId = flowId;
+		this.detected = detected;
+		this.wasSomeoneDetected = (detected == 1);
+		this.measurementDate = (measurementDate != null) ? creationDate : new Timestamp(System.currentTimeMillis());;
 	}
 
 	public Integer getFlowId() {
@@ -63,5 +75,19 @@ public class Flow extends Sensor{
 	public void setMeasurementDate(Timestamp measurementDate) {
 		this.measurementDate = measurementDate;
 	}
+
+	@Override
+	public String toString() {
+		return "Flow [flowId=" + flowId + ", detected=" + detected + ", wasSomeoneDetected=" + wasSomeoneDetected
+				+ ", measurementDate=" + measurementDate + ", id=" + id + ", sensorActivity=" + sensorActivity
+				+ ", sensorType=" + sensorType + ", locationId=" + locationId + ", ipAddress=" + ipAddress
+				+ ", macAddress=" + macAddress + ", serialNumber=" + serialNumber + ", hardwareVersion="
+				+ hardwareVersion + ", softwareVersion=" + softwareVersion + ", creationDate=" + creationDate
+				+ ", lastMessageDate=" + lastMessageDate + ", lastConfigurationDate=" + lastConfigurationDate
+				+ ", beginTime=" + beginTime + ", endTime=" + endTime + ", checkFrequency=" + checkFrequency
+				+ ", measurementUnit=" + measurementUnit + ", dangerThreshold=" + dangerThreshold + ", positionX="
+				+ positionX + ", positionY=" + positionY + "]";
+	}
+	
 	
 }
