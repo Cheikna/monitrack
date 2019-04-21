@@ -18,8 +18,8 @@ import com.monitrack.entity.Location;
 import com.monitrack.enumeration.SensorActivity;
 import com.monitrack.enumeration.SensorType;
 
-public class SensorDAO<T> extends DAO<T> {
-	
+public class SensorDAO<T> extends DAO<Sensor> {
+
 	private static final Logger log = LoggerFactory.getLogger(SensorDAO.class);
 	private final Object lock = new Object();	
 	private static String MOTHER_TABLE_NAME = "SENSOR";
@@ -36,86 +36,80 @@ public class SensorDAO<T> extends DAO<T> {
 	}
 
 	@Override
-	public T create(T obj) {
+	public Sensor create(Sensor obj) {
 		synchronized (lock) {
 			// Checks if the connection is not null before using it
-			if (obj instanceof Sensor && connection != null) {
-				Sensor sensor = (Sensor)obj;
+			if (connection != null) {
 				try {
 					PreparedStatement preparedStatement = connection
-							.prepareStatement("INSERT INTO ? (TYPE, ACTIVITY, ID_LOCATION, IP_ADDRESS, MAC_ADDRESS, "
-															+ "SERIAL_NUMBER, HARDWARE_VERSION, SOFTWARE_VERSION, "
-															+ " START_ACTIVITY_TIME, END_ACTIVITY_TIME, CHECK_FREQUENCY, "
-															+ "MEASUREMENT_UNIT, CURRENT_DANGER_THRESHOLD, POSITION_X, POSITION_Y) "
-															+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ", Statement.RETURN_GENERATED_KEYS);
-					preparedStatement.setString(1, MOTHER_TABLE_NAME);
-					preparedStatement.setString(2, sensor.getSensorType().toString());
-					preparedStatement.setString(3, sensor.getSensorActivity().toString());
-					preparedStatement.setInt(4, sensor.getLocationId());
-					preparedStatement.setString(5, sensor.getIpAddress());
-					preparedStatement.setString(6, sensor.getMacAddress());
-					preparedStatement.setString(7, sensor.getSerialNumber());
-					preparedStatement.setFloat(8, sensor.getHardwareVersion());
-					preparedStatement.setFloat(9, sensor.getSoftwareVersion());
-					preparedStatement.setTime(10, sensor.getBeginTime());
-					preparedStatement.setTime(11, sensor.getEndTime());
-					preparedStatement.setFloat(12, sensor.getCheckFrequency());
-					preparedStatement.setString(13, sensor.getMeasurementUnit());
-					preparedStatement.setFloat(14, sensor.getDangerThreshold());
-					preparedStatement.setFloat(15, sensor.getPositionX());
-					preparedStatement.setFloat(16, sensor.getPositionY());
+							.prepareStatement("INSERT INTO SENSOR (TYPE, ACTIVITY, ID_LOCATION, IP_ADDRESS, MAC_ADDRESS, "
+									+ "SERIAL_NUMBER, HARDWARE_VERSION, SOFTWARE_VERSION, "
+									+ " START_ACTIVITY_TIME, END_ACTIVITY_TIME, CHECK_FREQUENCY, "
+									+ "MEASUREMENT_UNIT, CURRENT_DANGER_THRESHOLD, POSITION_X, POSITION_Y) "
+									+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ", Statement.RETURN_GENERATED_KEYS);
+					preparedStatement.setString(1, obj.getSensorType().toString());
+					preparedStatement.setString(2, obj.getSensorActivity().toString());
+					preparedStatement.setInt(3, obj.getLocationId());
+					preparedStatement.setString(4, obj.getIpAddress());
+					preparedStatement.setString(5, obj.getMacAddress());
+					preparedStatement.setString(6, obj.getSerialNumber());
+					preparedStatement.setFloat(7, obj.getHardwareVersion());
+					preparedStatement.setFloat(8, obj.getSoftwareVersion());
+					preparedStatement.setTime(9, obj.getBeginTime());
+					preparedStatement.setTime(10, obj.getEndTime());
+					preparedStatement.setFloat(11, obj.getCheckFrequency());
+					preparedStatement.setString(12, obj.getMeasurementUnit());
+					preparedStatement.setFloat(13, obj.getDangerThreshold());
+					preparedStatement.setFloat(14, obj.getPositionX());
+					preparedStatement.setFloat(15, obj.getPositionY());
 					preparedStatement.execute();
 					ResultSet rs = preparedStatement.getGeneratedKeys();
+					System.err.println("===> " + preparedStatement.toString());
 					int lastCreatedId = 0;
 					if (rs.next()) {
 						lastCreatedId = rs.getInt(1);
-						sensor.setId(lastCreatedId);
+						obj.setId(lastCreatedId);
 					}
 				} catch (Exception e) {
-					log.error("An error occurred during the creation of a location : " + e.getMessage());
+					log.error("An error occurred during the creation of a sensor : " + e.getMessage());
 					e.printStackTrace();
 				}
-				return (T)sensor;
 			}
 			return obj;
 		}
 	}
 
 	@Override
-	public void update(T obj) {
+	public void update(Sensor obj) {
 		// FIXME Auto-generated method stub
-		
-	}
-	
-	@Override
-	public void delete(T obj) {
-		if(obj instanceof Sensor && connection != null) {
-			synchronized (lock) {
-				try {
-					Sensor sensor = (Sensor)obj;
-					PreparedStatement preparedStatement = null;
-					preparedStatement = connection.prepareStatement("DELETE FROM SENSOR where ID_SENSOR=(?)");
-					preparedStatement.setInt(1, sensor.getId());					
-					preparedStatement.execute();
-				} catch (Exception e) {
-					log.error("An error occurred during the delete of a location : " + e.getMessage());
-					e.printStackTrace();
-				}				
-			}
-			
-		}		
+
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<T> find(List<String> fields, List<String> values) {
+	@Override
+	public void delete(Sensor obj) {
+		synchronized (lock) {
+			try {
+				PreparedStatement preparedStatement = null;
+				preparedStatement = connection.prepareStatement("DELETE FROM SENSOR where ID_SENSOR=(?)");
+				preparedStatement.setInt(1, obj.getId());					
+				preparedStatement.execute();
+			} catch (Exception e) {
+				log.error("An error occurred during the delete of a location : " + e.getMessage());
+				e.printStackTrace();
+			}				
+		}
+
+	}
+
+	public List<Sensor> find(List<String> fields, List<String> values) {
 		synchronized (lock) {
 			String sql = "";
 			if(!tableName.equalsIgnoreCase(MOTHER_TABLE_NAME))
 				sql = "select * from " + tableName +" first_table inner join SENSOR second_table on first_table.ID_SENSOR = second_table.ID_SENSOR";
 			else
 				sql = "select * from " + MOTHER_TABLE_NAME;
-			
-			List<T> sensors = new ArrayList<T>();
+
+			List<Sensor> sensors = new ArrayList<Sensor>();
 			sql += super.getRequestFilters(fields, values);
 			if (connection != null) {
 				try {
@@ -125,7 +119,7 @@ public class SensorDAO<T> extends DAO<T> {
 					while (rs.next()) {
 						sensor = getSensorFromResultSet(rs);
 						if (sensor != null) {
-							sensors.add((T) sensor);
+							sensors.add(sensor);
 						}
 					}
 				} catch (Exception e) {
@@ -136,7 +130,7 @@ public class SensorDAO<T> extends DAO<T> {
 			return sensors;
 		}
 	}
-	
+
 	@SuppressWarnings("finally")
 	protected Sensor getSensorFromResultSet(ResultSet rs) {
 		Sensor sensor = null;
@@ -147,10 +141,10 @@ public class SensorDAO<T> extends DAO<T> {
 					rs.getTimestamp("CREATION_DATE"), rs.getTimestamp("LAST_MESSAGE_DATE"), rs.getTimestamp("LAST_CONFIGURATION_DATE"),
 					rs.getTime("START_ACTIVITY_TIME"),rs.getTime("END_ACTIVITY_TIME"),rs.getFloat("CHECK_FREQUENCY"),
 					rs.getString("MEASUREMENT_UNIT"),rs.getFloat("CURRENT_DANGER_THRESHOLD"),rs.getFloat("POSITION_X"),rs.getFloat("POSITION_Y"));
-			
+
 			sensor.setLocation(getSensorLocation(rs.getInt("ID_LOCATION")));
-			
-			
+
+
 		} catch (SQLException e) {
 			log.error("An error occurred when getting one Flow Sensor from the resultSet : " + e.getMessage());
 		}
@@ -158,11 +152,12 @@ public class SensorDAO<T> extends DAO<T> {
 			return sensor;
 		}
 	}
-	
+
 	protected Location getSensorLocation(Integer sensorId) {
 		LocationDAO locationDAO = new LocationDAO(connection);
 		Location location = locationDAO.find(Arrays.asList("ID_LOCATION"), Arrays.asList(sensorId.toString())).get(0);
 		return location;
 	}
+
 
 }

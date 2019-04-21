@@ -4,12 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.monitrack.entity.Light;
+import com.monitrack.entity.Sensor;
 
 public class LightDAO extends SensorDAO<Light>{
 	
@@ -21,13 +21,11 @@ public class LightDAO extends SensorDAO<Light>{
 		super(connection, TABLE_NAME);
 	}
 
-	@Override
-	public Light create(Light obj) {
-		int id = super.createSensor(obj);
-		obj.setId(id);
+	public Light create(Sensor sensor) {
 		synchronized (lock) {
 			// Checks if the connection is not null before using it
-			if (connection != null) {
+			if (connection != null && sensor instanceof Light) {
+				Light obj = (Light)sensor;
 				try {
 					PreparedStatement preparedStatement = connection
 							.prepareStatement("", Statement.RETURN_GENERATED_KEYS);
@@ -43,34 +41,12 @@ public class LightDAO extends SensorDAO<Light>{
 					log.error("An error occurred during the creation of a location : " + e.getMessage());
 					e.printStackTrace();
 				}
+				return obj;
 			}
-			return obj;
+			return (Light)sensor;
 		}
 	}
 
-	@Override
-	public void update(Light obj) {
-		super.updateSensor(obj);
-		synchronized (lock) {
-			// Checks if the connection is not null before using it
-			if (connection != null) {
-				try {
-					PreparedStatement preparedStatement = connection.prepareStatement("");
-					//FIXME
-					preparedStatement.execute();
-				} catch (Exception e) {
-					log.error("An error occurred during the update of a location : " + e.getMessage());
-					e.printStackTrace();
-				}
-			}
-		}		
-	}
-
-	@Override
-	public List<Light> find(List<String> fields, List<String> values) {
-		return (List<Light>)super.find(fields, values);
-	}
-	
 	@Override
 	protected Light getSensorFromResultSet(ResultSet rs) {
 		Light light = null;

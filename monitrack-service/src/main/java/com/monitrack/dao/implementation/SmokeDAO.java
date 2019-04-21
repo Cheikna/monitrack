@@ -5,10 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.monitrack.entity.Sensor;
 import com.monitrack.entity.Smoke;
 import com.monitrack.enumeration.SensorActivity;
 
@@ -22,13 +23,11 @@ public class SmokeDAO extends SensorDAO<Smoke>{
 		super(connection, TABLE_NAME);
 	}
 
-	@Override
-	public Smoke create(Smoke obj) {
-		int id = super.createSensor(obj);
-		obj.setId(id);
+	public Smoke create(Sensor sensor) {
 		synchronized (lock) {
 			// Checks if the connection is not null before using it
-			if (connection != null) {
+			if (connection != null && sensor instanceof Smoke) {
+				Smoke obj = (Smoke)sensor;
 				try {
 					PreparedStatement preparedStatement = connection
 							.prepareStatement("", Statement.RETURN_GENERATED_KEYS);
@@ -44,33 +43,10 @@ public class SmokeDAO extends SensorDAO<Smoke>{
 					log.error("An error occurred during the creation of a location : " + e.getMessage());
 					e.printStackTrace();
 				}
+				return obj;
 			}
-			return obj;
+			return (Smoke) sensor;
 		}
-	}
-
-	@Override
-	public void update(Smoke obj) {
-		super.updateSensor(obj);
-		synchronized (lock) {
-			// Checks if the connection is not null before using it
-			if (connection != null) {
-				try {
-					PreparedStatement preparedStatement = connection.prepareStatement("");
-					//FIXME
-					preparedStatement.execute();
-				} catch (Exception e) {
-					log.error("An error occurred during the update of a Smoke sensor : " + e.getMessage());
-					e.printStackTrace();
-				}
-			}
-		}		
-	}
-	
-
-	@Override
-	public List<Smoke> find(List<String> fields, List<String> values) {
-		return (List<Smoke>)super.find(fields, values);
 	}
 
 	@SuppressWarnings("finally")

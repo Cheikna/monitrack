@@ -46,6 +46,7 @@ public class Sensor {
 	protected Float positionX;
 	@JsonProperty("position_y")
 	protected Float positionY;
+	protected Location location;
 	
 	
 	public Sensor(Integer id, SensorActivity sensorActivity, SensorType sensorType, Integer locationId,
@@ -62,7 +63,7 @@ public class Sensor {
 		this.serialNumber = serialNumber;
 		this.hardwareVersion = hardwareVersion;
 		this.softwareVersion = softwareVersion;
-		this.creationDate = creationDate;
+		this.creationDate = (creationDate != null) ? creationDate : new Timestamp(System.currentTimeMillis());
 		this.lastMessageDate = lastMessageDate;
 		this.lastConfigurationDate = lastConfigurationDate;
 		this.beginTime = beginTime;
@@ -225,5 +226,27 @@ public class Sensor {
 	public void setPositionY(Float positionY) {
 		this.positionY = positionY;
 	}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
+	@Override
+	public String toString() {
+		return "Sensor [id=" + id + ", sensorActivity=" + sensorActivity + ", sensorType=" + sensorType
+				+ ", locationId=" + locationId + ", ipAddress=" + ipAddress + ", macAddress=" + macAddress
+				+ ", serialNumber=" + serialNumber + ", hardwareVersion=" + hardwareVersion + ", softwareVersion="
+				+ softwareVersion + ", creationDate=" + creationDate + ", lastMessageDate=" + lastMessageDate
+				+ ", lastConfigurationDate=" + lastConfigurationDate + ", beginTime=" + beginTime + ", endTime="
+				+ endTime + ", checkFrequency=" + checkFrequency + ", measurementUnit=" + measurementUnit
+				+ ", dangerThreshold=" + dangerThreshold + ", positionX=" + positionX + ", positionY=" + positionY
+				+ "]";
+	}
+	
+	
 	
 }

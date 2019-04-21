@@ -4,8 +4,7 @@ import java.sql.Connection;
 import java.util.List;
 
 import com.monitrack.dao.abstracts.DAO;
-import com.monitrack.entity.Location;
-import com.monitrack.entity.Person;
+import com.monitrack.entity.*;
 import com.monitrack.enumeration.RequestType;
 import com.monitrack.exception.UnknownClassException;
 
@@ -20,6 +19,16 @@ public class DAOFactory {
 			dao =  new PersonDAO(connection);
 		else if(entityClass.equals(Location.class))
 			dao = new LocationDAO(connection);
+		else if(entityClass.equals(Flow.class))
+			dao = new FlowDAO(connection);
+		else if(entityClass.equals(InputOutput.class))
+			dao = new InputOutputDAO(connection);
+		else if(entityClass.equals(Light.class))
+			dao = new LightDAO(connection);
+		else if(entityClass.equals(Sensor.class))
+			dao = new SensorDAO(connection);
+		else if(entityClass.equals(Smoke.class))
+			dao = new SmokeDAO(connection);
 		else
 			throw new UnknownClassException(entityClass);		
 		
