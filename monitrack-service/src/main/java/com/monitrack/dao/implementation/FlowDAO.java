@@ -71,18 +71,8 @@ public class FlowDAO  extends DAO<Flow>{
 	@SuppressWarnings("finally")
 	private Flow getFlowSensorFromResultSet(ResultSet rs)
 	{
-		Flow flow = null;
-		try {
-			flow = new Flow(rs.getInt("id"),SensorActivity.getSensorActivity("state"),
-					null, rs.getString("ip_address"),rs.getString("mac_address"),
-					rs.getFloat("alert_treshold"), rs.getTimestamp("time_change"), rs.getTime("begin_time"),
-					rs.getTime("end_time"),rs.getTimestamp("creation_date"));
-		} catch (SQLException e) {
-			log.error("An error occurred when getting one Flow Sensor from the resultSet : " + e.getMessage());
-		}
-		finally {
-			return flow;
-		}
+		//FIXME
+		return null;
 	}
 
 }

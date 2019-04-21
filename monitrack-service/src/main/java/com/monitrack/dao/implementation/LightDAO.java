@@ -71,18 +71,9 @@ public class LightDAO extends DAO<Light>{
 	@SuppressWarnings("finally")
 	private Light getLightSensorFromResultSet(ResultSet rs)
 	{
+		//FIXME
 		Light light = null;
-		try {
-			light = new Light(rs.getInt("id"),SensorActivity.getSensorConfiguration("state"),SensorType.getSensorType("type"),
-					null, rs.getString("ip_address"),rs.getString("mac_address"),
-					rs.getFloat("alert_treshold"), rs.getTimestamp("time_change"), rs.getTime("begin_time"),
-					rs.getTime("end_time"),rs.getTimestamp("creation_date"));
-		} catch (SQLException e) {
-			log.error("An error occurred when getting one Light Sensor from the resultSet : " + e.getMessage());
-		}
-		finally {
-			return light;
-		}
+		return light;
 	}
 
 }
