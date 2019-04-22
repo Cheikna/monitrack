@@ -27,6 +27,7 @@ import com.monitrack.entity.Location;
 import com.monitrack.entity.Person;
 import com.monitrack.enumeration.ConnectionState;
 import com.monitrack.enumeration.Images;
+import com.monitrack.enumeration.RequestSender;
 import com.monitrack.enumeration.RequestType;
 import com.monitrack.gui.frame.MonitrackFrame;
 import com.monitrack.shared.MonitrackGuiUtil;
@@ -286,7 +287,7 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 				int area = Integer.parseInt(values[4]);
 				location = new Location(name, center, floor, wing, area);
 				String serializedObject = JsonUtil.serializeObject(location, Location.class, "");
-				String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, Location.class, serializedObject, null, null);
+				String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, Location.class, serializedObject, null, null, RequestSender.CLIENT);
 				MonitrackGuiUtil.sendRequest(jsonRequest);
 			} 
 			inputStream.close();

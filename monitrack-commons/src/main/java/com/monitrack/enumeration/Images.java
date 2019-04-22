@@ -46,8 +46,11 @@ public enum Images {
 	
 	CONFIGURER("configurer.png"),
 	
-	SUPER("superman_batman.png");
-
+	
+	SUPER("superman_batman.png"),
+	
+	MAP("Image_Test.png.png");
+	
 	/***** attribut of enums *****/
 	private URL url;
 

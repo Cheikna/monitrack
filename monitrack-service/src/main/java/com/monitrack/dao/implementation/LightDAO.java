@@ -11,13 +11,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.monitrack.dao.abstracts.DAO;
-import com.monitrack.entity.Light;
 import com.monitrack.enumeration.SensorActivity;
 import com.monitrack.enumeration.SensorType;
 
-public class LightDAO extends DAO<Light>{
+public class LightDAO /*extends DAO<Light>*/{
 	
-	private static final Logger log = LoggerFactory.getLogger(LightDAO.class);	
+	/*private static final Logger log = LoggerFactory.getLogger(LightDAO.class);	
 	//private JsonFactory factory = new JsonFactory();
 	private final Object lock = new Object();
 
@@ -75,5 +74,5 @@ public class LightDAO extends DAO<Light>{
 		Light light = null;
 		return light;
 	}
-
+*/
 }

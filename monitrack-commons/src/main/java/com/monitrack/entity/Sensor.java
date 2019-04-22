@@ -5,53 +5,60 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.monitrack.enumeration.SensorActivity;
 import com.monitrack.enumeration.SensorType;
 
-public abstract class Sensor {
+public class Sensor {
 	
 	@JsonProperty("sensor_id")
-	protected Integer id;
+	private Integer id;
 	@JsonProperty("sensor_activity")
-	protected SensorActivity sensorActivity;
+	private SensorActivity sensorActivity;
 	@JsonProperty("sensor_type")
-	protected SensorType sensorType;
+	private SensorType sensorType;
 	@JsonProperty("location_id")	
-	protected Integer locationId;
+	private Integer locationId;
 	@JsonProperty("ip_address")
-	protected String ipAddress;
+	private String ipAddress;
 	@JsonProperty("mac_address")
-	protected String macAddress;
+	private String macAddress;
 	@JsonProperty("serial_number")
-	protected String serialNumber;
+	private String serialNumber;
 	@JsonProperty("hardware_version")
-	protected Float hardwareVersion;
+	private Float hardwareVersion;
 	@JsonProperty("software_version")
-	protected Float softwareVersion;
+	private Float softwareVersion;
 	@JsonProperty("creation_date")
-	protected Timestamp creationDate;
+	private Timestamp creationDate;
 	@JsonProperty("date_of_last_message")
-	protected Timestamp lastMessageDate;
+	private Timestamp lastMessageDate;
 	@JsonProperty("last_configuration_date")
-	protected Timestamp lastConfigurationDate;
+	private Timestamp lastConfigurationDate;
 	@JsonProperty("time_of_begin_activity")
-	protected Time beginTime;
+	private Time beginTime;
 	@JsonProperty("time_of_end_activity")
-	protected Time endTime;
+	private Time endTime;
 	//In milliseconds
 	@JsonProperty("check_frequency")
-	protected Float checkFrequency;
+	private Float checkFrequency;
 	@JsonProperty("measurement_unit")
-	protected String measurementUnit;	
+	private String measurementUnit;	
+	@JsonProperty("current_threshold")
+	private Float currentThreshold;
 	@JsonProperty("danger_threshold")
-	protected Float dangerThreshold;
+	private Float dangerThreshold;
 	@JsonProperty("position_x")
-	protected Float positionX;
+	private Float positionX;
 	@JsonProperty("position_y")
-	protected Float positionY;
+	private Float positionY;
+	@JsonProperty("location")
+	private Location location;
 	
+	public Sensor() {
+		//Empty constructor
+	}
 	
 	public Sensor(Integer id, SensorActivity sensorActivity, SensorType sensorType, Integer locationId,
 			String ipAddress, String macAddress, String serialNumber, Float hardwareVersion, Float softwareVersion,
 			Timestamp creationDate, Timestamp lastMessageDate, Timestamp lastConfigurationDate, Time beginTime,
-			Time endTime, Float checkFrequency, String measurementUnit, Float dangerThreshold, Float positionX,
+			Time endTime, Float checkFrequency, String measurementUnit, Float currentThreshold, Float dangerThreshold, Float positionX,
 			Float positionY) {
 		this.id = id;
 		this.sensorActivity = sensorActivity;
@@ -62,13 +69,14 @@ public abstract class Sensor {
 		this.serialNumber = serialNumber;
 		this.hardwareVersion = hardwareVersion;
 		this.softwareVersion = softwareVersion;
-		this.creationDate = creationDate;
+		this.creationDate = (creationDate != null) ? creationDate : new Timestamp(System.currentTimeMillis());
 		this.lastMessageDate = lastMessageDate;
 		this.lastConfigurationDate = lastConfigurationDate;
 		this.beginTime = beginTime;
 		this.endTime = endTime;
 		this.checkFrequency = checkFrequency;
 		this.measurementUnit = measurementUnit;
+		this.currentThreshold = currentThreshold;
 		this.dangerThreshold = dangerThreshold;
 		this.positionX = positionX;
 		this.positionY = positionY;
@@ -94,9 +102,10 @@ public abstract class Sensor {
 		return sensorType;
 	}
 
+	/*//FIXME In real world can a sensor change type ?
 	public void setSensorType(SensorType sensorType) {
 		this.sensorType = sensorType;
-	}
+	}*/
 
 	public Integer getLocationId() {
 		return locationId;
@@ -201,6 +210,14 @@ public abstract class Sensor {
 	public void setMeasurementUnit(String measurementUnit) {
 		this.measurementUnit = measurementUnit;
 	}
+	
+	public Float getCurrentThreshold() {
+		return currentThreshold;
+	}
+
+	public void setCurrentThreshold(Float currentThreshold) {
+		this.currentThreshold = currentThreshold;
+	}
 
 	public Float getDangerThreshold() {
 		return dangerThreshold;
@@ -225,5 +242,56 @@ public abstract class Sensor {
 	public void setPositionY(Float positionY) {
 		this.positionY = positionY;
 	}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
+	@Override
+	public String toString() {
+		return "Sensor [id=" + id + ", sensorActivity=" + sensorActivity + ", sensorType=" + sensorType
+				+ ", locationId=" + locationId + ", ipAddress=" + ipAddress + ", macAddress=" + macAddress
+				+ ", serialNumber=" + serialNumber + ", hardwareVersion=" + hardwareVersion + ", softwareVersion="
+				+ softwareVersion + ", creationDate=" + creationDate + ", lastMessageDate=" + lastMessageDate
+				+ ", lastConfigurationDate=" + lastConfigurationDate + ", beginTime=" + beginTime + ", endTime="
+				+ endTime + ", checkFrequency=" + checkFrequency + ", measurementUnit=" + measurementUnit
+				+ ", dangerThreshold=" + dangerThreshold + ", positionX=" + positionX + ", positionY=" + positionY
+				+ "]";
+	}
+	
+	public boolean raiseDangerAlert() {
+		return currentThreshold >= dangerThreshold;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Sensor other = (Sensor) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
+	
 	
 }

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.monitrack.enumeration.JSONField;
+import com.monitrack.enumeration.RequestSender;
 import com.monitrack.enumeration.RequestType;
 
 public class JsonUtil {
@@ -139,7 +140,7 @@ public class JsonUtil {
 	 */
 	@SuppressWarnings("rawtypes")
 	public static String serializeRequest(RequestType requestType, Class entityClass,String serializedObject, 
-			List<String> requestedFields, List<String> requiredValues)
+			List<String> requestedFields, List<String> requiredValues, RequestSender requestSender)
 	{
 		String objectToJSON = null;
 
@@ -178,8 +179,9 @@ public class JsonUtil {
 			requestNode.putPOJO(JSONField.REQUESTED_FIELDS.getLabel(), requestedFields);
 			requestNode.putPOJO(JSONField.REQUIRED_VALUES.getLabel(), requiredValues);
 
+			requestSender = (requestSender == null) ? RequestSender.CLIENT : requestSender;
+			rootNode.putPOJO(JSONField.REQUEST_SENDER.getLabel(), requestSender);
 			rootNode.putPOJO(JSONField.REQUEST_INFO.getLabel(), requestNode);
-
 			rootNode.putPOJO(JSONField.SERIALIZED_OBJECT.getLabel(), serializedObjectNode);
 
 			objectToJSON = mapper.writeValueAsString(rootNode);
