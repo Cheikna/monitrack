@@ -42,8 +42,10 @@ public class Sensor {
 	private String measurementUnit;	
 	@JsonProperty("current_threshold")
 	private Float currentThreshold;
-	@JsonProperty("danger_threshold")
-	private Float dangerThreshold;
+	@JsonProperty("min_danger_threshold")
+	private Float minDangerThreshold;
+	@JsonProperty("max_danger_threshold")
+	private Float maxDangerThreshold;
 	@JsonProperty("position_x")
 	private Float positionX;
 	@JsonProperty("position_y")
@@ -58,7 +60,8 @@ public class Sensor {
 	public Sensor(Integer id, SensorActivity sensorActivity, SensorType sensorType, Integer locationId,
 			String ipAddress, String macAddress, String serialNumber, Float hardwareVersion, Float softwareVersion,
 			Timestamp creationDate, Timestamp lastMessageDate, Timestamp lastConfigurationDate, Time beginTime,
-			Time endTime, Float checkFrequency, String measurementUnit, Float currentThreshold, Float dangerThreshold, Float positionX,
+			Time endTime, Float checkFrequency, String measurementUnit, Float currentThreshold, Float minDangerThreshold,
+			Float maxDangerThreshold, Float positionX,
 			Float positionY) {
 		this.id = id;
 		this.sensorActivity = sensorActivity;
@@ -77,7 +80,8 @@ public class Sensor {
 		this.checkFrequency = checkFrequency;
 		this.measurementUnit = measurementUnit;
 		this.currentThreshold = currentThreshold;
-		this.dangerThreshold = dangerThreshold;
+		this.minDangerThreshold = minDangerThreshold;
+		this.maxDangerThreshold = maxDangerThreshold;
 		this.positionX = positionX;
 		this.positionY = positionY;
 	}
@@ -219,12 +223,20 @@ public class Sensor {
 		this.currentThreshold = currentThreshold;
 	}
 
-	public Float getDangerThreshold() {
-		return dangerThreshold;
+	public Float getMinDangerThreshold() {
+		return minDangerThreshold;
 	}
 
-	public void setDangerThreshold(Float dangerThreshold) {
-		this.dangerThreshold = dangerThreshold;
+	public void setMinDangerThreshold(Float minDangerThreshold) {
+		this.minDangerThreshold = minDangerThreshold;
+	}
+
+	public Float getMaxDangerThreshold() {
+		return maxDangerThreshold;
+	}
+
+	public void setMaxDangerThreshold(Float maxDangerThreshold) {
+		this.maxDangerThreshold = maxDangerThreshold;
 	}
 
 	public Float getPositionX() {
@@ -259,39 +271,17 @@ public class Sensor {
 				+ softwareVersion + ", creationDate=" + creationDate + ", lastMessageDate=" + lastMessageDate
 				+ ", lastConfigurationDate=" + lastConfigurationDate + ", beginTime=" + beginTime + ", endTime="
 				+ endTime + ", checkFrequency=" + checkFrequency + ", measurementUnit=" + measurementUnit
-				+ ", dangerThreshold=" + dangerThreshold + ", positionX=" + positionX + ", positionY=" + positionY
+				+ ", maxDangerThreshold=" + maxDangerThreshold + ", positionX=" + positionX + ", positionY=" + positionY
 				+ "]";
 	}
 	
 	public boolean raiseDangerAlert() {
-		return currentThreshold >= dangerThreshold;
+		return currentThreshold >= maxDangerThreshold || currentThreshold < minDangerThreshold;
 	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Sensor other = (Sensor) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
-
 	
+	public String getStateInfo() {
+		//FIXME
+		return "";
+	}
 	
 }
