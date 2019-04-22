@@ -8,62 +8,52 @@ import com.monitrack.enumeration.SensorType;
 public class Sensor {
 	
 	@JsonProperty("sensor_id")
-	protected Integer id;
+	private Integer id;
 	@JsonProperty("sensor_activity")
-	protected SensorActivity sensorActivity;
+	private SensorActivity sensorActivity;
 	@JsonProperty("sensor_type")
-	protected SensorType sensorType;
+	private SensorType sensorType;
 	@JsonProperty("location_id")	
-	protected Integer locationId;
+	private Integer locationId;
 	@JsonProperty("ip_address")
-	protected String ipAddress;
+	private String ipAddress;
 	@JsonProperty("mac_address")
-	protected String macAddress;
+	private String macAddress;
 	@JsonProperty("serial_number")
-	protected String serialNumber;
+	private String serialNumber;
 	@JsonProperty("hardware_version")
-	protected Float hardwareVersion;
+	private Float hardwareVersion;
 	@JsonProperty("software_version")
-	protected Float softwareVersion;
+	private Float softwareVersion;
 	@JsonProperty("creation_date")
-	protected Timestamp creationDate;
+	private Timestamp creationDate;
 	@JsonProperty("date_of_last_message")
-	protected Timestamp lastMessageDate;
+	private Timestamp lastMessageDate;
 	@JsonProperty("last_configuration_date")
-	protected Timestamp lastConfigurationDate;
+	private Timestamp lastConfigurationDate;
 	@JsonProperty("time_of_begin_activity")
-	protected Time beginTime;
+	private Time beginTime;
 	@JsonProperty("time_of_end_activity")
-	protected Time endTime;
+	private Time endTime;
 	//In milliseconds
 	@JsonProperty("check_frequency")
-	protected Float checkFrequency;
+	private Float checkFrequency;
 	@JsonProperty("measurement_unit")
-	protected String measurementUnit;	
+	private String measurementUnit;	
 	@JsonProperty("current_threshold")
-	protected Float currentThreshold;
+	private Float currentThreshold;
 	@JsonProperty("danger_threshold")
-	protected Float dangerThreshold;
+	private Float dangerThreshold;
 	@JsonProperty("position_x")
-	protected Float positionX;
+	private Float positionX;
 	@JsonProperty("position_y")
-	protected Float positionY;
-	protected Location location;
+	private Float positionY;
+	@JsonProperty("location")
+	private Location location;
 	
 	public Sensor() {
 		//Empty constructor
 	}
-	
-	/*public Sensor(Integer id, String sensorActivity, String sensorType, Integer locationId,
-			String ipAddress, String macAddress, String serialNumber, Float hardwareVersion, Float softwareVersion,
-			Timestamp creationDate, Timestamp lastMessageDate, Timestamp lastConfigurationDate, Time beginTime,
-			Time endTime, Float checkFrequency, String measurementUnit, Float dangerThreshold, Float positionX,
-			Float positionY) {
-		this(id, SensorActivity.getSensorActivity(sensorActivity), SensorType.getSensorType(sensorType),
-				locationId, ipAddress, macAddress, serialNumber, hardwareVersion, softwareVersion,
-				creationDate, lastMessageDate, lastConfigurationDate,beginTime,
-				endTime, checkFrequency, measurementUnit, dangerThreshold,positionX,positionY);
-	}*/
 	
 	public Sensor(Integer id, SensorActivity sensorActivity, SensorType sensorType, Integer locationId,
 			String ipAddress, String macAddress, String serialNumber, Float hardwareVersion, Float softwareVersion,
@@ -112,9 +102,10 @@ public class Sensor {
 		return sensorType;
 	}
 
+	/*//FIXME In real world can a sensor change type ?
 	public void setSensorType(SensorType sensorType) {
 		this.sensorType = sensorType;
-	}
+	}*/
 
 	public Integer getLocationId() {
 		return locationId;

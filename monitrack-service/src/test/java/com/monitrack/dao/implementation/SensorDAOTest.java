@@ -1,7 +1,6 @@
 package com.monitrack.dao.implementation;
 
 import java.sql.Connection;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -9,14 +8,10 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import com.monitrack.connection.pool.implementation.DataSource;
-import com.monitrack.entity.Flow;
-import com.monitrack.entity.Message;
 import com.monitrack.entity.Sensor;
 import com.monitrack.enumeration.RequestType;
 import com.monitrack.enumeration.SensorActivity;
-import com.monitrack.enumeration.SensorState;
 import com.monitrack.enumeration.SensorType;
-import com.monitrack.util.JsonUtil;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SensorDAOTest {

@@ -18,21 +18,13 @@ import com.monitrack.entity.Location;
 import com.monitrack.enumeration.SensorActivity;
 import com.monitrack.enumeration.SensorType;
 
-public class SensorDAO<T> extends DAO<Sensor> {
+public class SensorDAO extends DAO<Sensor> {
 
 	private static final Logger log = LoggerFactory.getLogger(SensorDAO.class);
 	private final Object lock = new Object();	
-	private final String MOTHER_TABLE_NAME = "SENSOR";
-	private String tableName;
-
-	public SensorDAO(Connection connection, String tableName) {
-		super(connection);
-		this.tableName = tableName;
-	}
 
 	public SensorDAO(Connection connection) {
 		super(connection);
-		this.tableName = MOTHER_TABLE_NAME;
 	}
 
 	@Override
@@ -65,10 +57,9 @@ public class SensorDAO<T> extends DAO<Sensor> {
 					preparedStatement.setFloat(16, obj.getPositionY());
 					preparedStatement.execute();
 					ResultSet rs = preparedStatement.getGeneratedKeys();
-					int lastCreatedId = 0;
 					if (rs.next()) {
-						lastCreatedId = rs.getInt("ID_SENSOR");
-						obj.setId(lastCreatedId);
+						obj.setId(rs.getInt("ID_SENSOR"));
+						obj.setMacAddress(rs.getString("MAC_ADDRESS"));
 					}
 				} catch (Exception e) {
 					log.error("An error occurred during the creation of a sensor : " + e.getMessage());
@@ -103,16 +94,11 @@ public class SensorDAO<T> extends DAO<Sensor> {
 
 	public List<Sensor> find(List<String> fields, List<String> values) {
 		synchronized (lock) {
-			String sql = "";
-			if(!tableName.equalsIgnoreCase(MOTHER_TABLE_NAME))
-				sql = "select * from " + tableName +" first_table inner join SENSOR second_table on first_table.ID_SENSOR = second_table.ID_SENSOR";
-			else
-				sql = "select * from " + MOTHER_TABLE_NAME;
-
 			List<Sensor> sensors = new ArrayList<Sensor>();
-			sql += super.getRequestFilters(fields, values);
+
 			if (connection != null) {
 				try {
+					String sql = "SELECT * from SENSOR " + super.getRequestFilters(fields, values);
 					PreparedStatement preparedStatement = connection.prepareStatement(sql);
 					ResultSet rs = preparedStatement.executeQuery();
 					Sensor sensor;
@@ -132,7 +118,7 @@ public class SensorDAO<T> extends DAO<Sensor> {
 	}
 
 	@SuppressWarnings("finally")
-	protected Sensor getSensorFromResultSet(ResultSet rs) {
+	private Sensor getSensorFromResultSet(ResultSet rs) {
 		Sensor sensor = null;
 		try {
 			sensor = new Sensor(rs.getInt("ID_SENSOR"), SensorActivity.getSensorActivity(rs.getString("ACTIVITY")), SensorType.getSensorType(rs.getString("TYPE")),
@@ -142,7 +128,7 @@ public class SensorDAO<T> extends DAO<Sensor> {
 					rs.getTime("START_ACTIVITY_TIME"),rs.getTime("END_ACTIVITY_TIME"),rs.getFloat("CHECK_FREQUENCY"),
 					rs.getString("MEASUREMENT_UNIT"),rs.getFloat("CURRENT_THRESHOLD"),rs.getFloat("DANGER_THRESHOLD"),rs.getFloat("POSITION_X"),rs.getFloat("POSITION_Y"));
 
-			//sensor.setLocation(getSensorLocation(rs.getInt("ID_LOCATION")));
+			sensor.setLocation(getSensorLocation(rs.getInt("ID_LOCATION")));
 
 
 		} catch (SQLException e) {
@@ -153,9 +139,9 @@ public class SensorDAO<T> extends DAO<Sensor> {
 		}
 	}
 
-	protected Location getSensorLocation(Integer sensorId) {
+	private Location getSensorLocation(Integer sensorLocationId) {
 		LocationDAO locationDAO = new LocationDAO(connection);
-		Location location = locationDAO.find(Arrays.asList("ID_LOCATION"), Arrays.asList(sensorId.toString())).get(0);
+		Location location = locationDAO.find(Arrays.asList("ID_LOCATION"), Arrays.asList(sensorLocationId.toString())).get(0);
 		return location;
 	}
 
