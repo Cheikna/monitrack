@@ -22,12 +22,12 @@ public class Light extends Sensor{
 	public Light(Integer id, SensorActivity sensorActivity, Integer locationId, String ipAddress,
 			String macAddress, String serialNumber, Float hardwareVersion, Float softwareVersion,
 			Timestamp creationDate, Timestamp lastMessageDate, Timestamp lastConfigurationDate, Time beginTime,
-			Time endTime, Float checkFrequency, String measurementUnit, Float dangerThreshold, Float positionX,
+			Time endTime, Float checkFrequency, String measurementUnit, Float currentThreshold, Float dangerThreshold, Float positionX,
 			Float positionY, Integer lightId, Float measuredRate, Float rateDangerThreshold,
 			Timestamp measurementDate) {
 		super(id, sensorActivity, SensorType.LIGHT, locationId, ipAddress, macAddress, serialNumber, hardwareVersion, softwareVersion,
 				creationDate, lastMessageDate, lastConfigurationDate, beginTime, endTime, checkFrequency, measurementUnit,
-				dangerThreshold, positionX, positionY);
+				currentThreshold, dangerThreshold, positionX, positionY);
 		this.lightId = lightId;
 		this.measuredRate = measuredRate;
 		this.rateDangerThreshold = rateDangerThreshold;

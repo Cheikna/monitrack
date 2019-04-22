@@ -2,28 +2,17 @@ package com.monitrack.enumeration;
 
 public enum RequestSender {
 	
-	CLIENT("client"),
+	CLIENT,
 	
-	CLIENT_ALARM_UPDATE("client_for_alarm_update"),
+	CLIENT_FOR_SENSOR_UPDATE,
 	
-	SENSOR("sensor");
-	
-	private String label;
-	
-	private RequestSender(String label) {
-		this.label = label;
-	}
+	SENSOR;
 
-	
-	public String getLabel() {
-		return label;
-	}
-	
 	public static RequestSender getValueOf(String sender) {
 		RequestSender[] values = RequestSender.values();
 		
 		for(RequestSender value : values) {
-			if(value.getLabel().equals(sender))
+			if(value.toString().equalsIgnoreCase(sender))
 				return value;
 		}
 		

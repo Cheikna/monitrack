@@ -26,7 +26,6 @@ public class MockChoicePage extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 	private JButton generateRandomSensorButton;
-	private JButton configureSensorButton;
 	private JButton createAlertButton;
 	private JButton sensorOverviewButton;
 	private Font font;
@@ -45,12 +44,6 @@ public class MockChoicePage extends JPanel {
 		generateRandomSensorButton.setMaximumSize(new Dimension(400, 75));
 		generateRandomSensorButton.setPreferredSize(new Dimension(400, 75));
 		generateRandomSensorButton.addActionListener(listener);
-		
-		configureSensorButton = new JButton("Configurer les capteurs");
-		configureSensorButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		configureSensorButton.setMaximumSize(new Dimension(400, 75));
-		configureSensorButton.setPreferredSize(new Dimension(400, 75));
-		configureSensorButton.addActionListener(listener);
 
 		createAlertButton = new JButton("Créer des alertes");
 		createAlertButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -58,7 +51,7 @@ public class MockChoicePage extends JPanel {
 		createAlertButton.setPreferredSize(new Dimension(400, 75));
 		createAlertButton.addActionListener(listener);
 
-		sensorOverviewButton = new JButton("Visualiser l'état des capteurs");
+		sensorOverviewButton = new JButton("Visualiser et configurer les capteurs");
 		sensorOverviewButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		sensorOverviewButton.setMaximumSize(new Dimension(400, 75));
 		sensorOverviewButton.setPreferredSize(new Dimension(400, 75));
@@ -66,8 +59,6 @@ public class MockChoicePage extends JPanel {
 		
 		
 		add(generateRandomSensorButton);
-		this.add(Box.createRigidArea(new Dimension(0, 30)));
-		add(configureSensorButton);
 		this.add(Box.createRigidArea(new Dimension(0, 30)));
 		add(createAlertButton);
 		this.add(Box.createRigidArea(new Dimension(0, 30)));
@@ -78,10 +69,6 @@ public class MockChoicePage extends JPanel {
 
 	public JButton getGenerateRandomSensorButton() {
 		return generateRandomSensorButton;
-	}
-
-	public JButton getConfigureSensorButton() {
-		return configureSensorButton;
 	}
 
 	public JButton getCreateAlertButton() {

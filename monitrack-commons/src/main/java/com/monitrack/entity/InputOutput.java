@@ -20,11 +20,11 @@ public class InputOutput extends Sensor {
 	public InputOutput(Integer id, SensorActivity sensorActivity, Integer locationId,
 			String ipAddress, String macAddress, String serialNumber, Float hardwareVersion, Float softwareVersion,
 			Timestamp creationDate, Timestamp lastMessageDate, Timestamp lastConfigurationDate, Time beginTime,
-			Time endTime, Float checkFrequency, String measurementUnit, Float dangerThreshold, Float positionX,
+			Time endTime, Float checkFrequency, String measurementUnit, Float currentThreshold, Float dangerThreshold, Float positionX,
 			Float positionY, Integer inputOutputId, Integer numberOfOutput, Integer numberOfInput, Timestamp day) {
 		super(id, sensorActivity, SensorType.INPUT_OUTPUT, locationId, ipAddress, macAddress, serialNumber, hardwareVersion, softwareVersion,
 				creationDate, lastMessageDate, lastConfigurationDate, beginTime, endTime, checkFrequency, measurementUnit,
-				dangerThreshold, positionX, positionY);
+				currentThreshold, dangerThreshold, positionX, positionY);
 		this.inputOutputId = inputOutputId;
 		this.numberOfOutput = numberOfOutput;
 		this.numberOfInput = numberOfInput;

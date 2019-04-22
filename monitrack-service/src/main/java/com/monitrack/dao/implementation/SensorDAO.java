@@ -22,7 +22,7 @@ public class SensorDAO<T> extends DAO<Sensor> {
 
 	private static final Logger log = LoggerFactory.getLogger(SensorDAO.class);
 	private final Object lock = new Object();	
-	private static String MOTHER_TABLE_NAME = "SENSOR";
+	private final String MOTHER_TABLE_NAME = "SENSOR";
 	private String tableName;
 
 	public SensorDAO(Connection connection, String tableName) {
@@ -45,8 +45,8 @@ public class SensorDAO<T> extends DAO<Sensor> {
 							.prepareStatement("INSERT INTO SENSOR (TYPE, ACTIVITY, ID_LOCATION, IP_ADDRESS, MAC_ADDRESS, "
 									+ "SERIAL_NUMBER, HARDWARE_VERSION, SOFTWARE_VERSION, "
 									+ " START_ACTIVITY_TIME, END_ACTIVITY_TIME, CHECK_FREQUENCY, "
-									+ "MEASUREMENT_UNIT, CURRENT_DANGER_THRESHOLD, POSITION_X, POSITION_Y) "
-									+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ", Statement.RETURN_GENERATED_KEYS);
+									+ "MEASUREMENT_UNIT, CURRENT_THRESHOLD, DANGER_THRESHOLD, POSITION_X, POSITION_Y) "
+									+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ", Statement.RETURN_GENERATED_KEYS);
 					preparedStatement.setString(1, obj.getSensorType().toString());
 					preparedStatement.setString(2, obj.getSensorActivity().toString());
 					preparedStatement.setInt(3, obj.getLocationId());
@@ -59,15 +59,15 @@ public class SensorDAO<T> extends DAO<Sensor> {
 					preparedStatement.setTime(10, obj.getEndTime());
 					preparedStatement.setFloat(11, obj.getCheckFrequency());
 					preparedStatement.setString(12, obj.getMeasurementUnit());
-					preparedStatement.setFloat(13, obj.getDangerThreshold());
-					preparedStatement.setFloat(14, obj.getPositionX());
-					preparedStatement.setFloat(15, obj.getPositionY());
+					preparedStatement.setFloat(13, obj.getCurrentThreshold());
+					preparedStatement.setFloat(14, obj.getDangerThreshold());
+					preparedStatement.setFloat(15, obj.getPositionX());
+					preparedStatement.setFloat(16, obj.getPositionY());
 					preparedStatement.execute();
 					ResultSet rs = preparedStatement.getGeneratedKeys();
-					System.err.println("===> " + preparedStatement.toString());
 					int lastCreatedId = 0;
 					if (rs.next()) {
-						lastCreatedId = rs.getInt(1);
+						lastCreatedId = rs.getInt("ID_SENSOR");
 						obj.setId(lastCreatedId);
 					}
 				} catch (Exception e) {
@@ -140,9 +140,9 @@ public class SensorDAO<T> extends DAO<Sensor> {
 					rs.getString("MAC_ADDRESS"),rs.getString("SERIAL_NUMBER"), rs.getFloat("HARDWARE_VERSION"),rs.getFloat("SOFTWARE_VERSION"),
 					rs.getTimestamp("CREATION_DATE"), rs.getTimestamp("LAST_MESSAGE_DATE"), rs.getTimestamp("LAST_CONFIGURATION_DATE"),
 					rs.getTime("START_ACTIVITY_TIME"),rs.getTime("END_ACTIVITY_TIME"),rs.getFloat("CHECK_FREQUENCY"),
-					rs.getString("MEASUREMENT_UNIT"),rs.getFloat("CURRENT_DANGER_THRESHOLD"),rs.getFloat("POSITION_X"),rs.getFloat("POSITION_Y"));
+					rs.getString("MEASUREMENT_UNIT"),rs.getFloat("CURRENT_THRESHOLD"),rs.getFloat("DANGER_THRESHOLD"),rs.getFloat("POSITION_X"),rs.getFloat("POSITION_Y"));
 
-			sensor.setLocation(getSensorLocation(rs.getInt("ID_LOCATION")));
+			//sensor.setLocation(getSensorLocation(rs.getInt("ID_LOCATION")));
 
 
 		} catch (SQLException e) {

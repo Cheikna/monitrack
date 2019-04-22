@@ -58,7 +58,7 @@ public class SmokeDAO extends SensorDAO<Smoke>{
 					rs.getString("MAC_ADDRESS"),rs.getString("SERIAL_NUMBER"), rs.getFloat("HARDWARE_VERSION"),rs.getFloat("SOFTWARE_VERSION"),
 					rs.getTimestamp("CREATION_DATE"), rs.getTimestamp("LAST_MESSAGE_DATE"), rs.getTimestamp("LAST_CONFIGURATION_DATE"),
 					rs.getTime("START_ACTIVITY_TIME"),rs.getTime("END_ACTIVITY_TIME"),rs.getFloat("CHECK_FREQUENCY"),
-					rs.getString("MEASUREMENT_UNIT"),rs.getFloat("CURRENT_DANGER_THRESHOLD"),rs.getFloat("POSITION_X"),rs.getFloat("POSITION_Y"),
+					rs.getString("MEASUREMENT_UNIT"),rs.getFloat("CURRENT_THRESHOLD"), rs.getFloat("DANGER_THRESHOLD"),rs.getFloat("POSITION_X"),rs.getFloat("POSITION_Y"),
 					rs.getInt("ID_SMOKE"), rs.getFloat("MEASURED_THRESHOLD"), rs.getFloat("SMOKE_DANGER_THRESHOLD"),
 					rs.getTimestamp("MEASUREMENT_DATE"));
 		} catch (SQLException e) {

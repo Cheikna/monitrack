@@ -40,6 +40,8 @@ public class Sensor {
 	protected Float checkFrequency;
 	@JsonProperty("measurement_unit")
 	protected String measurementUnit;	
+	@JsonProperty("current_threshold")
+	protected Float currentThreshold;
 	@JsonProperty("danger_threshold")
 	protected Float dangerThreshold;
 	@JsonProperty("position_x")
@@ -48,11 +50,25 @@ public class Sensor {
 	protected Float positionY;
 	protected Location location;
 	
+	public Sensor() {
+		//Empty constructor
+	}
+	
+	/*public Sensor(Integer id, String sensorActivity, String sensorType, Integer locationId,
+			String ipAddress, String macAddress, String serialNumber, Float hardwareVersion, Float softwareVersion,
+			Timestamp creationDate, Timestamp lastMessageDate, Timestamp lastConfigurationDate, Time beginTime,
+			Time endTime, Float checkFrequency, String measurementUnit, Float dangerThreshold, Float positionX,
+			Float positionY) {
+		this(id, SensorActivity.getSensorActivity(sensorActivity), SensorType.getSensorType(sensorType),
+				locationId, ipAddress, macAddress, serialNumber, hardwareVersion, softwareVersion,
+				creationDate, lastMessageDate, lastConfigurationDate,beginTime,
+				endTime, checkFrequency, measurementUnit, dangerThreshold,positionX,positionY);
+	}*/
 	
 	public Sensor(Integer id, SensorActivity sensorActivity, SensorType sensorType, Integer locationId,
 			String ipAddress, String macAddress, String serialNumber, Float hardwareVersion, Float softwareVersion,
 			Timestamp creationDate, Timestamp lastMessageDate, Timestamp lastConfigurationDate, Time beginTime,
-			Time endTime, Float checkFrequency, String measurementUnit, Float dangerThreshold, Float positionX,
+			Time endTime, Float checkFrequency, String measurementUnit, Float currentThreshold, Float dangerThreshold, Float positionX,
 			Float positionY) {
 		this.id = id;
 		this.sensorActivity = sensorActivity;
@@ -70,6 +86,7 @@ public class Sensor {
 		this.endTime = endTime;
 		this.checkFrequency = checkFrequency;
 		this.measurementUnit = measurementUnit;
+		this.currentThreshold = currentThreshold;
 		this.dangerThreshold = dangerThreshold;
 		this.positionX = positionX;
 		this.positionY = positionY;
@@ -202,6 +219,14 @@ public class Sensor {
 	public void setMeasurementUnit(String measurementUnit) {
 		this.measurementUnit = measurementUnit;
 	}
+	
+	public Float getCurrentThreshold() {
+		return currentThreshold;
+	}
+
+	public void setCurrentThreshold(Float currentThreshold) {
+		this.currentThreshold = currentThreshold;
+	}
 
 	public Float getDangerThreshold() {
 		return dangerThreshold;
@@ -247,6 +272,35 @@ public class Sensor {
 				+ "]";
 	}
 	
+	public boolean raiseDangerAlert() {
+		return currentThreshold >= dangerThreshold;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Sensor other = (Sensor) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
 	
 	
 }

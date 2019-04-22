@@ -16,9 +16,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.monitrack.connection.pool.implementation.DataSource;
 import com.monitrack.dao.implementation.DAOFactory;
+import com.monitrack.data.pool.DataPool;
+import com.monitrack.entity.Message;
+import com.monitrack.entity.Sensor;
 import com.monitrack.enumeration.ConnectionState;
 import com.monitrack.enumeration.JSONField;
+import com.monitrack.enumeration.RequestSender;
 import com.monitrack.enumeration.RequestType;
+import com.monitrack.enumeration.SensorState;
 import com.monitrack.shared.MonitrackServiceUtil;
 import com.monitrack.util.JsonUtil;
 import com.monitrack.util.Util;
@@ -40,10 +45,12 @@ public class RequestHandler implements Runnable {
 	private Connection connection;
 	//For the JSON
 	private ObjectMapper mapper;
+	private DataPool dataPool;
 
-	public RequestHandler(Socket socket, Connection connection) {
+	public RequestHandler(Socket socket, Connection connection, DataPool dataPool) {
 		this.socket = socket;
 		this.connection = connection;
+		this.dataPool = dataPool;
 		mapper = new ObjectMapper();
 	}
 
@@ -88,10 +95,26 @@ public class RequestHandler implements Runnable {
 			}
 			else
 			{
-				log.info("Request received from the client :\n" + JsonUtil.indentJsonOutput(requestOfClient) + "\n");
-				String responseToClient = executeClientRequest(requestOfClient);
-				log.info("Response to the client :\n" + JsonUtil.indentJsonOutput(responseToClient) + "\n");
-				writeToClient.println(responseToClient);				
+				JsonNode json = mapper.readTree(requestOfClient);
+				RequestSender requestSender = RequestSender.getValueOf(JsonUtil.getJsonNodeValue(JSONField.REQUEST_SENDER, requestOfClient));
+
+				if(requestSender == RequestSender.CLIENT) {
+					log.info("Request received from the client :\n" + JsonUtil.indentJsonOutput(requestOfClient) + "\n");
+					String responseToClient = executeClientRequest(json);
+					log.info("Response to the client :\n" + JsonUtil.indentJsonOutput(responseToClient) + "\n");
+					writeToClient.println(responseToClient);						
+				}
+				else if(requestSender == RequestSender.SENSOR) {
+					Message message = (Message)getObjectFromJson(json);
+					dataPool.processMessage(message);
+					writeToClient.println("");
+				} 
+				else if(requestSender == RequestSender.CLIENT_FOR_SENSOR_UPDATE) {
+					List<Sensor> sensors = dataPool.getCacheSensorsByState(SensorState.DANGER);
+					String serializedObjects = JsonUtil.serializeObject(sensors, Sensor.class, "");
+					writeToClient.print(serializedObjects);					
+				}
+							
 			}
 
 		}
@@ -106,26 +129,21 @@ public class RequestHandler implements Runnable {
 	}
 
 	/**
-	 * Filter the request in order to know which type of request it is
 	 * 
-	 * @param jsonFormattedRequest
+	 * @param json
 	 * @return
 	 */
 	@SuppressWarnings("finally")
-	public String executeClientRequest(String jsonFormattedRequest) 
+	public String executeClientRequest(JsonNode json) 
 	{		
 		String result = "";
 
 		try 
-		{
-			mapper = new ObjectMapper();
-			JsonNode json = mapper.readTree(jsonFormattedRequest);
+		{			
 			// JSON Node containing the request info
 			JsonNode requestNode = json.get(JSONField.REQUEST_INFO.getLabel());	
 			String requestEntity = requestNode.get(JSONField.REQUESTED_ENTITY.getLabel()).textValue();
 			Class<?> entityClass = Class.forName(requestEntity);
-			
-			JsonNode serializedObjectNode = json.get(JSONField.SERIALIZED_OBJECT.getLabel());
 			
 			// The fields we wants to filter
 			String fieldsStringFromJson = requestNode.get(JSONField.REQUESTED_FIELDS.getLabel()).toString();
@@ -141,9 +159,7 @@ public class RequestHandler implements Runnable {
 				requiredValues = mapper.readValue(valuesStringFromJson, mapper.getTypeFactory().constructCollectionType(List.class, String.class));		
 			}	
 			
-			Object deserializedObject = null;
-			if(serializedObjectNode != null)
-				deserializedObject = JsonUtil.deserializeObject(serializedObjectNode.toString());
+			Object deserializedObject = getObjectFromJson(json);
 			
 			RequestType requestType = RequestType.getRequestType(requestNode.get(JSONField.REQUEST_TYPE.getLabel()).textValue());
 			
@@ -161,6 +177,14 @@ public class RequestHandler implements Runnable {
 			return result;
 		}
 
+	}
+	
+	private Object getObjectFromJson(JsonNode json)
+	{
+		JsonNode serializedObjectNode = json.get(JSONField.SERIALIZED_OBJECT.getLabel());
+		if(serializedObjectNode != null)
+			return JsonUtil.deserializeObject(serializedObjectNode.toString());
+		return null;
 	}
 
 	/**

@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import com.monitrack.entity.Location;
 import com.monitrack.enumeration.Images;
+import com.monitrack.enumeration.RequestSender;
 import com.monitrack.enumeration.RequestType;
 import com.monitrack.exception.DeprecatedVersionException;
 import com.monitrack.exception.NoAvailableConnectionException;
@@ -106,7 +107,7 @@ public class LocationsTabListener implements ActionListener {
 	@SuppressWarnings("unchecked")
 	private void setComboboxWithLocations(JComboBox<String> combobox)
 	{
-		String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Location.class, null, null, null);
+		String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Location.class, null, null, null, RequestSender.CLIENT);
 		try 
 		{
 			String response = MonitrackGuiUtil.sendRequest(jsonRequest);
@@ -180,7 +181,7 @@ public class LocationsTabListener implements ActionListener {
 		if(isFormValid && choice == 0)
 		{						
 			String serializedObject = JsonUtil.serializeObject(location, Location.class, null);
-			String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, location.getClass(), serializedObject, null, null);
+			String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, location.getClass(), serializedObject, null, null, RequestSender.CLIENT);
 			String response = MonitrackGuiUtil.sendRequest(jsonRequest); 
 
 			Location locationCreated = (Location)JsonUtil.deserializeObject(response);
@@ -260,7 +261,7 @@ public class LocationsTabListener implements ActionListener {
 			if(choice == 0)
 			{		
 				String serializedObject = JsonUtil.serializeObject(locationToUpdate, Location.class, "");	
-				String jsonRequest = JsonUtil.serializeRequest(RequestType.UPDATE, Location.class, serializedObject, null, null);
+				String jsonRequest = JsonUtil.serializeRequest(RequestType.UPDATE, Location.class, serializedObject, null, null, RequestSender.CLIENT);
 				MonitrackGuiUtil.sendRequest(jsonRequest);
 				JOptionPane.showMessageDialog(locationsTab, "Votre emplacement a bien été mis à jour", "Mise à jour réussie", JOptionPane.INFORMATION_MESSAGE);
 				setComboboxWithLocations(locationsTab.getModifyLocationsCombobox());
@@ -283,7 +284,7 @@ public class LocationsTabListener implements ActionListener {
 		{
 			Location locationToDelete = locations.get(selectedLocationIndex);
 			String serializedObject = JsonUtil.serializeObject(locationToDelete, Location.class, "");
-			String jsonRequest = JsonUtil.serializeRequest(RequestType.DELETE, Location.class, serializedObject, null, null);
+			String jsonRequest = JsonUtil.serializeRequest(RequestType.DELETE, Location.class, serializedObject, null, null, RequestSender.CLIENT);
 			MonitrackGuiUtil.sendRequest(jsonRequest);
 			JOptionPane.showMessageDialog(locationsTab, "L'emplacement selectionné a été supprimé", "Emplacement supprimé", JOptionPane.INFORMATION_MESSAGE);			
 			setComboboxWithLocations(locationsTab.getDeleteLocationsCombobox());
@@ -339,7 +340,7 @@ public class LocationsTabListener implements ActionListener {
 
 
 
-		String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Location.class, null, fields, values);
+		String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Location.class, null, fields, values, RequestSender.CLIENT);
 		String response = MonitrackGuiUtil.sendRequest(jsonRequest);
 		List<Location> locationToDisplay = (List<Location>)JsonUtil.deserializeObject(response);
 

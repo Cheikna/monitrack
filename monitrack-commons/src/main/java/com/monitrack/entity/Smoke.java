@@ -21,12 +21,12 @@ public class Smoke extends Sensor{
 	public Smoke(Integer id, SensorActivity sensorActivity, Integer locationId, String ipAddress,
 			String macAddress, String serialNumber, Float hardwareVersion, Float softwareVersion,
 			Timestamp creationDate, Timestamp lastMessageDate, Timestamp lastConfigurationDate, Time beginTime,
-			Time endTime, Float checkFrequency, String measurementUnit, Float dangerThreshold, Float positionX,
+			Time endTime, Float checkFrequency, String measurementUnit, Float currentThreshold, Float dangerThreshold, Float positionX,
 			Float positionY, Integer idSmoke, Float mesuredThreshold, Float smokeDangerThreshold,
 			Timestamp measurementDate) {
 		super(id, sensorActivity, SensorType.SMOKE, locationId, ipAddress, macAddress, serialNumber, hardwareVersion, softwareVersion,
 				creationDate, lastMessageDate, lastConfigurationDate, beginTime, endTime, checkFrequency, measurementUnit,
-				dangerThreshold, positionX, positionY);
+				currentThreshold, dangerThreshold, positionX, positionY);
 		this.idSmoke = idSmoke;
 		this.mesuredThreshold = mesuredThreshold;
 		this.smokeDangerThreshold = smokeDangerThreshold;
