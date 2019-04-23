@@ -112,8 +112,11 @@ public class ClientSocket {
 
 		if(requestToSendToServer.trim().equals(ConnectionState.RESERVED_CONNECTION.getCode().toString()))
 			log.info("You are trying to reserve a connection");
-		else
-			log.info("Request sent to the server :\n" + JsonUtil.indentJsonOutput(requestToSendToServer));
+		else {
+			//log.info("Request sent to the server :\n" + JsonUtil.indentJsonOutput(requestToSendToServer));
+			log.info("Request sent to the server :\n" + requestToSendToServer);
+			
+		}
 
 		// Sends the request to the server
 		writeToServer.println(requestToSendToServer);
