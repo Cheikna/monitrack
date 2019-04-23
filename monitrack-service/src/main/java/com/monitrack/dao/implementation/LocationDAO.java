@@ -100,9 +100,14 @@ public class LocationDAO extends DAO<Location> {
 
 	}
 
+	@Override
+	public List<Location> find(List<String> fields, List<String> values) {
+		return super.find(fields, values, "LOCATION");
+	}
+
 	@SuppressWarnings("finally")
-	private Location getLocationFromResultSet(ResultSet rs)
-	{
+	@Override
+	protected Location getSingleValueFromResultSet(ResultSet rs) {
 		Location location = null;
 		try {
 			location = new Location(rs.getInt("ID_LOCATION"), rs.getString("NAME"), rs.getString("CENTER")
@@ -112,31 +117,6 @@ public class LocationDAO extends DAO<Location> {
 		}
 		finally {
 			return location;
-		}
-	}
-
-	@Override
-	public List<Location> find(List<String> fields, List<String> values) {
-		synchronized (lock) {
-			List<Location> locations = new ArrayList<Location>();
-			if (connection != null) {
-				try {
-					String sql = "SELECT * FROM LOCATION" + super.getRequestFilters(fields, values);
-					PreparedStatement preparedStatement = connection.prepareStatement(sql);
-					ResultSet rs = preparedStatement.executeQuery();
-					Location location;
-					while (rs.next()) {
-						location = getLocationFromResultSet(rs);
-						if (location != null) {
-							locations.add(location);
-						}
-					}
-				} catch (Exception e) {
-					log.error("An error occurred when finding all of the persons : " + e.getMessage());
-					e.printStackTrace();
-				}
-			}
-			return locations;
 		}
 	}
 

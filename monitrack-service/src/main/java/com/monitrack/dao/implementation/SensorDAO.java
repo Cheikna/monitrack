@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -95,32 +94,19 @@ public class SensorDAO extends DAO<Sensor> {
 	}
 
 	public List<Sensor> find(List<String> fields, List<String> values) {
-		synchronized (lock) {
-			List<Sensor> sensors = new ArrayList<Sensor>();
-
-			if (connection != null) {
-				try {
-					String sql = "SELECT * from SENSOR " + super.getRequestFilters(fields, values);
-					PreparedStatement preparedStatement = connection.prepareStatement(sql);
-					ResultSet rs = preparedStatement.executeQuery();
-					Sensor sensor;
-					while (rs.next()) {
-						sensor = getSensorFromResultSet(rs);
-						if (sensor != null) {
-							sensors.add(sensor);
-						}
-					}
-				} catch (Exception e) {
-					log.error("An error occurred when finding sensors : " + e.getMessage());
-					e.printStackTrace();
-				}
-			}
-			return sensors;
-		}
+		return super.find(fields, values, "SENSOR");
 	}
 
+	
+	private Location getSensorLocation(Integer sensorLocationId) {
+		LocationDAO locationDAO = new LocationDAO(connection);
+		Location location = locationDAO.find(Arrays.asList("ID_LOCATION"), Arrays.asList(sensorLocationId.toString())).get(0);
+		return location;
+	}
+	
 	@SuppressWarnings("finally")
-	private Sensor getSensorFromResultSet(ResultSet rs) {
+	@Override
+	protected Sensor getSingleValueFromResultSet(ResultSet rs) {
 		Sensor sensor = null;
 		try {
 			sensor = new Sensor(rs.getInt("ID_SENSOR"), SensorActivity.getSensorActivity(rs.getString("ACTIVITY")), SensorType.getSensorType(rs.getString("TYPE")),
@@ -140,12 +126,6 @@ public class SensorDAO extends DAO<Sensor> {
 		finally {
 			return sensor;
 		}
-	}
-
-	private Location getSensorLocation(Integer sensorLocationId) {
-		LocationDAO locationDAO = new LocationDAO(connection);
-		Location location = locationDAO.find(Arrays.asList("ID_LOCATION"), Arrays.asList(sensorLocationId.toString())).get(0);
-		return location;
 	}
 
 
