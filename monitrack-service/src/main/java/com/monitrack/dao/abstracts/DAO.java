@@ -1,12 +1,18 @@
 package com.monitrack.dao.abstracts;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class DAO<T> {
 	
+	private static final Logger log = LoggerFactory.getLogger(DAO.class);
 	protected Connection connection;
 
 	public DAO(Connection connection) {
@@ -38,6 +44,28 @@ public abstract class DAO<T> {
 	 * @param values : the values required for the fields
 	 * @return
 	 */
+	public synchronized List<T> find(List<String> fields, List<String> values, String tableName){
+		List<T> elements = new ArrayList<T>();
+		if (connection != null) {
+			try {
+				String sql = "SELECT * FROM " + tableName + getRequestFilters(fields, values);
+				PreparedStatement preparedStatement = connection.prepareStatement(sql);
+				ResultSet rs = preparedStatement.executeQuery();
+				T element;
+				while (rs.next()) {
+					element = getSingleValueFromResultSet(rs);
+					if (element != null) {
+						elements.add(element);
+					}
+				}
+			} catch (Exception e) {
+				log.error("An error occurred when finding all of the persons : " + e.getMessage());
+				e.printStackTrace();
+			}
+		}
+		return elements;
+	}
+	
 	public abstract List<T> find(List<String> fields, List<String> values);
 	
 	/**
@@ -81,5 +109,7 @@ public abstract class DAO<T> {
 		
 		return sql;
 	}
+	
+	protected abstract T getSingleValueFromResultSet(ResultSet rs);
 
 }

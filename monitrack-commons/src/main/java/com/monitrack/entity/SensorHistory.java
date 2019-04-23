@@ -11,8 +11,10 @@ public class SensorHistory {
 	private int idSensorSource;
 	@JsonProperty("measured_threshold")
 	private Float measuredThreshold;
-	@JsonProperty("danger_threshold")
-	private Float dangerThreshlod;
+	@JsonProperty("min_danger_threshold")
+	private Float minDangerThreshlod;
+	@JsonProperty("max_danger_threshold")
+	private Float maxDangerThreshlod;
 	@JsonProperty("measurement_date")
 	private Timestamp date;
 	@JsonProperty("description")
@@ -23,12 +25,14 @@ public class SensorHistory {
 	public SensorHistory() {
 	}
 
-	public SensorHistory(int idHistory, int idSensorSource, Float measuredThreshold, Float dangerThreshlod,
+	public SensorHistory(int idHistory, int idSensorSource, Float measuredThreshold,  Float minDangerThreshlod,
+			Float maxDangerThreshlod,
 			Timestamp date, String description, String actionsDone) {
 		this.idHistory = idHistory;
 		this.idSensorSource = idSensorSource;
 		this.measuredThreshold = measuredThreshold;
-		this.dangerThreshlod = dangerThreshlod;
+		this.minDangerThreshlod = minDangerThreshlod;
+		this.maxDangerThreshlod = maxDangerThreshlod;
 		this.date = date;
 		this.description = description;
 		this.actionsDone = actionsDone;
@@ -58,12 +62,20 @@ public class SensorHistory {
 		this.measuredThreshold = measuredThreshold;
 	}
 
-	public Float getDangerThreshlod() {
-		return dangerThreshlod;
+	public Float getMinDangerThreshlod() {
+		return minDangerThreshlod;
 	}
 
-	public void setDangerThreshlod(Float dangerThreshlod) {
-		this.dangerThreshlod = dangerThreshlod;
+	public void setMinDangerThreshlod(Float minDangerThreshlod) {
+		this.minDangerThreshlod = minDangerThreshlod;
+	}
+
+	public Float getMaxDangerThreshlod() {
+		return maxDangerThreshlod;
+	}
+
+	public void setMaxDangerThreshlod(Float maxDangerThreshlod) {
+		this.maxDangerThreshlod = maxDangerThreshlod;
 	}
 
 	public Timestamp getDate() {
