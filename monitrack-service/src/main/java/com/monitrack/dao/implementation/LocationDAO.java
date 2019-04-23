@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +14,6 @@ import com.monitrack.entity.Location;
 public class LocationDAO extends DAO<Location> {
 
 	private static final Logger log = LoggerFactory.getLogger(LocationDAO.class);	
-	//private JsonFactory factory = new JsonFactory();
 	private final Object lock = new Object();
 
 	public LocationDAO(Connection connection) 

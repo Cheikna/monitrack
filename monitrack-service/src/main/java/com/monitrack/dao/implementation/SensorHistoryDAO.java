@@ -3,6 +3,7 @@ package com.monitrack.dao.implementation;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
@@ -55,8 +56,11 @@ public class SensorHistoryDAO extends DAO<SensorHistory> {
 
 	@Override
 	public void update(SensorHistory obj) {
-		// TODO Auto-generated method stub
-		
+		try {
+			throw new Exception("A history can not be updated !");
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
 	}
 
 	@Override
@@ -83,10 +87,21 @@ public class SensorHistoryDAO extends DAO<SensorHistory> {
 		return super.find(fields, values, "SENSOR_HISTORY");
 	}
 
+	@SuppressWarnings("finally")
 	@Override
 	protected SensorHistory getSingleValueFromResultSet(ResultSet rs) {
-		// TODO Auto-generated method stub
-		return null;
+		SensorHistory sensorHistory = null;
+		try {
+			sensorHistory = new SensorHistory(rs.getInt("ID_HISTORY"), rs.getInt("ID_SENSOR"), rs.getFloat("MEASURED_THRESHOLD"), rs.getFloat("MIN_DANGER_THRESHOLD"),rs.getFloat("MAX_DANGER_THRESHOLD"),
+					rs.getTimestamp("MEASUREMENT_DATE"), rs.getString("DESCRIPTION"), rs.getString("ACTIONS_DONE"));
+
+
+		} catch (SQLException e) {
+			log.error("An error occurred when getting one Flow Sensor from the resultSet : " + e.getMessage());
+		}
+		finally {
+			return sensorHistory;
+		}
 	}
 
 }
