@@ -19,16 +19,10 @@ public class DAOFactory {
 			dao =  new PersonDAO(connection);
 		else if(entityClass.equals(Location.class))
 			dao = new LocationDAO(connection);
-		else if(entityClass.equals(Flow.class))
-			dao = new FlowDAO(connection);
-		else if(entityClass.equals(InputOutput.class))
-			dao = new InputOutputDAO(connection);
-		else if(entityClass.equals(Light.class))
-			dao = new LightDAO(connection);
 		else if(entityClass.equals(Sensor.class))
 			dao = new SensorDAO(connection);
-		else if(entityClass.equals(Smoke.class))
-			dao = new SmokeDAO(connection);
+		else if(entityClass.equals(SensorHistory.class))
+			dao = new SensorHistoryDAO(connection);
 		else
 			throw new UnknownClassException(entityClass);		
 		
