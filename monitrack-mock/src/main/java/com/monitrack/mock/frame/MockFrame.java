@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import com.monitrack.mock.enumeration.Page;
 import com.monitrack.mock.listener.MockFrameListener;
 import com.monitrack.mock.panel.MockChoicePage;
+import com.monitrack.mock.panel.SensorsFactory;
 import com.monitrack.mock.panel.SensorsPage;
 
 public class MockFrame extends JFrame {
@@ -32,6 +33,7 @@ public class MockFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		centerPanel.add(new MockChoicePage(this), Page.HOME.getName());
 		centerPanel.add(new SensorsPage(), Page.SENSOR_OVERVIEW.getName());
+		centerPanel.add(new SensorsFactory(), Page.SENSORS_FACTORY.getName() );
 		
 		backToMenuButton = new JButton("Retour au menu");
 		backToMenuButton.addActionListener(listener);
