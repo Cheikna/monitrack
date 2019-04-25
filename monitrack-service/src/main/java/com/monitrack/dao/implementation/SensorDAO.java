@@ -59,8 +59,9 @@ public class SensorDAO extends DAO<Sensor> {
 					preparedStatement.execute();
 					ResultSet rs = preparedStatement.getGeneratedKeys();
 					if (rs.next()) {
-						obj.setId(rs.getInt("ID_SENSOR"));
-						obj.setMacAddress(rs.getString("MAC_ADDRESS"));
+						System.out.println(rs.toString());
+						obj.setId(rs.getInt(1));
+						//obj.setMacAddress(rs.getString("MAC_ADDRESS"));
 					}
 				} catch (Exception e) {
 					log.error("An error occurred during the creation of a sensor : " + e.getMessage());

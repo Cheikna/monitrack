@@ -1,8 +1,9 @@
 package com.monitrack.enumeration;
 
 public enum UserProfile {
-	PERSONNEL,
-	MAINTENANCE,
+	RESIDENT,
+	STAFF,
+	SERVICE_AGENT,
 	DIRECTION;
 	
 	public static UserProfile getUserProfile(String userProfil)
