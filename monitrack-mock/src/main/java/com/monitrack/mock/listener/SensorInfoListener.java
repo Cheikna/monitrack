@@ -59,39 +59,13 @@ public class SensorInfoListener implements MouseListener, ActionListener  {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		System.out.println(sensorInfoPanel.getId());
 		if(SwingUtilities.isRightMouseButton(e)) {
 			sensorInfoPanel.getPopup().show(sensorInfoPanel, e.getX(), e.getY());
 		}		
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		/*float threshold = 0f;
-		Sensor sensor = new Sensor(0, SensorActivity.DISABLED, SensorType.FLOW, 1, "192.168.20.15", "dsfsd", "dsfsdf", 
-				1.0f, 2.0f, null, null, null, null, null, 0f, "Decibel", 4.0f,0.0f, 5.0f, 6.23f, 4.94f);
-		
-		try {
-			ClientSocket cl = new ClientSocket();
-			
-			for (int i = 0; i < 10; i++) {
-				sensor.setCurrentThreshold(threshold);
-				Message message = new Message(SensorState.DANGER, sensor);
-				String serializedObject = JsonUtil.serializeObject(message, Message.class, "");
-				String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, Message.class, serializedObject,
-						null, null, RequestSender.SENSOR);
-				if (cl.start() == ConnectionState.SUCCESS) {
-					cl.sendRequestToServer(jsonRequest);
-				}
-				System.out.println("request sended");
-				threshold += 1f;
-			}
-		} catch (Exception e1) {
-			// FIXME
-			e1.printStackTrace();
-		} */
-	
-	}
+	public void mouseClicked(MouseEvent e) {}
 	
 	@Override
 	public void mouseReleased(MouseEvent e) {}

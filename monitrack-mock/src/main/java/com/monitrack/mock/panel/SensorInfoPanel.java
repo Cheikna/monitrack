@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -12,6 +15,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.Timer;
 
 import com.monitrack.entity.Sensor;
 import com.monitrack.enumeration.SensorType;
@@ -24,7 +28,6 @@ public class SensorInfoPanel extends JPanel {
 
 	private SensorInfoListener listener;
 	
-	private int id;
 	private Font font;
 	private Font borderFont;
 	
@@ -42,11 +45,13 @@ public class SensorInfoPanel extends JPanel {
 	private JMenuItem startSmoking;	
 	private JMenuItem stopSmoking;	
 	private JMenuItem sendReparator;
+	
 	private JMenuItem addPerson;
 	private JMenuItem removePerson;
 	private JMenuItem removeAllPersons;
 	
 	private Sensor sensor;
+	private boolean timeToChangeColor;
 	
 	
 	public SensorInfoPanel(Sensor sensor) {
@@ -65,7 +70,6 @@ public class SensorInfoPanel extends JPanel {
 		setCenterPanel();
 		setEastPanel();
 		setSouthPanel();
-		this.setToolTipText("Sensor n°" + id);
 	}
 	
 	public void setNorthPanel() {
@@ -171,17 +175,25 @@ public class SensorInfoPanel extends JPanel {
 		snatchSensor = new JMenuItem("Arracher le capteur de manière brusque");
 		popup.add(snatchSensor);
 		this.add(popup);
+		Timer timer = new Timer(450, new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				timeToChangeColor = !timeToChangeColor;
+				repaint();
+			}
+		});
+		timer.start();
 		
+	}
+	
+	public void paintComponent(Graphics g) {
+		Color color = (timeToChangeColor) ? Color.GREEN : Color.WHITE;
+		centerPanel.setBackground(color);
 	}
 
 	public JPopupMenu getPopup() {
 		return popup;
 	}
-
-	public int getId() {
-		return id;
-	}
-
+	
 	public Sensor getSensor() {
 		return sensor;
 	}
