@@ -131,7 +131,14 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 		return connections.size();
 	}
 	
+	
 	private void displayConnectionPoolState()
+	{
+		String state = "Connection(s) in the pool : " + getRemaningNumberOfConnections() + "/" + numberOfConnectionsCreated;
+		log.info(state);
+	}
+	
+	/*private void displayConnectionPoolState()
 	{
 		String legend  = FREE_CREATED_ASCII;
 		String numbers = convertIntegerToAsciiCharacter(getRemaningNumberOfConnections());
@@ -145,7 +152,7 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 			return number.toString() + " / " + numberOfConnectionsCreated + "\n";
 		return asciiCharacters[number];
 		
-	}
+	}*/
 	
 
 }
