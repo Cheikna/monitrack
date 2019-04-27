@@ -1,6 +1,7 @@
 package com.monitrack.dao.implementation;
 
 import java.sql.Connection;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -27,13 +28,17 @@ public class SensorDAOTest {
 	@Test
 	public void test1Insert() throws Exception {
 		Connection connection = DataSource.getConnection();
-		for (int i = 0; i < 7; i++) {
+		for (int i = 0; i < 9; i++) {
 			Sensor s = (Sensor) DAOFactory.execute(connection, Sensor.class, RequestType.INSERT, sensor, null, null);
 			/*System.out.println(s);
 			Flow flow = new Flow(s, 0, 1, null);
 			Flow f = (Flow) DAOFactory.execute(connection, Flow.class, RequestType.INSERT, flow, null,
 					null);
 			System.out.println(f);*/
+		}
+		List<Sensor> sensors = (List<Sensor>)DAOFactory.execute(connection, Sensor.class, RequestType.SELECT, null, null, null);
+		for(Sensor sensor : sensors) {
+			System.out.println("=====> " + sensor);
 		}
 		DataSource.putConnection(connection);
 		
