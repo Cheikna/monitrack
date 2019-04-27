@@ -28,19 +28,24 @@ public class SensorSignal implements Runnable {
 	public void run() {
 		try {
 			while(true) {
-				if(sendMessage) {
-					if(sensor.getSensorActivity() == SensorActivity.ENABLED) {
-						sensorState = (isInSendingWarningMessageMode) ? SensorState.WARNING : SensorState.NORMAL;
-						MockUtil.sendMessage(new Message(sensorState, sensor));
-						Thread.sleep(sensor.getCheckFrequency().longValue());
-					}					
-				}
-				
+				sendSignal();				
 			}
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
 		
+	}
+	
+	public void sendSignal() throws Exception {
+		if(sendMessage) {
+			if(sensor.getSensorActivity() == SensorActivity.ENABLED) {
+				sensorState = (isInSendingWarningMessageMode) ? SensorState.WARNING : SensorState.NORMAL;
+				boolean messageSent = MockUtil.sendMessage(new Message(sensorState, sensor));
+				if(!messageSent)
+					throw new Exception("The server can not be reached at this time");
+				Thread.sleep(sensor.getCheckFrequency().longValue());
+			}					
+		}
 	}
 	
 	public SensorState getSensorState() {

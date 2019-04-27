@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JMenuItem;
 import javax.swing.SwingUtilities;
 
 import org.apache.commons.lang3.math.NumberUtils;
@@ -32,15 +33,18 @@ public class SensorInfoListener implements MouseListener, ActionListener  {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == sensorInfoPanel.getAddPerson())
-		{
-			numberOfPersonInRoom++;
+		if(e.getSource() instanceof JMenuItem) {
+			JMenuItem selectedItem = (JMenuItem)e.getSource();
+			if(selectedItem == sensorInfoPanel.getAddPerson())
+			{
+				numberOfPersonInRoom++;
+			}
+			else if(selectedItem == sensorInfoPanel.getRemovePerson())
+			{
+				numberOfPersonInRoom = (numberOfPersonInRoom > 0) ? numberOfPersonInRoom-=1 : 0; 
+			}
+			sensorInfoPanel.getSensor().setCurrentThreshold(numberOfPersonInRoom.floatValue());
 		}
-		if(e.getSource() == sensorInfoPanel.getRemovePerson())
-		{
-			numberOfPersonInRoom = (numberOfPersonInRoom > 0) ? numberOfPersonInRoom-- : 0; 
-		}
-		sensorInfoPanel.getSensor().setCurrentThreshold(numberOfPersonInRoom.floatValue());
 		
 		if(e.getSource() == sensorInfoPanel.getSendReparator())
 		{

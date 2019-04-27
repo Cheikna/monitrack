@@ -14,14 +14,15 @@ public class MockUtil {
 	
 	private static final Logger log = LoggerFactory.getLogger(MockUtil.class);
 	
-	public static void sendMessage(Message message) {
+	public static boolean sendMessage(Message message) {
 		try {
 			ClientSocket clientSocket = new ClientSocket();
 			ConnectionState connectionState = clientSocket.start();
 			if(connectionState == ConnectionState.SUCCESS) {
 				String serializedObject = JsonUtil.serializeObject(message, message.getClass(), "");
 				String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, message.getClass(), serializedObject, null, null, RequestSender.SENSOR);
-				clientSocket.sendRequestToServer(jsonRequest);				
+				clientSocket.sendRequestToServer(jsonRequest);		
+				return true;
 			}
 			else {
 				log.error("An error occurred during the connection with the server. Perhaps the server is off.");
@@ -29,6 +30,7 @@ public class MockUtil {
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
+		return false;
 		
 	}
 
