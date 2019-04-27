@@ -14,7 +14,6 @@ import com.monitrack.entity.Location;
 public class LocationDAO extends DAO<Location> {
 
 	private static final Logger log = LoggerFactory.getLogger(LocationDAO.class);	
-	private final Object lock = new Object();
 
 	public LocationDAO(Connection connection) 
 	{

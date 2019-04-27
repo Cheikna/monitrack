@@ -13,7 +13,8 @@ import org.slf4j.LoggerFactory;
 public abstract class DAO<T> {
 	
 	private static final Logger log = LoggerFactory.getLogger(DAO.class);
-	protected Connection connection;
+	protected final Object lock = new Object();
+	protected Connection connection;	
 
 	public DAO(Connection connection) {
 		this.connection = connection;

@@ -15,7 +15,6 @@ import com.monitrack.enumeration.UserProfile;
 public class PersonDAO extends DAO<Person>{
 
 	private static final Logger log = LoggerFactory.getLogger(PersonDAO.class);
-	private final Object lock = new Object();
 
 	public PersonDAO(Connection connection) 
 	{

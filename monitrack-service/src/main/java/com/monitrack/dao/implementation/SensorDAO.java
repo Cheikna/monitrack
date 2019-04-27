@@ -20,7 +20,6 @@ import com.monitrack.enumeration.SensorType;
 public class SensorDAO extends DAO<Sensor> {
 
 	private static final Logger log = LoggerFactory.getLogger(SensorDAO.class);
-	private final Object lock = new Object();	
 
 	public SensorDAO(Connection connection) {
 		super(connection);
@@ -59,9 +58,9 @@ public class SensorDAO extends DAO<Sensor> {
 					preparedStatement.execute();
 					ResultSet rs = preparedStatement.getGeneratedKeys();
 					if (rs.next()) {
-						System.out.println(rs.toString());
-						obj.setId(rs.getInt(1));
-						//obj.setMacAddress(rs.getString("MAC_ADDRESS"));
+						int id = rs.getInt(1);
+						obj.setId(id);
+						obj.setMacAddress(retrieveMacAddress(id));
 					}
 				} catch (Exception e) {
 					log.error("An error occurred during the creation of a sensor : " + e.getMessage());
@@ -103,6 +102,16 @@ public class SensorDAO extends DAO<Sensor> {
 		LocationDAO locationDAO = new LocationDAO(connection);
 		Location location = locationDAO.find(Arrays.asList("ID_LOCATION"), Arrays.asList(sensorLocationId.toString())).get(0);
 		return location;
+	}
+	
+	private String retrieveMacAddress(int sensorId) throws SQLException {
+		PreparedStatement preparedStatement = connection.prepareStatement("SELECT MAC_ADDRESS FROM SENSOR WHERE ID_SENSOR = ? ");
+		preparedStatement.setInt(1, sensorId);
+		ResultSet rs = preparedStatement.executeQuery();
+		if (rs.first()) {
+			return rs.getString(1);
+		}
+		return null;
 	}
 	
 	@SuppressWarnings("finally")
