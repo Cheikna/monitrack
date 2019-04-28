@@ -1,21 +1,13 @@
 package com.monitrack.gui.panel;
 
-import com.monitrack.entity.SensorShop;
 
-public class CommandLine {
+public class CommandLineArc {
 	private ArchitectureBuilder arc;
-	private SensorShop sensor;
 	
-	public CommandLine(ArchitectureBuilder arc){
+	public CommandLineArc(ArchitectureBuilder arc){
 		super();
 		this.arc = arc;
 	}
-	
-	public CommandLine(SensorShop sensor){
-		super();
-		this.sensor = sensor;
-	}
-
 	/**
 	 * @return the arc
 	 */
@@ -30,22 +22,10 @@ public class CommandLine {
 		this.arc = arc;
 	}
 	
-	public SensorShop getSensor() {
-		return sensor;
-	}
-
-	public void setSensor(SensorShop sensor) {
-		this.sensor = sensor;
-	}
 	
 	public String toString()
 	{
 		return "LigneCommande [architecureBuilder=" + arc + "]";
-	}
-	
-	public String sensorToString()
-	{
-		return "LigneCommande [sensor ="+sensor+"]";
 	}
 
 	public static void main(String[] args)
@@ -59,23 +39,24 @@ public class CommandLine {
 		System.out.println("arc3 : "+arc3);
 
 		System.out.println("\n2 : création d'une ligne de commande lc de l'architectureBuilder arc1");
-		CommandLine lc1 = new CommandLine(arc1);
-		System.out.println("lc1 : "+lc1);
+		CommandLineArc lc1 = new CommandLineArc(arc1);
+		System.out.println("lc1 : "+lc1.toString());
 		System.out.println("Nom de l'arc1 = "+arc1.getNom());
 		System.out.println("Superficie de l'arc1 = "+arc1.getArea());
 
 		System.out.println("\n3 : lc représente maintenant une ligne de l'architectBuilder arc2");
-		CommandLine lc2 = new CommandLine(arc2);
-		System.out.println("lc2 : "+lc2);
+		CommandLineArc lc2 = new CommandLineArc(arc2);
+		System.out.println("lc2 : "+lc2.toString());
 		System.out.println("Nom de l'arc2 = "+arc2.getNom());
 		System.out.println("Superficie de l'arc2 = "+arc2.getArea());
 
 		System.out.println("\n4 : lc représente maintenant une ligne darc arc3");
-		CommandLine lc3 = new CommandLine(arc3);
-		System.out.println("lc3 : "+lc3);
+		CommandLineArc lc3 = new CommandLineArc(arc3);
+		System.out.println("lc3 : "+lc3.toString());
 		System.out.println("Nom de l'arc3 = "+arc3.getNom());
 		System.out.println("Superficie de l'arc3 = "+arc3.getArea());
 	}
+
 
 
 

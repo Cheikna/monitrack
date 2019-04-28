@@ -2,69 +2,52 @@ package com.monitrack.gui.panel;
 
 import java.util.ArrayList;
 
-import com.monitrack.entity.SensorShop;
 
-public class Basket {
-	ArrayList<CommandLine> alCommandLine;
 
-	public Basket()
+public class BasketArc {
+	ArrayList<CommandLineArc> alCommandLineArc;
+
+	public BasketArc()
 	{
 		super();
-		this.alCommandLine = new ArrayList<CommandLine>();
+		this.alCommandLineArc = new ArrayList<CommandLineArc>();
 	}
 
 	public String toString()
 	{
-		if(this.alCommandLine.isEmpty())
+		if(this.alCommandLineArc.isEmpty())
 		{
 			return "Panier vide";
 		}
 		String résultat = "";
-		for (CommandLine commandLine : alCommandLine)
+		for (CommandLineArc commandLine : alCommandLineArc)
 		{
-			résultat += commandLine.getArc().getNom()+"\n";
+			résultat += commandLine+"\n";
 		}
 		return résultat;
 	}
 
 	public void addArc(ArchitectureBuilder arc)
 	{
-		CommandLine cl = new CommandLine(arc);
-		this.alCommandLine.add(cl);
+		CommandLineArc cl = new CommandLineArc(arc);
+		this.alCommandLineArc.add(cl);
 	}
 	
 	public void deleteArc(ArchitectureBuilder arc)
 	{
-		for (CommandLine commandLine : alCommandLine)
+		for (CommandLineArc commandLine : alCommandLineArc)
 		{
 			if(arc == commandLine.getArc())
 			{
-				this.alCommandLine.remove(commandLine);
+				this.alCommandLineArc.remove(commandLine);
 				return;
 			}
 		}
 	}
-	
-	public void addSensor(SensorShop sensor)
-	{
-		CommandLine lc = new CommandLine(sensor);
-		this.alCommandLine.add(lc);
-	}
-	
-	public void deleteArc(SensorShop sensor)
-	{
-		for (CommandLine commandLine : alCommandLine)
-		{
-			if(sensor == commandLine.getSensor())
-			{
-				this.alCommandLine.remove(commandLine);
-				return;
-			}
-		}
-	}
+
 	public void clearBasket()
 	{
-		this.alCommandLine.clear();
+		this.alCommandLineArc.clear();
 	}
 	
 	public static void main(String[] args)
@@ -79,7 +62,7 @@ public class Basket {
 		System.out.println();
 
 		System.out.println("2 : création d'un panier");
-		Basket panier = new Basket();
+		BasketArc panier = new BasketArc();
 		System.out.println(panier);
 
 		System.out.println("3 : ajout au panier de arc1, arc2, arc3");
