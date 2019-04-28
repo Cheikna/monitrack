@@ -32,35 +32,30 @@ public class SensorConfigurationDAO extends DAO<SensorConfiguration> {
 			if (connection != null) {
 				try {
 					PreparedStatement preparedStatement = connection
-							.prepareStatement("INSERT INTO " + tableName + " (TYPE, ACTIVITY, ID_LOCATION, IP_ADDRESS, MAC_ADDRESS, "
-									+ "SERIAL_NUMBER, HARDWARE_VERSION, SOFTWARE_VERSION, "
+							.prepareStatement("INSERT INTO " + tableName + " (ID_SENSOR, ACTIVITY, ID_LOCATION, IP_ADDRESS, "
 									+ " START_ACTIVITY_TIME, END_ACTIVITY_TIME, CHECK_FREQUENCY, "
 									+ "MEASUREMENT_UNIT, CURRENT_THRESHOLD, MIN_DANGER_THRESHOLD,"
 									+ "MAX_DANGER_THRESHOLD, POSITION_X, POSITION_Y) "
-									+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ", Statement.RETURN_GENERATED_KEYS);
-					preparedStatement.setString(1, obj.getSensorType().toString());
+									+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?) ", Statement.RETURN_GENERATED_KEYS);
+					preparedStatement.setInt(1, obj.getSensorId());
 					preparedStatement.setString(2, obj.getSensorActivity().toString());
 					preparedStatement.setInt(3, obj.getLocationId());
 					preparedStatement.setString(4, obj.getIpAddress());
-					preparedStatement.setString(5, obj.getMacAddress());
-					preparedStatement.setString(6, obj.getSerialNumber());
-					preparedStatement.setFloat(7, obj.getHardwareVersion());
-					preparedStatement.setFloat(8, obj.getSoftwareVersion());
-					preparedStatement.setTime(9, obj.getBeginTime());
-					preparedStatement.setTime(10, obj.getEndTime());
-					preparedStatement.setFloat(11, obj.getCheckFrequency());
-					preparedStatement.setString(12, obj.getMeasurementUnit());
-					preparedStatement.setFloat(13, obj.getCurrentThreshold());
-					preparedStatement.setFloat(14, obj.getMinDangerThreshold());
-					preparedStatement.setFloat(15, obj.getMaxDangerThreshold());
-					preparedStatement.setFloat(16, obj.getPositionX());
-					preparedStatement.setFloat(17, obj.getPositionY());
+					preparedStatement.setTime(5, obj.getBeginTime());
+					preparedStatement.setTime(6, obj.getEndTime());
+					preparedStatement.setFloat(7, obj.getCheckFrequency());
+					preparedStatement.setString(8, obj.getMeasurementUnit());
+					preparedStatement.setFloat(9, obj.getCurrentThreshold());
+					preparedStatement.setFloat(10, obj.getMinDangerThreshold());
+					preparedStatement.setFloat(11, obj.getMaxDangerThreshold());
+					preparedStatement.setFloat(12, obj.getPositionX());
+					preparedStatement.setFloat(13, obj.getPositionY());
 					preparedStatement.execute();
 					ResultSet rs = preparedStatement.getGeneratedKeys();
 					if (rs.next()) {
 						int id = rs.getInt(1);
-						obj.setId(id);
-						obj.setMacAddress(retrieveMacAddress(id));
+						obj.setSensorConfigurationId(id);
+						//obj.setMacAddress(retrieveMacAddress(id));
 					}
 				} catch (Exception e) {
 					log.error("An error occurred during the creation of a sensor : " + e.getMessage());
@@ -82,8 +77,8 @@ public class SensorConfigurationDAO extends DAO<SensorConfiguration> {
 		synchronized (lock) {
 			try {
 				PreparedStatement preparedStatement = null;
-				preparedStatement = connection.prepareStatement("DELETE FROM " + tableName + " where ID_SENSOR=(?)");
-				preparedStatement.setInt(1, obj.getId());					
+				preparedStatement = connection.prepareStatement("DELETE FROM " + tableName + " where ID_SENSOR_CONFIGURATION=(?)");
+				preparedStatement.setInt(1, obj.getSensorConfigurationId());					
 				preparedStatement.execute();
 			} catch (Exception e) {
 				log.error("An error occurred during the delete of a location : " + e.getMessage());
@@ -99,7 +94,7 @@ public class SensorConfigurationDAO extends DAO<SensorConfiguration> {
 		return location;
 	}
 	
-	private String retrieveMacAddress(int sensorId) throws SQLException {
+	/*private String retrieveMacAddress(int sensorId) throws SQLException {
 		PreparedStatement preparedStatement = connection.prepareStatement("SELECT MAC_ADDRESS FROM SENSOR WHERE ID_SENSOR = ? ");
 		preparedStatement.setInt(1, sensorId);
 		ResultSet rs = preparedStatement.executeQuery();
@@ -107,7 +102,7 @@ public class SensorConfigurationDAO extends DAO<SensorConfiguration> {
 			return rs.getString(1);
 		}
 		return null;
-	}
+	}*/
 	
 	@SuppressWarnings("finally")
 	@Override
