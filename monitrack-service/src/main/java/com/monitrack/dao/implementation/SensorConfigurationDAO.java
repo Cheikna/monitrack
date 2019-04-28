@@ -114,7 +114,7 @@ public class SensorConfigurationDAO extends DAO<SensorConfiguration> {
 	protected SensorConfiguration getSingleValueFromResultSet(ResultSet rs) {
 		SensorConfiguration sensorConfiguration = null;
 		try {
-			sensorConfiguration = new SensorConfiguration(rs.getInt("ID_SENSOR"), SensorActivity.getSensorActivity(rs.getString("ACTIVITY")), SensorType.getSensorType(rs.getString("TYPE")),
+			sensorConfiguration = new SensorConfiguration(rs.getInt("ID_SENSOR_CONFIGURATION"), rs.getInt("ID_SENSOR"), SensorActivity.getSensorActivity(rs.getString("ACTIVITY")), SensorType.getSensorType(rs.getString("TYPE")),
 					rs.getInt("ID_LOCATION"), rs.getString("IP_ADDRESS"),
 					rs.getString("MAC_ADDRESS"),rs.getString("SERIAL_NUMBER"), rs.getFloat("HARDWARE_VERSION"),rs.getFloat("SOFTWARE_VERSION"),
 					rs.getTimestamp("CREATION_DATE"), rs.getTimestamp("LAST_MESSAGE_DATE"), rs.getTimestamp("LAST_CONFIGURATION_DATE"),

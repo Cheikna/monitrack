@@ -10,16 +10,18 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.monitrack.dao.implementation.SensorConfigurationDAO;
+
 public abstract class DAO<T> {
 	
 	private static final Logger log = LoggerFactory.getLogger(DAO.class);
-	protected String tableName;
+	protected static String tableName;
 	protected final Object lock = new Object();
 	protected Connection connection;	
 
 	public DAO(Connection connection, String tableName) {
 		this.connection = connection;
-		this.tableName = tableName;
+		DAO.tableName = tableName;
 	}
 	
 	/**
@@ -51,7 +53,13 @@ public abstract class DAO<T> {
 		List<T> elements = new ArrayList<T>();
 		if (connection != null) {
 			try {
-				String sql = "SELECT * FROM " + tableName + getRequestFilters(fields, values);
+				String sql = "SELECT * FROM " + tableName;
+				if(tableName.equalsIgnoreCase(SensorConfigurationDAO.tableName))
+				{
+					sql = " table1 inner join SENSOR table2 on table1.ID_SENSOR = table2.ID_SENSOR";
+				}
+				sql += getRequestFilters(fields, values);
+				
 				PreparedStatement preparedStatement = connection.prepareStatement(sql);
 				ResultSet rs = preparedStatement.executeQuery();
 				T element;
@@ -112,5 +120,9 @@ public abstract class DAO<T> {
 	}
 	
 	protected abstract T getSingleValueFromResultSet(ResultSet rs);
+
+	public String getTableName() {
+		return tableName;
+	}
 
 }
