@@ -25,8 +25,8 @@ public class SensorsPage extends JPanel {
 				1.0f, 2.0f, null, null, null, null, null, 0f, "Decibel", 4.0f, 5.0f, 6.23f, 4.94f);
 		Sensor sensor2 = new Sensor(9, SensorActivity.ENABLED, SensorType.SMOKE, 1, "192.168.20.15", "dsfsd", "dsfsdf", 
 				1.0f, 2.0f, null, null, null, null, null, 0f, "Decibel", 4.0f, 5.0f, 6.23f, 4.94f);
-		centerPanel.add(new SensorInfoPanel(sensor));
-		centerPanel.add(new SensorInfoPanel(sensor2));
+		/*centerPanel.add(new SensorInfoPanel(sensor));
+		centerPanel.add(new SensorInfoPanel(sensor2));*/
 		
 		add(northPanel, BorderLayout.NORTH);
 		add(centerPanel, BorderLayout.CENTER);
