@@ -89,7 +89,7 @@ public class DataPool {
 	public synchronized void processMessage(Message receivedMessage) {
 		try {
 			log.info("Processing sensor message");
-			currentTime = new Timestamp(System.currentTimeMillis());
+			currentTime = Util.getCurrentTimestamp();
 			boolean isSensorWithCorrectIntervalInCache = false;
 			SensorConfiguration sensorFromCache = null;
 			SensorState sensorStateFromCache = null;
@@ -98,7 +98,7 @@ public class DataPool {
 			SensorState sensorStateFromMessage = receivedMessage.getSensorState();
 			
 			log.info(sensorFromMessage.getStateInfo());
-			int sensorId = sensorFromMessage.getId();
+			int sensorId = sensorFromMessage.getSensorConfigurationId();
 			
 			for (Map.Entry<SensorConfiguration, SensorState> mapEntry : dataPoolCache.entrySet()) {
 				if (mapEntry.getKey().equals(sensorFromMessage)) {
@@ -107,6 +107,7 @@ public class DataPool {
 					sensorStateFromCache = mapEntry.getValue();
 					Long cacheTime = sensorFromCache.getLastMessageDate().getTime();
 					
+					//Case : A reparation has been made or the agents have been called
 					if(sensorStateFromMessage == SensorState.NORMAL && sensorStateFromCache == SensorState.DANGER) {
 						SensorConfigurationHistory hist = new SensorConfigurationHistory();
 					}					
@@ -126,7 +127,6 @@ public class DataPool {
 								
 						if (threshold >= maxThreshold || threshold < minThreshold) {
 							sensorStateFromMessage = SensorState.DANGER;
-							//FIXME Save into the database because it is a danger
 						}						
 						else if(threshold < sensorFromCache.getCurrentThreshold()) {
 							//FIXME Save in the history
@@ -142,10 +142,9 @@ public class DataPool {
 				}
 			}
 			if (!isSensorWithCorrectIntervalInCache) {
-				log.info("The sensor n°" + sensorId
-						+ " has not been found in the cache (or was old). It will be added (or updated) to it !");
-				sensorFromMessage.setLastMessageDate();
+				log.info("The sensor n°" + sensorId + " has not been found in the cache (or was old). It will be added (or updated) to it !");				
 			}
+			sensorFromMessage.setLastMessageDate();
 			
 			//Inserts or updates the value in the cache
 			dataPoolCache.put(sensorFromMessage, sensorStateFromMessage);
@@ -189,10 +188,10 @@ public class DataPool {
 			for(SensorConfiguration sensorConfiguration : activeSensors) {
 				for(Map.Entry<SensorConfiguration, SensorState> mapEntry : dataPoolCache.entrySet()) {
 					SensorConfiguration cacheSensor = mapEntry.getKey();
-					if(sensorConfiguration.getId() == cacheSensor.getId())
-						System.out.println("The sensor with the id n°" + sensorConfiguration.getId() + " is in the cache");
+					if(sensorConfiguration.getSensorConfigurationId() == cacheSensor.getSensorConfigurationId())
+						System.out.println("The sensor with the id n°" + sensorConfiguration.getSensorConfigurationId() + " is in the cache");
 					else
-						System.err.println("The sensor with the id n°" + sensorConfiguration.getId() + " is not in the cache");	
+						System.err.println("The sensor with the id n°" + sensorConfiguration.getSensorConfigurationId() + " is not in the cache");	
 
 				}
 			}
