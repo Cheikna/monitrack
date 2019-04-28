@@ -2,6 +2,7 @@ package com.monitrack.entity;
 
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ManualTriggerHistory {
@@ -17,17 +18,17 @@ public class ManualTriggerHistory {
 	@JsonProperty("triggering_date")
 	private Timestamp triggeringDate;
 	@JsonProperty("access_granted")
-	private boolean accessGranted;
+	private boolean isAccessGranted;
 	
 	
 	public ManualTriggerHistory(int historyId, int sensorId, int locationId, String codeEntered,
-			Timestamp triggeringDate, boolean accessGranted) {
+			Timestamp triggeringDate, boolean isAccessGranted) {
 		this.historyId = historyId;
 		this.sensorId = sensorId;
 		this.locationId = locationId;
 		this.codeEntered = codeEntered;
 		this.triggeringDate = triggeringDate;
-		this.accessGranted = accessGranted;
+		this.isAccessGranted = isAccessGranted;
 	}
 	
 	public ManualTriggerHistory(int historyId, int sensorId, int locationId, String codeEntered,
@@ -78,11 +79,16 @@ public class ManualTriggerHistory {
 	}
 
 	public boolean isAccessGranted() {
-		return accessGranted;
+		return isAccessGranted;
 	}
 
-	public void setAccessGranted(boolean accessGranted) {
-		this.accessGranted = accessGranted;
+	public void setIsAccessGranted(boolean isAccessGranted) {
+		this.isAccessGranted = isAccessGranted;
+	}
+	
+	@JsonIgnore
+	public int accessGranted() {
+		return (isAccessGranted) ? 1 : 0;
 	}
 	
 }

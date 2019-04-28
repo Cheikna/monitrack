@@ -13,7 +13,7 @@ public class MessageTest {
 
 	@Test
 	public void test() {
-		SensorConfiguration sensorConfiguration = new SensorConfiguration(0, SensorActivity.DISABLED, SensorType.FLOW, 1, "192.168.20.15", "dsfsd", "dsfsdf", 
+		SensorConfiguration sensorConfiguration = new SensorConfiguration(0, 0, SensorActivity.DISABLED, SensorType.FLOW, 1, "192.168.20.15", "dsfsd", "dsfsdf", 
 				1.0f, 2.0f, null, null, null, null, null, 0f, "Decibel", 4.0f,0.0f, 5.0f, 6.23f, 4.94f);
 		Message message = new Message(SensorState.DANGER, sensorConfiguration);
 		String serializedObject = JsonUtil.serializeObject(message, message.getClass(), "");
