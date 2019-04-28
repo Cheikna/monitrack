@@ -75,7 +75,7 @@ public class SensorInfoPanel extends JPanel {
 	public void setNorthPanel() {
 		northPanel = new JPanel();
 		northPanel.setLayout(new BoxLayout(northPanel, BoxLayout.Y_AXIS));
-		JLabel sensorIdLabel = new JLabel("Capteur n°" + sensorConfiguration.getId());
+		JLabel sensorIdLabel = new JLabel("Capteur n°" + sensorConfiguration.getSensorConfigurationId());
 		sensorIdLabel.setFont(new Font("Arial", Font.BOLD, 18));
 		sensorIdLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		
