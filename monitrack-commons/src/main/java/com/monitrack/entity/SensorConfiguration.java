@@ -9,7 +9,7 @@ import com.monitrack.enumeration.SensorActivity;
 import com.monitrack.enumeration.SensorType;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Sensor {
+public class SensorConfiguration {
 
 	@JsonProperty("sensor_id")
 	private Integer id;
@@ -57,11 +57,11 @@ public class Sensor {
 	@JsonProperty("location")
 	private Location location;
 
-	public Sensor() {
+	public SensorConfiguration() {
 		//Empty constructor
 	}
 
-	public Sensor(Integer id, SensorActivity sensorActivity, SensorType sensorType, Integer locationId,
+	public SensorConfiguration(Integer id, SensorActivity sensorActivity, SensorType sensorType, Integer locationId,
 			String ipAddress, String macAddress, String serialNumber, Float hardwareVersion, Float softwareVersion,
 			Timestamp creationDate, Timestamp lastMessageDate, Timestamp lastConfigurationDate, Time beginTime,
 			Time endTime, Float checkFrequency, String measurementUnit, Float currentThreshold, Float minDangerThreshold,
@@ -301,7 +301,7 @@ public class Sensor {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Sensor other = (Sensor) obj;
+		SensorConfiguration other = (SensorConfiguration) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

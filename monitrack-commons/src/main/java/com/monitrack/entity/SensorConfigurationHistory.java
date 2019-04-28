@@ -3,7 +3,7 @@ package com.monitrack.entity;
 import java.sql.Timestamp;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class SensorHistory {
+public class SensorConfigurationHistory {
 	
 	@JsonProperty("history_id")
 	private int idHistory;
@@ -17,23 +17,26 @@ public class SensorHistory {
 	private Float maxDangerThreshlod;
 	@JsonProperty("measurement_date")
 	private Timestamp date;
+	@JsonProperty("end_alert_date")
+	private Timestamp endAlertDate;
 	@JsonProperty("description")
 	private String description;
 	@JsonProperty("actions_done")
 	private String actionsDone;
 	
-	public SensorHistory() {
+	public SensorConfigurationHistory() {
 	}
 
-	public SensorHistory(int idHistory, int idSensorSource, Float measuredThreshold,  Float minDangerThreshlod,
+	public SensorConfigurationHistory(int idHistory, int idSensorSource, Float measuredThreshold,  Float minDangerThreshlod,
 			Float maxDangerThreshlod,
-			Timestamp date, String description, String actionsDone) {
+			Timestamp date, Timestamp endAlertDate, String description, String actionsDone) {
 		this.idHistory = idHistory;
 		this.idSensorSource = idSensorSource;
 		this.measuredThreshold = measuredThreshold;
 		this.minDangerThreshlod = minDangerThreshlod;
 		this.maxDangerThreshlod = maxDangerThreshlod;
 		this.date = date;
+		this.endAlertDate = endAlertDate;
 		this.description = description;
 		this.actionsDone = actionsDone;
 	}
@@ -101,5 +104,15 @@ public class SensorHistory {
 	public void setActionsDone(String actionsDone) {
 		this.actionsDone = actionsDone;
 	}
+
+	public Timestamp getEndAlertDate() {
+		return endAlertDate;
+	}
+
+	public void setEndAlertDate(Timestamp endAlertDate) {
+		this.endAlertDate = endAlertDate;
+	}
+	
+	
 
 }
