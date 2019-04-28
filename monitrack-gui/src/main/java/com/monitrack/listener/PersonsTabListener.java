@@ -19,7 +19,7 @@ import com.monitrack.gui.panel.PersonsTab;
 import com.monitrack.shared.MonitrackGuiUtil;
 import com.monitrack.util.JsonUtil;
 
-public class PersonsTabListener implements ActionListener {
+public abstract class PersonsTabListener implements ActionListener {
 
 	private static final Logger log = LoggerFactory.getLogger(PersonsTabListener.class);
 	private PersonsTab personsTab;
@@ -27,7 +27,7 @@ public class PersonsTabListener implements ActionListener {
 	private List<String> fields;
 	private List<String> values;	
 	private String personText = "";
-
+/*
 	public PersonsTabListener(PersonsTab personsTab) {
 		this.personsTab = personsTab;
 		fields = new ArrayList<String>();
@@ -76,14 +76,14 @@ public class PersonsTabListener implements ActionListener {
 				JButton clickedButton = (JButton)e.getSource();
 				if(clickedButton == personsTab.getCreateButton())
 				{
-					String value = personsTab.getNewNameTextField().getText().trim();
-					if(value.length() <= 0)
+					String name = personsTab.getNewNameTextField().getText().trim();
+					if(name.length() <= 0)
 					{
 						JOptionPane.showMessageDialog(personsTab, "Le nom ne peut pas être vide", "Nom incorect", JOptionPane.ERROR_MESSAGE);
 					}
 					else
 					{
-						Person newPerson = new Person(value);
+						Person newPerson = new Person(name, userName, password, );
 						String serializedObject = JsonUtil.serializeObject(newPerson, Person.class, "");
 						String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, Person.class, serializedObject, null, null);
 						String response = MonitrackGuiUtil.sendRequest(jsonRequest);
@@ -242,5 +242,5 @@ public class PersonsTabListener implements ActionListener {
 		}
 		return true;
 	}
-
+*/
 }

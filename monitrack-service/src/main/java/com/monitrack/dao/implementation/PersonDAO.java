@@ -5,21 +5,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.monitrack.dao.abstracts.DAO;
 import com.monitrack.entity.Person;
+import com.monitrack.enumeration.UserProfile;
 
 public class PersonDAO extends DAO<Person>{
 
 	private static final Logger log = LoggerFactory.getLogger(PersonDAO.class);
-	private final Object lock = new Object();
 
 	public PersonDAO(Connection connection) 
 	{
-		super(connection);
+		super(connection, "PERSON");
 	}
 
 	public Person create(Person person) {
@@ -88,37 +87,12 @@ public class PersonDAO extends DAO<Person>{
 
 	}
 
-	public List<Person> find(List<String> fields, List<String> values)
-	{
-		synchronized (lock) {
-			List<Person> persons = new ArrayList<Person>();
-			String sql = "SELECT * FROM PERSON" + super.getRequestFilters(fields, values);
-			if (connection != null) {
-				try {
-					PreparedStatement preparedStatement = connection.prepareStatement(sql);
-					ResultSet rs = preparedStatement.executeQuery();
-					Person person;
-					while (rs.next()) {
-						person = getPersonFromResultSet(rs);
-						if (person != null) {
-							persons.add(person);
-						}
-					}
-				} catch (Exception e) {
-					log.error("An error occurred when finding the persons : " + e.getMessage());
-					e.printStackTrace();
-				}
-			}
-			return persons;
-		}
-	}
-
 	@SuppressWarnings("finally")
-	private Person getPersonFromResultSet(ResultSet rs)
-	{
+	@Override
+	protected Person getSingleValueFromResultSet(ResultSet rs) {
 		Person person = null;
 		try {
-			person = new Person(rs.getInt("id"), rs.getString("name"), rs.getTimestamp("creation_date"));
+			person = new Person(rs.getInt("id"),rs.getString("user_name"),rs.getString("password"),rs.getString("name"), UserProfile.getUserProfile("userProfile"), rs.getTimestamp("creation_date"));
 		} catch (SQLException e) {
 			log.error("An error occurred when getting one Person from the resultSet : " + e.getMessage());
 		}

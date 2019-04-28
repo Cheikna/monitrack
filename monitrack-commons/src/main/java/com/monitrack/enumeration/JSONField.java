@@ -20,6 +20,8 @@ public enum JSONField {
 	
 	SERIALIZED_OBJECT("serialized_object"),
 	
+	REQUEST_SENDER("request_sender"),
+	
 	//The message fields will allow us to know if the serialization or deserialization happened without failures
 	ERROR_MESSAGE("error_message");
 	

@@ -1,14 +1,11 @@
 package com.monitrack.enumeration;
-/**
- * 
- * @author Cheikna
- *
- */
+
 public enum SensorState {
 	
-	ENABLED,
+	NORMAL,
 	
-	DISABLED,
+	WARNING,
 	
-	NOT_CONFIGURED;
+	DANGER;
+
 }

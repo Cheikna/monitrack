@@ -75,7 +75,7 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 		{
 			Connection connection = connections.lastElement();
 	        connections.removeElement(connection);
-			log.info("A connection is being retrieved from the connection pool.");
+			//log.info("A connection is being retrieved from the connection pool.");
 			displayConnectionPoolState();
 	        return connection; 
 		}
@@ -89,7 +89,7 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 		if(connection != null)
 		{
 			connections.addElement(connection);	
-			log.info("A connection is being added to the connection pool.");			
+			//log.info("A connection is being added to the connection pool.");			
 		}
 		displayConnectionPoolState();
 		
@@ -131,7 +131,14 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 		return connections.size();
 	}
 	
+	
 	private void displayConnectionPoolState()
+	{
+		String state = "Connection(s) in the pool : " + getRemaningNumberOfConnections() + "/" + numberOfConnectionsCreated;
+		log.info(state);
+	}
+	
+	/*private void displayConnectionPoolState()
 	{
 		String legend  = FREE_CREATED_ASCII;
 		String numbers = convertIntegerToAsciiCharacter(getRemaningNumberOfConnections());
@@ -145,7 +152,7 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 			return number.toString() + " / " + numberOfConnectionsCreated + "\n";
 		return asciiCharacters[number];
 		
-	}
+	}*/
 	
 
 }

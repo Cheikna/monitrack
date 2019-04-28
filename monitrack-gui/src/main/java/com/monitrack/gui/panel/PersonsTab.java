@@ -65,7 +65,7 @@ public class PersonsTab extends JPanel {
 	public PersonsTab() {
 		super(new BorderLayout());
 
-		listener = new PersonsTabListener(this);
+		//listener = new PersonsTabListener(this);
 		northPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		textArea = new JTextArea();	
 

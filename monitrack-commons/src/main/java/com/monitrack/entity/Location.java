@@ -16,7 +16,7 @@ public class Location {
 	private String wing;
 	// The size of the room
 	private int area;
-	private List<Sensor> sensors;
+	private List<Sensor> sensorConfigurations;
 	
 	public Location(String nameLocation, String center, int floor, String wing, int area) {
 		this(0, nameLocation, center, new Timestamp(System.currentTimeMillis()), 0, floor, wing, area);
@@ -186,15 +186,15 @@ public class Location {
 	 */
 	@JsonGetter("sensors")
 	public List<Sensor> getSensors() {
-		return sensors;
+		return sensorConfigurations;
 	}
 
 	/**
-	 * @param sensors the sensors to set
+	 * @param sensorConfigurations the sensors to set
 	 */
 	@JsonSetter("sensors")
-	public void setSensors(List<Sensor> sensors) {
-		this.sensors = sensors;
+	public void setSensors(List<Sensor> sensorConfigurations) {
+		this.sensorConfigurations = sensorConfigurations;
 	}
 
 	
