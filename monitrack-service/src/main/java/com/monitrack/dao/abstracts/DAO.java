@@ -13,11 +13,13 @@ import org.slf4j.LoggerFactory;
 public abstract class DAO<T> {
 	
 	private static final Logger log = LoggerFactory.getLogger(DAO.class);
+	protected String tableName;
 	protected final Object lock = new Object();
 	protected Connection connection;	
 
-	public DAO(Connection connection) {
+	public DAO(Connection connection, String tableName) {
 		this.connection = connection;
+		this.tableName = tableName;
 	}
 	
 	/**
@@ -45,7 +47,7 @@ public abstract class DAO<T> {
 	 * @param values : the values required for the fields
 	 * @return
 	 */
-	public synchronized List<T> find(List<String> fields, List<String> values, String tableName){
+	public synchronized List<T> find(List<String> fields, List<String> values){
 		List<T> elements = new ArrayList<T>();
 		if (connection != null) {
 			try {
@@ -66,8 +68,6 @@ public abstract class DAO<T> {
 		}
 		return elements;
 	}
-	
-	public abstract List<T> find(List<String> fields, List<String> values);
 	
 	/**
 	 * Allows to add quote if needeed in the sql request

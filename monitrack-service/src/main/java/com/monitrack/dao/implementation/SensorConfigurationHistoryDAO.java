@@ -12,13 +12,14 @@ import org.slf4j.LoggerFactory;
 
 import com.monitrack.dao.abstracts.DAO;
 import com.monitrack.entity.SensorConfigurationHistory;
+import com.monitrack.enumeration.SensorAction;
 
 public class SensorConfigurationHistoryDAO extends DAO<SensorConfigurationHistory> {
 	
 	private static final Logger log = LoggerFactory.getLogger(SensorConfigurationHistoryDAO.class);
 
 	public SensorConfigurationHistoryDAO(Connection connection) {
-		super(connection);
+		super(connection, "SENSOR_CONFIGURATION_HISTORY");
 	}
 
 	@Override
@@ -28,7 +29,7 @@ public class SensorConfigurationHistoryDAO extends DAO<SensorConfigurationHistor
 			if (connection != null) {
 				try {
 					PreparedStatement preparedStatement = connection
-							.prepareStatement("INSERT INTO SENSOR_HISTORY (ID_SENSOR, MEASURED_THRESHOLD, MIN_DANGER_THRESHOLD, MAX_DANGER_THRESHOLD, MEASUREMENT_DATE, END_ALERT_DATE, DESCRIPTION, ACTIONS_DONE)"
+							.prepareStatement("INSERT INTO "+ tableName +" (ID_SENSOR, MEASURED_THRESHOLD, MIN_DANGER_THRESHOLD, MAX_DANGER_THRESHOLD, MEASUREMENT_DATE, END_ALERT_DATE, DESCRIPTION, ACTION_DONE)"
 									+ " VALUES (? , ? , ? , ? , ? , ? , ? , ?)", Statement.RETURN_GENERATED_KEYS);
 					preparedStatement.setInt(1, obj.getIdSensorSource());
 					preparedStatement.setFloat(2, obj.getMeasuredThreshold());
@@ -37,7 +38,7 @@ public class SensorConfigurationHistoryDAO extends DAO<SensorConfigurationHistor
 					preparedStatement.setTimestamp(5, obj.getDate());
 					preparedStatement.setTimestamp(6, obj.getEndAlertDate());
 					preparedStatement.setString(7, obj.getDescription());
-					preparedStatement.setString(8, obj.getActionsDone());
+					preparedStatement.setString(8, obj.getActionDone().name());
 					preparedStatement.execute();
 					ResultSet rs = preparedStatement.getGeneratedKeys();
 					int lastCreatedId = 0;
@@ -70,7 +71,7 @@ public class SensorConfigurationHistoryDAO extends DAO<SensorConfigurationHistor
 			if (connection != null) {
 				try {
 					PreparedStatement preparedStatement = null;
-					preparedStatement = connection.prepareStatement("DELETE FROM SENSOR_HISTORY where ID_HISTORY=(?)");
+					preparedStatement = connection.prepareStatement("DELETE FROM "+ tableName +" where ID_HISTORY=(?)");
 					preparedStatement.setInt(1, obj.getIdHistory());					
 					preparedStatement.execute();
 				} catch (Exception e) {
@@ -82,18 +83,13 @@ public class SensorConfigurationHistoryDAO extends DAO<SensorConfigurationHistor
 		
 	}
 
-	@Override
-	public List<SensorConfigurationHistory> find(List<String> fields, List<String> values) {
-		return super.find(fields, values, "SENSOR_HISTORY");
-	}
-
 	@SuppressWarnings("finally")
 	@Override
 	protected SensorConfigurationHistory getSingleValueFromResultSet(ResultSet rs) {
 		SensorConfigurationHistory sensorConfigurationHistory = null;
 		try {
 			sensorConfigurationHistory = new SensorConfigurationHistory(rs.getInt("ID_HISTORY"), rs.getInt("ID_SENSOR"), rs.getFloat("MEASURED_THRESHOLD"), rs.getFloat("MIN_DANGER_THRESHOLD"),rs.getFloat("MAX_DANGER_THRESHOLD"),
-					rs.getTimestamp("MEASUREMENT_DATE"), rs.getTimestamp("END_ALERT_DATE"), rs.getString("DESCRIPTION"), rs.getString("ACTIONS_DONE"));
+					rs.getTimestamp("MEASUREMENT_DATE"), rs.getTimestamp("END_ALERT_DATE"), rs.getString("DESCRIPTION"), SensorAction.valueOf(rs.getString("ACTION_DONE")));
 
 
 		} catch (SQLException e) {

@@ -22,7 +22,7 @@ public class SensorConfigurationDAO extends DAO<SensorConfiguration> {
 	private static final Logger log = LoggerFactory.getLogger(SensorConfigurationDAO.class);
 
 	public SensorConfigurationDAO(Connection connection) {
-		super(connection);
+		super(connection, "SENSOR_CONFIGURATION_HISTORY");
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class SensorConfigurationDAO extends DAO<SensorConfiguration> {
 			if (connection != null) {
 				try {
 					PreparedStatement preparedStatement = connection
-							.prepareStatement("INSERT INTO SENSOR (TYPE, ACTIVITY, ID_LOCATION, IP_ADDRESS, MAC_ADDRESS, "
+							.prepareStatement("INSERT INTO " + tableName + " (TYPE, ACTIVITY, ID_LOCATION, IP_ADDRESS, MAC_ADDRESS, "
 									+ "SERIAL_NUMBER, HARDWARE_VERSION, SOFTWARE_VERSION, "
 									+ " START_ACTIVITY_TIME, END_ACTIVITY_TIME, CHECK_FREQUENCY, "
 									+ "MEASUREMENT_UNIT, CURRENT_THRESHOLD, MIN_DANGER_THRESHOLD,"
@@ -82,7 +82,7 @@ public class SensorConfigurationDAO extends DAO<SensorConfiguration> {
 		synchronized (lock) {
 			try {
 				PreparedStatement preparedStatement = null;
-				preparedStatement = connection.prepareStatement("DELETE FROM SENSOR where ID_SENSOR=(?)");
+				preparedStatement = connection.prepareStatement("DELETE FROM " + tableName + " where ID_SENSOR=(?)");
 				preparedStatement.setInt(1, obj.getId());					
 				preparedStatement.execute();
 			} catch (Exception e) {
@@ -93,11 +93,6 @@ public class SensorConfigurationDAO extends DAO<SensorConfiguration> {
 
 	}
 
-	public List<SensorConfiguration> find(List<String> fields, List<String> values) {
-		return super.find(fields, values, "SENSOR");
-	}
-
-	
 	private Location getSensorLocation(Integer sensorLocationId) {
 		LocationDAO locationDAO = new LocationDAO(connection);
 		Location location = locationDAO.find(Arrays.asList("ID_LOCATION"), Arrays.asList(sensorLocationId.toString())).get(0);

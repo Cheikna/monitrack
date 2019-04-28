@@ -18,7 +18,7 @@ public class PersonDAO extends DAO<Person>{
 
 	public PersonDAO(Connection connection) 
 	{
-		super(connection);
+		super(connection, "PERSON");
 	}
 
 	public Person create(Person person) {
@@ -85,11 +85,6 @@ public class PersonDAO extends DAO<Person>{
 			}
 		}
 
-	}
-
-	public List<Person> find(List<String> fields, List<String> values)
-	{
-		return super.find(fields, values, "PERSON");
 	}
 
 	@SuppressWarnings("finally")

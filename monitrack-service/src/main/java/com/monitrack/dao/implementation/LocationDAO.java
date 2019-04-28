@@ -17,7 +17,7 @@ public class LocationDAO extends DAO<Location> {
 
 	public LocationDAO(Connection connection) 
 	{
-		super(connection);
+		super(connection, "LOCATION");
 	}
 
 	public Location create(Location location) {
@@ -95,11 +95,6 @@ public class LocationDAO extends DAO<Location> {
 			}
 		}
 
-	}
-
-	@Override
-	public List<Location> find(List<String> fields, List<String> values) {
-		return super.find(fields, values, "LOCATION");
 	}
 
 	@SuppressWarnings("finally")
