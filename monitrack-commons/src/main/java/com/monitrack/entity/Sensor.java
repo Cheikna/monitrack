@@ -37,6 +37,8 @@ public abstract class Sensor {
 		this.hardwareVersion = hardwareVersion;
 		this.softwareVersion = softwareVersion;
 	}
+	
+	public Sensor() {}
 
 	public Integer getId() {
 		return sensorId;

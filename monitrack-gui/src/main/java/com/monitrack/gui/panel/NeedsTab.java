@@ -12,6 +12,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -21,7 +22,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import com.monitrack.entity.SensorShop;
+import com.monitrack.enumeration.RequestType;
 import com.monitrack.enumeration.SensorType;
+import com.monitrack.shared.MonitrackGuiUtil;
+import com.monitrack.util.JsonUtil;
 
 public class NeedsTab extends JPanel implements ActionListener{
 
@@ -360,7 +364,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 	
 	public void dataSensors()
 	{
-		this.listSensorsAddSensor.add(new SensorShop(1,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 22.97, 70));
+		/*this.listSensorsAddSensor.add(new SensorShop(1,1,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 22.97f, 70f));
 		this.listSensorsAddSensor.add(new SensorShop(2,"Dexlan",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 66.28, 35));
 		this.listSensorsAddSensor.add(new SensorShop(3,"FIREANGEL",SensorType.SMOKE, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  15.90, 70));
 		this.listSensorsAddSensor.add(new SensorShop(4,"LifeBox",SensorType.SMOKE, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 29.90, 35));
@@ -385,14 +389,27 @@ public class NeedsTab extends JPanel implements ActionListener{
 		this.listSensorsAddSensor.add(new SensorShop(23,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
 		this.listSensorsAddSensor.add(new SensorShop(24,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
 		this.listSensorsAddSensor.add(new SensorShop(25,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop(26,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop(26,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));*/
 		
-		for (SensorShop s : this.listSensorsAddSensor)
-		{
-			this.dlmSensorsAddSensor.addElement(s.getSensorMark()+" "+s.getSensorType());
+		try {
+			String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, SensorShop.class, null, null, null,
+					null);
+			String response = MonitrackGuiUtil.sendRequest(jsonRequest);
+			// Retrieves all the sensor from the database
+			List<SensorShop> shops = (List<SensorShop>)JsonUtil.deserializeObject(response);
+			
+			for(SensorShop s : shops) {
+				listSensorsAddSensor.add(s);
+				this.dlmSensorsAddSensor.addElement(s.getSensorMark() + " " + s.getSensorType());
+			}
+			
+			/*for (SensorShop s : this.listSensorsAddSensor) {
+				this.dlmSensorsAddSensor.addElement(s.getSensorMark() + " " + s.getSensorType());
+			} */
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
-
 
 	public Integer intInside(JTextField jtf)//5
 	{

@@ -10,6 +10,8 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.monitrack.dao.implementation.SensorShopDAO;
+
 
 public abstract class DAO<T> {
 	
@@ -53,12 +55,11 @@ public abstract class DAO<T> {
 		if (connection != null) {
 			try {
 				String sql = "SELECT * FROM " + tableName;
-				/*if(tableName.equalsIgnoreCase(SensorConfigurationDAO.tableName))
+				if(tableName.equalsIgnoreCase(SensorShopDAO.tableName))
 				{
-					sql = " table1 inner join SENSOR table2 on table1.ID_SENSOR = table2.ID_SENSOR";
-				}*/
+					sql += " table1 inner join SENSOR table2 on table1.ID_SENSOR = table2.ID_SENSOR";
+				}
 				sql += getRequestFilters(fields, values);
-				
 				PreparedStatement preparedStatement = connection.prepareStatement(sql);
 				ResultSet rs = preparedStatement.executeQuery();
 				T element;
