@@ -1,23 +1,26 @@
 package com.monitrack.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.monitrack.enumeration.SensorType;
 
-public class SensorShop {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class SensorShop extends Sensor{
+	
 	private String sensorMark;
-	private String sensorType;
 	private double sensorPrice;
 	private int sensorInterviewPrice;
 
 	
-	public SensorShop(String sensorMark, String sensorType, double sensorPrice, int sensorInterviewPrice) {
-		super();
+	public SensorShop(Integer sensorId, String sensorMark, SensorType sensorType, String macAddress, String serialNumber, Float hardwareVersion,
+			Float softwareVersion, double sensorPrice, int sensorInterviewPrice) {
+		super(sensorId, sensorType, macAddress, serialNumber, hardwareVersion, softwareVersion);
 		this.sensorMark = sensorMark;
-		this.sensorType = sensorType;
 		this.sensorPrice = sensorPrice;
 		this.sensorInterviewPrice = sensorInterviewPrice;
 	}
 	
 	public String toString(){
-		return "Sensor = [Marque = "+sensorMark+" Type = "+sensorType+" Prix = "+sensorPrice+" Cout de la maintenance = "+sensorInterviewPrice+"]";
+		return "Sensor = [Marque = "+sensorMark+" Type = "+sensorType.getFrenchLabel()+"  Prix = "+sensorPrice+" Cout de la maintenance = "+sensorInterviewPrice+"]";
 	}
 
 	/**
@@ -32,20 +35,6 @@ public class SensorShop {
 	 */
 	public void setSensorMark(String sensorMark) {
 		this.sensorMark = sensorMark;
-	}
-
-	/**
-	 * @return the sensorType
-	 */
-	public String getSensorType() {
-		return sensorType;
-	}
-
-	/**
-	 * @param sensorType the sensorType to set
-	 */
-	public void setSensorType(String sensorType) {
-		this.sensorType = sensorType;
 	}
 
 	/**
@@ -78,7 +67,7 @@ public class SensorShop {
 	
 	public static void main(String[] args)
 	{
-		SensorShop s1 = new SensorShop("TOSHIBA", "Capteur d'humidité", 14.50, 160);
+		SensorShop s1 = new SensorShop(1,"TOSHIBA", SensorType.HUMIDITY, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 14.50, 160);
 		System.out.println(s1);
 	}
 

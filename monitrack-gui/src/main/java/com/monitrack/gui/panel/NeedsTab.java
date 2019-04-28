@@ -21,6 +21,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import com.monitrack.entity.SensorShop;
+import com.monitrack.enumeration.SensorType;
 
 public class NeedsTab extends JPanel implements ActionListener{
 
@@ -359,32 +360,32 @@ public class NeedsTab extends JPanel implements ActionListener{
 	
 	public void dataSensors()
 	{
-		this.listSensorsAddSensor.add(new SensorShop("Olympia","Capteur d'Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop("Dexlan","Capteur d'Entrée/Sortie", 66.28, 35));
-		this.listSensorsAddSensor.add(new SensorShop("FIREANGEL","Détecteur de fumée", 15.90, 70));
-		this.listSensorsAddSensor.add(new SensorShop("LifeBox","Détecteur de fumée", 29.90, 35));
-		this.listSensorsAddSensor.add(new SensorShop("ORNO","Détecteur de présence", 12.95, 70));
-		this.listSensorsAddSensor.add(new SensorShop("Led Kia","Détecteur de présence", 21.09, 35));
-		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop(1,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop(2,"Dexlan",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 66.28, 35));
+		this.listSensorsAddSensor.add(new SensorShop(3,"FIREANGEL",SensorType.SMOKE, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  15.90, 70));
+		this.listSensorsAddSensor.add(new SensorShop(4,"LifeBox",SensorType.SMOKE, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 29.90, 35));
+		this.listSensorsAddSensor.add(new SensorShop(5,"ORNO",SensorType.FLOW, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 12.95, 70));
+		this.listSensorsAddSensor.add(new SensorShop(6,"Led Kia",SensorType.FLOW, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 21.09, 35));
+		this.listSensorsAddSensor.add(new SensorShop(7,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop(8,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop(9,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop(10,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop(11,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop(12,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop(13,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop(14,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop(15,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop(16,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop(17,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop(18,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop(19,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop(20,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop(21,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop(22,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop(23,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop(24,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop(25,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop(26,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
 		
 		for (SensorShop s : this.listSensorsAddSensor)
 		{
