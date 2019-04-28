@@ -20,6 +20,8 @@ import java.awt.CardLayout;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import com.monitrack.entity.SensorShop;
+
 public class NeedsTab extends JPanel implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
@@ -119,7 +121,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 	private JButton jbOneLessAddSensor;
 	private JButton jbDeleteAddSensor;
 
-	private ArrayList<Sensors> 		listSensorsAddSensor	 	= new ArrayList<Sensors>();
+	private ArrayList<SensorShop> 		listSensorsAddSensor	 	= new ArrayList<SensorShop>();
 	private DefaultListModel<String>dlmSensorsAddSensor			= new DefaultListModel<String>();
 	private JList<String> 			jlSensorsNameAddSensor  	= new JList<String>(dlmSensorsAddSensor);
 
@@ -357,34 +359,34 @@ public class NeedsTab extends JPanel implements ActionListener{
 	
 	public void dataSensors()
 	{
-		this.listSensorsAddSensor.add(new Sensors("Olympia","Capteur d'Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new Sensors("Dexlan","Capteur d'Entrée/Sortie", 66.28, 35));
-		this.listSensorsAddSensor.add(new Sensors("FIREANGEL","Détecteur de fumée", 15.90, 70));
-		this.listSensorsAddSensor.add(new Sensors("LifeBox","Détecteur de fumée", 29.90, 35));
-		this.listSensorsAddSensor.add(new Sensors("ORNO","Détecteur de présence", 12.95, 70));
-		this.listSensorsAddSensor.add(new Sensors("Led Kia","Détecteur de présence", 21.09, 35));
-		this.listSensorsAddSensor.add(new Sensors("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new Sensors("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new Sensors("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new Sensors("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new Sensors("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new Sensors("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new Sensors("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new Sensors("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new Sensors("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new Sensors("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new Sensors("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new Sensors("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new Sensors("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new Sensors("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new Sensors("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new Sensors("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new Sensors("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new Sensors("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new Sensors("Olympia","Entrée/Sortie", 22.97, 70));
-		this.listSensorsAddSensor.add(new Sensors("Olympia","Entrée/Sortie", 22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop("Olympia","Capteur d'Entrée/Sortie", 22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop("Dexlan","Capteur d'Entrée/Sortie", 66.28, 35));
+		this.listSensorsAddSensor.add(new SensorShop("FIREANGEL","Détecteur de fumée", 15.90, 70));
+		this.listSensorsAddSensor.add(new SensorShop("LifeBox","Détecteur de fumée", 29.90, 35));
+		this.listSensorsAddSensor.add(new SensorShop("ORNO","Détecteur de présence", 12.95, 70));
+		this.listSensorsAddSensor.add(new SensorShop("Led Kia","Détecteur de présence", 21.09, 35));
+		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
+		this.listSensorsAddSensor.add(new SensorShop("Olympia","Entrée/Sortie", 22.97, 70));
 		
-		for (Sensors s : this.listSensorsAddSensor)
+		for (SensorShop s : this.listSensorsAddSensor)
 		{
 			this.dlmSensorsAddSensor.addElement(s.getSensorMark()+" "+s.getSensorType());
 		}

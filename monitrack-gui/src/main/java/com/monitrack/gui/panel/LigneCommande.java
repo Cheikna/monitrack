@@ -1,16 +1,17 @@
 package com.monitrack.gui.panel;
 
+import com.monitrack.entity.SensorShop;
 
 public class LigneCommande {
 	private ArchitectureBuilder arc;
-	private Sensors sensor;
+	private SensorShop sensor;
 	
 	public LigneCommande(ArchitectureBuilder arc){
 		super();
 		this.arc = arc;
 	}
 	
-	public LigneCommande(Sensors sensor){
+	public LigneCommande(SensorShop sensor){
 		super();
 		this.sensor = sensor;
 	}
@@ -29,11 +30,11 @@ public class LigneCommande {
 		this.arc = arc;
 	}
 	
-	public Sensors getSensor() {
+	public SensorShop getSensor() {
 		return sensor;
 	}
 
-	public void setSensor(Sensors sensor) {
+	public void setSensor(SensorShop sensor) {
 		this.sensor = sensor;
 	}
 	
