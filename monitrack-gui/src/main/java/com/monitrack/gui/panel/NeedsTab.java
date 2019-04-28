@@ -66,7 +66,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 	//BASKET SCROLL NEWHOME
 	JScrollPane jspBasketScrollNewHome;
 	//BASKET LIST AND INSTANCIATION FOR NEW HOME
-	private Basket 					basketNewHome					= new Basket();
+	private BasketArc 					basketNewHome					= new BasketArc();
 	private DefaultListModel<String>dlmBasketLinesNewHome 		= new DefaultListModel<String>();
 	private JList<String>  			jlBasketLinesNewHome			= new JList<String>(dlmBasketLinesNewHome);
 
@@ -101,7 +101,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 	//BASKET SCROLL GROWING
 	private JScrollPane jspBasketScrollGrowing;
 	//BASKET LIST AND INSTANCIATION FOR NEW HOME
-	private Basket 					basketGrowing					= new Basket();
+	private BasketArc 					basketGrowing					= new BasketArc();
 	private DefaultListModel<String>dlmBasketLinesGrowing  			= new DefaultListModel<String>();
 	private JList<String>  			jlBasketLinesGrowing			= new JList<String>(dlmBasketLinesGrowing);
 
@@ -122,11 +122,11 @@ public class NeedsTab extends JPanel implements ActionListener{
 	private JButton jbOneLessAddSensor;
 	private JButton jbDeleteAddSensor;
 
-	private ArrayList<SensorShop> 		listSensorsAddSensor	 	= new ArrayList<SensorShop>();
+	private ArrayList<SensorShop> 		alListSensorsAddSensor	 = new ArrayList<SensorShop>();
 	private DefaultListModel<String>dlmSensorsAddSensor			= new DefaultListModel<String>();
 	private JList<String> 			jlSensorsNameAddSensor  	= new JList<String>(dlmSensorsAddSensor);
 
-	private Basket 					basketAddSensor				= new Basket();
+	private BasketSensor 					basketAddSensor		= new BasketSensor();
 	private DefaultListModel<String>dlmBasketLineAddSensor 		= new DefaultListModel<String>();
 	private JList<String>  			jlBasketLineAddSensor		= new JList<String>(dlmBasketLineAddSensor);
 
@@ -339,7 +339,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 		lblTotalPriceAddSensor.setBounds(777, 293, 159, 42);
 		JPaddSensor.add(lblTotalPriceAddSensor);
 
-		lblTotalInterviewPriceAddSensor = new JLabel("Cout total de la maintenance \u00E0 l'ann\u00E9e :");
+		lblTotalInterviewPriceAddSensor = new JLabel("Cout total de la maintenance à l'année :");
 		lblTotalInterviewPriceAddSensor.setFont(new Font("Calibri", Font.PLAIN, 12));
 		lblTotalInterviewPriceAddSensor.setBounds(613, 324, 239, 42);
 		JPaddSensor.add(lblTotalInterviewPriceAddSensor);
@@ -355,39 +355,21 @@ public class NeedsTab extends JPanel implements ActionListener{
 		jbDeleteAddSensor = new JButton("Supprimer");
 		jbDeleteAddSensor.setBounds(946, 159, 89, 23);
 		JPaddSensor.add(jbDeleteAddSensor);
+		dataSensors();
 
 	}
-	
+
 	public void dataSensors()
 	{
-		this.listSensorsAddSensor.add(new SensorShop(1,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop(2,"Dexlan",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 66.28, 35));
-		this.listSensorsAddSensor.add(new SensorShop(3,"FIREANGEL",SensorType.SMOKE, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  15.90, 70));
-		this.listSensorsAddSensor.add(new SensorShop(4,"LifeBox",SensorType.SMOKE, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 29.90, 35));
-		this.listSensorsAddSensor.add(new SensorShop(5,"ORNO",SensorType.FLOW, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 12.95, 70));
-		this.listSensorsAddSensor.add(new SensorShop(6,"Led Kia",SensorType.FLOW, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 21.09, 35));
-		this.listSensorsAddSensor.add(new SensorShop(7,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop(8,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop(9,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop(10,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop(11,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop(12,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop(13,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop(14,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop(15,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop(16,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop(17,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop(18,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop(19,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop(20,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop(21,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop(22,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop(23,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop(24,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop(25,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
-		this.listSensorsAddSensor.add(new SensorShop(26,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  22.97, 70));
-		
-		for (SensorShop s : this.listSensorsAddSensor)
+		this.alListSensorsAddSensor.add(new SensorShop(1,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 22.97, 70));
+		this.alListSensorsAddSensor.add(new SensorShop(2,"Dexlan",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 66.28, 35));
+		this.alListSensorsAddSensor.add(new SensorShop(3,"FIREANGEL",SensorType.SMOKE, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  15.90, 70));
+		this.alListSensorsAddSensor.add(new SensorShop(4,"LifeBox",SensorType.SMOKE, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 29.90, 35));
+		this.alListSensorsAddSensor.add(new SensorShop(5,"ORNO",SensorType.FLOW, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 12.95, 70));
+		this.alListSensorsAddSensor.add(new SensorShop(6,"Led Kia",SensorType.FLOW, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 21.09, 35));
+
+
+		for (SensorShop s : this.alListSensorsAddSensor)
 		{
 			this.dlmSensorsAddSensor.addElement(s.getSensorMark()+" "+s.getSensorType());
 		}
@@ -436,18 +418,19 @@ public class NeedsTab extends JPanel implements ActionListener{
 
 		if(e.getSource() == this.jbNewPartsButtonNewHome)
 		{
-			if(jtfPartsSizeNewHome.getText().isEmpty() || jtfPartsNameNewHome.getText().isEmpty() ){
-				JOptionPane.showMessageDialog(this, "Veuillez saisir correctement les données");
+			if(!jtfPartsSizeNewHome.getText().isEmpty() || jtfPartsNameNewHome.getText().isEmpty() ){
+				int c1 = intInside(jtfPartsSizeNewHome);
+				basketNewHome.addArc(new ArchitectureBuilder(jtfPartsNameNewHome.getText(), c1));
+				this.dlmBasketLinesNewHome.clear();
+				this.jtfPartsNameNewHome.setText("");
+				this.jtfPartsSizeNewHome.setText("");
+				for (CommandLineArc lignecommande : basketNewHome.alCommandLineArc)
+				{
+					this.dlmBasketLinesNewHome.addElement(lignecommande.getArc().getNom()+" - superficie: "+lignecommande.getArc().getArea()+"m²" );
+				}
 			}
-			int c1 = intInside(jtfPartsSizeNewHome);
-			basketNewHome.addArc(new ArchitectureBuilder(jtfPartsNameNewHome.getText(), c1));
-			this.dlmBasketLinesNewHome.clear();
-			this.jtfPartsNameNewHome.setText("");
-			this.jtfPartsSizeNewHome.setText("");
-			for (CommandLine lignecommande : basketNewHome.alCommandLine)
-			{
-				this.dlmBasketLinesNewHome.addElement(lignecommande.getArc().getNom()+" - superficie: "+lignecommande.getArc().getArea()+"m²" );
-			}
+			else{JOptionPane.showMessageDialog(this, "Veuillez saisir correctement les données");}
+
 
 		}
 
@@ -458,12 +441,36 @@ public class NeedsTab extends JPanel implements ActionListener{
 			this.dlmBasketLinesGrowing.clear();
 			this.jtfPartsNameGrowing.setText("");
 			this.jtfPartsSizeGrowing.setText("");
-			for (CommandLine lignecommande : basketGrowing.alCommandLine)
+			for (CommandLineArc cl : basketGrowing.alCommandLineArc)
 			{
-				this.dlmBasketLinesGrowing.addElement(lignecommande.getArc().getNom()+" - superficie: "+lignecommande.getArc().getArea()+"m²" );
+				this.dlmBasketLinesGrowing.addElement(cl.getArc().getNom()+" - superficie: "+cl.getArc().getArea()+"m²" );
 			}
-
 		}
+
+				if(e.getSource() == this.jbAddSensorToBasket)
+				{
+					int index = jlSensorsNameAddSensor.getSelectedIndex();
+					basketAddSensor.addSensor(1, this.alListSensorsAddSensor.get(jlSensorsNameAddSensor.getSelectedIndex()));
+					this.dlmBasketLineAddSensor.clear();
+					for (CommandLineSensor cl : basketAddSensor.alCommandLineSensor)
+					{
+						this.dlmBasketLineAddSensor.addElement(cl.getQuantity()+" "+cl.getSensor().getSensorMark());
+					}
+					this.jlBasketLineAddSensor.setSelectedIndex(index);
+					this.jlSensorsNameAddSensor.setSelectedIndex(index);
+				}
+		//		if(ae.getSource() == this.jbAjouterUnProduitAuPanier)
+		//		{
+		//			int index = jlNomDesProduits.getSelectedIndex();
+		//			lePanier.ajouter(1, this.lesProduits.get(jlNomDesProduits.getSelectedIndex()));
+		//			this.dlmLesLignesDuPanier.clear();
+		//			for (CommandLine lignecommande : lePanier.alLesLignes)
+		//			{
+		//				this.dlmLesLignesDuPanier.addElement(lignecommande.getQuantité()+" "+lignecommande.getProduit().getNom());
+		//			}
+		//			this.jlLesLignesDuPanier.setSelectedIndex(index);
+		//			this.jlNomDesProduits.setSelectedIndex(index);
+		//		}
 	}
 
 	public void setActionsCombobox(JComboBox<String> actionsCombobox) {

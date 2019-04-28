@@ -3,7 +3,6 @@ package com.monitrack.gui.panel;
 public class ArchitectureBuilder {
 	private String nom;
 	private int area;
-	private int stages;
 	//private ArrayList<Sensor>;
 	
 	public ArchitectureBuilder(String nom, int area){
