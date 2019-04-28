@@ -12,12 +12,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.monitrack.dao.abstracts.DAO;
-import com.monitrack.entity.Sensor;
+import com.monitrack.entity.SensorConfiguration;
 import com.monitrack.entity.Location;
 import com.monitrack.enumeration.SensorActivity;
 import com.monitrack.enumeration.SensorType;
 
-public class SensorDAO extends DAO<Sensor> {
+public class SensorDAO extends DAO<SensorConfiguration> {
 
 	private static final Logger log = LoggerFactory.getLogger(SensorDAO.class);
 
@@ -26,7 +26,7 @@ public class SensorDAO extends DAO<Sensor> {
 	}
 
 	@Override
-	public Sensor create(Sensor obj) {
+	public SensorConfiguration create(SensorConfiguration obj) {
 		synchronized (lock) {
 			// Checks if the connection is not null before using it
 			if (connection != null) {
@@ -72,13 +72,13 @@ public class SensorDAO extends DAO<Sensor> {
 	}
 
 	@Override
-	public void update(Sensor obj) {
+	public void update(SensorConfiguration obj) {
 		// FIXME Auto-generated method stub
 
 	}
 
 	@Override
-	public void delete(Sensor obj) {
+	public void delete(SensorConfiguration obj) {
 		synchronized (lock) {
 			try {
 				PreparedStatement preparedStatement = null;
@@ -93,7 +93,7 @@ public class SensorDAO extends DAO<Sensor> {
 
 	}
 
-	public List<Sensor> find(List<String> fields, List<String> values) {
+	public List<SensorConfiguration> find(List<String> fields, List<String> values) {
 		return super.find(fields, values, "SENSOR");
 	}
 
@@ -116,10 +116,10 @@ public class SensorDAO extends DAO<Sensor> {
 	
 	@SuppressWarnings("finally")
 	@Override
-	protected Sensor getSingleValueFromResultSet(ResultSet rs) {
-		Sensor sensor = null;
+	protected SensorConfiguration getSingleValueFromResultSet(ResultSet rs) {
+		SensorConfiguration sensorConfiguration = null;
 		try {
-			sensor = new Sensor(rs.getInt("ID_SENSOR"), SensorActivity.getSensorActivity(rs.getString("ACTIVITY")), SensorType.getSensorType(rs.getString("TYPE")),
+			sensorConfiguration = new SensorConfiguration(rs.getInt("ID_SENSOR"), SensorActivity.getSensorActivity(rs.getString("ACTIVITY")), SensorType.getSensorType(rs.getString("TYPE")),
 					rs.getInt("ID_LOCATION"), rs.getString("IP_ADDRESS"),
 					rs.getString("MAC_ADDRESS"),rs.getString("SERIAL_NUMBER"), rs.getFloat("HARDWARE_VERSION"),rs.getFloat("SOFTWARE_VERSION"),
 					rs.getTimestamp("CREATION_DATE"), rs.getTimestamp("LAST_MESSAGE_DATE"), rs.getTimestamp("LAST_CONFIGURATION_DATE"),
@@ -127,14 +127,14 @@ public class SensorDAO extends DAO<Sensor> {
 					rs.getString("MEASUREMENT_UNIT"),rs.getFloat("CURRENT_THRESHOLD"),rs.getFloat("MIN_DANGER_THRESHOLD")
 					,rs.getFloat("MAX_DANGER_THRESHOLD"),rs.getFloat("POSITION_X"),rs.getFloat("POSITION_Y"));
 
-			sensor.setLocation(getSensorLocation(rs.getInt("ID_LOCATION")));
+			sensorConfiguration.setLocation(getSensorLocation(rs.getInt("ID_LOCATION")));
 
 
 		} catch (SQLException e) {
 			log.error("An error occurred when getting one Flow Sensor from the resultSet : " + e.getMessage());
 		}
 		finally {
-			return sensor;
+			return sensorConfiguration;
 		}
 	}
 

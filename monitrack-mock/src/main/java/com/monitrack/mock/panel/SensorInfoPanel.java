@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.Timer;
 
-import com.monitrack.entity.Sensor;
+import com.monitrack.entity.SensorConfiguration;
 import com.monitrack.enumeration.SensorType;
 import com.monitrack.mock.listener.SensorInfoListener;
 
@@ -50,12 +50,12 @@ public class SensorInfoPanel extends JPanel {
 	private JMenuItem removePerson;
 	private JMenuItem removeAllPersons;
 	
-	private Sensor sensor;
+	private SensorConfiguration sensorConfiguration;
 	private boolean timeToChangeColor;
 	
 	
-	public SensorInfoPanel(Sensor sensor) {
-		this.sensor = sensor;
+	public SensorInfoPanel(SensorConfiguration sensorConfiguration) {
+		this.sensorConfiguration = sensorConfiguration;
 		font = new Font("Calibri", Font.BOLD, 25);
 		borderFont = new Font("Calibri", Font.PLAIN, 15);
 		listener = new SensorInfoListener(this);
@@ -75,15 +75,15 @@ public class SensorInfoPanel extends JPanel {
 	public void setNorthPanel() {
 		northPanel = new JPanel();
 		northPanel.setLayout(new BoxLayout(northPanel, BoxLayout.Y_AXIS));
-		JLabel sensorIdLabel = new JLabel("Capteur n°" + sensor.getId());
+		JLabel sensorIdLabel = new JLabel("Capteur n°" + sensorConfiguration.getId());
 		sensorIdLabel.setFont(new Font("Arial", Font.BOLD, 18));
 		sensorIdLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		
-		JLabel ipLabel = new JLabel("Adresse IP : " + ((sensor.getIpAddress() != null) ? sensor.getIpAddress() : ""));
+		JLabel ipLabel = new JLabel("Adresse IP : " + ((sensorConfiguration.getIpAddress() != null) ? sensorConfiguration.getIpAddress() : ""));
 		ipLabel.setFont(borderFont);
 		ipLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		
-		JLabel macLabel = new JLabel("Adresse Mac : " + sensor.getMacAddress());
+		JLabel macLabel = new JLabel("Adresse Mac : " + sensorConfiguration.getMacAddress());
 		macLabel.setFont(borderFont);
 		macLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		
@@ -102,7 +102,7 @@ public class SensorInfoPanel extends JPanel {
 		label1.setFont(borderFont);
 		label1.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		
-		JLabel label2 = new JLabel("    " + sensor.getSensorType().getFrenchLabel() + "    ");
+		JLabel label2 = new JLabel("    " + sensorConfiguration.getSensorType().getFrenchLabel() + "    ");
 		label2.setFont(borderFont);
 		label2.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		westPanel.add(label1);
@@ -131,7 +131,7 @@ public class SensorInfoPanel extends JPanel {
 	public void setSouthPanel() {
 		southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		southPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		JLabel label1 = new JLabel("Information : Le niveau actuel est de " + sensor.getCurrentThreshold() + "/" + sensor.getMaxDangerThreshold() + " " + sensor.getMeasurementUnit());
+		JLabel label1 = new JLabel("Information : Le niveau actuel est de " + sensorConfiguration.getCurrentThreshold() + "/" + sensorConfiguration.getMaxDangerThreshold() + " " + sensorConfiguration.getMeasurementUnit());
 		label1.setFont(borderFont);
 		label1.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		southPanel.add(label1);
@@ -142,7 +142,7 @@ public class SensorInfoPanel extends JPanel {
 
 		popup = new JPopupMenu();
 		
-		SensorType sensorType = sensor.getSensorType();
+		SensorType sensorType = sensorConfiguration.getSensorType();
 		if(sensorType == SensorType.SMOKE) {
 			JMenu cigaretMenu = new JMenu("Cigarette");
 			startSmoking = new JMenuItem("Fumer une cigarette");
@@ -194,8 +194,8 @@ public class SensorInfoPanel extends JPanel {
 		return popup;
 	}
 	
-	public Sensor getSensor() {
-		return sensor;
+	public SensorConfiguration getSensor() {
+		return sensorConfiguration;
 	}
 
 	public JMenuItem getStartFire() {

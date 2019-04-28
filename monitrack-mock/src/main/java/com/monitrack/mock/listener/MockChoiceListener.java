@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-import com.monitrack.entity.Sensor;
+import com.monitrack.entity.SensorConfiguration;
 import com.monitrack.mock.dialog.SensorDialog;
 import com.monitrack.mock.enumeration.Page;
 import com.monitrack.mock.frame.MockFrame;
@@ -37,10 +37,10 @@ public class MockChoiceListener implements ActionListener {
 					try {
 						while(true) {
 							String response = MonitrackGuiUtil.sendRequest(jsonRequest);
-							List<Sensor> sensors = (List<Sensor>)JsonUtil.deserializeObject(response);
+							List<SensorConfiguration> sensorConfigurations = (List<SensorConfiguration>)JsonUtil.deserializeObject(response);
 							System.err.println("=========================");
-							for(Sensor sensor : sensors) {
-								System.out.println("=======>" + sensor);
+							for(SensorConfiguration sensorConfiguration : sensorConfigurations) {
+								System.out.println("=======>" + sensorConfiguration);
 							}
 							Thread.sleep(3000);
 						}
