@@ -30,11 +30,11 @@ public abstract class Sensor {
 		this.softwareVersion = softwareVersion;
 	}
 
-	public Integer getId() {
+	public Integer getSensorId() {
 		return sensorId;
 	}
 
-	public void setId(Integer sensorId) {
+	public void setSensorId(Integer sensorId) {
 		this.sensorId = sensorId;
 	}
 
