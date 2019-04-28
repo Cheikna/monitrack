@@ -2,13 +2,15 @@ package com.monitrack.gui.panel;
 
 import java.util.ArrayList;
 
+import com.monitrack.entity.SensorShop;
+
 public class Basket {
-	ArrayList<LigneCommande> alCommandLine;
+	ArrayList<CommandLine> alCommandLine;
 
 	public Basket()
 	{
 		super();
-		this.alCommandLine = new ArrayList<LigneCommande>();
+		this.alCommandLine = new ArrayList<CommandLine>();
 	}
 
 	public String toString()
@@ -18,32 +20,49 @@ public class Basket {
 			return "Panier vide";
 		}
 		String résultat = "";
-		for (LigneCommande ligneCommande : alCommandLine)
+		for (CommandLine commandLine : alCommandLine)
 		{
-			résultat += ligneCommande.getArc().getNom()+"\n";
+			résultat += commandLine.getArc().getNom()+"\n";
 		}
 		return résultat;
 	}
 
-	public void ajouter(ArchitectureBuilder arc)
+	public void addArc(ArchitectureBuilder arc)
 	{
-		LigneCommande lc = new LigneCommande(arc);
-		this.alCommandLine.add(lc);
+		CommandLine cl = new CommandLine(arc);
+		this.alCommandLine.add(cl);
 	}
 	
-	public void supprimer(ArchitectureBuilder arc)
+	public void deleteArc(ArchitectureBuilder arc)
 	{
-		for (LigneCommande ligneCommande : alCommandLine)
+		for (CommandLine commandLine : alCommandLine)
 		{
-			if(arc == ligneCommande.getArc())
+			if(arc == commandLine.getArc())
 			{
-				this.alCommandLine.remove(ligneCommande);
+				this.alCommandLine.remove(commandLine);
 				return;
 			}
 		}
 	}
-
-	public void vider()
+	
+	public void addSensor(SensorShop sensor)
+	{
+		CommandLine lc = new CommandLine(sensor);
+		this.alCommandLine.add(lc);
+	}
+	
+	public void deleteArc(SensorShop sensor)
+	{
+		for (CommandLine commandLine : alCommandLine)
+		{
+			if(sensor == commandLine.getSensor())
+			{
+				this.alCommandLine.remove(commandLine);
+				return;
+			}
+		}
+	}
+	public void clearBasket()
 	{
 		this.alCommandLine.clear();
 	}
@@ -64,23 +83,23 @@ public class Basket {
 		System.out.println(panier);
 
 		System.out.println("3 : ajout au panier de arc1, arc2, arc3");
-		panier.ajouter(arc1);
-		panier.ajouter(arc2);
-		panier.ajouter(arc3);
+		panier.addArc(arc1);
+		panier.addArc(arc2);
+		panier.addArc(arc3);
 		System.out.println(panier);
 
 
 		System.out.println("4 : on ajoute au panier 1 produit1");
-		panier.ajouter(arc1);
+		panier.addArc(arc1);
 		System.out.println(panier);
 
 
 		System.out.println("5 : on supprime dans le panier le produit3");
-		panier.supprimer(arc3);
+		panier.deleteArc(arc3);
 		System.out.println(panier);
 
 		System.out.println("6 : on vide le panier");
-		panier.vider();
+		panier.clearBasket();
 		System.out.println(panier);
 
 	}

@@ -9,7 +9,15 @@ public class SensorShop extends Sensor{
 	private String sensorMark;
 	private double sensorPrice;
 	private int sensorInterviewPrice;
-
+	
+//	public SensorShop(String sensorMark, SensorType sensorType, double sensorPrice, int sensorInterviewPrice)
+//	{
+//		super();
+//		this.sensorMark = sensorMark;
+//		this.sensorType = sensorType;
+//		this.sensorPrice = sensorPrice;
+//		this.sensorInterviewPrice = sensorInterviewPrice;
+//	}
 	
 	public SensorShop(Integer sensorId, String sensorMark, SensorType sensorType, String macAddress, String serialNumber, Float hardwareVersion,
 			Float softwareVersion, double sensorPrice, int sensorInterviewPrice) {
@@ -18,7 +26,7 @@ public class SensorShop extends Sensor{
 		this.sensorPrice = sensorPrice;
 		this.sensorInterviewPrice = sensorInterviewPrice;
 	}
-	
+		
 	public String toString(){
 		return "Sensor = [Marque = "+sensorMark+" Type = "+sensorType.getFrenchLabel()+"  Prix = "+sensorPrice+" Cout de la maintenance = "+sensorInterviewPrice+"]";
 	}

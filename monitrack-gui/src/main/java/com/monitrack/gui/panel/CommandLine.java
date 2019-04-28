@@ -2,16 +2,16 @@ package com.monitrack.gui.panel;
 
 import com.monitrack.entity.SensorShop;
 
-public class LigneCommande {
+public class CommandLine {
 	private ArchitectureBuilder arc;
 	private SensorShop sensor;
 	
-	public LigneCommande(ArchitectureBuilder arc){
+	public CommandLine(ArchitectureBuilder arc){
 		super();
 		this.arc = arc;
 	}
 	
-	public LigneCommande(SensorShop sensor){
+	public CommandLine(SensorShop sensor){
 		super();
 		this.sensor = sensor;
 	}
@@ -59,19 +59,19 @@ public class LigneCommande {
 		System.out.println("arc3 : "+arc3);
 
 		System.out.println("\n2 : création d'une ligne de commande lc de l'architectureBuilder arc1");
-		LigneCommande lc1 = new LigneCommande(arc1);
+		CommandLine lc1 = new CommandLine(arc1);
 		System.out.println("lc1 : "+lc1);
 		System.out.println("Nom de l'arc1 = "+arc1.getNom());
 		System.out.println("Superficie de l'arc1 = "+arc1.getArea());
 
 		System.out.println("\n3 : lc représente maintenant une ligne de l'architectBuilder arc2");
-		LigneCommande lc2 = new LigneCommande(arc2);
+		CommandLine lc2 = new CommandLine(arc2);
 		System.out.println("lc2 : "+lc2);
 		System.out.println("Nom de l'arc2 = "+arc2.getNom());
 		System.out.println("Superficie de l'arc2 = "+arc2.getArea());
 
 		System.out.println("\n4 : lc représente maintenant une ligne darc arc3");
-		LigneCommande lc3 = new LigneCommande(arc3);
+		CommandLine lc3 = new CommandLine(arc3);
 		System.out.println("lc3 : "+lc3);
 		System.out.println("Nom de l'arc3 = "+arc3.getNom());
 		System.out.println("Superficie de l'arc3 = "+arc3.getArea());

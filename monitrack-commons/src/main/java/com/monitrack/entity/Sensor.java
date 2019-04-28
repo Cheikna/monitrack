@@ -19,7 +19,15 @@ public abstract class Sensor {
 	@JsonProperty("software_version")
 	protected Float softwareVersion;
 
-
+//	public Sensor(String sensorMark, SensorType sensorType, double sensorPrice, int sensorInterviewPrice)
+//	{
+//		super();
+//		this.sensorMark = sensorMark;
+//		this.sensorType = sensorType;
+//		this.sensorPrice = sensorPrice;
+//		this.sensorInterviewPrice = sensorInterviewPrice;
+//	}
+	
 	public Sensor(Integer sensorId, SensorType sensorType, String macAddress, String serialNumber, Float hardwareVersion,
 			Float softwareVersion) {
 		this.sensorId = sensorId;

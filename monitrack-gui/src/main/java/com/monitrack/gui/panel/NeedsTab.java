@@ -440,11 +440,11 @@ public class NeedsTab extends JPanel implements ActionListener{
 				JOptionPane.showMessageDialog(this, "Veuillez saisir correctement les données");
 			}
 			int c1 = intInside(jtfPartsSizeNewHome);
-			basketNewHome.ajouter(new ArchitectureBuilder(jtfPartsNameNewHome.getText(), c1));
+			basketNewHome.addArc(new ArchitectureBuilder(jtfPartsNameNewHome.getText(), c1));
 			this.dlmBasketLinesNewHome.clear();
 			this.jtfPartsNameNewHome.setText("");
 			this.jtfPartsSizeNewHome.setText("");
-			for (LigneCommande lignecommande : basketNewHome.alCommandLine)
+			for (CommandLine lignecommande : basketNewHome.alCommandLine)
 			{
 				this.dlmBasketLinesNewHome.addElement(lignecommande.getArc().getNom()+" - superficie: "+lignecommande.getArc().getArea()+"m²" );
 			}
@@ -454,11 +454,11 @@ public class NeedsTab extends JPanel implements ActionListener{
 		if(e.getSource() == this.jbNewPartsButtonGrowing)
 		{
 			int c1 = intInside(jtfPartsSizeGrowing);
-			basketGrowing.ajouter(new ArchitectureBuilder(jtfPartsNameGrowing.getText(), c1));
+			basketGrowing.addArc(new ArchitectureBuilder(jtfPartsNameGrowing.getText(), c1));
 			this.dlmBasketLinesGrowing.clear();
 			this.jtfPartsNameGrowing.setText("");
 			this.jtfPartsSizeGrowing.setText("");
-			for (LigneCommande lignecommande : basketGrowing.alCommandLine)
+			for (CommandLine lignecommande : basketGrowing.alCommandLine)
 			{
 				this.dlmBasketLinesGrowing.addElement(lignecommande.getArc().getNom()+" - superficie: "+lignecommande.getArc().getArea()+"m²" );
 			}
