@@ -23,9 +23,9 @@ import javax.swing.JTextField;
 
 import com.monitrack.entity.SensorShop;
 import com.monitrack.enumeration.RequestType;
-import com.monitrack.enumeration.SensorType;
 import com.monitrack.shared.MonitrackGuiUtil;
 import com.monitrack.util.JsonUtil;
+
 
 public class NeedsTab extends JPanel implements ActionListener{
 
@@ -40,7 +40,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 	//CENTERPANEL FOR CARDLAYOUT
 	private JPanel cardPanel;
 
-
+	private List<SensorShop> shops ;
 
 	//PANEL NEWHOME
 	private JPanel JPnewHome;
@@ -104,7 +104,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 	private JLabel jlListTitleGrowing;
 	//BASKET SCROLL GROWING
 	private JScrollPane jspBasketScrollGrowing;
-	//BASKET LIST AND INSTANCIATION FOR NEW HOME
+	//BASKET LIST AND INSTANCIATION FOR Growing
 	private BasketArc 					basketGrowing					= new BasketArc();
 	private DefaultListModel<String>dlmBasketLinesGrowing  			= new DefaultListModel<String>();
 	private JList<String>  			jlBasketLinesGrowing			= new JList<String>(dlmBasketLinesGrowing);
@@ -125,12 +125,15 @@ public class NeedsTab extends JPanel implements ActionListener{
 	private JButton jbOneMoreAddSensor;
 	private JButton jbOneLessAddSensor;
 	private JButton jbDeleteAddSensor;
+	
+	//Title of Basket Panel
+	private JLabel lblBasketTitleAddSensorPanel;
 
-	private ArrayList<SensorShop> 		alListSensorsAddSensor	 = new ArrayList<SensorShop>();
+	private ArrayList<SensorShop> 		alListSensorsAddSensor	= new ArrayList<SensorShop>();
 	private DefaultListModel<String>dlmSensorsAddSensor			= new DefaultListModel<String>();
 	private JList<String> 			jlSensorsNameAddSensor  	= new JList<String>(dlmSensorsAddSensor);
 
-	//private BasketSensor 					basketAddSensor		= new BasketSensor();
+	private BasketSensor 					basketAddSensor				= new BasketSensor();
 	private DefaultListModel<String>dlmBasketLineAddSensor 		= new DefaultListModel<String>();
 	private JList<String>  			jlBasketLineAddSensor		= new JList<String>(dlmBasketLineAddSensor);
 
@@ -317,48 +320,55 @@ public class NeedsTab extends JPanel implements ActionListener{
 
 		jpProductPanelAddSensor = new JPanel();
 		jpProductPanelAddSensor.setLayout(null);
-		jpProductPanelAddSensor.setBounds(10, 21, 425, 262);
+		jpProductPanelAddSensor.setBounds(10, 21, 680, 281);
 		JPaddSensor.add(jpProductPanelAddSensor);
 
 		jspProductPanelAddSensor = new JScrollPane(this.jlSensorsNameAddSensor);
-		jspProductPanelAddSensor.setBounds(0, 0, 425, 262);
+		jspProductPanelAddSensor.setBounds(0, 0, 680, 280);
 		jpProductPanelAddSensor.add(jspProductPanelAddSensor);
-
-		jpBasketPanelAddSensor = new JPanel();
-		jpBasketPanelAddSensor.setLayout(null);
-		jpBasketPanelAddSensor.setBounds(511, 21, 425, 262);
-		JPaddSensor.add(jpBasketPanelAddSensor);
-
-		jspBasketPanelAddSensor = new JScrollPane(this.jlBasketLineAddSensor);
-		jspBasketPanelAddSensor.setBounds(0, 0, 425, 262);
-		jpBasketPanelAddSensor.add(jspBasketPanelAddSensor);
 
 		jbAddSensorToBasket = new JButton("Ajouter un capteur");
 		jbAddSensorToBasket.setFont(new Font("Calibri", Font.PLAIN, 12));
-		jbAddSensorToBasket.setBounds(278, 292, 157, 43);
+		jbAddSensorToBasket.setBounds(533, 313, 157, 43);
 		JPaddSensor.add(jbAddSensorToBasket);
+		jbAddSensorToBasket.addActionListener(this);
 
 		lblTotalPriceAddSensor = new JLabel("Prix Total :");
 		lblTotalPriceAddSensor.setFont(new Font("Calibri", Font.PLAIN, 12));
-		lblTotalPriceAddSensor.setBounds(777, 293, 159, 42);
+		lblTotalPriceAddSensor.setBounds(1101, 335, 159, 42);
 		JPaddSensor.add(lblTotalPriceAddSensor);
 
 		lblTotalInterviewPriceAddSensor = new JLabel("Cout total de la maintenance à l'année :");
 		lblTotalInterviewPriceAddSensor.setFont(new Font("Calibri", Font.PLAIN, 12));
-		lblTotalInterviewPriceAddSensor.setBounds(613, 324, 239, 42);
+		lblTotalInterviewPriceAddSensor.setBounds(939, 363, 239, 42);
 		JPaddSensor.add(lblTotalInterviewPriceAddSensor);
 
 		jbOneMoreAddSensor = new JButton("+");
-		jbOneMoreAddSensor.setBounds(946, 91, 89, 23);
+		jbOneMoreAddSensor.setBounds(752, 305, 89, 23);
 		JPaddSensor.add(jbOneMoreAddSensor);
-
+		jbOneMoreAddSensor.addActionListener(this);
 		jbOneLessAddSensor = new JButton("-");
-		jbOneLessAddSensor.setBounds(946, 125, 89, 23);
+		jbOneLessAddSensor.setBounds(851, 305, 89, 23);
 		JPaddSensor.add(jbOneLessAddSensor);
-
+		jbOneLessAddSensor.addActionListener(this);
 		jbDeleteAddSensor = new JButton("Supprimer");
-		jbDeleteAddSensor.setBounds(946, 159, 89, 23);
+		jbDeleteAddSensor.setBounds(950, 305, 110, 23);
+		jbDeleteAddSensor.addActionListener(this);
 		JPaddSensor.add(jbDeleteAddSensor);
+
+		jspBasketPanelAddSensor = new JScrollPane();
+		jspBasketPanelAddSensor.setBounds(737, 21, 612, 281);
+		JPaddSensor.add(jspBasketPanelAddSensor);
+		jspBasketPanelAddSensor.setViewportView(jlBasketLineAddSensor);
+
+		jpBasketPanelAddSensor = new JPanel();
+		jspBasketPanelAddSensor.setRowHeaderView(jpBasketPanelAddSensor);
+		jpBasketPanelAddSensor.setLayout(null);
+
+		lblBasketTitleAddSensorPanel = new JLabel("Liste des capteurs ajout\u00E9s au panier :");
+		lblBasketTitleAddSensorPanel.setFont(new Font("Calibri", Font.PLAIN, 12));
+		lblBasketTitleAddSensorPanel.setBounds(820, 1, 219, 14);
+		JPaddSensor.add(lblBasketTitleAddSensorPanel);
 		dataSensors();
 
 	}
@@ -370,32 +380,43 @@ public class NeedsTab extends JPanel implements ActionListener{
 		this.alListSensorsAddSensor.add(new SensorShop(3,"FIREANGEL",SensorType.SMOKE, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f,  15.90, 70));
 		this.alListSensorsAddSensor.add(new SensorShop(4,"LifeBox",SensorType.SMOKE, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 29.90, 35));
 		this.alListSensorsAddSensor.add(new SensorShop(5,"ORNO",SensorType.FLOW, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 12.95, 70));
-		this.alListSensorsAddSensor.add(new SensorShop(6,"Led Kia",SensorType.FLOW, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 21.09, 35));*/
+		this.alListSensorsAddSensor.add(new SensorShop(6,"Led Kia",SensorType.FLOW, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 21.09, 35));
+
+
+		for (SensorShop s : this.alListSensorsAddSensor)
+		{
+			this.dlmSensorsAddSensor.addElement(s.getSensorMark()+" "+s.getSensorType());
+		}*/
 		try {
 			String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, SensorShop.class, null, null, null,
 					null);
 			String response = MonitrackGuiUtil.sendRequest(jsonRequest);
 			// Retrieves all the sensor from the database
-			List<SensorShop> shops = (List<SensorShop>)JsonUtil.deserializeObject(response);
-
+			shops = (List<SensorShop>)JsonUtil.deserializeObject(response);
+			String text = "";
 			for(SensorShop s : shops) {
-				this.alListSensorsAddSensor.add(s);
-				System.out.println("==========> " + s);
+				//this.alListSensorsAddSensor.add(s);
+				dlmSensorsAddSensor.addElement(s.toString());
+				//text += s + "\n";
 			}
+			/*System.out.println("=========================");
+			System.err.println(text);
+			JTextArea textArea = new JTextArea();
+			textArea.setText(text);
+			JScrollPane pane = new JScrollPane(textArea);*/
+			//FIXME - Add this scroll pane to a JPanel or to a component
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		for (SensorShop s : this.alListSensorsAddSensor)
-		{
-			this.dlmSensorsAddSensor.addElement(s.getSensorMark()+" "+s.getSensorType());
-		}
 	}
 
+	// Main method to test data retrieving from the database
 	public static void main(String[] args) {
 		new NeedsTab().dataSensors();
 	}
+
 
 	public Integer intInside(JTextField jtf)//5
 	{
@@ -471,27 +492,69 @@ public class NeedsTab extends JPanel implements ActionListener{
 		if(e.getSource() == this.jbAddSensorToBasket)
 		{
 			int index = jlSensorsNameAddSensor.getSelectedIndex();
-			/*basketAddSensor.addSensor(1, this.alListSensorsAddSensor.get(jlSensorsNameAddSensor.getSelectedIndex()));
-					this.dlmBasketLineAddSensor.clear();
-					for (CommandLineSensor cl : basketAddSensor.alCommandLineSensor)
-					{
-						this.dlmBasketLineAddSensor.addElement(cl.getQuantity()+" "+cl.getSensor().getSensorMark());
-					}*/
+			basketAddSensor.addSensor(1, this.shops.get(jlSensorsNameAddSensor.getSelectedIndex()));
+			this.dlmBasketLineAddSensor.clear();
+			for (CommandLineSensor cl : basketAddSensor.alCommandLineSensor)
+			{
+				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+" - Marque : "+cl.getSensor().getSensorMark()+"- Prix : "+cl.getSensor().getSensorPrice()+" - Prix de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice());
+			}
 			this.jlBasketLineAddSensor.setSelectedIndex(index);
 			this.jlSensorsNameAddSensor.setSelectedIndex(index);
 		}
-		//		if(ae.getSource() == this.jbAjouterUnProduitAuPanier)
-		//		{
-		//			int index = jlNomDesProduits.getSelectedIndex();
-		//			lePanier.ajouter(1, this.lesProduits.get(jlNomDesProduits.getSelectedIndex()));
-		//			this.dlmLesLignesDuPanier.clear();
-		//			for (CommandLine lignecommande : lePanier.alLesLignes)
-		//			{
-		//				this.dlmLesLignesDuPanier.addElement(lignecommande.getQuantité()+" "+lignecommande.getProduit().getNom());
-		//			}
-		//			this.jlLesLignesDuPanier.setSelectedIndex(index);
-		//			this.jlNomDesProduits.setSelectedIndex(index);
-		//		}
+		
+		if(e.getSource() == this.jbDeleteAddSensor)
+		{
+			int index = jlBasketLineAddSensor.getSelectedIndex();
+			if(index == -1)
+			{
+				return;
+			}
+			basketAddSensor.alCommandLineSensor.remove(index);
+			this.dlmBasketLineAddSensor.clear();
+			for (CommandLineSensor cl : basketAddSensor.alCommandLineSensor)
+			{
+				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+" - Marque : "+cl.getSensor().getSensorMark()+"- Prix : "+cl.getSensor().getSensorPrice()+" - Prix de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice());
+			}
+		}
+		if(e.getSource() == this.jbOneMoreAddSensor)
+		{
+			int index = jlBasketLineAddSensor.getSelectedIndex();
+			if(index == -1)
+			{
+				return;
+			}
+			CommandLineSensor cl = this.basketAddSensor.alCommandLineSensor.get(index);
+			cl.setQuantity(cl.getQuantity()+1);
+			this.dlmBasketLineAddSensor.clear();
+			for (CommandLineSensor cmd : basketAddSensor.alCommandLineSensor)
+			{
+				this.dlmBasketLineAddSensor.addElement("Quantité : "+cmd.getQuantity()+" - Marque : "+cmd.getSensor().getSensorMark()+"- Prix : "+cmd.getSensor().getSensorPrice()+" - Prix de la maintenance à l'année : "+cmd.getSensor().getSensorInterviewPrice());
+			}
+			this.jlBasketLineAddSensor.setSelectedIndex(index);
+			
+		}
+		if(e.getSource() == this.jbOneLessAddSensor)
+		{
+			int index = jlBasketLineAddSensor.getSelectedIndex();
+			if(index == -1)
+			{
+				return;
+			}
+			CommandLineSensor cl = this.basketAddSensor.alCommandLineSensor.get(index);
+			cl.setQuantity(cl.getQuantity()-1);
+			this.dlmBasketLineAddSensor.clear();
+			if(cl.getQuantity() == 0)
+			{
+				basketAddSensor.alCommandLineSensor.remove(index);
+				this.dlmBasketLineAddSensor.clear();
+			}
+			for (CommandLineSensor cmd : basketAddSensor.alCommandLineSensor)
+			{
+				this.dlmBasketLineAddSensor.addElement("Quantité : "+cmd.getQuantity()+" - Marque : "+cmd.getSensor().getSensorMark()+"- Prix : "+cmd.getSensor().getSensorPrice()+" - Prix de la maintenance à l'année : "+cmd.getSensor().getSensorInterviewPrice());
+			}
+
+			this.jlBasketLineAddSensor.setSelectedIndex(index);
+		}
 	}
 
 	public void setActionsCombobox(JComboBox<String> actionsCombobox) {
@@ -792,5 +855,495 @@ public class NeedsTab extends JPanel implements ActionListener{
 	 */
 	public void setJPaddSensor(JPanel jPaddSensor) {
 		JPaddSensor = jPaddSensor;
+	}
+
+	/**
+	 * @return the shops
+	 */
+	public List<SensorShop> getShops() {
+		return shops;
+	}
+
+	/**
+	 * @param shops the shops to set
+	 */
+	public void setShops(List<SensorShop> shops) {
+		this.shops = shops;
+	}
+
+	/**
+	 * @return the jlPartsNameNewHome
+	 */
+	public JLabel getJlPartsNameNewHome() {
+		return jlPartsNameNewHome;
+	}
+
+	/**
+	 * @param jlPartsNameNewHome the jlPartsNameNewHome to set
+	 */
+	public void setJlPartsNameNewHome(JLabel jlPartsNameNewHome) {
+		this.jlPartsNameNewHome = jlPartsNameNewHome;
+	}
+
+	/**
+	 * @return the jtfPartsNameNewHome
+	 */
+	public JTextField getJtfPartsNameNewHome() {
+		return jtfPartsNameNewHome;
+	}
+
+	/**
+	 * @param jtfPartsNameNewHome the jtfPartsNameNewHome to set
+	 */
+	public void setJtfPartsNameNewHome(JTextField jtfPartsNameNewHome) {
+		this.jtfPartsNameNewHome = jtfPartsNameNewHome;
+	}
+
+	/**
+	 * @return the jlPartsSizeNewHome
+	 */
+	public JLabel getJlPartsSizeNewHome() {
+		return jlPartsSizeNewHome;
+	}
+
+	/**
+	 * @param jlPartsSizeNewHome the jlPartsSizeNewHome to set
+	 */
+	public void setJlPartsSizeNewHome(JLabel jlPartsSizeNewHome) {
+		this.jlPartsSizeNewHome = jlPartsSizeNewHome;
+	}
+
+	/**
+	 * @return the jtfPartsSizeNewHome
+	 */
+	public JTextField getJtfPartsSizeNewHome() {
+		return jtfPartsSizeNewHome;
+	}
+
+	/**
+	 * @param jtfPartsSizeNewHome the jtfPartsSizeNewHome to set
+	 */
+	public void setJtfPartsSizeNewHome(JTextField jtfPartsSizeNewHome) {
+		this.jtfPartsSizeNewHome = jtfPartsSizeNewHome;
+	}
+
+	/**
+	 * @return the jbNewPartsButtonNewHome
+	 */
+	public JButton getJbNewPartsButtonNewHome() {
+		return jbNewPartsButtonNewHome;
+	}
+
+	/**
+	 * @param jbNewPartsButtonNewHome the jbNewPartsButtonNewHome to set
+	 */
+	public void setJbNewPartsButtonNewHome(JButton jbNewPartsButtonNewHome) {
+		this.jbNewPartsButtonNewHome = jbNewPartsButtonNewHome;
+	}
+
+	/**
+	 * @return the jlListTitleNewHome
+	 */
+	public JLabel getJlListTitleNewHome() {
+		return jlListTitleNewHome;
+	}
+
+	/**
+	 * @param jlListTitleNewHome the jlListTitleNewHome to set
+	 */
+	public void setJlListTitleNewHome(JLabel jlListTitleNewHome) {
+		this.jlListTitleNewHome = jlListTitleNewHome;
+	}
+
+	/**
+	 * @return the basketNewHome
+	 */
+	public BasketArc getBasketNewHome() {
+		return basketNewHome;
+	}
+
+	/**
+	 * @param basketNewHome the basketNewHome to set
+	 */
+	public void setBasketNewHome(BasketArc basketNewHome) {
+		this.basketNewHome = basketNewHome;
+	}
+
+	/**
+	 * @return the dlmBasketLinesNewHome
+	 */
+	public DefaultListModel<String> getDlmBasketLinesNewHome() {
+		return dlmBasketLinesNewHome;
+	}
+
+	/**
+	 * @param dlmBasketLinesNewHome the dlmBasketLinesNewHome to set
+	 */
+	public void setDlmBasketLinesNewHome(DefaultListModel<String> dlmBasketLinesNewHome) {
+		this.dlmBasketLinesNewHome = dlmBasketLinesNewHome;
+	}
+
+	/**
+	 * @return the jlBasketLinesNewHome
+	 */
+	public JList<String> getJlBasketLinesNewHome() {
+		return jlBasketLinesNewHome;
+	}
+
+	/**
+	 * @param jlBasketLinesNewHome the jlBasketLinesNewHome to set
+	 */
+	public void setJlBasketLinesNewHome(JList<String> jlBasketLinesNewHome) {
+		this.jlBasketLinesNewHome = jlBasketLinesNewHome;
+	}
+
+	/**
+	 * @return the jlPartsNameGrowing
+	 */
+	public JLabel getJlPartsNameGrowing() {
+		return jlPartsNameGrowing;
+	}
+
+	/**
+	 * @param jlPartsNameGrowing the jlPartsNameGrowing to set
+	 */
+	public void setJlPartsNameGrowing(JLabel jlPartsNameGrowing) {
+		this.jlPartsNameGrowing = jlPartsNameGrowing;
+	}
+
+	/**
+	 * @return the jtfPartsNameGrowing
+	 */
+	public JTextField getJtfPartsNameGrowing() {
+		return jtfPartsNameGrowing;
+	}
+
+	/**
+	 * @param jtfPartsNameGrowing the jtfPartsNameGrowing to set
+	 */
+	public void setJtfPartsNameGrowing(JTextField jtfPartsNameGrowing) {
+		this.jtfPartsNameGrowing = jtfPartsNameGrowing;
+	}
+
+	/**
+	 * @return the jlPartsSizeGrowing
+	 */
+	public JLabel getJlPartsSizeGrowing() {
+		return jlPartsSizeGrowing;
+	}
+
+	/**
+	 * @param jlPartsSizeGrowing the jlPartsSizeGrowing to set
+	 */
+	public void setJlPartsSizeGrowing(JLabel jlPartsSizeGrowing) {
+		this.jlPartsSizeGrowing = jlPartsSizeGrowing;
+	}
+
+	/**
+	 * @return the jbNewPartsButtonGrowing
+	 */
+	public JButton getJbNewPartsButtonGrowing() {
+		return jbNewPartsButtonGrowing;
+	}
+
+	/**
+	 * @param jbNewPartsButtonGrowing the jbNewPartsButtonGrowing to set
+	 */
+	public void setJbNewPartsButtonGrowing(JButton jbNewPartsButtonGrowing) {
+		this.jbNewPartsButtonGrowing = jbNewPartsButtonGrowing;
+	}
+
+	/**
+	 * @return the jlListTitleGrowing
+	 */
+	public JLabel getJlListTitleGrowing() {
+		return jlListTitleGrowing;
+	}
+
+	/**
+	 * @param jlListTitleGrowing the jlListTitleGrowing to set
+	 */
+	public void setJlListTitleGrowing(JLabel jlListTitleGrowing) {
+		this.jlListTitleGrowing = jlListTitleGrowing;
+	}
+
+	/**
+	 * @return the basketGrowing
+	 */
+	public BasketArc getBasketGrowing() {
+		return basketGrowing;
+	}
+
+	/**
+	 * @param basketGrowing the basketGrowing to set
+	 */
+	public void setBasketGrowing(BasketArc basketGrowing) {
+		this.basketGrowing = basketGrowing;
+	}
+
+	/**
+	 * @return the dlmBasketLinesGrowing
+	 */
+	public DefaultListModel<String> getDlmBasketLinesGrowing() {
+		return dlmBasketLinesGrowing;
+	}
+
+	/**
+	 * @param dlmBasketLinesGrowing the dlmBasketLinesGrowing to set
+	 */
+	public void setDlmBasketLinesGrowing(DefaultListModel<String> dlmBasketLinesGrowing) {
+		this.dlmBasketLinesGrowing = dlmBasketLinesGrowing;
+	}
+
+	/**
+	 * @return the jlBasketLinesGrowing
+	 */
+	public JList<String> getJlBasketLinesGrowing() {
+		return jlBasketLinesGrowing;
+	}
+
+	/**
+	 * @param jlBasketLinesGrowing the jlBasketLinesGrowing to set
+	 */
+	public void setJlBasketLinesGrowing(JList<String> jlBasketLinesGrowing) {
+		this.jlBasketLinesGrowing = jlBasketLinesGrowing;
+	}
+
+	/**
+	 * @return the jpProductPanelAddSensor
+	 */
+	public JPanel getJpProductPanelAddSensor() {
+		return jpProductPanelAddSensor;
+	}
+
+	/**
+	 * @param jpProductPanelAddSensor the jpProductPanelAddSensor to set
+	 */
+	public void setJpProductPanelAddSensor(JPanel jpProductPanelAddSensor) {
+		this.jpProductPanelAddSensor = jpProductPanelAddSensor;
+	}
+
+	/**
+	 * @return the jspProductPanelAddSensor
+	 */
+	public JScrollPane getJspProductPanelAddSensor() {
+		return jspProductPanelAddSensor;
+	}
+
+	/**
+	 * @param jspProductPanelAddSensor the jspProductPanelAddSensor to set
+	 */
+	public void setJspProductPanelAddSensor(JScrollPane jspProductPanelAddSensor) {
+		this.jspProductPanelAddSensor = jspProductPanelAddSensor;
+	}
+
+	/**
+	 * @return the jpBasketPanelAddSensor
+	 */
+	public JPanel getJpBasketPanelAddSensor() {
+		return jpBasketPanelAddSensor;
+	}
+
+	/**
+	 * @param jpBasketPanelAddSensor the jpBasketPanelAddSensor to set
+	 */
+	public void setJpBasketPanelAddSensor(JPanel jpBasketPanelAddSensor) {
+		this.jpBasketPanelAddSensor = jpBasketPanelAddSensor;
+	}
+
+	/**
+	 * @return the jspBasketPanelAddSensor
+	 */
+	public JScrollPane getJspBasketPanelAddSensor() {
+		return jspBasketPanelAddSensor;
+	}
+
+	/**
+	 * @param jspBasketPanelAddSensor the jspBasketPanelAddSensor to set
+	 */
+	public void setJspBasketPanelAddSensor(JScrollPane jspBasketPanelAddSensor) {
+		this.jspBasketPanelAddSensor = jspBasketPanelAddSensor;
+	}
+
+	/**
+	 * @return the jbAddSensorToBasket
+	 */
+	public JButton getJbAddSensorToBasket() {
+		return jbAddSensorToBasket;
+	}
+
+	/**
+	 * @param jbAddSensorToBasket the jbAddSensorToBasket to set
+	 */
+	public void setJbAddSensorToBasket(JButton jbAddSensorToBasket) {
+		this.jbAddSensorToBasket = jbAddSensorToBasket;
+	}
+
+	/**
+	 * @return the lblTotalPriceAddSensor
+	 */
+	public JLabel getLblTotalPriceAddSensor() {
+		return lblTotalPriceAddSensor;
+	}
+
+	/**
+	 * @param lblTotalPriceAddSensor the lblTotalPriceAddSensor to set
+	 */
+	public void setLblTotalPriceAddSensor(JLabel lblTotalPriceAddSensor) {
+		this.lblTotalPriceAddSensor = lblTotalPriceAddSensor;
+	}
+
+	/**
+	 * @return the lblTotalInterviewPriceAddSensor
+	 */
+	public JLabel getLblTotalInterviewPriceAddSensor() {
+		return lblTotalInterviewPriceAddSensor;
+	}
+
+	/**
+	 * @param lblTotalInterviewPriceAddSensor the lblTotalInterviewPriceAddSensor to set
+	 */
+	public void setLblTotalInterviewPriceAddSensor(JLabel lblTotalInterviewPriceAddSensor) {
+		this.lblTotalInterviewPriceAddSensor = lblTotalInterviewPriceAddSensor;
+	}
+
+	/**
+	 * @return the jbOneMoreAddSensor
+	 */
+	public JButton getJbOneMoreAddSensor() {
+		return jbOneMoreAddSensor;
+	}
+
+	/**
+	 * @param jbOneMoreAddSensor the jbOneMoreAddSensor to set
+	 */
+	public void setJbOneMoreAddSensor(JButton jbOneMoreAddSensor) {
+		this.jbOneMoreAddSensor = jbOneMoreAddSensor;
+	}
+
+	/**
+	 * @return the jbOneLessAddSensor
+	 */
+	public JButton getJbOneLessAddSensor() {
+		return jbOneLessAddSensor;
+	}
+
+	/**
+	 * @param jbOneLessAddSensor the jbOneLessAddSensor to set
+	 */
+	public void setJbOneLessAddSensor(JButton jbOneLessAddSensor) {
+		this.jbOneLessAddSensor = jbOneLessAddSensor;
+	}
+
+	/**
+	 * @return the jbDeleteAddSensor
+	 */
+	public JButton getJbDeleteAddSensor() {
+		return jbDeleteAddSensor;
+	}
+
+	/**
+	 * @param jbDeleteAddSensor the jbDeleteAddSensor to set
+	 */
+	public void setJbDeleteAddSensor(JButton jbDeleteAddSensor) {
+		this.jbDeleteAddSensor = jbDeleteAddSensor;
+	}
+
+	/**
+	 * @return the lblBasketTitleAddSensorPanel
+	 */
+	public JLabel getLblBasketTitleAddSensorPanel() {
+		return lblBasketTitleAddSensorPanel;
+	}
+
+	/**
+	 * @param lblBasketTitleAddSensorPanel the lblBasketTitleAddSensorPanel to set
+	 */
+	public void setLblBasketTitleAddSensorPanel(JLabel lblBasketTitleAddSensorPanel) {
+		this.lblBasketTitleAddSensorPanel = lblBasketTitleAddSensorPanel;
+	}
+
+	/**
+	 * @return the alListSensorsAddSensor
+	 */
+	public ArrayList<SensorShop> getAlListSensorsAddSensor() {
+		return alListSensorsAddSensor;
+	}
+
+	/**
+	 * @param alListSensorsAddSensor the alListSensorsAddSensor to set
+	 */
+	public void setAlListSensorsAddSensor(ArrayList<SensorShop> alListSensorsAddSensor) {
+		this.alListSensorsAddSensor = alListSensorsAddSensor;
+	}
+
+	/**
+	 * @return the dlmSensorsAddSensor
+	 */
+	public DefaultListModel<String> getDlmSensorsAddSensor() {
+		return dlmSensorsAddSensor;
+	}
+
+	/**
+	 * @param dlmSensorsAddSensor the dlmSensorsAddSensor to set
+	 */
+	public void setDlmSensorsAddSensor(DefaultListModel<String> dlmSensorsAddSensor) {
+		this.dlmSensorsAddSensor = dlmSensorsAddSensor;
+	}
+
+	/**
+	 * @return the jlSensorsNameAddSensor
+	 */
+	public JList<String> getJlSensorsNameAddSensor() {
+		return jlSensorsNameAddSensor;
+	}
+
+	/**
+	 * @param jlSensorsNameAddSensor the jlSensorsNameAddSensor to set
+	 */
+	public void setJlSensorsNameAddSensor(JList<String> jlSensorsNameAddSensor) {
+		this.jlSensorsNameAddSensor = jlSensorsNameAddSensor;
+	}
+
+	/**
+	 * @return the basketAddSensor
+	 */
+	public BasketSensor getBasketAddSensor() {
+		return basketAddSensor;
+	}
+
+	/**
+	 * @param basketAddSensor the basketAddSensor to set
+	 */
+	public void setBasketAddSensor(BasketSensor basketAddSensor) {
+		this.basketAddSensor = basketAddSensor;
+	}
+
+	/**
+	 * @return the dlmBasketLineAddSensor
+	 */
+	public DefaultListModel<String> getDlmBasketLineAddSensor() {
+		return dlmBasketLineAddSensor;
+	}
+
+	/**
+	 * @param dlmBasketLineAddSensor the dlmBasketLineAddSensor to set
+	 */
+	public void setDlmBasketLineAddSensor(DefaultListModel<String> dlmBasketLineAddSensor) {
+		this.dlmBasketLineAddSensor = dlmBasketLineAddSensor;
+	}
+
+	/**
+	 * @return the jlBasketLineAddSensor
+	 */
+	public JList<String> getJlBasketLineAddSensor() {
+		return jlBasketLineAddSensor;
+	}
+
+	/**
+	 * @param jlBasketLineAddSensor the jlBasketLineAddSensor to set
+	 */
+	public void setJlBasketLineAddSensor(JList<String> jlBasketLineAddSensor) {
+		this.jlBasketLineAddSensor = jlBasketLineAddSensor;
 	}
 }
