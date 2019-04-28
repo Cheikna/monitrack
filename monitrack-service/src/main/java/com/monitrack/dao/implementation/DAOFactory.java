@@ -19,10 +19,12 @@ public class DAOFactory {
 			dao =  new PersonDAO(connection);
 		else if(entityClass.equals(Location.class))
 			dao = new LocationDAO(connection);
-		else if(entityClass.equals(Sensor.class))
-			dao = new SensorDAO(connection);
-		else if(entityClass.equals(SensorHistory.class))
-			dao = new SensorHistoryDAO(connection);
+		else if(entityClass.equals(SensorConfiguration.class))
+			dao = new SensorConfigurationDAO(connection);
+		else if(entityClass.equals(SensorConfigurationHistory.class))
+			dao = new SensorConfigurationHistoryDAO(connection);
+		else if(entityClass.equals(ManualTriggerHistory.class))
+			dao = new ManualTriggerHistoryDAO(connection);
 		else
 			throw new UnknownClassException(entityClass);		
 		

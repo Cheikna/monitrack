@@ -11,33 +11,33 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.monitrack.dao.abstracts.DAO;
-import com.monitrack.entity.SensorHistory;
+import com.monitrack.entity.SensorConfigurationHistory;
 
-public class SensorHistoryDAO extends DAO<SensorHistory> {
+public class SensorConfigurationHistoryDAO extends DAO<SensorConfigurationHistory> {
 	
-	private static final Logger log = LoggerFactory.getLogger(SensorHistoryDAO.class);
-	private final Object lock = new Object();
+	private static final Logger log = LoggerFactory.getLogger(SensorConfigurationHistoryDAO.class);
 
-	public SensorHistoryDAO(Connection connection) {
+	public SensorConfigurationHistoryDAO(Connection connection) {
 		super(connection);
 	}
 
 	@Override
-	public SensorHistory create(SensorHistory obj) {
+	public SensorConfigurationHistory create(SensorConfigurationHistory obj) {
 		synchronized (lock) {
 			// Checks if the connection is not null before using it
 			if (connection != null) {
 				try {
 					PreparedStatement preparedStatement = connection
-							.prepareStatement("INSERT INTO SENSOR_HISTORY (ID_SENSOR, MEASURED_THRESHOLD, MIN_DANGER_THRESHOLD, MAX_DANGER_THRESHOLD, MEASUREMENT_DATE, DESCRIPTION, ACTIONS_DONE)"
-									+ " VALUES (? , ? , ? , ? , ? , ? , ?)", Statement.RETURN_GENERATED_KEYS);
+							.prepareStatement("INSERT INTO SENSOR_HISTORY (ID_SENSOR, MEASURED_THRESHOLD, MIN_DANGER_THRESHOLD, MAX_DANGER_THRESHOLD, MEASUREMENT_DATE, END_ALERT_DATE, DESCRIPTION, ACTIONS_DONE)"
+									+ " VALUES (? , ? , ? , ? , ? , ? , ? , ?)", Statement.RETURN_GENERATED_KEYS);
 					preparedStatement.setInt(1, obj.getIdSensorSource());
 					preparedStatement.setFloat(2, obj.getMeasuredThreshold());
 					preparedStatement.setFloat(3, obj.getMinDangerThreshlod());
 					preparedStatement.setFloat(4, obj.getMaxDangerThreshlod());
 					preparedStatement.setTimestamp(5, obj.getDate());
-					preparedStatement.setString(6, obj.getDescription());
-					preparedStatement.setString(7, obj.getActionsDone());
+					preparedStatement.setTimestamp(6, obj.getEndAlertDate());
+					preparedStatement.setString(7, obj.getDescription());
+					preparedStatement.setString(8, obj.getActionsDone());
 					preparedStatement.execute();
 					ResultSet rs = preparedStatement.getGeneratedKeys();
 					int lastCreatedId = 0;
@@ -55,22 +55,22 @@ public class SensorHistoryDAO extends DAO<SensorHistory> {
 	}
 
 	@Override
-	public void update(SensorHistory obj) {
+	public void update(SensorConfigurationHistory obj) {
 		try {
-			throw new Exception("A history can not be updated !");
+			throw new Exception("A history from the sensor can not be updated !");
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
 	}
 
 	@Override
-	public void delete(SensorHistory obj) {
+	public void delete(SensorConfigurationHistory obj) {
 		synchronized (lock) {
 			// Checks if the connection is not null before using it
 			if (connection != null) {
 				try {
 					PreparedStatement preparedStatement = null;
-					preparedStatement = connection.prepareStatement("DELETE FROM SENSOR_HISTORY where ID_LOCATION=(?)");
+					preparedStatement = connection.prepareStatement("DELETE FROM SENSOR_HISTORY where ID_HISTORY=(?)");
 					preparedStatement.setInt(1, obj.getIdHistory());					
 					preparedStatement.execute();
 				} catch (Exception e) {
@@ -83,24 +83,24 @@ public class SensorHistoryDAO extends DAO<SensorHistory> {
 	}
 
 	@Override
-	public List<SensorHistory> find(List<String> fields, List<String> values) {
+	public List<SensorConfigurationHistory> find(List<String> fields, List<String> values) {
 		return super.find(fields, values, "SENSOR_HISTORY");
 	}
 
 	@SuppressWarnings("finally")
 	@Override
-	protected SensorHistory getSingleValueFromResultSet(ResultSet rs) {
-		SensorHistory sensorHistory = null;
+	protected SensorConfigurationHistory getSingleValueFromResultSet(ResultSet rs) {
+		SensorConfigurationHistory sensorConfigurationHistory = null;
 		try {
-			sensorHistory = new SensorHistory(rs.getInt("ID_HISTORY"), rs.getInt("ID_SENSOR"), rs.getFloat("MEASURED_THRESHOLD"), rs.getFloat("MIN_DANGER_THRESHOLD"),rs.getFloat("MAX_DANGER_THRESHOLD"),
-					rs.getTimestamp("MEASUREMENT_DATE"), rs.getString("DESCRIPTION"), rs.getString("ACTIONS_DONE"));
+			sensorConfigurationHistory = new SensorConfigurationHistory(rs.getInt("ID_HISTORY"), rs.getInt("ID_SENSOR"), rs.getFloat("MEASURED_THRESHOLD"), rs.getFloat("MIN_DANGER_THRESHOLD"),rs.getFloat("MAX_DANGER_THRESHOLD"),
+					rs.getTimestamp("MEASUREMENT_DATE"), rs.getTimestamp("END_ALERT_DATE"), rs.getString("DESCRIPTION"), rs.getString("ACTIONS_DONE"));
 
 
 		} catch (SQLException e) {
 			log.error("An error occurred when getting one Flow Sensor from the resultSet : " + e.getMessage());
 		}
 		finally {
-			return sensorHistory;
+			return sensorConfigurationHistory;
 		}
 	}
 

@@ -17,11 +17,11 @@ import com.monitrack.entity.Location;
 import com.monitrack.enumeration.SensorActivity;
 import com.monitrack.enumeration.SensorType;
 
-public class SensorDAO extends DAO<SensorConfiguration> {
+public class SensorConfigurationDAO extends DAO<SensorConfiguration> {
 
-	private static final Logger log = LoggerFactory.getLogger(SensorDAO.class);
+	private static final Logger log = LoggerFactory.getLogger(SensorConfigurationDAO.class);
 
-	public SensorDAO(Connection connection) {
+	public SensorConfigurationDAO(Connection connection) {
 		super(connection);
 	}
 
