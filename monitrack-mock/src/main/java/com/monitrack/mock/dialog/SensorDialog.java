@@ -22,7 +22,7 @@ public class SensorDialog extends JDialog {
 		setLayout(new FlowLayout(FlowLayout.LEFT, 25, 25));
 		SensorConfiguration sensorConfiguration = null;
 		for(int i = 1; i < 5; i++) {
-			sensorConfiguration = new SensorConfiguration(i, SensorActivity.ENABLED, SensorType.FLOW, 1, "192.168.20.15", "dsfsd", "dsfsdf", 
+			sensorConfiguration = new SensorConfiguration(i,i, SensorActivity.ENABLED, SensorType.FLOW, 1, "192.168.20.15", "dsfsd", "dsfsdf", 
 					1.0f, 2.0f, null, null, null, null, null, 2500f, "Decibel", 4.0f, 0.0f, 5.0f, 6.23f, 4.94f);
 			this.add(new SensorInfoPanel(sensorConfiguration));
 			

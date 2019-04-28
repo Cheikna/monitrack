@@ -1,34 +1,22 @@
 package com.monitrack.entity;
 import java.sql.Time;
 import java.sql.Timestamp;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.monitrack.enumeration.SensorActivity;
 import com.monitrack.enumeration.SensorType;
-
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SensorConfiguration {
-
-	@JsonProperty("sensor_id")
-	private Integer id;
+public class SensorConfiguration extends Sensor {
+	
+	@JsonProperty("sensor_configuration_id")
+	private Integer sensorConfigurationId;
 	@JsonProperty("sensor_activity")
 	private SensorActivity sensorActivity;
-	@JsonProperty("sensor_type")
-	private SensorType sensorType;
 	@JsonProperty("location_id")	
 	private Integer locationId;
 	@JsonProperty("ip_address")
 	private String ipAddress;
-	@JsonProperty("mac_address")
-	private String macAddress;
-	@JsonProperty("serial_number")
-	private String serialNumber;
-	@JsonProperty("hardware_version")
-	private Float hardwareVersion;
-	@JsonProperty("software_version")
-	private Float softwareVersion;
 	@JsonProperty("creation_date")
 	private Timestamp creationDate;
 	@JsonProperty("date_of_last_message")
@@ -57,25 +45,17 @@ public class SensorConfiguration {
 	@JsonProperty("location")
 	private Location location;
 
-	public SensorConfiguration() {
-		//Empty constructor
-	}
-
-	public SensorConfiguration(Integer id, SensorActivity sensorActivity, SensorType sensorType, Integer locationId,
+	public SensorConfiguration(Integer sensorConfigurationId, Integer sensorId, SensorActivity sensorActivity, SensorType sensorType, Integer locationId,
 			String ipAddress, String macAddress, String serialNumber, Float hardwareVersion, Float softwareVersion,
 			Timestamp creationDate, Timestamp lastMessageDate, Timestamp lastConfigurationDate, Time beginTime,
 			Time endTime, Float checkFrequency, String measurementUnit, Float currentThreshold, Float minDangerThreshold,
 			Float maxDangerThreshold, Float positionX,
 			Float positionY) {
-		this.id = id;
+		super(sensorId, sensorType, macAddress, serialNumber, hardwareVersion, softwareVersion);
+		this.sensorConfigurationId = sensorConfigurationId;
 		this.sensorActivity = sensorActivity;
-		this.sensorType = sensorType;
 		this.locationId = locationId;
 		this.ipAddress = ipAddress;
-		this.macAddress = macAddress;
-		this.serialNumber = serialNumber;
-		this.hardwareVersion = hardwareVersion;
-		this.softwareVersion = softwareVersion;
 		this.creationDate = (creationDate != null) ? creationDate : new Timestamp(System.currentTimeMillis());
 		this.lastMessageDate = lastMessageDate;
 		this.lastConfigurationDate = lastConfigurationDate;
@@ -89,13 +69,15 @@ public class SensorConfiguration {
 		this.positionX = positionX;
 		this.positionY = positionY;
 	}
-
-	public Integer getId() {
-		return id;
+	
+	
+	
+	public Integer getSensorConfigurationId() {
+		return sensorConfigurationId;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setSensorConfigurationId(Integer sensorConfigurationId) {
+		this.sensorConfigurationId = sensorConfigurationId;
 	}
 
 	public SensorActivity getSensorActivity() {
@@ -105,15 +87,6 @@ public class SensorConfiguration {
 	public void setSensorActivity(SensorActivity sensorActivity) {
 		this.sensorActivity = sensorActivity;
 	}
-
-	public SensorType getSensorType() {
-		return sensorType;
-	}
-
-	/*//FIXME In real world can a sensor change type ?
-	public void setSensorType(SensorType sensorType) {
-		this.sensorType = sensorType;
-	}*/
 
 	public Integer getLocationId() {
 		return locationId;
@@ -131,38 +104,6 @@ public class SensorConfiguration {
 		this.ipAddress = ipAddress;
 	}
 
-	public String getMacAddress() {
-		return macAddress;
-	}
-
-	public void setMacAddress(String macAddress) {
-		this.macAddress = macAddress;
-	}
-
-	public String getSerialNumber() {
-		return serialNumber;
-	}
-
-	public void setSerialNumber(String serialNumber) {
-		this.serialNumber = serialNumber;
-	}
-
-	public Float getHardwareVersion() {
-		return hardwareVersion;
-	}
-
-	public void setHardwareVersion(Float hardwareVersion) {
-		this.hardwareVersion = hardwareVersion;
-	}
-
-	public Float getSoftwareVersion() {
-		return softwareVersion;
-	}
-
-	public void setSoftwareVersion(Float softwareVersion) {
-		this.softwareVersion = softwareVersion;
-	}
-
 	public Timestamp getCreationDate() {
 		return creationDate;
 	}
@@ -177,10 +118,6 @@ public class SensorConfiguration {
 
 	public void setLastMessageDate(Timestamp lastMessageDate) {
 		this.lastMessageDate = lastMessageDate;
-	}
-
-	public void setLastMessageDate() {
-		this.setLastMessageDate(new Timestamp(System.currentTimeMillis()));
 	}
 
 	public Timestamp getLastConfigurationDate() {
@@ -271,9 +208,12 @@ public class SensorConfiguration {
 		this.location = location;
 	}
 
+	public void setLastMessageDate() {
+		this.setLastMessageDate(new Timestamp(System.currentTimeMillis()));
+	}
 	@Override
 	public String toString() {
-		return "Sensor [id=" + id + ", sensorActivity=" + sensorActivity + ", sensorType=" + sensorType
+		return "Sensor [id=" + sensorConfigurationId + ", sensorActivity=" + sensorActivity + ", sensorType=" + sensorType
 				+ ", locationId=" + locationId + ", ipAddress=" + ipAddress + ", macAddress=" + macAddress
 				+ ", serialNumber=" + serialNumber + ", hardwareVersion=" + hardwareVersion + ", softwareVersion="
 				+ softwareVersion + ", creationDate=" + creationDate + ", lastMessageDate=" + lastMessageDate
@@ -284,32 +224,6 @@ public class SensorConfiguration {
 	}
 	
 	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	//FIXME Just the ID Cheikna - Are you sure about that ???
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		SensorConfiguration other = (SensorConfiguration) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
-
 	@JsonIgnore
 	public String getStateInfo() throws Exception {
 		String locationName = "Salle de jeu";//FIXME sensor.getLocation().getNameLocation();
@@ -350,8 +264,6 @@ public class SensorConfiguration {
 			return "The water level " + template;
 		default:
 			throw new Exception("The type of the sensor was not found");
-
 		}
 	}
-
 }
