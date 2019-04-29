@@ -34,6 +34,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 	private JComboBox<String> actionsCombobox;
 	//NORTHPANEL (COMBOBOX + CREATE BUTTON)
 	private JPanel northPanel;
+	private JLabel create;
 	private JButton JBCreate;
 	//LAYOUT FOR ACTIONLISTENER
 	private CardLayout cards;
@@ -57,6 +58,12 @@ public class NeedsTab extends JPanel implements ActionListener{
 
 	private JLabel jlPartsSizeNewHome;
 	private JTextField jtfPartsSizeNewHome;
+
+	private JLabel jlPartsDoorNumberNewHome;
+	private JTextField jtfPartsDoorNumberNewHome;
+
+	private JLabel jlPartsWindowNumberNewHome;
+	private JTextField jtfPartsWindowNumberNewHome;
 
 	private JButton jbNewPartsButtonNewHome;
 
@@ -125,7 +132,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 	private JButton jbOneMoreAddSensor;
 	private JButton jbOneLessAddSensor;
 	private JButton jbDeleteAddSensor;
-	
+
 	//Title of Basket Panel
 	private JLabel lblBasketTitleAddSensorPanel;
 
@@ -136,6 +143,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 	private BasketSensor 					basketAddSensor				= new BasketSensor();
 	private DefaultListModel<String>dlmBasketLineAddSensor 		= new DefaultListModel<String>();
 	private JList<String>  			jlBasketLineAddSensor		= new JList<String>(dlmBasketLineAddSensor);
+	private JButton jbDeletePartsNewHome;
 
 	/**
 	 * Create the panel.
@@ -157,7 +165,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 		northPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		//Components of NorthPanel
-		JLabel create = new JLabel("Créer un devis :");
+		create = new JLabel("Créer un devis :");
 		JBCreate = new JButton("Créer");
 		JBCreate.addActionListener(this);
 		actionsCombobox = new JComboBox<String>();
@@ -196,9 +204,10 @@ public class NeedsTab extends JPanel implements ActionListener{
 
 		//PANEL PRODUCT ON LEFT NEWHOME
 		productPaneNewHome = new JPanel();
-		productPaneNewHome.setBounds(10, 22, 425, 262);
+		productPaneNewHome.setBounds(10, 22, 425, 191);
 		JPnewHome.add(productPaneNewHome);
 		productPaneNewHome.setLayout(null);
+
 		//part's name of NEWHOME
 		jlPartsNameNewHome = new JLabel("Ajouter une pièce  -   Entrez le nom de la pièce  :");
 		jlPartsNameNewHome.setFont(new Font("Calibri", Font.PLAIN, 15));
@@ -219,19 +228,41 @@ public class NeedsTab extends JPanel implements ActionListener{
 		jtfPartsSizeNewHome = new JTextField();
 		jtfPartsSizeNewHome.setFont(new Font("Calibri", Font.PLAIN, 15));
 		jtfPartsSizeNewHome.setColumns(10);
-		jtfPartsSizeNewHome.setBounds(323, 34, 62, 28);
+		jtfPartsSizeNewHome.setBounds(353, 34, 62, 28);
 		productPaneNewHome.add(jtfPartsSizeNewHome);
+
+		jlPartsDoorNumberNewHome = new JLabel("Ajouter une pièce  -   Entrez le nombre de portes :");
+		jlPartsDoorNumberNewHome.setFont(new Font("Calibri", Font.PLAIN, 15));
+		jlPartsDoorNumberNewHome.setBounds(10, 59, 354, 37);
+		productPaneNewHome.add(jlPartsDoorNumberNewHome);
+
+		jtfPartsDoorNumberNewHome = new JTextField();
+		jtfPartsDoorNumberNewHome.setFont(new Font("Calibri", Font.PLAIN, 15));
+		jtfPartsDoorNumberNewHome.setColumns(10);
+		jtfPartsDoorNumberNewHome.setBounds(353, 64, 62, 28);
+		productPaneNewHome.add(jtfPartsDoorNumberNewHome);
+
+		jlPartsWindowNumberNewHome = new JLabel("Ajouter une pièce  -   Entrez le nombre de fenêtre :");
+		jlPartsWindowNumberNewHome.setFont(new Font("Calibri", Font.PLAIN, 15));
+		jlPartsWindowNumberNewHome.setBounds(10, 90, 354, 37);
+		productPaneNewHome.add(jlPartsWindowNumberNewHome);
+
+		jtfPartsWindowNumberNewHome = new JTextField();
+		jtfPartsWindowNumberNewHome.setFont(new Font("Calibri", Font.PLAIN, 15));
+		jtfPartsWindowNumberNewHome.setColumns(10);
+		jtfPartsWindowNumberNewHome.setBounds(353, 95, 62, 28);
+		productPaneNewHome.add(jtfPartsWindowNumberNewHome);
 
 		jbNewPartsButtonNewHome = new JButton("Ajouter la pièce");
 		jbNewPartsButtonNewHome.setFont(new Font("Calibri", Font.PLAIN, 15));
 		jbNewPartsButtonNewHome.addActionListener(this);
-		jbNewPartsButtonNewHome.setBounds(229, 75, 164, 37);
+		jbNewPartsButtonNewHome.setBounds(251, 138, 164, 37);
 		productPaneNewHome.add(jbNewPartsButtonNewHome);
 
 
 		//BASKETPANEL FOR NEW HOME
 		basketPanelNewHome = new JPanel();
-		basketPanelNewHome.setBounds(445, 11, 473, 273);
+		basketPanelNewHome.setBounds(462, 11, 898, 201);
 		JPnewHome.add(basketPanelNewHome);
 		basketPanelNewHome.setLayout(null);
 		//TITLE OF SCROLL FOR NEW HOME
@@ -241,8 +272,14 @@ public class NeedsTab extends JPanel implements ActionListener{
 		basketPanelNewHome.add(jlListTitleNewHome);
 		//SCROLL FOR PRODUCTS OF NEW HOME
 		jspBasketScrollNewHome = new JScrollPane(this.jlBasketLinesNewHome);
-		jspBasketScrollNewHome.setBounds(10, 29, 453, 222);
+		jspBasketScrollNewHome.setBounds(10, 29, 878, 122);
 		basketPanelNewHome.add(jspBasketScrollNewHome);		
+
+		jbDeletePartsNewHome = new JButton("Supprimer la pièce");
+		jbDeletePartsNewHome.addActionListener(this);
+		jbDeletePartsNewHome.setFont(new Font("Calibri", Font.PLAIN, 15));
+		jbDeletePartsNewHome.setBounds(10, 153, 164, 37);
+		basketPanelNewHome.add(jbDeletePartsNewHome);
 
 
 		//HomeGrowing PANEL SETTINGS AND CONFIGURATION - PRODUCTS AND BASKET TEMPLATE
@@ -313,7 +350,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 		JPaddSensor.setLayout(null);
 		cardPanel.add(JPaddSensor, "3");
 		//TITLE
-		jlTitleAddSensor = new JLabel("Devis installation de capteurs suppl\u00E9mentaires");
+		jlTitleAddSensor = new JLabel("Devis installation de capteurs supplémentaires");
 		jlTitleAddSensor.setFont(new Font("Calibri", Font.BOLD, 15));
 		jlTitleAddSensor.setBounds(10, 0, 369, 14);
 		JPaddSensor.add(jlTitleAddSensor);
@@ -373,6 +410,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public void dataSensors()
 	{
 		/*this.alListSensorsAddSensor.add(new SensorShop(1,"Olympia",SensorType.ACCESS_CONTROL, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 22.97, 70));
@@ -393,7 +431,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 			String response = MonitrackGuiUtil.sendRequest(jsonRequest);
 			// Retrieves all the sensor from the database
 			shops = (List<SensorShop>)JsonUtil.deserializeObject(response);
-			String text = "";
+			//			String text = "";
 			for(SensorShop s : shops) {
 				//this.alListSensorsAddSensor.add(s);
 				dlmSensorsAddSensor.addElement(s.toString());
@@ -433,6 +471,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
+		//Listener for JcomboBox with cardLayout
 		if(e.getSource() == JBCreate){
 			if(actionsCombobox.getSelectedItem().toString().equalsIgnoreCase("Création d'une nouvelle résidence"))
 			{
@@ -457,18 +496,20 @@ public class NeedsTab extends JPanel implements ActionListener{
 				cardPanel.revalidate();
 			}
 		}
-
+		//Listener for newHome
 		if(e.getSource() == this.jbNewPartsButtonNewHome)
 		{
 			if(!jtfPartsSizeNewHome.getText().isEmpty() || jtfPartsNameNewHome.getText().isEmpty() ){
 				int c1 = intInside(jtfPartsSizeNewHome);
-				basketNewHome.addArc(new ArchitectureBuilder(jtfPartsNameNewHome.getText(), c1));
+				int c2 = intInside(jtfPartsDoorNumberNewHome);
+				int c3 = intInside(jtfPartsWindowNumberNewHome);
+				basketNewHome.addArc(new ArchitectureBuilder(jtfPartsNameNewHome.getText(), c1, c2, c3));
 				this.dlmBasketLinesNewHome.clear();
 				this.jtfPartsNameNewHome.setText("");
 				this.jtfPartsSizeNewHome.setText("");
-				for (CommandLineArc lignecommande : basketNewHome.alCommandLineArc)
+				for (CommandLineArc cl : basketNewHome.alCommandLineArc)
 				{
-					this.dlmBasketLinesNewHome.addElement(lignecommande.getArc().getNom()+" - superficie: "+lignecommande.getArc().getArea()+"m²" );
+					this.dlmBasketLinesNewHome.addElement("Nom : "+cl.getArc().getNom()+" - Superficie : "+cl.getArc().getArea()+"m² - Nombre de portes : "+cl.getArc().getDoorsNumber()+" - Nombre de fenêtres : " +cl.getArc().getWindowsNumber());
 				}
 			}
 			else{JOptionPane.showMessageDialog(this, "Veuillez saisir correctement les données");}
@@ -476,19 +517,34 @@ public class NeedsTab extends JPanel implements ActionListener{
 
 		}
 
-		if(e.getSource() == this.jbNewPartsButtonGrowing)
+		if(e.getSource() == this.jbDeletePartsNewHome)
 		{
-			int c1 = intInside(jtfPartsSizeGrowing);
-			basketGrowing.addArc(new ArchitectureBuilder(jtfPartsNameGrowing.getText(), c1));
-			this.dlmBasketLinesGrowing.clear();
-			this.jtfPartsNameGrowing.setText("");
-			this.jtfPartsSizeGrowing.setText("");
-			for (CommandLineArc cl : basketGrowing.alCommandLineArc)
+			int index = jlBasketLinesNewHome.getSelectedIndex();
+			basketNewHome.alCommandLineArc.remove(index);
+			if(index == -1)
 			{
-				this.dlmBasketLinesGrowing.addElement(cl.getArc().getNom()+" - superficie: "+cl.getArc().getArea()+"m²" );
+				return;
+			}
+			this.dlmBasketLinesNewHome.clear();
+			for (CommandLineArc cl : basketNewHome.alCommandLineArc)
+			{
+				this.dlmBasketLinesNewHome.addElement("Nom : "+cl.getArc().getNom()+" - Superficie : "+cl.getArc().getArea()+"m² - Nombre de portes : "+cl.getArc().getDoorsNumber()+"- Nombre de fenêtres : " +cl.getArc().getWindowsNumber());			
 			}
 		}
 
+		//		if(e.getSource() == this.jbNewPartsButtonGrowing)
+		//		{
+		//			int c1 = intInside(jtfPartsSizeGrowing);
+		//			basketGrowing.addArc(new ArchitectureBuilder(jtfPartsNameGrowing.getText(), c1));
+		//			this.dlmBasketLinesGrowing.clear();
+		//			this.jtfPartsNameGrowing.setText("");
+		//			this.jtfPartsSizeGrowing.setText("");
+		//			for (CommandLineArc cl : basketGrowing.alCommandLineArc)
+		//			{
+		//				this.dlmBasketLinesGrowing.addElement(cl.getArc().getNom()+" - superficie: "+cl.getArc().getArea()+"m²" );
+		//			}
+		//		}
+		//Listener Panel AddSensor
 		if(e.getSource() == this.jbAddSensorToBasket)
 		{
 			int index = jlSensorsNameAddSensor.getSelectedIndex();
@@ -496,12 +552,12 @@ public class NeedsTab extends JPanel implements ActionListener{
 			this.dlmBasketLineAddSensor.clear();
 			for (CommandLineSensor cl : basketAddSensor.alCommandLineSensor)
 			{
-				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+" - Marque : "+cl.getSensor().getSensorMark()+"- Prix : "+cl.getSensor().getSensorPrice()+" - Prix de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice());
+				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+" - Marque : "+cl.getSensor().getSensorMark()+" - Prix : "+cl.getSensor().getSensorPrice()+"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+"€/an");
 			}
 			this.jlBasketLineAddSensor.setSelectedIndex(index);
 			this.jlSensorsNameAddSensor.setSelectedIndex(index);
 		}
-		
+
 		if(e.getSource() == this.jbDeleteAddSensor)
 		{
 			int index = jlBasketLineAddSensor.getSelectedIndex();
@@ -513,7 +569,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 			this.dlmBasketLineAddSensor.clear();
 			for (CommandLineSensor cl : basketAddSensor.alCommandLineSensor)
 			{
-				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+" - Marque : "+cl.getSensor().getSensorMark()+"- Prix : "+cl.getSensor().getSensorPrice()+" - Prix de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice());
+				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+" - Marque : "+cl.getSensor().getSensorMark()+" - Prix : "+cl.getSensor().getSensorPrice()+"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+"€/an");			
 			}
 		}
 		if(e.getSource() == this.jbOneMoreAddSensor)
@@ -523,15 +579,15 @@ public class NeedsTab extends JPanel implements ActionListener{
 			{
 				return;
 			}
-			CommandLineSensor cl = this.basketAddSensor.alCommandLineSensor.get(index);
-			cl.setQuantity(cl.getQuantity()+1);
+			CommandLineSensor cmd = this.basketAddSensor.alCommandLineSensor.get(index);
+			cmd.setQuantity(cmd.getQuantity()+1);
 			this.dlmBasketLineAddSensor.clear();
-			for (CommandLineSensor cmd : basketAddSensor.alCommandLineSensor)
+			for (CommandLineSensor cl : basketAddSensor.alCommandLineSensor)
 			{
-				this.dlmBasketLineAddSensor.addElement("Quantité : "+cmd.getQuantity()+" - Marque : "+cmd.getSensor().getSensorMark()+"- Prix : "+cmd.getSensor().getSensorPrice()+" - Prix de la maintenance à l'année : "+cmd.getSensor().getSensorInterviewPrice());
+				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+" - Marque : "+cl.getSensor().getSensorMark()+" - Prix : "+cl.getSensor().getSensorPrice()+"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+"€/an");			
 			}
 			this.jlBasketLineAddSensor.setSelectedIndex(index);
-			
+
 		}
 		if(e.getSource() == this.jbOneLessAddSensor)
 		{
@@ -540,19 +596,18 @@ public class NeedsTab extends JPanel implements ActionListener{
 			{
 				return;
 			}
-			CommandLineSensor cl = this.basketAddSensor.alCommandLineSensor.get(index);
-			cl.setQuantity(cl.getQuantity()-1);
+			CommandLineSensor cmd = this.basketAddSensor.alCommandLineSensor.get(index);
+			cmd.setQuantity(cmd.getQuantity()-1);
 			this.dlmBasketLineAddSensor.clear();
-			if(cl.getQuantity() == 0)
+			if(cmd.getQuantity() == 0)
 			{
 				basketAddSensor.alCommandLineSensor.remove(index);
 				this.dlmBasketLineAddSensor.clear();
 			}
-			for (CommandLineSensor cmd : basketAddSensor.alCommandLineSensor)
+			for (CommandLineSensor cl : basketAddSensor.alCommandLineSensor)
 			{
-				this.dlmBasketLineAddSensor.addElement("Quantité : "+cmd.getQuantity()+" - Marque : "+cmd.getSensor().getSensorMark()+"- Prix : "+cmd.getSensor().getSensorPrice()+" - Prix de la maintenance à l'année : "+cmd.getSensor().getSensorInterviewPrice());
+				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+" - Marque : "+cl.getSensor().getSensorMark()+" - Prix : "+cl.getSensor().getSensorPrice()+"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+"€/an");			
 			}
-
 			this.jlBasketLineAddSensor.setSelectedIndex(index);
 		}
 	}
@@ -1345,5 +1400,89 @@ public class NeedsTab extends JPanel implements ActionListener{
 	 */
 	public void setJlBasketLineAddSensor(JList<String> jlBasketLineAddSensor) {
 		this.jlBasketLineAddSensor = jlBasketLineAddSensor;
+	}
+
+	/**
+	 * @return the create
+	 */
+	public JLabel getCreate() {
+		return create;
+	}
+
+	/**
+	 * @param create the create to set
+	 */
+	public void setCreate(JLabel create) {
+		this.create = create;
+	}
+
+	/**
+	 * @return the jlPartsDoorNumberNewHome
+	 */
+	public JLabel getJlPartsDoorNumberNewHome() {
+		return jlPartsDoorNumberNewHome;
+	}
+
+	/**
+	 * @param jlPartsDoorNumberNewHome the jlPartsDoorNumberNewHome to set
+	 */
+	public void setJlPartsDoorNumberNewHome(JLabel jlPartsDoorNumberNewHome) {
+		this.jlPartsDoorNumberNewHome = jlPartsDoorNumberNewHome;
+	}
+
+	/**
+	 * @return the jtfPartsDoorNumberNewHome
+	 */
+	public JTextField getJtfPartsDoorNumberNewHome() {
+		return jtfPartsDoorNumberNewHome;
+	}
+
+	/**
+	 * @param jtfPartsDoorNumberNewHome the jtfPartsDoorNumberNewHome to set
+	 */
+	public void setJtfPartsDoorNumberNewHome(JTextField jtfPartsDoorNumberNewHome) {
+		this.jtfPartsDoorNumberNewHome = jtfPartsDoorNumberNewHome;
+	}
+
+	/**
+	 * @return the jlPartsWindowNumberNewHome
+	 */
+	public JLabel getJlPartsWindowNumberNewHome() {
+		return jlPartsWindowNumberNewHome;
+	}
+
+	/**
+	 * @param jlPartsWindowNumberNewHome the jlPartsWindowNumberNewHome to set
+	 */
+	public void setJlPartsWindowNumberNewHome(JLabel jlPartsWindowNumberNewHome) {
+		this.jlPartsWindowNumberNewHome = jlPartsWindowNumberNewHome;
+	}
+
+	/**
+	 * @return the jtfPartsWindowNumberNewHome
+	 */
+	public JTextField getJtfPartsWindowNumberNewHome() {
+		return jtfPartsWindowNumberNewHome;
+	}
+
+	/**
+	 * @param jtfPartsWindowNumberNewHome the jtfPartsWindowNumberNewHome to set
+	 */
+	public void setJtfPartsWindowNumberNewHome(JTextField jtfPartsWindowNumberNewHome) {
+		this.jtfPartsWindowNumberNewHome = jtfPartsWindowNumberNewHome;
+	}
+
+	/**
+	 * @return the jbDeletePartsNewHome
+	 */
+	public JButton getJbDeletePartsNewHome() {
+		return jbDeletePartsNewHome;
+	}
+
+	/**
+	 * @param jbDeletePartsNewHome the jbDeletePartsNewHome to set
+	 */
+	public void setJbDeletePartsNewHome(JButton jbDeletePartsNewHome) {
+		this.jbDeletePartsNewHome = jbDeletePartsNewHome;
 	}
 }

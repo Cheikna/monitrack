@@ -44,7 +44,6 @@ public class BasketArc {
 			}
 		}
 	}
-
 	public void clearBasket()
 	{
 		this.alCommandLineArc.clear();
@@ -53,9 +52,9 @@ public class BasketArc {
 	public static void main(String[] args)
 	{
 		System.out.println("1 : création de trois arc");
-		ArchitectureBuilder arc1 = new ArchitectureBuilder("Couloir", 44);
-		ArchitectureBuilder arc2 = new ArchitectureBuilder("Piece", 20);
-		ArchitectureBuilder arc3 = new ArchitectureBuilder("Piece", 50);
+		ArchitectureBuilder arc1 = new ArchitectureBuilder("Couloir", 44, 1, 3);
+		ArchitectureBuilder arc2 = new ArchitectureBuilder("Piece", 20, 2, 1);
+		ArchitectureBuilder arc3 = new ArchitectureBuilder("Piece", 50, 1, 2);
 		System.out.println("arc 1 : "+ arc1);
 		System.out.println("arc 2 : "+ arc2);
 		System.out.println("arc 3 : "+ arc3);

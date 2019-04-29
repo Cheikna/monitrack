@@ -25,36 +25,42 @@ public class CommandLineArc {
 	
 	public String toString()
 	{
-		return "LigneCommande [architecureBuilder=" + arc + "]";
+		return "Ligne de commande [architecureBuilder=" +arc+ "]";
 	}
 
 	public static void main(String[] args)
 	{
 		System.out.println("1 : création de trois arc arc1, arc2, arc3");
-		ArchitectureBuilder arc1 = new ArchitectureBuilder("Couloir", 22);
+		ArchitectureBuilder arc1 = new ArchitectureBuilder("Couloir", 22, 1, 4);
 		System.out.println("arc1 : "+arc1);
-		ArchitectureBuilder arc2 = new ArchitectureBuilder("Piece", 33);
+		ArchitectureBuilder arc2 = new ArchitectureBuilder("Piece", 33, 2, 1);
 		System.out.println("arc2 : "+arc2);
-		ArchitectureBuilder arc3 = new ArchitectureBuilder("Piece", 50);
+		ArchitectureBuilder arc3 = new ArchitectureBuilder("Piece", 50, 1, 2);
 		System.out.println("arc3 : "+arc3);
 
 		System.out.println("\n2 : création d'une ligne de commande lc de l'architectureBuilder arc1");
 		CommandLineArc lc1 = new CommandLineArc(arc1);
 		System.out.println("lc1 : "+lc1.toString());
-		System.out.println("Nom de l'arc1 = "+arc1.getNom());
-		System.out.println("Superficie de l'arc1 = "+arc1.getArea());
+		System.out.println("Nom de l'arc1= "+arc1.getNom());
+		System.out.println("Superficie de l'arc1= "+arc1.getArea());
+		System.out.println("Nombre de portes de l'arc1= "+arc1.getDoorsNumber());
+		System.out.println("Nombre de fenetres de l'arc1= "+arc1.getWindowsNumber());
 
 		System.out.println("\n3 : lc représente maintenant une ligne de l'architectBuilder arc2");
 		CommandLineArc lc2 = new CommandLineArc(arc2);
 		System.out.println("lc2 : "+lc2.toString());
-		System.out.println("Nom de l'arc2 = "+arc2.getNom());
-		System.out.println("Superficie de l'arc2 = "+arc2.getArea());
+		System.out.println("Nom de l'arc2= "+arc2.getNom());
+		System.out.println("Superficie de l'arc2= "+arc2.getArea());
+		System.out.println("Nombre de portes de l'arc2= "+arc2.getDoorsNumber());
+		System.out.println("Nombre de fenetres de l'arc2= "+arc2.getWindowsNumber());
 
 		System.out.println("\n4 : lc représente maintenant une ligne darc arc3");
 		CommandLineArc lc3 = new CommandLineArc(arc3);
 		System.out.println("lc3 : "+lc3.toString());
-		System.out.println("Nom de l'arc3 = "+arc3.getNom());
-		System.out.println("Superficie de l'arc3 = "+arc3.getArea());
+		System.out.println("Nom de l'arc3= "+arc3.getNom());
+		System.out.println("Superficie de l'arc3= "+arc3.getArea());
+		System.out.println("Nombre de portes de l'arc3= "+arc3.getDoorsNumber());
+		System.out.println("Nombre de fenetres de l'arc3= "+arc3.getWindowsNumber());
 	}
 
 

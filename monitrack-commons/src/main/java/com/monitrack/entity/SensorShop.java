@@ -42,7 +42,7 @@ public class SensorShop extends Sensor{
 
 
 	public String toString(){
-		return "SensorShop = [Marque = "+sensorMark+" Type = "+sensorType.getFrenchLabel()+"  Prix = "+sensorPrice+" Cout de la maintenance = "+sensorInterviewPrice+"]";
+		return "Marque = "+sensorMark+" - Type = "+sensorType.getFrenchLabel()+"- Prix = "+sensorPrice+"€ - Cout de la maintenance = "+sensorInterviewPrice+"€/an";
 	}
 
 	/**
