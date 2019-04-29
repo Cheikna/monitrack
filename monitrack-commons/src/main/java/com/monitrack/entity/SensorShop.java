@@ -1,6 +1,7 @@
 package com.monitrack.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.monitrack.enumeration.Energy;
 import com.monitrack.enumeration.SensorType;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -10,6 +11,8 @@ public class SensorShop extends Sensor{
 	private String sensorMark;
 	private float sensorPrice;
 	private float sensorInterviewPrice;
+	private Energy energy;
+	private Integer lifeTime;
 	
 //	public SensorShop(String sensorMark, SensorType sensorType, double sensorPrice, int sensorInterviewPrice)
 //	{
@@ -21,12 +24,14 @@ public class SensorShop extends Sensor{
 //	}
 	
 	public SensorShop(Integer sensorShopId, Integer sensorId, String sensorMark, SensorType sensorType, String macAddress, String serialNumber, Float hardwareVersion,
-			Float softwareVersion, float sensorPrice, float sensorInterviewPrice) {
+			Float softwareVersion, float sensorPrice, float sensorInterviewPrice, Energy energy, Integer lifeTime) {
 		super(sensorId, sensorType, macAddress, serialNumber, hardwareVersion, softwareVersion);
 		this.sensorShopId = sensorShopId;
 		this.sensorMark = sensorMark;
 		this.sensorPrice = sensorPrice;
 		this.sensorInterviewPrice = sensorInterviewPrice;
+		this.energy = energy;
+		this.lifeTime = lifeTime;
 	}
 	
 	public SensorShop() {}
@@ -87,9 +92,28 @@ public class SensorShop extends Sensor{
 		this.sensorInterviewPrice = sensorInterviewPrice;
 	}
 	
+	
+	public Energy getEnergy() {
+		return energy;
+	}
+
+	public void setEnergy(Energy energy) {
+		this.energy = energy;
+	}
+	
+	
+
+	public Integer getLifeTime() {
+		return lifeTime;
+	}
+
+	public void setLifeTime(Integer lifeTime) {
+		this.lifeTime = lifeTime;
+	}
+
 	public static void main(String[] args)
 	{
-		SensorShop s1 = new SensorShop(1 ,1,"TOSHIBA", SensorType.HUMIDITY, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 14.50f, 160f);
+		SensorShop s1 = new SensorShop(1 ,1,"TOSHIBA", SensorType.HUMIDITY, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 14.50f, 160f,Energy.A_PLUS, 7);
 		System.out.println(s1);
 	}
 

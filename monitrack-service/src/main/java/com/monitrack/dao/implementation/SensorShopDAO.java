@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 
 import com.monitrack.dao.abstracts.DAO;
 import com.monitrack.entity.SensorShop;
+import com.monitrack.enumeration.Energy;
 import com.monitrack.enumeration.SensorType;
 
 public class SensorShopDAO extends DAO<SensorShop> {
@@ -36,7 +37,8 @@ public class SensorShopDAO extends DAO<SensorShop> {
 		SensorShop sensorShop = null;
 		try {
 			sensorShop = new SensorShop(rs.getInt("ID_SENSOR_SHOP"), rs.getInt("ID_SENSOR"), rs.getString("MARK"), SensorType.valueOf(rs.getString("TYPE")),
-					rs.getString("MAC_ADDRESS"), rs.getString("SERIAL_NUMBER"), rs.getFloat("HARDWARE_VERSION"), rs.getFloat("SOFTWARE_VERSION"), rs.getFloat("PURCHASE_COST"), rs.getFloat("MAINTENANCE_COST"));
+					rs.getString("MAC_ADDRESS"), rs.getString("SERIAL_NUMBER"), rs.getFloat("HARDWARE_VERSION"), rs.getFloat("SOFTWARE_VERSION"), rs.getFloat("PURCHASE_COST"), 
+					rs.getFloat("MAINTENANCE_COST"), Energy.getValueOf(rs.getString("ENERGY")), rs.getInt("LIFE_TIME"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
