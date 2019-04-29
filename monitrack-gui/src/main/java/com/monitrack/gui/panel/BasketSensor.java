@@ -70,10 +70,37 @@ public class BasketSensor {
 			}
 		}
 	}
-
+	
 	public void clearBasket()
 	{
 		this.alCommandLineSensor.clear();
+	}
+	
+	public double totalBasketPrice(){
+		double result = 0;
+		for (CommandLineSensor cmd : alCommandLineSensor){
+			
+			if(this.alCommandLineSensor.isEmpty())
+			{
+				return result = 0;
+			}
+			result += cmd.totalSensorPrice();			;
+		}
+		return result;
+		
+	}
+	
+	public double totalBasketInterviewPrice(){
+		double result = 0;
+		for (CommandLineSensor cmd : alCommandLineSensor){
+			
+			if(this.alCommandLineSensor.isEmpty())
+			{
+				return result = 0;
+			}
+			result += cmd.totalSensorInterviewPrice();			;
+		}
+		return result;
 	}
 	
 	public static void main(String[] args)
@@ -84,14 +111,13 @@ public class BasketSensor {
 			String response = MonitrackGuiUtil.sendRequest(jsonRequest);
 			// Retrieves all the sensor from the database
 			List<SensorShop> shops = (List<SensorShop>) JsonUtil.deserializeObject(response);
-			System.out.println("1 : création de trois arc");
+			System.out.println("1 : création de trois capteurs");
 			SensorShop s1 = shops.get(0);
 			SensorShop s2 = shops.get(1);
 			SensorShop s3 = shops.get(2);
-			System.out.println("arc 1 : " + s1);
-			System.out.println("arc 2 : " + s2);
-			System.out.println("arc 3 : " + s3);
-			System.out.println();
+			System.out.println("s1 : " + s1);
+			System.out.println("s2 : " + s2);
+			System.out.println("s3 : " + s3);
 			System.out.println("2 : création d'un panier");
 			BasketSensor bsk = new BasketSensor();
 			System.out.println(bsk);
@@ -101,28 +127,19 @@ public class BasketSensor {
 			bsk.addSensor(3, s2);;
 			bsk.addSensor(2, s3);
 			System.out.println(bsk);
+			System.out.println(bsk.totalBasketPrice());
+			System.out.println(bsk.totalBasketInterviewPrice());
 			
 
 
-			System.out.println("4 : on ajoute au panier 1 produit1");
+			System.out.println("4 : on ajoute au panier 3 produit1");
 			bsk.addSensor(3, s1);;
 			System.out.println(bsk);
+			System.out.println(bsk.totalBasketPrice());
+			System.out.println(bsk.totalBasketInterviewPrice());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-
-
-//
-//
-//		System.out.println("5 : on supprime dans le panier le produit3");
-//		panier.deleteArc(arc3);
-//		System.out.println(panier);
-//
-//		System.out.println("6 : on vide le panier");
-//		panier.clearBasket();
-//		System.out.println(panier);
-
 	}
 
 

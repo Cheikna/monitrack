@@ -1,6 +1,11 @@
 package com.monitrack.gui.panel;
+import java.util.List;
+
 import com.monitrack.entity.SensorShop;
+import com.monitrack.enumeration.RequestType;
 import com.monitrack.enumeration.SensorType;
+import com.monitrack.shared.MonitrackGuiUtil;
+import com.monitrack.util.JsonUtil;
 
 public class CommandLineSensor {
 	private int quantity;
@@ -14,26 +19,46 @@ public class CommandLineSensor {
 
 	public String toString()
 	{
-		return "LigneCommande [quantité"+quantity+" "+"sensor ="+sensor+"]";
+		return "LigneCommande [[quantité= "+quantity+"] - sensor =["+sensor+"]]";
+	}
+	
+	public double totalSensorPrice()
+	{
+		double résultat = 0;
+		résultat = this.quantity*this.sensor.getSensorPrice();
+		return résultat;
+	}
+
+	//MontantTTC
+	public double totalSensorInterviewPrice()
+	{
+		double résultat = 0;
+		résultat = this.quantity*this.sensor.getSensorInterviewPrice();
+		return résultat;
 	}
 	
 	public static void main(String[] args)
 	{
-		System.out.println("1 : création de trois capteur s1 s2 s3");
-		/*SensorShop s1 = new SensorShop(1,"TOSHIBA", SensorType.HUMIDITY, "00:ff:3c:d9", "hjqf64", 1.0f, 2.0f, 14.50, 100);
-		System.out.println("s1 : "+s1);
-		SensorShop s2 = new SensorShop(1,"SAMSUNG", SensorType.ACOUSTIC, "00:ff:3d:f4", "lkjl67", 1.0f, 2.0f, 23.99, 80);
-		System.out.println("s2 : "+s2);
-		SensorShop s3 = new SensorShop(1,"SONY", SensorType.DOOR, "00:ff:3f:a9", "jlknh72", 1.0f, 2.0f, 9.99, 120);
-		System.out.println("s3 : "+s3);
-
-		System.out.println("\n2 : création d'une ligne de commande lc du capteur s1");
-		CommandLineSensor lc1 = new CommandLineSensor(1, s1);
-		System.out.println("lc1 : "+lc1.toString());
-		System.out.println("Marque de l's1 = "+s1.getSensorMark());
-		System.out.println("Prix de s1 = "+s1.getSensorPrice());*/
-
-
+		try {
+			String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, SensorShop.class, null, null, null,
+					null);
+			String response = MonitrackGuiUtil.sendRequest(jsonRequest);
+			// Retrieves all the sensor from the database
+			@SuppressWarnings("unchecked")
+			List<SensorShop> shops = (List<SensorShop>) JsonUtil.deserializeObject(response);
+			System.out.println("1 : création d'un capteurs s1");
+			SensorShop s1 = shops.get(0);
+			System.out.println(s1);
+			System.out.println("\n2 : création d'une ligne de commande lc du capteur s1");
+			CommandLineSensor lc1 = new CommandLineSensor(3, s1);
+			System.out.println("lc1 : " + lc1.toString());
+			System.out.println("Marque de s1 = " + s1.getSensorMark());
+			System.out.println("Prix de s1 = " + s1.getSensorPrice());
+			System.out.println("prix de la lc : " + lc1.totalSensorPrice() + "€");
+			System.out.println("cout de maintenance de la lc : " + lc1.totalSensorInterviewPrice() + "€");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**

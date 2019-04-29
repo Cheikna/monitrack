@@ -370,16 +370,6 @@ public class NeedsTab extends JPanel implements ActionListener{
 		JPaddSensor.add(jbAddSensorToBasket);
 		jbAddSensorToBasket.addActionListener(this);
 
-		lblTotalPriceAddSensor = new JLabel("Prix Total :");
-		lblTotalPriceAddSensor.setFont(new Font("Calibri", Font.PLAIN, 12));
-		lblTotalPriceAddSensor.setBounds(1101, 335, 159, 42);
-		JPaddSensor.add(lblTotalPriceAddSensor);
-
-		lblTotalInterviewPriceAddSensor = new JLabel("Cout total de la maintenance à l'année :");
-		lblTotalInterviewPriceAddSensor.setFont(new Font("Calibri", Font.PLAIN, 12));
-		lblTotalInterviewPriceAddSensor.setBounds(939, 363, 239, 42);
-		JPaddSensor.add(lblTotalInterviewPriceAddSensor);
-
 		jbOneMoreAddSensor = new JButton("+");
 		jbOneMoreAddSensor.setBounds(752, 305, 89, 23);
 		JPaddSensor.add(jbOneMoreAddSensor);
@@ -402,10 +392,20 @@ public class NeedsTab extends JPanel implements ActionListener{
 		jspBasketPanelAddSensor.setRowHeaderView(jpBasketPanelAddSensor);
 		jpBasketPanelAddSensor.setLayout(null);
 
-		lblBasketTitleAddSensorPanel = new JLabel("Liste des capteurs ajout\u00E9s au panier :");
+		lblBasketTitleAddSensorPanel = new JLabel("Liste des capteurs ajoutés au panier :");
 		lblBasketTitleAddSensorPanel.setFont(new Font("Calibri", Font.PLAIN, 12));
 		lblBasketTitleAddSensorPanel.setBounds(820, 1, 219, 14);
 		JPaddSensor.add(lblBasketTitleAddSensorPanel);
+		
+		lblTotalPriceAddSensor = new JLabel("Prix Total : ");
+		lblTotalPriceAddSensor.setFont(new Font("Calibri", Font.PLAIN, 15));
+		lblTotalPriceAddSensor.setBounds(1096, 332, 264, 43);
+		JPaddSensor.add(lblTotalPriceAddSensor);
+
+		lblTotalInterviewPriceAddSensor = new JLabel("Cout total de la maintenance à l'année : ");
+		lblTotalInterviewPriceAddSensor.setFont(new Font("Calibri", Font.PLAIN, 15));
+		lblTotalInterviewPriceAddSensor.setBounds(916, 365, 421, 43);
+		JPaddSensor.add(lblTotalInterviewPriceAddSensor);
 		dataSensors();
 
 	}
@@ -556,6 +556,9 @@ public class NeedsTab extends JPanel implements ActionListener{
 			}
 			this.jlBasketLineAddSensor.setSelectedIndex(index);
 			this.jlSensorsNameAddSensor.setSelectedIndex(index);
+			this.lblTotalPriceAddSensor.setText("Prix Total : "+basketAddSensor.totalBasketPrice()+"€"); 
+			this.lblTotalInterviewPriceAddSensor.setText("Cout total de la maintenance à l'année : "+basketAddSensor.totalBasketInterviewPrice()+"€/an");
+			
 		}
 
 		if(e.getSource() == this.jbDeleteAddSensor)
@@ -571,6 +574,8 @@ public class NeedsTab extends JPanel implements ActionListener{
 			{
 				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+" - Marque : "+cl.getSensor().getSensorMark()+" - Prix : "+cl.getSensor().getSensorPrice()+"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+"€/an");			
 			}
+			this.lblTotalPriceAddSensor.setText("Prix Total : "+basketAddSensor.totalBasketPrice()+"€");
+			this.lblTotalInterviewPriceAddSensor.setText("Cout total de la maintenance à l'année : "+basketAddSensor.totalBasketInterviewPrice()+"€/an");
 		}
 		if(e.getSource() == this.jbOneMoreAddSensor)
 		{
@@ -587,7 +592,8 @@ public class NeedsTab extends JPanel implements ActionListener{
 				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+" - Marque : "+cl.getSensor().getSensorMark()+" - Prix : "+cl.getSensor().getSensorPrice()+"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+"€/an");			
 			}
 			this.jlBasketLineAddSensor.setSelectedIndex(index);
-
+			this.lblTotalPriceAddSensor.setText("Prix Total : "+basketAddSensor.totalBasketPrice()+"€");
+			this.lblTotalInterviewPriceAddSensor.setText("Cout total de la maintenance à l'année : "+basketAddSensor.totalBasketInterviewPrice()+"€/an");
 		}
 		if(e.getSource() == this.jbOneLessAddSensor)
 		{
@@ -609,6 +615,8 @@ public class NeedsTab extends JPanel implements ActionListener{
 				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+" - Marque : "+cl.getSensor().getSensorMark()+" - Prix : "+cl.getSensor().getSensorPrice()+"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+"€/an");			
 			}
 			this.jlBasketLineAddSensor.setSelectedIndex(index);
+			this.lblTotalPriceAddSensor.setText("Prix Total : "+basketAddSensor.totalBasketPrice()+"€");
+			this.lblTotalInterviewPriceAddSensor.setText("Cout total de la maintenance à l'année : "+basketAddSensor.totalBasketInterviewPrice()+"€/an");	
 		}
 	}
 
