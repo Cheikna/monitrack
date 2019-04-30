@@ -552,7 +552,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 			this.dlmBasketLineAddSensor.clear();
 			for (CommandLineSensor cl : basketAddSensor.alCommandLineSensor)
 			{
-				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+" - Marque : "+cl.getSensor().getSensorMark()+" - Prix : "+cl.getSensor().getSensorPrice()+"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+"€/an");
+				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+" - Marque : "+cl.getSensor().getSensorMark()+" - Prix : "+cl.getSensor().getSensorPrice()+"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+"€/an - Classe énergétique : "+cl.getSensor().getEnergy()+" - Durée de vie moyenne : "+cl.getSensor().getLifeTime());
 			}
 			this.jlBasketLineAddSensor.setSelectedIndex(index);
 			this.jlSensorsNameAddSensor.setSelectedIndex(index);
@@ -572,7 +572,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 			this.dlmBasketLineAddSensor.clear();
 			for (CommandLineSensor cl : basketAddSensor.alCommandLineSensor)
 			{
-				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+" - Marque : "+cl.getSensor().getSensorMark()+" - Prix : "+cl.getSensor().getSensorPrice()+"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+"€/an");			
+				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+" - Marque : "+cl.getSensor().getSensorMark()+" - Prix : "+cl.getSensor().getSensorPrice()+"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+"€/an - Classe énergétique : "+cl.getSensor().getEnergy()+" - Durée de vie moyenne : "+cl.getSensor().getLifeTime());			
 			}
 			this.lblTotalPriceAddSensor.setText("Prix Total : "+basketAddSensor.totalBasketPrice()+"€");
 			this.lblTotalInterviewPriceAddSensor.setText("Cout total de la maintenance à l'année : "+basketAddSensor.totalBasketInterviewPrice()+"€/an");
@@ -589,7 +589,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 			this.dlmBasketLineAddSensor.clear();
 			for (CommandLineSensor cl : basketAddSensor.alCommandLineSensor)
 			{
-				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+" - Marque : "+cl.getSensor().getSensorMark()+" - Prix : "+cl.getSensor().getSensorPrice()+"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+"€/an");			
+				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+" - Marque : "+cl.getSensor().getSensorMark()+" - Prix : "+cl.getSensor().getSensorPrice()+"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+"€/an - Classe énergétique : "+cl.getSensor().getEnergy()+" - Durée de vie moyenne : "+cl.getSensor().getLifeTime());			
 			}
 			this.jlBasketLineAddSensor.setSelectedIndex(index);
 			this.lblTotalPriceAddSensor.setText("Prix Total : "+basketAddSensor.totalBasketPrice()+"€");
@@ -612,7 +612,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 			}
 			for (CommandLineSensor cl : basketAddSensor.alCommandLineSensor)
 			{
-				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+" - Marque : "+cl.getSensor().getSensorMark()+" - Prix : "+cl.getSensor().getSensorPrice()+"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+"€/an");			
+				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+" - Marque : "+cl.getSensor().getSensorMark()+" - Prix : "+cl.getSensor().getSensorPrice()+"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+"€/an - Classe énergétique : "+cl.getSensor().getEnergy()+" - Durée de vie moyenne : "+cl.getSensor().getLifeTime());			
 			}
 			this.jlBasketLineAddSensor.setSelectedIndex(index);
 			this.lblTotalPriceAddSensor.setText("Prix Total : "+basketAddSensor.totalBasketPrice()+"€");
