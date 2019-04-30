@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 
 import com.monitrack.entity.SensorConfiguration;
 import com.monitrack.enumeration.RequestSender;
@@ -24,6 +26,7 @@ import com.monitrack.exception.NoAvailableConnectionException;
 import com.monitrack.mock.dialog.SensorDialog;
 import com.monitrack.mock.listener.SensorsListener;
 import com.monitrack.mock.util.MockUtil;
+import com.monitrack.mock.util.SensorsTableModel;
 import com.monitrack.shared.MonitrackGuiUtil;
 import com.monitrack.util.JsonUtil;
 
@@ -37,6 +40,8 @@ public class SensorsPage extends JPanel {
 	private DefaultListModel<String> listModel;
 	private JList<String> list;
 	private SensorsListener listener = new SensorsListener(this);
+	private JScrollPane sensorsTableScrollPane;
+	private JTable sensorsTable;
 
 	public SensorsPage() {
 		super(new GridBagLayout());
@@ -46,6 +51,7 @@ public class SensorsPage extends JPanel {
 		listModel.addElement("Test");
 		listModel.addElement("Test 1");
 		listModel.addElement("Test 2");
+		initSensorsTable();
 		/*northPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		northPanel.add(new JLabel("Rechercher les capteurs par : "));
 		centerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 30, 30));
@@ -69,7 +75,7 @@ public class SensorsPage extends JPanel {
 		c.gridwidth = 1;
 		c.weightx = 0.4;
 		c.weighty = 1;
-		add(list, c);
+		add(sensorsTableScrollPane, c);
 		c.gridx = 1;
 		c.gridy = 1;
 		c.weightx = 0.1;
@@ -78,6 +84,12 @@ public class SensorsPage extends JPanel {
 		c.gridy = 1;
 		c.weightx = 0.1;
 		add(new JButton("la"), c);
+	}
+	
+	private void initSensorsTable() {
+		sensorsTable = new JTable(new SensorsTableModel());
+		sensorsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		sensorsTableScrollPane = new JScrollPane(sensorsTable);
 	}
 
 	public DefaultListModel<String> getListModel() {

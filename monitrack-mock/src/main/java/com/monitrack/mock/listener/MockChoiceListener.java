@@ -33,7 +33,8 @@ public class MockChoiceListener implements ActionListener {
 				
 				@Override
 				public void run() {
-					String jsonRequest = JsonUtil.serializeSensorsUpdateRequest();
+					//String jsonRequest = JsonUtil.serializeSensorsUpdateRequest();
+					String jsonRequest = "";
 					try {
 						while(true) {
 							String response = MonitrackGuiUtil.sendRequest(jsonRequest);

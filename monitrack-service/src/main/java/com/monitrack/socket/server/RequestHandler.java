@@ -110,7 +110,8 @@ public class RequestHandler implements Runnable {
 					writeToClient.println("");
 				} 
 				else if(requestSender == RequestSender.CLIENT_FOR_SENSOR_UPDATE) {
-					List<Sensor> sensors = dataPool.getCacheSensorsByState(SensorState.DANGER);
+					//List<Sensor> sensors = dataPool.getCacheSensorsByState(SensorState.DANGER);
+					List<Sensor> sensors = null;
 					String serializedObjects = JsonUtil.serializeObject(sensors, Sensor.class, "");
 					writeToClient.print(serializedObjects);					
 				}
