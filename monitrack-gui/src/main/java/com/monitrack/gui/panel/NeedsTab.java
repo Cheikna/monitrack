@@ -467,6 +467,13 @@ public class NeedsTab extends JPanel implements ActionListener{
 			return null;
 		}
 	}
+	
+	//to arround double that are showing too many numbers for a float
+	double arround(double number,int nbApV) 
+	{
+		double power = Math.pow(10.0, nbApV);
+		return Math.round(number*power)/power;
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
@@ -552,7 +559,8 @@ public class NeedsTab extends JPanel implements ActionListener{
 			this.dlmBasketLineAddSensor.clear();
 			for (CommandLineSensor cl : basketAddSensor.alCommandLineSensor)
 			{
-				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+" - Marque : "+cl.getSensor().getSensorMark()+" - Prix : "+cl.getSensor().getSensorPrice()+"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+"€/an - Classe énergétique : "+cl.getSensor().getEnergy()+" - Durée de vie moyenne : "+cl.getSensor().getLifeTime());
+				//TODO VERIFY TEST FOR ARROUND OF PRICE, IF OK COPY AND PASTE TO OTHERS LISTENER ADDELEMENT METHOD
+				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+" - Marque : "+cl.getSensor().getSensorMark()+" - Prix : "+arround(cl.getSensor().getSensorPrice(), 2)+"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+"€/an - Classe énergétique : "+cl.getSensor().getEnergy()+" - Durée de vie moyenne : "+cl.getSensor().getLifeTime());
 			}
 			this.jlBasketLineAddSensor.setSelectedIndex(index);
 			this.jlSensorsNameAddSensor.setSelectedIndex(index);
