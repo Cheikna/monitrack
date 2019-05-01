@@ -47,7 +47,7 @@ public class SensorShop extends Sensor{
 
 
 	public String toString(){
-		return "Marque = "+sensorMark+" - Type = "+sensorType.getFrenchLabel()+"- Prix = "+sensorPrice+"€ - Cout de la maintenance = "+sensorInterviewPrice+"€/an - Classe énergétique : "+energy.getLabel()+" - Durée de vie moyenne : "+lifeTime;
+		return "Marque = "+sensorMark+" - Type = "+sensorType.getFrenchLabel()+"- Prix = "+sensorPrice+"€ - Cout de la maintenance = "+sensorInterviewPrice+"€/an - Classe énergétique : "+energy+" - Durée de vie moyenne : "+lifeTime;
 	}
 
 	/**
