@@ -7,25 +7,18 @@ import com.monitrack.enumeration.SensorState;
 
 public class Message {
 	
-	@JsonProperty("sensor_state")
-	private SensorState sensorState;
 	@JsonProperty("sensor")
 	private SensorConfiguration sensorConfiguration;
 	@JsonProperty("message_creation_date")
 	private Timestamp creationDate;
 
-	public Message(SensorState sensorState, SensorConfiguration sensorConfiguration) {
-		this.sensorState = sensorState;
+	public Message(SensorConfiguration sensorConfiguration) {
 		this.sensorConfiguration = sensorConfiguration;
 		this.creationDate = new Timestamp(System.currentTimeMillis());
 	}
 	
 	public Message() {
 		
-	}
-
-	public SensorState getSensorState() {
-		return sensorState;
 	}
 
 	public SensorConfiguration getSensor() {
@@ -42,7 +35,6 @@ public class Message {
 		int result = 1;
 		result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
 		result = prime * result + ((sensorConfiguration == null) ? 0 : sensorConfiguration.hashCode());
-		result = prime * result + ((sensorState == null) ? 0 : sensorState.hashCode());
 		return result;
 	}
 
@@ -64,8 +56,6 @@ public class Message {
 			if (other.sensorConfiguration != null)
 				return false;
 		} else if (!sensorConfiguration.equals(other.sensorConfiguration))
-			return false;
-		if (sensorState != other.sensorState)
 			return false;
 		return true;
 	}
