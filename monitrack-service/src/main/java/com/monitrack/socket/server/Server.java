@@ -44,7 +44,7 @@ public class Server {
 				
 				if(DataSource.getRemaningConnections() > 0)
 				{
-					log.info("Waiting for a client's request...");
+					//log.info("Waiting for a client's request...");
 					/*
 					 * The socket is used to communicate with the client. Many clients will use the same port 
 					 * but different instance of socket.

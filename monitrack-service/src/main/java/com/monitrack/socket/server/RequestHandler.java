@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.sql.Connection;
 import java.util.List;
@@ -18,7 +19,7 @@ import com.monitrack.connection.pool.implementation.DataSource;
 import com.monitrack.dao.implementation.DAOFactory;
 import com.monitrack.data.pool.DataPool;
 import com.monitrack.entity.Message;
-import com.monitrack.entity.Sensor;
+import com.monitrack.entity.SensorConfiguration;
 import com.monitrack.enumeration.ConnectionState;
 import com.monitrack.enumeration.JSONField;
 import com.monitrack.enumeration.RequestSender;
@@ -51,6 +52,7 @@ public class RequestHandler implements Runnable {
 		this.socket = socket;
 		this.connection = connection;
 		this.dataPool = dataPool;
+		this.dataPool.setConnection(connection);
 		mapper = new ObjectMapper();
 	}
 
@@ -59,7 +61,8 @@ public class RequestHandler implements Runnable {
 
 		try 
 		{		
-			log.info("Client connected with the IP " + socket.getRemoteSocketAddress());
+			InetSocketAddress socketAddress = (InetSocketAddress)socket.getRemoteSocketAddress();
+			log.info("Client connected with the IP " + socketAddress.getAddress());
 			readFromClient = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
 			writeToClient = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true);
 			
@@ -110,10 +113,9 @@ public class RequestHandler implements Runnable {
 					writeToClient.println("");
 				} 
 				else if(requestSender == RequestSender.CLIENT_FOR_SENSOR_UPDATE) {
-					//List<Sensor> sensors = dataPool.getCacheSensorsByState(SensorState.DANGER);
-					List<Sensor> sensors = null;
-					String serializedObjects = JsonUtil.serializeObject(sensors, Sensor.class, "");
-					writeToClient.print(serializedObjects);					
+					List<SensorConfiguration> sensorConfigurations = dataPool.getCacheSensorsByState(SensorState.DANGER);
+					String serializedObjects = JsonUtil.serializeObject(sensorConfigurations, SensorConfiguration.class, "");
+					writeToClient.println(serializedObjects);					
 				}
 							
 			}
