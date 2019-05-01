@@ -44,7 +44,11 @@ public enum Images {
 	
 	SUPER("superman_batman.png"),
 	
-	MAP("Image_Test.png.png");
+	MAP("Image_Test.png.png"),
+	ETAGE1("EHPAD - 1er.png"),
+	ETAGE2("EHPAD - 2e.png"),
+	ETAGERDC("EHPAD - RDC.png");
+	
 	
 	/***** attribut of enums *****/
 	private URL url;
