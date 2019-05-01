@@ -7,6 +7,7 @@ import com.monitrack.entity.Message;
 import com.monitrack.enumeration.ConnectionState;
 import com.monitrack.enumeration.RequestSender;
 import com.monitrack.enumeration.RequestType;
+import com.monitrack.enumeration.SensorActivity;
 import com.monitrack.socket.client.ClientSocket;
 import com.monitrack.util.JsonUtil;
 

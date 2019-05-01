@@ -1,23 +1,21 @@
 package com.monitrack.mock.panel;
 
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSlider;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import com.monitrack.enumeration.SensorActivity;
 import com.monitrack.enumeration.SensorType;
 import com.monitrack.mock.listener.SensorsTableModel;
-import com.monitrack.mock.util.MockUtil;
 
 public class SensorsPage extends JPanel {
 
@@ -33,18 +31,18 @@ public class SensorsPage extends JPanel {
 	private JComboBox<SensorActivity> sensorActivityComboBox;
 	private JTextField locationTextField;
 	private JButton validateFiltersButton;
-	
+	private JButton loadDatasButton;
+
 	/****************** Table **************************/
 	private JScrollPane sensorsTableScrollPane;
 	private JTable sensorsTable;
 	private SensorsTableModel sensorsTableModel;
-	
-	/************* Slider ************************/
-	private JLabel sliderLabel;
-	private JSlider sensorSlider;
-	private int initialSliderValue;
-	private int inferiorSliderBound;
-	private int superiorSliderBound;
+
+	/******* Changing message value *******/
+	private JLabel rateValueLabel;
+	private JTextField rateValueTextField;
+	private JButton startSendingMessageButton;
+	private JButton stopSendingMessageButton;
 
 	public SensorsPage() {
 		super(new GridBagLayout());		
@@ -54,21 +52,12 @@ public class SensorsPage extends JPanel {
 		sensorsTable = new JTable();
 		sensorsTableModel = new SensorsTableModel(this, sensorsTable);
 		sensorsTableScrollPane = new JScrollPane(sensorsTable);
-		initialSliderValue = 0;
-		inferiorSliderBound = 0;
-		superiorSliderBound = 20;
-		sensorSlider = new JSlider(JSlider.HORIZONTAL, inferiorSliderBound, superiorSliderBound, initialSliderValue);
-		sensorSlider.addChangeListener(sensorsTableModel);
-		
+
 		initFiltersBar();
 		c.insets = defaultInsets;
 		initSensorsTable();
-		c.gridy = 5;
-		c.gridx = 0;
-		c.gridwidth = 7;
-		c.gridheight = 2;
-		updateSensorSlider(inferiorSliderBound, superiorSliderBound, initialSliderValue);
-		add(sensorSlider, c);
+		c.insets = defaultInsets;
+		initRateChoiceBar();
 		/*c.gridx = 0;
 		c.gridy = 0;
 		c.gridwidth = 1;
@@ -98,6 +87,8 @@ public class SensorsPage extends JPanel {
 		locationTextField = new JTextField(15);
 		validateFiltersButton = new JButton("Validate");
 		validateFiltersButton.addActionListener(sensorsTableModel);
+		loadDatasButton = new JButton("Load datas");
+		loadDatasButton.addActionListener(sensorsTableModel);
 
 		c.insets = insets;
 		c.gridx = 0;
@@ -127,7 +118,7 @@ public class SensorsPage extends JPanel {
 		add(new JLabel("Find by location : "), c);
 		c.gridx = 7;
 		add(locationTextField, c);
-		
+
 		c.insets = new Insets(0, 10, 0, 10);
 		c.gridx = 8;
 		add(validateFiltersButton, c);
@@ -140,17 +131,40 @@ public class SensorsPage extends JPanel {
 		c.gridx = 0;
 		c.gridwidth = 7;
 		c.gridheight = 2;
-		add(sensorsTableScrollPane, c);
+		add(sensorsTableScrollPane, c);		
+		c.gridy = 10;
+		add(loadDatasButton, c);
 	}
-	
-	public void updateSensorSlider(int min, int max, int value) {
-		sensorSlider.setMinimum(min);
-		sensorSlider.setMaximum(max);
-		sensorSlider.setValue(value);
-		sensorSlider.setMajorTickSpacing(5);
-		sensorSlider.setMinorTickSpacing(1);
-		sensorSlider.setPaintTicks(true);
-		sensorSlider.setPaintLabels(true);
+
+	private void initRateChoiceBar() {
+		c.gridy = 7;
+		c.gridx = 0;
+		c.gridwidth = 7;
+		rateValueLabel = new JLabel("Current threshold : ");
+		rateValueLabel.setFont(new Font("Calibri", Font.PLAIN, 25));
+		rateValueTextField = new JTextField("0");
+		rateValueTextField.setFont(new Font("Calibri", Font.PLAIN, 17));
+		rateValueTextField.getDocument().addDocumentListener(sensorsTableModel);
+		add(rateValueLabel, c);
+		c.gridy = 8;
+		c.insets = new Insets(50,0,0,0);
+		c.gridwidth = 1;
+		JLabel info = new JLabel("Enter the new threshold :  ");
+		info.setFont(new Font("Calibri", Font.PLAIN, 17));
+		add(info, c);
+		c.gridx = 1;
+		c.gridwidth = 2;
+		add(rateValueTextField, c);
+		startSendingMessageButton = new JButton("Start sending signal");
+		startSendingMessageButton.addActionListener(sensorsTableModel);
+		c.gridx = 3;
+		c.insets = new Insets(50, 25, 0 , 12);
+		add(startSendingMessageButton, c);
+		c.gridx = 5;		
+		stopSendingMessageButton = new JButton("Stop sending signal");
+		stopSendingMessageButton.addActionListener(sensorsTableModel);
+		add(stopSendingMessageButton, c);	
+		
 	}
 
 	public JButton getValidateFiltersButton() {
@@ -173,11 +187,27 @@ public class SensorsPage extends JPanel {
 		return locationTextField;
 	}
 
-	public JSlider getSensorSlider() {
-		return sensorSlider;
-	}	
-	
-	
+
+	public JTextField getRateValueTextField() {
+		return rateValueTextField;
+	}
+
+	public JLabel getRateValueLabel() {
+		return rateValueLabel;
+	}
+
+	public JButton getStartSendingMessageButton() {
+		return startSendingMessageButton;
+	}
+
+	public JButton getStopSendingMessageButton() {
+		return stopSendingMessageButton;
+	}
+
+	public JButton getLoadDatasButton() {
+		return loadDatasButton;
+	}
+
 
 	/*northPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 	northPanel.add(new JLabel("Rechercher les capteurs par : "));

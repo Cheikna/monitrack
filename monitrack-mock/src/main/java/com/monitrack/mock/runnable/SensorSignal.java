@@ -15,13 +15,11 @@ public class SensorSignal implements Runnable {
 	private SensorConfiguration sensorConfiguration;
 	private boolean isInSendingWarningMessageMode;
 	private boolean sendMessage;
-	private SensorState sensorState;
 
 	public SensorSignal(SensorConfiguration sensorConfiguration) {
 		this.sensorConfiguration = sensorConfiguration;	
 		isInSendingWarningMessageMode = false;
 		sendMessage = false;
-		this.sensorState = SensorState.NORMAL;
 	}
 
 	@Override
@@ -39,33 +37,20 @@ public class SensorSignal implements Runnable {
 	public void sendSignal() throws Exception {
 		if(sendMessage) {
 			if(sensorConfiguration.getSensorActivity() == SensorActivity.ENABLED) {
-				sensorState = (isInSendingWarningMessageMode) ? SensorState.WARNING : SensorState.NORMAL;
-				boolean messageSent = MockUtil.sendMessage(new Message(sensorState, sensorConfiguration));
+				boolean messageSent = MockUtil.sendMessage(new Message(sensorConfiguration));
 				if(!messageSent)
 					throw new Exception("The server can not be reached at this time");
-				Thread.sleep(sensorConfiguration.getCheckFrequency().longValue());
+				Thread.sleep(sensorConfiguration.getCheckFrequency().longValue() - 100);
 			}					
 		}
 	}
 	
-	public SensorState getSensorState() {
-		return sensorState;
-	}
-
-	public void setSensorState(SensorState sensorState) {
-		this.sensorState = sensorState;
-	}
-
-	public boolean isInSendingWarningMessageMode() {
-		return isInSendingWarningMessageMode;
-	}
-
-	public void isInSendingWarningMessageMode(boolean isInSendingWarningMessageMode) {
-		this.isInSendingWarningMessageMode = isInSendingWarningMessageMode;
-	}
-
 	public void setSendMessage(boolean sendMessage) {
 		this.sendMessage = sendMessage;
+	}
+
+	public SensorConfiguration getSensorConfiguration() {
+		return sensorConfiguration;
 	}
 	
 	

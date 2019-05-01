@@ -1,15 +1,19 @@
 package com.monitrack.mock.listener;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import javax.swing.JSlider;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
@@ -20,12 +24,13 @@ import com.monitrack.entity.Location;
 import com.monitrack.entity.SensorConfiguration;
 import com.monitrack.enumeration.RequestType;
 import com.monitrack.mock.panel.SensorsPage;
+import com.monitrack.mock.runnable.SensorSignal;
 import com.monitrack.shared.MonitrackGuiUtil;
 import com.monitrack.util.JsonUtil;
 
-public class SensorsTableModel extends AbstractTableModel implements ListSelectionListener, ActionListener, ChangeListener {
-	
-	
+public class SensorsTableModel extends AbstractTableModel implements ListSelectionListener, ActionListener, DocumentListener {
+
+
 	private JTable parent;
 	private SensorsPage sensorsPage;
 	private static final long serialVersionUID = 1L;
@@ -36,9 +41,12 @@ public class SensorsTableModel extends AbstractTableModel implements ListSelecti
 	private final int numberOfColumns = 9;
 	private int firstEmptyIndex;
 	private List<SensorConfiguration> sensors;
+	// Map to keep all launched Runnable
+	private Map<Integer, SensorSignal> sensorSignalMap;
 	private List<SensorConfiguration> filteredSensors;
-	
-	@SuppressWarnings("unchecked")
+	private float currentThresholdValue = 0;
+
+
 	public SensorsTableModel(SensorsPage sensorsPage, JTable parent) {
 		this.sensorsPage = sensorsPage;
 		this.parent = parent;
@@ -47,7 +55,13 @@ public class SensorsTableModel extends AbstractTableModel implements ListSelecti
 		parent.setModel(this);
 		datas = new String[numberOfRows][numberOfColumns];
 		emptyDatas = new String[numberOfRows][numberOfColumns];
+		sensorSignalMap = new HashMap<Integer, SensorSignal>();
+		updateTable();
 		firstEmptyIndex = 0;
+	}
+
+	@SuppressWarnings("unchecked")
+	private void loadDatas() {
 		try {
 			String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, SensorConfiguration.class, null, null, null, null);
 			String response = MonitrackGuiUtil.sendRequest(jsonRequest);
@@ -57,14 +71,14 @@ public class SensorsTableModel extends AbstractTableModel implements ListSelecti
 				int size = sensors.size();
 				for(int i = 0; i < size; i++) {
 					initSensorConfigurationDatas(sensors.get(i));					
-				}
-				
+				}				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 	}
-	
+
 	@Override
 	public int getColumnCount() {
 		return header.length;
@@ -79,7 +93,7 @@ public class SensorsTableModel extends AbstractTableModel implements ListSelecti
 	public Object getValueAt(int arg0, int arg1) {
 		return datas[arg0][arg1];
 	}
-	
+
 	public SensorConfiguration getValueAt(int line) {
 		if(line >= 0 && line < sensors.size())
 			return sensors.get(line);
@@ -95,7 +109,7 @@ public class SensorsTableModel extends AbstractTableModel implements ListSelecti
 	public String getColumnName(int column) {
 		return header[column];
 	}
-	
+
 	public void initSensorConfigurationDatas(SensorConfiguration sensorConfiguration) {
 		String id = sensorConfiguration.getSensorConfigurationId().toString();
 		String type = sensorConfiguration.getSensorType().getEnglishLabel();
@@ -108,7 +122,7 @@ public class SensorsTableModel extends AbstractTableModel implements ListSelecti
 		datas[firstEmptyIndex] = new String[]{id, type, activity, location, 
 				macAddress, currentThreshold, 
 				minThreshold, maxThreshold, 
-				"STATE"};
+		"STATE"};
 		firstEmptyIndex++;
 		updateTable(); 
 	}
@@ -131,10 +145,11 @@ public class SensorsTableModel extends AbstractTableModel implements ListSelecti
 		if(!e.getValueIsAdjusting()) {
 			int[] rows =  parent.getSelectedRows();
 			for(int i : rows) {
+				//FIXME
 				System.out.println(i);
 			}
 		}
-		
+
 	}
 
 	public void setParent(JTable parent) {
@@ -144,22 +159,38 @@ public class SensorsTableModel extends AbstractTableModel implements ListSelecti
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		firstEmptyIndex = 0;
-		datas = emptyDatas.clone();
-		filteredSensors.clear();
 		if(e.getSource() == sensorsPage.getValidateFiltersButton()) {
-			int size = sensors.size();
-			for(int i = 0 ; i < size; i++) {
-				SensorConfiguration sensor = sensors.get(i);	
-				if(isSensorCorrect(sensor)) {
-					initSensorConfigurationDatas(sensor);
-					filteredSensors.add(sensor);
-				}				
+			datas = emptyDatas.clone();
+			if(sensors == null) {
+				JOptionPane.showMessageDialog(null, "You need to load the datas first", "Datas not loaded", JOptionPane.ERROR_MESSAGE);
+			}
+			else {
+
+				int size = sensors.size();
+				filteredSensors.clear();
+				for(int i = 0 ; i < size; i++) {
+					SensorConfiguration sensor = sensors.get(i);	
+					if(isSensorCorrect(sensor)) {
+						initSensorConfigurationDatas(sensor);
+						filteredSensors.add(sensor);
+					}				
+				}
 			}
 		}
+		else if(e.getSource() == sensorsPage.getStartSendingMessageButton()) {
+			startStopSensorSignal(true);
+		}
+		else if(e.getSource() == sensorsPage.getStopSendingMessageButton()) {
+			startStopSensorSignal(false);
+
+		}
+		else if(e.getSource() == sensorsPage.getLoadDatasButton()) {
+			loadDatas();			
+		}
+
 		updateTable();
-		
 	}
-	
+
 	private boolean isSensorCorrect(SensorConfiguration sensor) {
 		String idString = sensorsPage.getIdTextField().getText().trim();
 		if(idString.length() > 0 && NumberUtils.toInt(idString) != sensor.getSensorConfigurationId())
@@ -168,27 +199,74 @@ public class SensorsTableModel extends AbstractTableModel implements ListSelecti
 			return false;
 		if(!sensorsPage.getSensorActivityComboBox().getSelectedItem().toString().equalsIgnoreCase(sensor.getSensorActivity().name()))
 			return false;
-		
+
 		String locationFilter = sensorsPage.getLocationTextField().getText().trim();
 		Location location = sensor.getLocation();
 		String locationName = (location != null) ? location.getNameLocation() : "";
 		if(!locationFilter.equalsIgnoreCase(locationName))
 			return false;
-		
+
 		return true;
 	}
 
-	@Override//Slider
-	public void stateChanged(ChangeEvent e) {
-		if(e.getSource() instanceof JSlider) {
-			JSlider slider = (JSlider)e.getSource();
-			if(!slider.getValueIsAdjusting() && slider == sensorsPage.getSensorSlider()) {
-				int value = sensorsPage.getSensorSlider().getValue();
-				System.out.println("=======> slider value : " + value);
-				
+	@Override
+	public void insertUpdate(DocumentEvent e) {
+		getThreshold(e, sensorsPage.getRateValueTextField());				
+	}
+
+	@Override
+	public void removeUpdate(DocumentEvent e) {
+		getThreshold(e, sensorsPage.getRateValueTextField());		
+
+	}
+
+	@Override
+	public void changedUpdate(DocumentEvent e) {
+		getThreshold(e, sensorsPage.getRateValueTextField());		
+	}
+
+	private void getThreshold(DocumentEvent e, JTextField field) {
+		if(e.getDocument() == sensorsPage.getRateValueTextField().getDocument()) {
+
+			float defaultValue = 0.015498f;
+			String str = field.getText().trim();
+			Float value = NumberUtils.toFloat(str, defaultValue);
+			if(value == defaultValue) {
+				field.setBackground(Color.ORANGE);			
+			} else {
+				field.setBackground(Color.WHITE);	
+				sensorsPage.getRateValueLabel().setText("Current threshold : " + value);
+				currentThresholdValue = value;
+
+			}
+		}
+	}
+
+	private void startStopSensorSignal(boolean sendSignal) {
+		int[] rows =  parent.getSelectedRows();
+		int filteredSize = filteredSensors.size();
+		for(int i : rows) {
+			if(i >= 0 && i < filteredSize) {
+				SensorConfiguration sensor = filteredSensors.get(i);
+				int id = sensor.getSensorConfigurationId();
+				SensorSignal signal = null;
+				if(sensorSignalMap.containsKey(sensor.getSensorConfigurationId())){
+					signal = sensorSignalMap.get(id);
+					signal.getSensorConfiguration().setCurrentThreshold(currentThresholdValue);
+					signal.setSendMessage(sendSignal);
+				}
+				else {
+					sensor.setCurrentThreshold(currentThresholdValue);
+					signal = new SensorSignal(sensor);	
+					signal.setSendMessage(sendSignal);		
+					sensorSignalMap.put(id, signal);
+					Thread thread = new Thread(signal);
+					thread.start();
+				}
 			}
 		}
 		
+
 	}
 
 }

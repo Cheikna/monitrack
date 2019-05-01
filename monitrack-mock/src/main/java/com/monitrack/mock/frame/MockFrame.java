@@ -28,7 +28,7 @@ public class MockFrame extends JFrame {
 		listener = new MockFrameListener(this);
 		
 		centerPanel.setLayout(cardLayout);
-		setSize(900,500);
+		setSize(1200,700);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		centerPanel.add(new MockChoicePage(this), Page.HOME.getName());

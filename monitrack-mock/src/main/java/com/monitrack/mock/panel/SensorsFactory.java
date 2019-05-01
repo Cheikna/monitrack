@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 public class SensorsFactory extends JPanel {
 
+	private static final long serialVersionUID = 1L;
 	private JPanel titlePanel;
 	private JPanel centerPanel;
 
