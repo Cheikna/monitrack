@@ -20,9 +20,11 @@ import com.monitrack.entity.Message;
 import com.monitrack.entity.SensorConfiguration;
 import com.monitrack.entity.SensorConfigurationHistory;
 import com.monitrack.enumeration.RequestType;
+import com.monitrack.enumeration.SensorAction;
 import com.monitrack.enumeration.SensorActivity;
 import com.monitrack.enumeration.SensorState;
 import com.monitrack.enumeration.SensorType;
+import com.monitrack.shared.MonitrackServiceUtil;
 import com.monitrack.util.Util;
 
 public class DataPool {
@@ -34,8 +36,11 @@ public class DataPool {
 	private final long sleepTime = NumberUtils.toLong(Util.getPropertyValueFromPropertiesFile("sleep_time_ms"));
 	private final List<String> fieldsForActiveSensors = Arrays.asList("ACTIVITY");
 	private final List<String> valuesForActiveSensors = Arrays.asList(SensorActivity.ENABLED.toString());
+	private final Long loopSleep = MonitrackServiceUtil.getDataPoolLoopSleep();
 
 	private Map<SensorConfiguration, SensorState> dataPoolCache;
+	private Map<Integer, Integer> dangerAlertCountBySensors;
+	private final int maxDangerMessage = NumberUtils.toInt(Util.getPropertyValueFromPropertiesFile("max_danger_message"));
 	private List<SensorConfiguration> activeSensors;	
 	private Timestamp currentTime;
 	private Thread listUpdaterThread;
@@ -44,6 +49,7 @@ public class DataPool {
 
 	public DataPool() {		
 		dataPoolCache = Collections.synchronizedMap(new HashMap<SensorConfiguration, SensorState>());
+		dangerAlertCountBySensors = Collections.synchronizedMap(new HashMap<Integer, Integer>());
 		activeSensors = Collections.synchronizedList(new ArrayList<SensorConfiguration>());
 		counter = updateListFrequency;
 	}
@@ -76,7 +82,7 @@ public class DataPool {
 
 	public synchronized List<SensorConfiguration> getCacheSensorsByState(SensorState sensorState) {
 		List<SensorConfiguration> results = new ArrayList<SensorConfiguration>();		
-
+		dataPoolCache.containsKey(new SensorConfiguration());
 		for(Map.Entry<SensorConfiguration, SensorState > mapEntry : dataPoolCache.entrySet()) {
 			if(mapEntry.getValue() == sensorState) {
 				results.add(mapEntry.getKey());
@@ -91,78 +97,122 @@ public class DataPool {
 			log.info("Processing sensor message");
 			currentTime = Util.getCurrentTimestamp();
 			boolean isSensorWithCorrectIntervalInCache = false;
+			boolean isInCache = false;
 			SensorConfiguration sensorFromCache = null;
 			SensorState sensorStateFromCache = null;
 			
 			SensorConfiguration sensorFromMessage = receivedMessage.getSensor();
-			SensorState sensorStateFromMessage = receivedMessage.getSensorState();
+			SensorState sensorState = checkSensorState(sensorFromMessage);
 			
+			dataPoolCache.getOrDefault(sensorFromMessage, null);
 			log.info(sensorFromMessage.getStateInfo());
 			int sensorId = sensorFromMessage.getSensorConfigurationId();
+
 			
-			for (Map.Entry<SensorConfiguration, SensorState> mapEntry : dataPoolCache.entrySet()) {
-				if (mapEntry.getKey().equals(sensorFromMessage)) {
-					sensorFromCache = mapEntry.getKey();
-					sensorFromCache.setLastMessageDate();
-					sensorStateFromCache = mapEntry.getValue();
-					Long cacheTime = sensorFromCache.getLastMessageDate().getTime();
+			for (SensorConfiguration cacheSensor : dataPoolCache.keySet()) {
+				if (cacheSensor.equals(sensorFromMessage)) {
+					isInCache = true;
+					sensorFromCache = cacheSensor;
+					sensorStateFromCache = dataPoolCache.get(cacheSensor);
 					
-					//Case : A reparation has been made or the agents have been called
-					if(sensorStateFromMessage == SensorState.NORMAL && sensorStateFromCache == SensorState.DANGER) {
-						SensorConfigurationHistory hist = new SensorConfigurationHistory();
-					}					
-					else if ((cacheTime != null) && (currentTime.getTime() - cacheTime) <= sensorFromCache.getCheckFrequency()) {
+					Long cacheTime = sensorFromCache.getLastMessageDate().getTime();  
+					isSensorWithCorrectIntervalInCache = (cacheTime != null) && (currentTime.getTime() - cacheTime) <= sensorFromCache.getCheckFrequency();
+					
+					if(isSensorWithCorrectIntervalInCache) {
 						log.info("The sensor n°" + sensorId + " has been found in the cache");
-						//FIXME Cheikna (= ME) should see if the date is not already updated
-						//sensorFromCache.setLastMessageDate();
 						log.info("Old value : " + sensorFromCache.getStateInfo());
-
-						//FIXME put this time in a config file
-						Thread.sleep(1000);
-						
-						// FIXME Checks if the value has decreased and if it is the case, save the value
-						Float maxThreshold = sensorFromMessage.getMaxDangerThreshold();
-						Float minThreshold = sensorFromMessage.getMinDangerThreshold();
-						Float threshold = sensorFromMessage.getCurrentThreshold();
-								
-						if (threshold >= maxThreshold || threshold < minThreshold) {
-							sensorStateFromMessage = SensorState.DANGER;
+						/* Checks it is was a danger before and according to the number of danger Message
+						 * it will either be a reparation that has been made or a false alert
+						 */
+						int numberOfDangerMessage = dangerAlertCountBySensors.get(sensorId);
+						if(sensorState == SensorState.NORMAL) {
+							// Case : the reparators have done their job
+							if(numberOfDangerMessage >= maxDangerMessage) {
+								dangerAlertCountBySensors.replace(sensorId, 0);
+								System.err.println("======>  /!\\ The sensor n°" + sensorId + " has been repaired /!\\" );
+								saveSensorConfigurationHistory(sensorFromCache, SensorAction.STOP_DANGER_ALERT, "");
+							}
+							// Case : Fake Alert
+							else if(numberOfDangerMessage > 0) {
+								dangerAlertCountBySensors.replace(sensorId, 0);
+								saveSensorConfigurationHistory(sensorFromCache, SensorAction.FAKE_ALERT, "");
+							}
+						}
+						else if(sensorState == SensorState.DANGER) {
+							int newNumberOfDangerMessage = numberOfDangerMessage + 1;
+							dangerAlertCountBySensors.replace(sensorId, newNumberOfDangerMessage);
+							if(newNumberOfDangerMessage == 1) 
+							{
+								sensorFromMessage.setDangerStartDate(Util.getCurrentTimestamp());
+							} 
+							else if(newNumberOfDangerMessage >= maxDangerMessage) 
+							{
+								System.err.println(" /!\\ The sensor n°" + sensorId + " is in real DANGER /!\\" );
+							}
 						}						
-						else if(threshold < sensorFromCache.getCurrentThreshold()) {
-							//FIXME Save in the history
-							//FIXME Save the data in the database in order to save the pic
-						}
-						else if(sensorFromMessage.getCurrentThreshold() == 0) {
-							sensorStateFromMessage = SensorState.NORMAL;
-						}
-
-						isSensorWithCorrectIntervalInCache = true;
-					}
-					break;
+					}	
+					break;					
 				}
 			}
 			if (!isSensorWithCorrectIntervalInCache) {
 				log.info("The sensor n°" + sensorId + " has not been found in the cache (or was old). It will be added (or updated) to it !");				
 			}
-			sensorFromMessage.setLastMessageDate();
+
+			if(isInCache) {
+				dataPoolCache.remove(sensorFromMessage);
+			}
+			else {
+				int dangerMessage = (sensorState == SensorState.DANGER) ? 1 : 0; 
+				if(dangerMessage == 1)
+					sensorFromMessage.setDangerStartDate(Util.getCurrentTimestamp());
+				dangerAlertCountBySensors.put(sensorId, dangerMessage);
+			}
 			
-			//Inserts or updates the value in the cache
-			dataPoolCache.put(sensorFromMessage, sensorStateFromMessage);
+			sensorFromMessage.setLastMessageDate(currentTime);
+			dataPoolCache.put(sensorFromMessage, sensorState);
+			
+			//FIXME Display info
 			
 		} catch (Exception e) {
-			log.error(e.getStackTrace().toString());
+			log.error(e.getMessage());
 			e.printStackTrace();
 		}
-
-		/*for(Map.Entry<Sensor, SensorState > mapEntry : dataPoolCache.entrySet()) {
-			System.out.println("In the cache, there is : " + mapEntry.getKey());
-		}*/
 
 		//updateActiveSensorsList();
 		//FIXME Récupérer tous les capteurs d'une même salle*/
 
 	}
+	
+	private void displaySensorInfo() {
+		String alignFormat = "| %-4d |";
+		System.out.format("+-----------+");
+		System.out.format("|  ID  |    STATE    |  ");
+		
+	}
+	
+	private SensorState checkSensorState(SensorConfiguration sensorFromMessage) {
+		Float maxThreshold = sensorFromMessage.getMaxDangerThreshold();
+		Float minThreshold = sensorFromMessage.getMinDangerThreshold();
+		Float thresholdFromMessage = sensorFromMessage.getCurrentThreshold();
+		
+		if (thresholdFromMessage >= maxThreshold || thresholdFromMessage < minThreshold) {
+			return SensorState.DANGER;
+		}						
+		return SensorState.NORMAL;
+	}
+	
+	private void saveSensorConfigurationHistory(SensorConfiguration sensor, SensorAction action, String message) {
+		int id = sensor.getSensorConfigurationId();
+		try {
+			SensorConfigurationHistory sensorHistory = new SensorConfigurationHistory(sensor, message, action);
+			DAOFactory.execute(connection, sensorHistory.getClass(), RequestType.INSERT, sensorHistory, null, null);
+			dangerAlertCountBySensors.replace(id, 0);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}	
+	}
 
+	//FIXME used this fonction
 	@SuppressWarnings("unchecked")
 	private synchronized void updateActiveSensorsList() {
 		try {			
@@ -206,7 +256,7 @@ public class DataPool {
 	public void setConnection(Connection connection) {
 		this.connection = connection;
 		//Sensor sensor = (Sensor) new SensorDAO(connection).find(Arrays.asList("ID_SENSOR"), Arrays.asList("8")).get(0);
-		SensorConfiguration sensorConfiguration = new SensorConfiguration(8, 0, SensorActivity.ENABLED, SensorType.FLOW, 1, "192.168.20.15", "dsfsd", "dsfsdf", 
+		/*SensorConfiguration sensorConfiguration = new SensorConfiguration(8, 0, SensorActivity.ENABLED, SensorType.FLOW, 1, "192.168.20.15", "dsfsd", "dsfsdf", 
 				1.0f, 2.0f, null, null, null, null, null, 2500f, "Decibel", 4.0f, 0.0f, 5.0f, 6.23f, 4.94f);
 		sensorConfiguration.setLastMessageDate();
 		for(Integer i = 29; i < 36; i++) {
@@ -214,17 +264,7 @@ public class DataPool {
 			dataPoolCache.put(sensor2, SensorState.DANGER);
 		}
 		
-		dataPoolCache.put(sensorConfiguration, SensorState.DANGER);
+		dataPoolCache.put(sensorConfiguration, SensorState.DANGER);*/
 	}
-	
-	private void processSensorMesage(Message message) {
-		//FIXME
-	}
-	
-	private void processManualTrigger(Message message) {
-		//FIXME
-	}
-	
-	
 
 }
