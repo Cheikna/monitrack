@@ -31,11 +31,11 @@ public class CommandLineArc {
 	public static void main(String[] args)
 	{
 		System.out.println("1 : création de trois arc arc1, arc2, arc3");
-		ArchitectureBuilder arc1 = new ArchitectureBuilder("Couloir", 22, 1, 4);
+		ArchitectureBuilder arc1 = new ArchitectureBuilder("Couloir", 22, 1, 4, true);
 		System.out.println("arc1 : "+arc1);
-		ArchitectureBuilder arc2 = new ArchitectureBuilder("Piece", 33, 2, 1);
+		ArchitectureBuilder arc2 = new ArchitectureBuilder("Piece", 33, 2, 1, true);
 		System.out.println("arc2 : "+arc2);
-		ArchitectureBuilder arc3 = new ArchitectureBuilder("Piece", 50, 1, 2);
+		ArchitectureBuilder arc3 = new ArchitectureBuilder("Piece", 50, 1, 2, false);
 		System.out.println("arc3 : "+arc3);
 
 		System.out.println("\n2 : création d'une ligne de commande lc de l'architectureBuilder arc1");

@@ -25,6 +25,7 @@ import com.monitrack.entity.SensorShop;
 import com.monitrack.enumeration.RequestType;
 import com.monitrack.shared.MonitrackGuiUtil;
 import com.monitrack.util.JsonUtil;
+import javax.swing.JCheckBox;
 
 
 public class NeedsTab extends JPanel implements ActionListener{
@@ -43,15 +44,15 @@ public class NeedsTab extends JPanel implements ActionListener{
 
 	private List<SensorShop> shops ;
 
+	
+	
 	//PANEL NEWHOME
 	private JPanel JPnewHome;
-
-	//TITLE NEWHOME
 	private JLabel jlTitleNewHome;
-
+	
+	
 	//LEFT PANEL PRODUCT NEWHOME
 	private JPanel productPaneNewHome;
-
 	//PARTS NEWHOME
 	private JLabel jlPartsNameNewHome;
 	private JTextField jtfPartsNameNewHome;
@@ -66,23 +67,34 @@ public class NeedsTab extends JPanel implements ActionListener{
 	private JTextField jtfPartsWindowNumberNewHome;
 
 	private JButton jbNewPartsButtonNewHome;
+	private JButton jbDeletePartsNewHome;
+	
+	private JLabel jlPartsAccessControlNewHome;
+	private JCheckBox checkBoxAccessControlNewHome;
 
 
-
-	//BASKETPANEL NEWHOME
-	private JPanel basketPanelNewHome;
-
-	//TITLE BASKETPANEL NEWHOME
+	//BASKETPANEL OF BUILDER NEWHOME
 	private JLabel jlListTitleNewHome;
-	//BASKET SCROLL NEWHOME
-	JScrollPane jspBasketScrollNewHome;
-	//BASKET LIST AND INSTANCIATION FOR NEW HOME
+	private JPanel basketPanelNewHome;
+	private JScrollPane jspBasketScrollNewHome;
+	//BASKET LIST BUILDER AND INSTANCIATION FOR NEW HOME
 	private BasketArc 					basketNewHome					= new BasketArc();
 	private DefaultListModel<String>dlmBasketLinesNewHome 		= new DefaultListModel<String>();
 	private JList<String>  			jlBasketLinesNewHome			= new JList<String>(dlmBasketLinesNewHome);
-
-
-
+	
+	
+	//BUTTON TO INCREMENT SENSORSHOP LIST IN PANEL BASKET SENSORSHOP FROM BUILDER
+	private JButton jbAddSensorShopToBasketFromBuilderNewHome;
+	
+	//BASKET PANEL OF SENSORSHOP FROM BUILDER
+	private JLabel jlbTitleBasketBuilderToSensorShopNewHome;
+	private JPanel jpBasketBuilderToSensoShopNewHome;
+	private JScrollPane jspBasketBuilderToSensoShopNewHome;
+	private JLabel jlbTotalPriceOfSensorShopBasketNewHome;
+	private JLabel jlbTotalInterviewCostOfSensorShopBasketNewHome;
+	
+	
+	
 
 
 	//PANEL GROWING
@@ -135,7 +147,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 
 	//Title of Basket Panel
 	private JLabel lblBasketTitleAddSensorPanel;
-
+	//Basket panel list instanciation for addsensor
 	private ArrayList<SensorShop> 		alListSensorsAddSensor	= new ArrayList<SensorShop>();
 	private DefaultListModel<String>dlmSensorsAddSensor			= new DefaultListModel<String>();
 	private JList<String> 			jlSensorsNameAddSensor  	= new JList<String>(dlmSensorsAddSensor);
@@ -143,7 +155,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 	private BasketSensor 					basketAddSensor				= new BasketSensor();
 	private DefaultListModel<String>dlmBasketLineAddSensor 		= new DefaultListModel<String>();
 	private JList<String>  			jlBasketLineAddSensor		= new JList<String>(dlmBasketLineAddSensor);
-	private JButton jbDeletePartsNewHome;
+	
 
 	/**
 	 * Create the panel.
@@ -256,8 +268,18 @@ public class NeedsTab extends JPanel implements ActionListener{
 		jbNewPartsButtonNewHome = new JButton("Ajouter la pièce");
 		jbNewPartsButtonNewHome.setFont(new Font("Calibri", Font.PLAIN, 15));
 		jbNewPartsButtonNewHome.addActionListener(this);
-		jbNewPartsButtonNewHome.setBounds(251, 138, 164, 37);
+		jbNewPartsButtonNewHome.setBounds(251, 154, 164, 37);
 		productPaneNewHome.add(jbNewPartsButtonNewHome);
+		
+		jlPartsAccessControlNewHome = new JLabel("Ajouter une pi\u00E8ce  -   Contr\u00F4le d'acc\u00E8s :");
+		jlPartsAccessControlNewHome.setFont(new Font("Calibri", Font.PLAIN, 15));
+		jlPartsAccessControlNewHome.setBounds(10, 117, 256, 37);
+		productPaneNewHome.add(jlPartsAccessControlNewHome);
+		
+		checkBoxAccessControlNewHome = new JCheckBox("Cochez si oui");
+		checkBoxAccessControlNewHome.setSelected(true);
+		checkBoxAccessControlNewHome.setBounds(318, 124, 97, 23);
+		productPaneNewHome.add(checkBoxAccessControlNewHome);
 
 
 		//BASKETPANEL FOR NEW HOME
@@ -280,6 +302,33 @@ public class NeedsTab extends JPanel implements ActionListener{
 		jbDeletePartsNewHome.setFont(new Font("Calibri", Font.PLAIN, 15));
 		jbDeletePartsNewHome.setBounds(10, 153, 164, 37);
 		basketPanelNewHome.add(jbDeletePartsNewHome);
+		
+		jbAddSensorShopToBasketFromBuilderNewHome = new JButton("G\u00E9n\u00E9rer une liste de capteurs depuis les pi\u00E8ces ajout\u00E9es au panier");
+		jbAddSensorShopToBasketFromBuilderNewHome.setFont(new Font("Calibri", Font.PLAIN, 12));
+		jbAddSensorShopToBasketFromBuilderNewHome.setBounds(485, 160, 403, 30);
+		basketPanelNewHome.add(jbAddSensorShopToBasketFromBuilderNewHome);
+		
+		jpBasketBuilderToSensoShopNewHome = new JPanel();
+		jpBasketBuilderToSensoShopNewHome.setBounds(10, 253, 816, 337);
+		JPnewHome.add(jpBasketBuilderToSensoShopNewHome);
+		
+		jspBasketBuilderToSensoShopNewHome = new JScrollPane();
+		jpBasketBuilderToSensoShopNewHome.add(jspBasketBuilderToSensoShopNewHome);
+		
+		jlbTitleBasketBuilderToSensorShopNewHome = new JLabel("Liste des capteurs g\u00E9n\u00E9r\u00E9es directement depuis la pi\u00E8ce :");
+		jlbTitleBasketBuilderToSensorShopNewHome.setFont(new Font("Calibri", Font.PLAIN, 12));
+		jlbTitleBasketBuilderToSensorShopNewHome.setBounds(20, 219, 334, 23);
+		JPnewHome.add(jlbTitleBasketBuilderToSensorShopNewHome);
+		
+		jlbTotalPriceOfSensorShopBasketNewHome = new JLabel("Prix total des capteurs du panier :");
+		jlbTotalPriceOfSensorShopBasketNewHome.setFont(new Font("Calibri", Font.PLAIN, 12));
+		jlbTotalPriceOfSensorShopBasketNewHome.setBounds(129, 618, 383, 31);
+		JPnewHome.add(jlbTotalPriceOfSensorShopBasketNewHome);
+		
+		jlbTotalInterviewCostOfSensorShopBasketNewHome = new JLabel("Co\u00FBt total de la maintenance des capteurs du panier :");
+		jlbTotalInterviewCostOfSensorShopBasketNewHome.setFont(new Font("Calibri", Font.PLAIN, 12));
+		jlbTotalInterviewCostOfSensorShopBasketNewHome.setBounds(20, 650, 471, 31);
+		JPnewHome.add(jlbTotalInterviewCostOfSensorShopBasketNewHome);
 
 
 		//HomeGrowing PANEL SETTINGS AND CONFIGURATION - PRODUCTS AND BASKET TEMPLATE
@@ -510,13 +559,19 @@ public class NeedsTab extends JPanel implements ActionListener{
 				int c1 = intInside(jtfPartsSizeNewHome);
 				int c2 = intInside(jtfPartsDoorNumberNewHome);
 				int c3 = intInside(jtfPartsWindowNumberNewHome);
-				basketNewHome.addArc(new ArchitectureBuilder(jtfPartsNameNewHome.getText(), c1, c2, c3));
+				basketNewHome.addArc(new ArchitectureBuilder(jtfPartsNameNewHome.getText(), c1, c2, c3, checkBoxAccessControlNewHome.isSelected()));
 				this.dlmBasketLinesNewHome.clear();
 				this.jtfPartsNameNewHome.setText("");
 				this.jtfPartsSizeNewHome.setText("");
+				this.jtfPartsDoorNumberNewHome.setText("");
+				this.jtfPartsWindowNumberNewHome.setText("");
 				for (CommandLineArc cl : basketNewHome.alCommandLineArc)
 				{
-					this.dlmBasketLinesNewHome.addElement("Nom : "+cl.getArc().getNom()+" - Superficie : "+cl.getArc().getArea()+"m² - Nombre de portes : "+cl.getArc().getDoorsNumber()+" - Nombre de fenêtres : " +cl.getArc().getWindowsNumber());
+					this.dlmBasketLinesNewHome.addElement("Nom : "+cl.getArc().getNom()+
+							" - Superficie : "+cl.getArc().getArea()+
+							"m² - Nombre de portes : "+cl.getArc().getDoorsNumber()+
+							" - Nombre de fenêtres : "+cl.getArc().getWindowsNumber()+
+							" - Contrôle d'accès : "+cl.getArc().isAccessControl());
 				}
 			}
 			else{JOptionPane.showMessageDialog(this, "Veuillez saisir correctement les données");}
@@ -539,18 +594,8 @@ public class NeedsTab extends JPanel implements ActionListener{
 			}
 		}
 
-		//		if(e.getSource() == this.jbNewPartsButtonGrowing)
-		//		{
-		//			int c1 = intInside(jtfPartsSizeGrowing);
-		//			basketGrowing.addArc(new ArchitectureBuilder(jtfPartsNameGrowing.getText(), c1));
-		//			this.dlmBasketLinesGrowing.clear();
-		//			this.jtfPartsNameGrowing.setText("");
-		//			this.jtfPartsSizeGrowing.setText("");
-		//			for (CommandLineArc cl : basketGrowing.alCommandLineArc)
-		//			{
-		//				this.dlmBasketLinesGrowing.addElement(cl.getArc().getNom()+" - superficie: "+cl.getArc().getArea()+"m²" );
-		//			}
-		//		}
+
+		
 		//Listener Panel AddSensor
 		if(e.getSource() == this.jbAddSensorToBasket)
 		{
@@ -559,7 +604,12 @@ public class NeedsTab extends JPanel implements ActionListener{
 			this.dlmBasketLineAddSensor.clear();
 			for (CommandLineSensor cl : basketAddSensor.alCommandLineSensor)
 			{
-				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+" - Marque : "+cl.getSensor().getSensorMark()+" - Prix : "+arround(cl.getSensor().getSensorPrice(), 2)+"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+"€/an - Classe énergétique : "+cl.getSensor().getEnergy().getLabel()+" - Durée de vie moyenne : "+cl.getSensor().getLifeTime());
+				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+
+						" - Marque : "+cl.getSensor().getSensorMark()+
+						" - Prix : "+arround(cl.getSensor().getSensorPrice(), 2)+
+						"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+
+						"€/an - Classe énergétique : "+cl.getSensor().getEnergy().getLabel()+
+						" - Durée de vie moyenne : "+cl.getSensor().getLifeTime());
 			}
 			this.jlBasketLineAddSensor.setSelectedIndex(index);
 			this.jlSensorsNameAddSensor.setSelectedIndex(index);
@@ -579,7 +629,12 @@ public class NeedsTab extends JPanel implements ActionListener{
 			this.dlmBasketLineAddSensor.clear();
 			for (CommandLineSensor cl : basketAddSensor.alCommandLineSensor)
 			{
-				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+" - Marque : "+cl.getSensor().getSensorMark()+" - Prix : "+arround(cl.getSensor().getSensorPrice(), 2)+"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+"€/an - Classe énergétique : "+cl.getSensor().getEnergy().getLabel()+" - Durée de vie moyenne : "+cl.getSensor().getLifeTime());
+				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+
+						" - Marque : "+cl.getSensor().getSensorMark()+
+						" - Prix : "+arround(cl.getSensor().getSensorPrice(), 2)+
+						"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+
+						"€/an - Classe énergétique : "+cl.getSensor().getEnergy().getLabel()+
+						" - Durée de vie moyenne : "+cl.getSensor().getLifeTime());
 			}
 			this.lblTotalPriceAddSensor.setText("Prix Total : "+arround(basketAddSensor.totalBasketPrice(), 2)+"€");
 			this.lblTotalInterviewPriceAddSensor.setText("Cout total de la maintenance à l'année : "+basketAddSensor.totalBasketInterviewPrice()+"€/an");
@@ -597,7 +652,12 @@ public class NeedsTab extends JPanel implements ActionListener{
 			this.dlmBasketLineAddSensor.clear();
 			for (CommandLineSensor cl : basketAddSensor.alCommandLineSensor)
 			{
-				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+" - Marque : "+cl.getSensor().getSensorMark()+" - Prix : "+arround(cl.getSensor().getSensorPrice(), 2)+"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+"€/an - Classe énergétique : "+cl.getSensor().getEnergy().getLabel()+" - Durée de vie moyenne : "+cl.getSensor().getLifeTime());
+				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+
+						" - Marque : "+cl.getSensor().getSensorMark()+
+						" - Prix : "+arround(cl.getSensor().getSensorPrice(), 2)+
+						"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+
+						"€/an - Classe énergétique : "+cl.getSensor().getEnergy().getLabel()+
+						" - Durée de vie moyenne : "+cl.getSensor().getLifeTime());
 			}
 			this.jlBasketLineAddSensor.setSelectedIndex(index);
 			this.lblTotalPriceAddSensor.setText("Prix Total : "+arround(basketAddSensor.totalBasketPrice(), 2)+"€");
@@ -621,7 +681,12 @@ public class NeedsTab extends JPanel implements ActionListener{
 			}
 			for (CommandLineSensor cl : basketAddSensor.alCommandLineSensor)
 			{
-				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+" - Marque : "+cl.getSensor().getSensorMark()+" - Prix : "+arround(cl.getSensor().getSensorPrice(), 2)+"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+"€/an - Classe énergétique : "+cl.getSensor().getEnergy().getLabel()+" - Durée de vie moyenne : "+cl.getSensor().getLifeTime());
+				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+
+						" - Marque : "+cl.getSensor().getSensorMark()+
+						" - Prix : "+arround(cl.getSensor().getSensorPrice(), 2)+
+						"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+
+						"€/an - Classe énergétique : "+cl.getSensor().getEnergy().getLabel()+
+						" - Durée de vie moyenne : "+cl.getSensor().getLifeTime());
 			}
 			this.jlBasketLineAddSensor.setSelectedIndex(index);
 			this.lblTotalPriceAddSensor.setText("Prix Total : "+arround(basketAddSensor.totalBasketPrice(), 2)+"€");
@@ -1501,5 +1566,117 @@ public class NeedsTab extends JPanel implements ActionListener{
 	 */
 	public void setJbDeletePartsNewHome(JButton jbDeletePartsNewHome) {
 		this.jbDeletePartsNewHome = jbDeletePartsNewHome;
+	}
+
+	/**
+	 * @return the jlPartsAccessControlNewHome
+	 */
+	public JLabel getJlPartsAccessControlNewHome() {
+		return jlPartsAccessControlNewHome;
+	}
+
+	/**
+	 * @param jlPartsAccessControlNewHome the jlPartsAccessControlNewHome to set
+	 */
+	public void setJlPartsAccessControlNewHome(JLabel jlPartsAccessControlNewHome) {
+		this.jlPartsAccessControlNewHome = jlPartsAccessControlNewHome;
+	}
+
+	/**
+	 * @return the checkBoxAccessControlNewHome
+	 */
+	public JCheckBox getCheckBoxAccessControlNewHome() {
+		return checkBoxAccessControlNewHome;
+	}
+
+	/**
+	 * @param checkBoxAccessControlNewHome the checkBoxAccessControlNewHome to set
+	 */
+	public void setCheckBoxAccessControlNewHome(JCheckBox checkBoxAccessControlNewHome) {
+		this.checkBoxAccessControlNewHome = checkBoxAccessControlNewHome;
+	}
+
+	/**
+	 * @return the jbAddSensorShopToBasketFromBuilderNewHome
+	 */
+	public JButton getJbAddSensorShopToBasketFromBuilderNewHome() {
+		return jbAddSensorShopToBasketFromBuilderNewHome;
+	}
+
+	/**
+	 * @param jbAddSensorShopToBasketFromBuilderNewHome the jbAddSensorShopToBasketFromBuilderNewHome to set
+	 */
+	public void setJbAddSensorShopToBasketFromBuilderNewHome(JButton jbAddSensorShopToBasketFromBuilderNewHome) {
+		this.jbAddSensorShopToBasketFromBuilderNewHome = jbAddSensorShopToBasketFromBuilderNewHome;
+	}
+
+	/**
+	 * @return the jlbTitleBasketBuilderToSensorShopNewHome
+	 */
+	public JLabel getJlbTitleBasketBuilderToSensorShopNewHome() {
+		return jlbTitleBasketBuilderToSensorShopNewHome;
+	}
+
+	/**
+	 * @param jlbTitleBasketBuilderToSensorShopNewHome the jlbTitleBasketBuilderToSensorShopNewHome to set
+	 */
+	public void setJlbTitleBasketBuilderToSensorShopNewHome(JLabel jlbTitleBasketBuilderToSensorShopNewHome) {
+		this.jlbTitleBasketBuilderToSensorShopNewHome = jlbTitleBasketBuilderToSensorShopNewHome;
+	}
+
+	/**
+	 * @return the jpBasketBuilderToSensoShopNewHome
+	 */
+	public JPanel getJpBasketBuilderToSensoShopNewHome() {
+		return jpBasketBuilderToSensoShopNewHome;
+	}
+
+	/**
+	 * @param jpBasketBuilderToSensoShopNewHome the jpBasketBuilderToSensoShopNewHome to set
+	 */
+	public void setJpBasketBuilderToSensoShopNewHome(JPanel jpBasketBuilderToSensoShopNewHome) {
+		this.jpBasketBuilderToSensoShopNewHome = jpBasketBuilderToSensoShopNewHome;
+	}
+
+	/**
+	 * @return the jspBasketBuilderToSensoShopNewHome
+	 */
+	public JScrollPane getJspBasketBuilderToSensoShopNewHome() {
+		return jspBasketBuilderToSensoShopNewHome;
+	}
+
+	/**
+	 * @param jspBasketBuilderToSensoShopNewHome the jspBasketBuilderToSensoShopNewHome to set
+	 */
+	public void setJspBasketBuilderToSensoShopNewHome(JScrollPane jspBasketBuilderToSensoShopNewHome) {
+		this.jspBasketBuilderToSensoShopNewHome = jspBasketBuilderToSensoShopNewHome;
+	}
+
+	/**
+	 * @return the jlbTotalPriceOfSensorShopBasketNewHome
+	 */
+	public JLabel getJlbTotalPriceOfSensorShopBasketNewHome() {
+		return jlbTotalPriceOfSensorShopBasketNewHome;
+	}
+
+	/**
+	 * @param jlbTotalPriceOfSensorShopBasketNewHome the jlbTotalPriceOfSensorShopBasketNewHome to set
+	 */
+	public void setJlbTotalPriceOfSensorShopBasketNewHome(JLabel jlbTotalPriceOfSensorShopBasketNewHome) {
+		this.jlbTotalPriceOfSensorShopBasketNewHome = jlbTotalPriceOfSensorShopBasketNewHome;
+	}
+
+	/**
+	 * @return the jlbTotalInterviewCostOfSensorShopBasketNewHome
+	 */
+	public JLabel getJlbTotalInterviewCostOfSensorShopBasketNewHome() {
+		return jlbTotalInterviewCostOfSensorShopBasketNewHome;
+	}
+
+	/**
+	 * @param jlbTotalInterviewCostOfSensorShopBasketNewHome the jlbTotalInterviewCostOfSensorShopBasketNewHome to set
+	 */
+	public void setJlbTotalInterviewCostOfSensorShopBasketNewHome(JLabel jlbTotalInterviewCostOfSensorShopBasketNewHome) {
+		this.jlbTotalInterviewCostOfSensorShopBasketNewHome = jlbTotalInterviewCostOfSensorShopBasketNewHome;
 	}
 }

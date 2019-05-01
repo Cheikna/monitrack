@@ -5,15 +5,16 @@ public class ArchitectureBuilder {
 	private int area;
 	private int doorsNumber;
 	private int windowsNumber;
+	private boolean accessControl;
 	//private ArrayList<Sensor>;
 	
-	public ArchitectureBuilder(String nom, int area, int doorsNumber, int windowsNumber){
+	public ArchitectureBuilder(String nom, int area, int doorsNumber, int windowsNumber, boolean accessControl){
 		super();
 		this.nom = nom;
 		this.area = area;
 		this.doorsNumber = doorsNumber;
 		this.windowsNumber = windowsNumber;
-		
+		this.accessControl = accessControl;
 		
 	}
 
@@ -56,11 +57,11 @@ public class ArchitectureBuilder {
 	}
 	//TEST
 	public static void main(String[] args){
-		ArchitectureBuilder arc1 = new ArchitectureBuilder("couloir",22,2,4);
+		ArchitectureBuilder arc1 = new ArchitectureBuilder("couloir",22,2,4, true);
 		System.out.println("premiere piece :"+arc1);
-		ArchitectureBuilder arc2 = new ArchitectureBuilder("piece",46,1,2);
+		ArchitectureBuilder arc2 = new ArchitectureBuilder("piece",46,1,2, false);
 		System.out.println("deuxieme piece :"+arc2);
-		ArchitectureBuilder arc3 = new ArchitectureBuilder("couloir",22,1,3);
+		ArchitectureBuilder arc3 = new ArchitectureBuilder("couloir",22,1,3, false);
 		System.out.println("troisieme piece :"+arc3);
 	}
 
@@ -91,4 +92,19 @@ public class ArchitectureBuilder {
 	public void setWindowsNumber(int windowsNumber) {
 		this.windowsNumber = windowsNumber;
 	}
+
+	/**
+	 * @return the accessControl
+	 */
+	public boolean isAccessControl() {
+		return accessControl;
+	}
+
+	/**
+	 * @param accessControl the accessControl to set
+	 */
+	public void setAccessControl(boolean accessControl) {
+		this.accessControl = accessControl;
+	}
+	
 }
