@@ -2,6 +2,7 @@ package com.monitrack.gui.panel;
 import java.util.List;
 
 import com.monitrack.entity.SensorShop;
+import com.monitrack.enumeration.Energy;
 import com.monitrack.enumeration.RequestType;
 import com.monitrack.enumeration.SensorType;
 import com.monitrack.shared.MonitrackGuiUtil;
@@ -55,6 +56,8 @@ public class CommandLineSensor {
 			System.out.println("Marque de s1 = " + s1.getSensorMark());
 			System.out.println("Prix de s1 = " + s1.getSensorPrice());
 			System.out.println("prix de la lc : " + lc1.totalSensorPrice() + "€");
+			System.out.println("Durée de vie moyenne de s1:"+s1.getLifeTime());
+			System.out.println("Classe énergétique de s1 : "+s1.getEnergy().getLabel());
 			System.out.println("cout de maintenance de la lc : " + lc1.totalSensorInterviewPrice() + "€");
 		} catch (Exception e) {
 			e.printStackTrace();

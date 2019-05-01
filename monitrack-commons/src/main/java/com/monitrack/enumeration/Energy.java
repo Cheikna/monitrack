@@ -21,7 +21,7 @@ public enum Energy {
 	public static Energy getValueOf(String energy) {
 		Energy[] values = Energy.values();
 		for(Energy e : values) {
-			if(e.label.equalsIgnoreCase(energy))
+			if(e.getLabel().equalsIgnoreCase(energy))
 				return e;
 		}
 		return null;
