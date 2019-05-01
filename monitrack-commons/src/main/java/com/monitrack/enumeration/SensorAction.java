@@ -4,6 +4,8 @@ public enum SensorAction {
 	
 	CONFIGURATION,
 	
-	STOP_DANGER_ALERT;
+	STOP_DANGER_ALERT, 
+	
+	FAKE_ALERT;
 
 }
