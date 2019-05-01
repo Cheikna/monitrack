@@ -3,6 +3,7 @@ package com.monitrack.entity;
 import java.sql.Timestamp;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.monitrack.enumeration.SensorAction;
+import com.monitrack.util.Util;
 
 public class SensorConfigurationHistory {
 	
@@ -40,6 +41,13 @@ public class SensorConfigurationHistory {
 		this.endAlertDate = endAlertDate;
 		this.description = description;
 		this.actionDone = actionDone;
+	}
+	
+	// Constructor used to register in the database
+	public SensorConfigurationHistory(SensorConfiguration sensor, String description, SensorAction actionDone) {
+		this(0, sensor.getSensorConfigurationId(), sensor.getCurrentThreshold(),
+					sensor.getMinDangerThreshold(), sensor.getMaxDangerThreshold(),
+					sensor.getDangerStartDate(), Util.getCurrentTimestamp(), description, actionDone);
 	}
 
 	public int getIdHistory() {

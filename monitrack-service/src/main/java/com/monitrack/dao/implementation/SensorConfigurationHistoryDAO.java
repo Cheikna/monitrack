@@ -29,7 +29,7 @@ public class SensorConfigurationHistoryDAO extends DAO<SensorConfigurationHistor
 			if (connection != null) {
 				try {
 					PreparedStatement preparedStatement = connection
-							.prepareStatement("INSERT INTO "+ tableName +" (ID_SENSOR, MEASURED_THRESHOLD, MIN_DANGER_THRESHOLD, MAX_DANGER_THRESHOLD, MEASUREMENT_DATE, END_ALERT_DATE, DESCRIPTION, ACTION_DONE)"
+							.prepareStatement("INSERT INTO "+ tableName +" (ID_SENSOR_CONFIGURATION, MEASURED_THRESHOLD, MIN_DANGER_THRESHOLD, MAX_DANGER_THRESHOLD, MEASUREMENT_DATE, END_ALERT_DATE, DESCRIPTION, ACTION_DONE)"
 									+ " VALUES (? , ? , ? , ? , ? , ? , ? , ?)", Statement.RETURN_GENERATED_KEYS);
 					preparedStatement.setInt(1, obj.getIdSensorSource());
 					preparedStatement.setFloat(2, obj.getMeasuredThreshold());

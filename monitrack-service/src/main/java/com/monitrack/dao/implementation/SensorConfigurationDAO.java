@@ -22,7 +22,7 @@ public class SensorConfigurationDAO extends DAO<SensorConfiguration> {
 	private static final Logger log = LoggerFactory.getLogger(SensorConfigurationDAO.class);
 
 	public SensorConfigurationDAO(Connection connection) {
-		super(connection, "SENSOR_CONFIGURATION_HISTORY");
+		super(connection, "SENSOR_CONFIGURATION");
 	}
 
 	@Override

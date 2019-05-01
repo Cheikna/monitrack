@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.monitrack.enumeration.SensorActivity;
 import com.monitrack.enumeration.SensorType;
+import com.monitrack.util.Util;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SensorConfiguration extends Sensor {
 	
@@ -43,7 +44,10 @@ public class SensorConfiguration extends Sensor {
 	@JsonProperty("position_y")
 	private Float positionY;
 	@JsonProperty("location")
-	private Location location;
+	private Location location;	
+
+	@JsonIgnore
+	private Timestamp dangerStartDate;
 
 	public SensorConfiguration(Integer sensorConfigurationId, Integer sensorId, SensorActivity sensorActivity, SensorType sensorType, Integer locationId,
 			String ipAddress, String macAddress, String serialNumber, Float hardwareVersion, Float softwareVersion,
@@ -56,7 +60,7 @@ public class SensorConfiguration extends Sensor {
 		this.sensorActivity = sensorActivity;
 		this.locationId = locationId;
 		this.ipAddress = ipAddress;
-		this.creationDate = (creationDate != null) ? creationDate : new Timestamp(System.currentTimeMillis());
+		this.creationDate = (creationDate != null) ? creationDate : Util.getCurrentTimestamp();
 		this.lastMessageDate = lastMessageDate;
 		this.lastConfigurationDate = lastConfigurationDate;
 		this.beginTime = beginTime;
@@ -70,7 +74,7 @@ public class SensorConfiguration extends Sensor {
 		this.positionY = positionY;
 	}
 	
-	
+	public SensorConfiguration() { }
 	
 	public Integer getSensorConfigurationId() {
 		return sensorConfigurationId;
@@ -209,8 +213,21 @@ public class SensorConfiguration extends Sensor {
 	}
 
 	public void setLastMessageDate() {
-		this.setLastMessageDate(new Timestamp(System.currentTimeMillis()));
+		this.setLastMessageDate(Util.getCurrentTimestamp());
 	}
+	
+	@JsonIgnore
+	public Timestamp getDangerStartDate() {
+		return dangerStartDate;
+	}
+
+	@JsonIgnore
+	public void setDangerStartDate(Timestamp dangerStartDate) {
+		this.dangerStartDate = dangerStartDate;
+	}
+
+
+
 	@Override
 	public String toString() {
 		return "Sensor [id=" + sensorConfigurationId + ", sensorActivity=" + sensorActivity + ", sensorType=" + sensorType
@@ -224,13 +241,10 @@ public class SensorConfiguration extends Sensor {
 	}
 	
 	
+
 	@JsonIgnore
 	public String getStateInfo() throws Exception {
-		String locationName = "Salle de jeu";//FIXME sensor.getLocation().getNameLocation();
-		/*Float currentThreshold = sensor.getCurrentThreshold();
-		Float minDangerThreshold = sensor.getMinDangerThreshold();
-		Float maxDangerThreshold = sensor.getMaxDangerThreshold();
-		String measurementUnit = sensor.getMeasurementUnit();*/
+		String locationName = (location != null) ? location.getNameLocation() : "Location undefined";
 		String template = "in \u00AB" + locationName + "\u00BB is equal to " + currentThreshold + "/" + maxDangerThreshold + " " + measurementUnit;
 		
 		switch(sensorType) {
@@ -265,5 +279,32 @@ public class SensorConfiguration extends Sensor {
 		default:
 			throw new Exception("The type of the sensor was not found");
 		}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((sensorConfigurationId == null) ? 0 : sensorConfigurationId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SensorConfiguration other = (SensorConfiguration) obj;
+		if (sensorConfigurationId == null) {
+			if (other.sensorConfigurationId != null) {
+				return false;
+			}
+		} else if (!sensorConfigurationId.equals(other.sensorConfigurationId)) {
+			return false;
+		}
+		return true;
 	}
 }
