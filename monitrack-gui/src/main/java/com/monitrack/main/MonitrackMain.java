@@ -1,9 +1,16 @@
 package com.monitrack.main;
 
+import java.util.List;
+
 import javax.swing.SwingUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.monitrack.entity.SensorConfiguration;
+import com.monitrack.enumeration.RequestType;
 import com.monitrack.gui.frame.MonitrackFrame;
+import com.monitrack.shared.MonitrackGuiUtil;
+import com.monitrack.util.JsonUtil;
 
 public class MonitrackMain {
 
@@ -23,6 +30,20 @@ public class MonitrackMain {
 				MonitrackFrame monitrack = new MonitrackFrame();
 			}
 		});
+		
+		
+		try {
+			//FIXME Cheikna : do not forget to remove this
+			String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, SensorConfiguration.class, null, null,
+					null);
+			String response = MonitrackGuiUtil.sendRequest(jsonRequest);
+			List<SensorConfiguration> sensors = (List<SensorConfiguration>) JsonUtil.deserializeObject(response);
+			for (SensorConfiguration s : sensors) {
+				System.out.println("===========> " + s);
+			} 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}	
 	
 }

@@ -27,7 +27,7 @@ public class MapDAO extends DAO<Map>{
 	public List<Map> find(List<String> fields, List<String> values)
 	{
 		synchronized (lock) {
-			List<Map> Maps = new ArrayList<Map>();
+			/*List<Map> Maps = new ArrayList<Map>();
 			String sql = "SELECT * FROM location" ;
 			if (connection != null) {
 				try {
@@ -45,7 +45,8 @@ public class MapDAO extends DAO<Map>{
 					e.printStackTrace();
 				}
 			}
-			return Map;
+			return Map;*/
+			return null;
 		}
 	}
 
