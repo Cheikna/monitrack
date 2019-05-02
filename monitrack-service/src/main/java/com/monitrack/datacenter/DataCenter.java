@@ -37,10 +37,12 @@ public class DataCenter {
 	private final List<String> fieldsForActiveSensors = Arrays.asList("ACTIVITY");
 	private final List<String> valuesForActiveSensors = Arrays.asList(SensorActivity.ENABLED.toString());
 	private final Long loopSleep = MonitrackServiceUtil.getDataPoolLoopSleep();
+	private final String alignFormat = "| %-4d | %-13s |%-6s| %-9s |%-8s|%n";
+	private final String horizontalBorder = "+------+---------------+------+-----------+--------+%n";
 
 	private Map<SensorConfiguration, SensorState> dataPoolCache;
-	private Map<Integer, Integer> dangerAlertCountBySensors;
-	private final int maxDangerMessage = NumberUtils.toInt(Util.getPropertyValueFromPropertiesFile("max_danger_message"));
+	private Map<Integer, Integer> dangerWarningCountBySensors;
+	private final int maxWarningMessage = NumberUtils.toInt(Util.getPropertyValueFromPropertiesFile("max_warning_message"));
 	private List<SensorConfiguration> activeSensors;	
 	private Timestamp currentTime;
 	private Thread listUpdaterThread;
@@ -49,7 +51,7 @@ public class DataCenter {
 
 	public DataCenter() {		
 		dataPoolCache = Collections.synchronizedMap(new HashMap<SensorConfiguration, SensorState>());
-		dangerAlertCountBySensors = Collections.synchronizedMap(new HashMap<Integer, Integer>());
+		dangerWarningCountBySensors = Collections.synchronizedMap(new HashMap<Integer, Integer>());
 		activeSensors = Collections.synchronizedList(new ArrayList<SensorConfiguration>());
 		counter = updateListFrequency;
 	}
@@ -94,17 +96,15 @@ public class DataCenter {
 
 	public synchronized void processMessage(Message receivedMessage) {
 		try {
-			log.info("Processing sensor message");
-			currentTime = Util.getCurrentTimestamp();
 			boolean isSensorWithCorrectIntervalInCache = false;
 			boolean isInCache = false;
+			Timestamp warningStartTime = null;
 			SensorConfiguration sensorFromCache = null;
-			SensorState sensorStateFromCache = null;
 			
 			SensorConfiguration sensorFromMessage = receivedMessage.getSensor();
 			SensorState sensorState = checkSensorState(sensorFromMessage);
 			
-			dataPoolCache.getOrDefault(sensorFromMessage, null);
+			
 			log.info(sensorFromMessage.getStateInfo());
 			int sensorId = sensorFromMessage.getSensorConfigurationId();
 
@@ -113,65 +113,82 @@ public class DataCenter {
 				if (cacheSensor.equals(sensorFromMessage)) {
 					isInCache = true;
 					sensorFromCache = cacheSensor;
-					sensorStateFromCache = dataPoolCache.get(cacheSensor);
-					
+					warningStartTime = sensorFromCache.getDangerStartDate();
 					Long cacheTime = sensorFromCache.getLastMessageDate().getTime();  
+					currentTime = Util.getCurrentTimestamp();
 					isSensorWithCorrectIntervalInCache = (cacheTime != null) && (currentTime.getTime() - cacheTime) <= sensorFromCache.getCheckFrequency();
 					
 					if(isSensorWithCorrectIntervalInCache) {
-						log.info("The sensor n°" + sensorId + " has been found in the cache");
-						log.info("Old value : " + sensorFromCache.getStateInfo());
 						/* Checks it is was a danger before and according to the number of danger Message
 						 * it will either be a reparation that has been made or a false alert
 						 */
-						int numberOfDangerMessage = dangerAlertCountBySensors.get(sensorId);
+						int numberOfWarningMessage = dangerWarningCountBySensors.get(sensorId);
 						if(sensorState == SensorState.NORMAL) {
 							// Case : the reparators have done their job
-							if(numberOfDangerMessage >= maxDangerMessage) {
-								dangerAlertCountBySensors.replace(sensorId, 0);
+							if(numberOfWarningMessage >= maxWarningMessage) {
+								dangerWarningCountBySensors.replace(sensorId, 0);
 								System.err.println("======>  /!\\ The sensor n°" + sensorId + " has been repaired /!\\" );
 								saveSensorConfigurationHistory(sensorFromCache, SensorAction.STOP_DANGER_ALERT, "");
 							}
 							// Case : Fake Alert
-							else if(numberOfDangerMessage > 0) {
-								dangerAlertCountBySensors.replace(sensorId, 0);
+							else if(numberOfWarningMessage > 0) {
+								dangerWarningCountBySensors.replace(sensorId, 0);
 								saveSensorConfigurationHistory(sensorFromCache, SensorAction.FAKE_ALERT, "");
 							}
 						}
-						else if(sensorState == SensorState.DANGER) {
-							int newNumberOfDangerMessage = numberOfDangerMessage + 1;
-							dangerAlertCountBySensors.replace(sensorId, newNumberOfDangerMessage);
-							if(newNumberOfDangerMessage == 1) 
+						else if(sensorState == SensorState.MISSING) {
+							continue;
+						}
+						else if(sensorState == SensorState.WARNING) {
+							System.err.println("WARNING");
+							int newNumberOfWarningMessage = numberOfWarningMessage + 1;
+							dangerWarningCountBySensors.replace(sensorId, newNumberOfWarningMessage);
+							if(newNumberOfWarningMessage == 1) 
 							{
-								sensorFromMessage.setDangerStartDate(Util.getCurrentTimestamp());
+								warningStartTime = Util.getCurrentTimestamp();
 							} 
-							else if(newNumberOfDangerMessage >= maxDangerMessage) 
+							else if(newNumberOfWarningMessage >= maxWarningMessage) 
 							{
+								sensorState = SensorState.DANGER;
 								System.err.println(" /!\\ The sensor n°" + sensorId + " is in real DANGER /!\\" );
 							}
-						}						
+						}	
+						
+						//Removes it from the cache because the new value will be added						
+						dataPoolCache.remove(sensorFromMessage);
 					}	
+					//System.err.println("======> Traitement time : " + (Util.getCurrentTimestamp().getTime() - currentTime.getTime()));
 					break;					
 				}
 			}
-			if (!isSensorWithCorrectIntervalInCache) {
-				log.info("The sensor n°" + sensorId + " has not been found in the cache (or was old). It will be added (or updated) to it !");				
+
+			if (!isSensorWithCorrectIntervalInCache) {						
+				if(isInCache) {
+					log.info("The sensor n°" + sensorId + " was old in the cache. It will be updated !");
+					//Remove the old value from the cache
+					dataPoolCache.remove(sensorFromMessage);
+					
+					//Update the value of warning messages received
+					dangerWarningCountBySensors.replace(sensorId, 0);
+				}
+				else {
+					log.info("The sensor n°" + sensorId + " has not been found in the cache. It will be added to it !");
+					int warningMessage = (sensorState == SensorState.WARNING) ? 1 : 0; 
+					if(warningMessage == 1)
+						sensorFromMessage.setDangerStartDate(Util.getCurrentTimestamp());
+					dangerWarningCountBySensors.put(sensorId, warningMessage);
+				}
 			}
 
-			if(isInCache) {
-				dataPoolCache.remove(sensorFromMessage);
-			}
-			else {
-				int dangerMessage = (sensorState == SensorState.DANGER) ? 1 : 0; 
-				if(dangerMessage == 1)
-					sensorFromMessage.setDangerStartDate(Util.getCurrentTimestamp());
-				dangerAlertCountBySensors.put(sensorId, dangerMessage);
-			}
+			log.info("Sensors states : ");
+			displaySensorsStatesDatas(sensorFromMessage, sensorState);
 			
-			sensorFromMessage.setLastMessageDate(currentTime);
+			sensorFromMessage.setDangerStartDate(warningStartTime);
+			sensorFromMessage.setLastMessageDate(Util.getCurrentTimestamp());
 			dataPoolCache.put(sensorFromMessage, sensorState);
 			
 			//FIXME Display info
+			
 			
 		} catch (Exception e) {
 			log.error(e.getMessage());
@@ -182,12 +199,16 @@ public class DataCenter {
 		//FIXME Récupérer tous les capteurs d'une même salle*/
 
 	}
-	
-	private void displaySensorInfo() {
-		String alignFormat = "| %-4d |";
-		System.out.format("+-----------+");
-		System.out.format("|  ID  |    STATE    |  ");
 		
+	private void displaySensorsStatesDatas(SensorConfiguration messageSensor, SensorState state) {		
+		System.out.format(horizontalBorder);
+		System.out.format("|  ID  | Curr. Thresh. | Unit |   State   | danger |%n");
+		System.out.format(horizontalBorder);
+		// Prevent from checking a value on a null object
+		int sensorId = messageSensor.getSensorConfigurationId();
+		System.out.format(alignFormat, sensorId, messageSensor.getCurrentThreshold() + "/" + messageSensor.getMaxDangerThreshold(),
+				"Unit",  state.name(), dangerWarningCountBySensors.get(sensorId) + "/" + maxWarningMessage);
+		System.out.format(horizontalBorder);		
 	}
 	
 	private SensorState checkSensorState(SensorConfiguration sensorFromMessage) {
@@ -196,7 +217,7 @@ public class DataCenter {
 		Float thresholdFromMessage = sensorFromMessage.getCurrentThreshold();
 		
 		if (thresholdFromMessage >= maxThreshold || thresholdFromMessage < minThreshold) {
-			return SensorState.DANGER;
+			return SensorState.WARNING;
 		}						
 		return SensorState.NORMAL;
 	}
@@ -206,7 +227,7 @@ public class DataCenter {
 		try {
 			SensorConfigurationHistory sensorHistory = new SensorConfigurationHistory(sensor, message, action);
 			DAOFactory.execute(connection, sensorHistory.getClass(), RequestType.INSERT, sensorHistory, null, null);
-			dangerAlertCountBySensors.replace(id, 0);
+			dangerWarningCountBySensors.replace(id, 0);
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}	
@@ -255,16 +276,6 @@ public class DataCenter {
 	
 	public void setConnection(Connection connection) {
 		this.connection = connection;
-		//Sensor sensor = (Sensor) new SensorDAO(connection).find(Arrays.asList("ID_SENSOR"), Arrays.asList("8")).get(0);
-		/*SensorConfiguration sensorConfiguration = new SensorConfiguration(8, 0, SensorActivity.ENABLED, SensorType.FLOW, 1, "192.168.20.15", "dsfsd", "dsfsdf", 
-				1.0f, 2.0f, null, null, null, null, null, 2500f, "Decibel", 4.0f, 0.0f, 5.0f, 6.23f, 4.94f);
-		sensorConfiguration.setLastMessageDate();
-		for(Integer i = 29; i < 36; i++) {
-			SensorConfiguration sensor2 = (SensorConfiguration) new SensorConfigurationDAO(connection).find(Arrays.asList("ID_SENSOR"), Arrays.asList(i.toString())).get(0);
-			dataPoolCache.put(sensor2, SensorState.DANGER);
-		}
-		
-		dataPoolCache.put(sensorConfiguration, SensorState.DANGER);*/
 	}
 
 }
