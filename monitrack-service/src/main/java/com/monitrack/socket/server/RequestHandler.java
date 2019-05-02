@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.monitrack.connection.pool.implementation.DataSource;
 import com.monitrack.dao.implementation.DAOFactory;
-import com.monitrack.data.pool.DataPool;
+import com.monitrack.datacenter.DataCenter;
 import com.monitrack.entity.Message;
 import com.monitrack.entity.SensorConfiguration;
 import com.monitrack.enumeration.ConnectionState;
@@ -46,13 +46,13 @@ public class RequestHandler implements Runnable {
 	private Connection connection;
 	//For the JSON
 	private ObjectMapper mapper;
-	private DataPool dataPool;
+	private DataCenter dataCenter;
 
-	public RequestHandler(Socket socket, Connection connection, DataPool dataPool) {
+	public RequestHandler(Socket socket, Connection connection, DataCenter dataCenter) {
 		this.socket = socket;
 		this.connection = connection;
-		this.dataPool = dataPool;
-		this.dataPool.setConnection(connection);
+		this.dataCenter = dataCenter;
+		this.dataCenter.setConnection(connection);
 		mapper = new ObjectMapper();
 	}
 
@@ -109,11 +109,11 @@ public class RequestHandler implements Runnable {
 				}
 				else if(requestSender == RequestSender.SENSOR) {
 					Message message = (Message)getObjectFromJson(json);
-					dataPool.processMessage(message);
+					dataCenter.processMessage(message);
 					writeToClient.println("");
 				} 
 				else if(requestSender == RequestSender.CLIENT_FOR_SENSOR_UPDATE) {
-					List<SensorConfiguration> sensorConfigurations = dataPool.getCacheSensorsByState(SensorState.DANGER);
+					List<SensorConfiguration> sensorConfigurations = dataCenter.getCacheSensorsByState(SensorState.DANGER);
 					String serializedObjects = JsonUtil.serializeObject(sensorConfigurations, SensorConfiguration.class, "");
 					writeToClient.println(serializedObjects);					
 				}

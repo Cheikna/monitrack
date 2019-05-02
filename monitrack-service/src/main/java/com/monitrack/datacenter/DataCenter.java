@@ -1,4 +1,4 @@
-package com.monitrack.data.pool;
+package com.monitrack.datacenter;
 
 import java.sql.Connection;
 import java.sql.Timestamp;
@@ -27,11 +27,11 @@ import com.monitrack.enumeration.SensorType;
 import com.monitrack.shared.MonitrackServiceUtil;
 import com.monitrack.util.Util;
 
-public class DataPool {
+public class DataCenter {
 
 	private final Object lock = new Object();
 
-	private static final Logger log = LoggerFactory.getLogger(DataPool.class);
+	private static final Logger log = LoggerFactory.getLogger(DataCenter.class);
 	private final long updateListFrequency = NumberUtils.toLong(Util.getPropertyValueFromPropertiesFile("update_time_ms"));
 	private final long sleepTime = NumberUtils.toLong(Util.getPropertyValueFromPropertiesFile("sleep_time_ms"));
 	private final List<String> fieldsForActiveSensors = Arrays.asList("ACTIVITY");
@@ -47,7 +47,7 @@ public class DataPool {
 	private long counter;
 	private Connection connection;
 
-	public DataPool() {		
+	public DataCenter() {		
 		dataPoolCache = Collections.synchronizedMap(new HashMap<SensorConfiguration, SensorState>());
 		dangerAlertCountBySensors = Collections.synchronizedMap(new HashMap<Integer, Integer>());
 		activeSensors = Collections.synchronizedList(new ArrayList<SensorConfiguration>());
