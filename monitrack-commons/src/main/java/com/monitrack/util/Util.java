@@ -1,6 +1,7 @@
 package com.monitrack.util;
 
 import java.io.InputStream;
+import java.sql.Timestamp;
 import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,6 +60,10 @@ public class Util {
 		}
 
 		return stringCapitalized;
+	}
+	
+	public static Timestamp getCurrentTimestamp() {
+		return new Timestamp(System.currentTimeMillis());
 	}
 	
 }

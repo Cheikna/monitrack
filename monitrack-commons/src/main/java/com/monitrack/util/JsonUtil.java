@@ -11,12 +11,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.monitrack.enumeration.JSONField;
+import com.monitrack.enumeration.RequestSender;
 import com.monitrack.enumeration.RequestType;
 
 public class JsonUtil {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(JsonUtil.class);
-	
+
 	/**
 	 * Converts a JAVA Object into a JSON format String
 	 * 
@@ -74,7 +75,7 @@ public class JsonUtil {
 		} 
 		catch (Exception e) 
 		{
-			log.error("Serialization into JSON failed : " + e.getStackTrace());
+			log.error("Serialization into JSON failed : " + e.getMessage());
 		}			
 
 		return objectToJSON;
@@ -118,11 +119,10 @@ public class JsonUtil {
 			else
 				jsonConvertedToObject = mapper.readValue(datasNode.toString(), objectClass);
 
-			log.info("Deserialization into Java Object succedeed");
+			//log.info("Deserialization into Java Object succedeed");
 
 		} catch (Exception e) {
 			log.error("Deserialization into Java Object failed : " + e.getMessage());
-			e.printStackTrace();
 		} 
 
 		return jsonConvertedToObject;		
@@ -139,49 +139,54 @@ public class JsonUtil {
 	 */
 	@SuppressWarnings("rawtypes")
 	public static String serializeRequest(RequestType requestType, Class entityClass,String serializedObject, 
-			List<String> requestedFields, List<String> requiredValues)
+			List<String> requestedFields, List<String> requiredValues, RequestSender requestSender)
 	{
 		String objectToJSON = null;
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode rootNode = mapper.createObjectNode();
 
 		try {
-			if(requestType == null || entityClass == null)
-				throw new IOException("The request type and the entity class cannot be null !");
+			if(requestSender != RequestSender.CLIENT_FOR_SENSOR_UPDATE) {
 
-			objectToJSON = null;
+				if(requestType == null || entityClass == null)
+					throw new IOException("The request type and the entity class cannot be null !");
 
-			ObjectMapper mapper = new ObjectMapper();
+				objectToJSON = null;
 
-			ObjectNode rootNode = mapper.createObjectNode();
-			ObjectNode requestNode = mapper.createObjectNode();
+				ObjectNode requestNode = mapper.createObjectNode();
 
-			if(serializedObject == null)
-				serializedObject = "";
-			JsonNode serializedObjectNode = mapper.readTree(serializedObject);
+				if(serializedObject == null)
+					serializedObject = "";
+				JsonNode serializedObjectNode = mapper.readTree(serializedObject);
 
-			requestNode.put(JSONField.REQUEST_TYPE.getLabel(), requestType.toString());		
-			requestNode.put(JSONField.REQUESTED_ENTITY.getLabel(), entityClass.getName());	
+				requestNode.put(JSONField.REQUEST_TYPE.getLabel(), requestType.toString());		
+				requestNode.put(JSONField.REQUESTED_ENTITY.getLabel(), entityClass.getName());	
 
-			if(requestedFields != null && requiredValues != null)
-			{
-				if((requestedFields.size() != requiredValues.size()))
+				if(requestedFields != null && requiredValues != null)
 				{
-					requestedFields = null;
-					requiredValues = null;
-					log.error("An error occured during the request serialization : the sizes of the fields list and the required values list are different ! Consequently, they will be set to null.");
+					if((requestedFields.size() != requiredValues.size()))
+					{
+						requestedFields = null;
+						requiredValues = null;
+						log.error("An error occured during the request serialization : the sizes of the fields list and the required values list are different ! Consequently, they will be set to null.");
+					}
 				}
+
+
+				/**
+				 * Those list must be added to the final json String, in order to avoid some deserialization issue on the server's side
+				 */
+				requestNode.putPOJO(JSONField.REQUESTED_FIELDS.getLabel(), requestedFields);
+				requestNode.putPOJO(JSONField.REQUIRED_VALUES.getLabel(), requiredValues);
+
+
+				rootNode.putPOJO(JSONField.REQUEST_INFO.getLabel(), requestNode);
+				rootNode.putPOJO(JSONField.SERIALIZED_OBJECT.getLabel(), serializedObjectNode);
+
 			}
-
-
-			/**
-			 * Those list must be added to the final json String, in order to avoid some deserialization issue on the server's side
-			 */
-			requestNode.putPOJO(JSONField.REQUESTED_FIELDS.getLabel(), requestedFields);
-			requestNode.putPOJO(JSONField.REQUIRED_VALUES.getLabel(), requiredValues);
-
-			rootNode.putPOJO(JSONField.REQUEST_INFO.getLabel(), requestNode);
-
-			rootNode.putPOJO(JSONField.SERIALIZED_OBJECT.getLabel(), serializedObjectNode);
-
+			
+			requestSender = (requestSender == null) ? RequestSender.CLIENT : requestSender;
+			rootNode.putPOJO(JSONField.REQUEST_SENDER.getLabel(), requestSender);
 			objectToJSON = mapper.writeValueAsString(rootNode);
 		} catch (IOException e) {
 			log.error("An error occurred during the serialization of the request :\n" + e.getMessage());
@@ -189,6 +194,10 @@ public class JsonUtil {
 
 		return objectToJSON;
 	}	
+
+	public static String serializeSensorsUpdateRequest() {
+		return serializeRequest(null, null,null, null,null, RequestSender.CLIENT_FOR_SENSOR_UPDATE);
+	}
 
 	/**
 	 * Indents a jsonString in order to be more readable
@@ -234,7 +243,7 @@ public class JsonUtil {
 			return result;
 		}
 	}
-	
+
 	public static boolean hasSerializedObjectError(String json)
 	{
 		return !JsonUtil.getJsonNodeValue(JSONField.ERROR_MESSAGE, json).trim().equals("");

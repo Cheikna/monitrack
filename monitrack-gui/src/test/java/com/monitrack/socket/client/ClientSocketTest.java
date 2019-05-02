@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.monitrack.entity.Location;
 import com.monitrack.enumeration.ConnectionState;
+import com.monitrack.enumeration.RequestSender;
 import com.monitrack.enumeration.RequestType;
 import com.monitrack.socket.client.ClientSocket;
 import com.monitrack.util.JsonUtil;
@@ -45,7 +46,7 @@ public class ClientSocketTest {
 			if(connectionState == ConnectionState.SUCCESS)
 			{
 				String serializedObject = JsonUtil.serializeObject(location, location.getClass(), "");				
-				String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, Location.class, serializedObject, null, null);
+				String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, Location.class, serializedObject, null, null, RequestSender.CLIENT);
 				String response = clientSocket.sendRequestToServer(jsonRequest);
 				Location location2 = (Location) JsonUtil.deserializeObject(response);
 				assertEquals(location.getNameLocation(), location2.getNameLocation());
@@ -89,7 +90,7 @@ public class ClientSocketTest {
 				values.add(location.getNameLocation());
 				values.add(String.valueOf(location.getFloor()));
 				values.add(String.valueOf(location.getArea()));
-				String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Location.class, null, fields, values);
+				String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Location.class, null, fields, values, RequestSender.CLIENT);
 				log.info("Request : " + JsonUtil.indentJsonOutput(jsonRequest));
 				String response = clientSocket.sendRequestToServer(jsonRequest);
 				Location locationRetrived = ((List<Location>)JsonUtil.deserializeObject(response)).get(0);
@@ -130,7 +131,7 @@ public class ClientSocketTest {
 			{				
 				location.setIdLocation(id);
 				String serializedObject = JsonUtil.serializeObject(location, location.getClass(), "");
-				String jsonRequest = JsonUtil.serializeRequest(RequestType.DELETE, Location.class, serializedObject, null, null);
+				String jsonRequest = JsonUtil.serializeRequest(RequestType.DELETE, Location.class, serializedObject, null, null, RequestSender.CLIENT);
 				clientSocket.sendRequestToServer(jsonRequest);
 			}
 			else
@@ -166,7 +167,7 @@ public class ClientSocketTest {
 				values.add(location.getNameLocation());
 				values.add(String.valueOf(location.getFloor()));
 				values.add(String.valueOf(location.getArea()));
-				String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Location.class, null, fields, values);
+				String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Location.class, null, fields, values, RequestSender.CLIENT);
 				log.info("Request : " + JsonUtil.indentJsonOutput(jsonRequest));
 				String response = clientSocket.sendRequestToServer(jsonRequest);
 				List<Location> locationsRetrived = ((List<Location>)JsonUtil.deserializeObject(response));

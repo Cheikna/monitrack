@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.monitrack.entity.Location;
-import com.monitrack.entity.Smoke;
+import com.monitrack.entity.SensorConfiguration;
 import com.monitrack.gui.panel.ConfigurationTab;
 import com.monitrack.gui.panel.LocationsTab;
 
@@ -18,14 +18,14 @@ public class ConfigurationTabListener implements ActionListener {
 	private static final Logger log = LoggerFactory.getLogger(ConfigurationTabListener.class);
 	
 	private ConfigurationTab configurationTab;
-	private List<Smoke> smoke;
+	private List<SensorConfiguration> sensors;
 	private List<String> fields;
 	private List<String> values;
 
 	public ConfigurationTabListener(ConfigurationTab configurationTab)
 	{
 		this.configurationTab = configurationTab;
-		smoke = new ArrayList<>();
+		sensors = new ArrayList<>();
 		fields = new ArrayList<String>();
 		values = new ArrayList<String>();	
 	}

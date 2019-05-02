@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.monitrack.connection.pool.implementation.DataSource;
+import com.monitrack.data.pool.DataPool;
 import com.monitrack.shared.MonitrackServiceUtil;
 import com.monitrack.util.Util;
 
@@ -18,6 +19,7 @@ public class Server {
 
 	private ServerSocket serverSocket;
 	private static final int PORT_NUMBER = Integer.parseInt(Util.getPropertyValueFromPropertiesFile("server_port_number"));
+	private DataPool dataPool;
 
 	public Server() {
 		connection = null;
@@ -32,6 +34,8 @@ public class Server {
 		//Displays Monitrack Server on the console
 		System.out.println(MonitrackServiceUtil.getASCII("title.txt"));
 		DataSource.startConnectionPool();
+		dataPool = new DataPool();
+		dataPool.startListUpdaterThread();
 
 		try{
 			serverSocket = new ServerSocket(PORT_NUMBER);
@@ -40,7 +44,7 @@ public class Server {
 				
 				if(DataSource.getRemaningConnections() > 0)
 				{
-					log.info("Waiting for a client's request...");
+					//log.info("Waiting for a client's request...");
 					/*
 					 * The socket is used to communicate with the client. Many clients will use the same port 
 					 * but different instance of socket.
@@ -51,7 +55,7 @@ public class Server {
 					/*
 					 * After a connection from a client to a server, the client will be handle on his own Thread
 					 */
-					RequestHandler requestHandler  = new RequestHandler(socket, connection);
+					RequestHandler requestHandler  = new RequestHandler(socket, connection, dataPool);
 					Thread clientThread = new Thread(requestHandler);
 					clientThread.start();
 				}
