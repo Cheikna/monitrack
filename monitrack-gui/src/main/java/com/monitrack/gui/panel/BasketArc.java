@@ -74,6 +74,12 @@ public class BasketArc {
 		System.out.println("4 : on ajoute au panier 1 produit1");
 		panier.addArc(arc1);
 		System.out.println(panier);
+		System.out.println("4 : on ajoute au panier 1 produit2");
+		panier.addArc(arc2);
+		System.out.println(panier);
+		System.out.println("4 : on ajoute au panier 1 produit3");
+		panier.addArc(arc2);
+		System.out.println(panier);
 
 
 		System.out.println("5 : on supprime dans le panier le produit3");

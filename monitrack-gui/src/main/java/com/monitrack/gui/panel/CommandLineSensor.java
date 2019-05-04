@@ -90,8 +90,6 @@ public class CommandLineSensor {
 	 */
 	public void setSensor(SensorShop sensor) {
 		this.sensor = sensor;
-	}
-	
-	
+	}	
 
 }
