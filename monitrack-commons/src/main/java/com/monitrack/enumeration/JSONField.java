@@ -22,6 +22,8 @@ public enum JSONField {
 	
 	REQUEST_SENDER("request_sender"),
 	
+	CACHE_SENSOR_STATE("cache_sensor_state"),
+	
 	//The message fields will allow us to know if the serialization or deserialization happened without failures
 	ERROR_MESSAGE("error_message");
 	
