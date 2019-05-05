@@ -43,7 +43,7 @@ public class RequestHandler implements Runnable {
 	private Connection connection;
 	//For the JSON
 	private ObjectMapper mapper;
-	
+
 	public RequestHandler(Socket socket, Connection connection) {
 		this.socket = socket;
 		this.connection = connection;

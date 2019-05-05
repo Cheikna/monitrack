@@ -1,126 +1,59 @@
 package com.monitrack.entity;
-import java.sql.Time;
-import java.sql.Timestamp;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.monitrack.enumeration.SensorActivity;
 import com.monitrack.enumeration.SensorType;
 
-public class Sensor {
-	
+@JsonIgnoreProperties(ignoreUnknown = true)
+public abstract class Sensor {
+
 	@JsonProperty("sensor_id")
-	private Integer id;
-	@JsonProperty("sensor_activity")
-	private SensorActivity sensorActivity;
+	protected Integer sensorId;
 	@JsonProperty("sensor_type")
-	private SensorType sensorType;
-	@JsonProperty("location_id")	
-	private Integer locationId;
-	@JsonProperty("ip_address")
-	private String ipAddress;
+	protected SensorType sensorType;
 	@JsonProperty("mac_address")
-	private String macAddress;
+	protected String macAddress;
 	@JsonProperty("serial_number")
-	private String serialNumber;
+	protected String serialNumber;
 	@JsonProperty("hardware_version")
-	private Float hardwareVersion;
+	protected Float hardwareVersion;
 	@JsonProperty("software_version")
-	private Float softwareVersion;
-	@JsonProperty("creation_date")
-	private Timestamp creationDate;
-	@JsonProperty("date_of_last_message")
-	private Timestamp lastMessageDate;
-	@JsonProperty("last_configuration_date")
-	private Timestamp lastConfigurationDate;
-	@JsonProperty("time_of_begin_activity")
-	private Time beginTime;
-	@JsonProperty("time_of_end_activity")
-	private Time endTime;
-	//In milliseconds
-	@JsonProperty("check_frequency")
-	private Float checkFrequency;
-	@JsonProperty("measurement_unit")
-	private String measurementUnit;	
-	@JsonProperty("current_threshold")
-	private Float currentThreshold;
-	@JsonProperty("danger_threshold")
-	private Float dangerThreshold;
-	@JsonProperty("position_x")
-	private Float positionX;
-	@JsonProperty("position_y")
-	private Float positionY;
-	@JsonProperty("location")
-	private Location location;
+	protected Float softwareVersion;
+
+//	public Sensor(String sensorMark, SensorType sensorType, double sensorPrice, int sensorInterviewPrice)
+//	{
+//		super();
+//		this.sensorMark = sensorMark;
+//		this.sensorType = sensorType;
+//		this.sensorPrice = sensorPrice;
+//		this.sensorInterviewPrice = sensorInterviewPrice;
+//	}
 	
-	public Sensor() {
-		//Empty constructor
-	}
-	
-	public Sensor(Integer id, SensorActivity sensorActivity, SensorType sensorType, Integer locationId,
-			String ipAddress, String macAddress, String serialNumber, Float hardwareVersion, Float softwareVersion,
-			Timestamp creationDate, Timestamp lastMessageDate, Timestamp lastConfigurationDate, Time beginTime,
-			Time endTime, Float checkFrequency, String measurementUnit, Float currentThreshold, Float dangerThreshold, Float positionX,
-			Float positionY) {
-		this.id = id;
-		this.sensorActivity = sensorActivity;
+	public Sensor(Integer sensorId, SensorType sensorType, String macAddress, String serialNumber, Float hardwareVersion,
+			Float softwareVersion) {
+		this.sensorId = sensorId;
 		this.sensorType = sensorType;
-		this.locationId = locationId;
-		this.ipAddress = ipAddress;
 		this.macAddress = macAddress;
 		this.serialNumber = serialNumber;
 		this.hardwareVersion = hardwareVersion;
 		this.softwareVersion = softwareVersion;
-		this.creationDate = (creationDate != null) ? creationDate : new Timestamp(System.currentTimeMillis());
-		this.lastMessageDate = lastMessageDate;
-		this.lastConfigurationDate = lastConfigurationDate;
-		this.beginTime = beginTime;
-		this.endTime = endTime;
-		this.checkFrequency = checkFrequency;
-		this.measurementUnit = measurementUnit;
-		this.currentThreshold = currentThreshold;
-		this.dangerThreshold = dangerThreshold;
-		this.positionX = positionX;
-		this.positionY = positionY;
 	}
+	
+	public Sensor() {}
 
 	public Integer getId() {
-		return id;
+		return sensorId;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public SensorActivity getSensorActivity() {
-		return sensorActivity;
-	}
-
-	public void setSensorActivity(SensorActivity sensorActivity) {
-		this.sensorActivity = sensorActivity;
+	public void setId(Integer sensorId) {
+		this.sensorId = sensorId;
 	}
 
 	public SensorType getSensorType() {
 		return sensorType;
 	}
 
-	/*//FIXME In real world can a sensor change type ?
 	public void setSensorType(SensorType sensorType) {
 		this.sensorType = sensorType;
-	}*/
-
-	public Integer getLocationId() {
-		return locationId;
-	}
-
-	public void setLocationId(Integer locationId) {
-		this.locationId = locationId;
-	}
-
-	public String getIpAddress() {
-		return ipAddress;
-	}
-
-	public void setIpAddress(String ipAddress) {
-		this.ipAddress = ipAddress;
 	}
 
 	public String getMacAddress() {
@@ -155,143 +88,4 @@ public class Sensor {
 		this.softwareVersion = softwareVersion;
 	}
 
-	public Timestamp getCreationDate() {
-		return creationDate;
-	}
-
-	public void setCreationDate(Timestamp creationDate) {
-		this.creationDate = creationDate;
-	}
-
-	public Timestamp getLastMessageDate() {
-		return lastMessageDate;
-	}
-
-	public void setLastMessageDate(Timestamp lastMessageDate) {
-		this.lastMessageDate = lastMessageDate;
-	}
-
-	public Timestamp getLastConfigurationDate() {
-		return lastConfigurationDate;
-	}
-
-	public void setLastConfigurationDate(Timestamp lastConfigurationDate) {
-		this.lastConfigurationDate = lastConfigurationDate;
-	}
-
-	public Time getBeginTime() {
-		return beginTime;
-	}
-
-	public void setBeginTime(Time beginTime) {
-		this.beginTime = beginTime;
-	}
-
-	public Time getEndTime() {
-		return endTime;
-	}
-
-	public void setEndTime(Time endTime) {
-		this.endTime = endTime;
-	}
-
-	public Float getCheckFrequency() {
-		return checkFrequency;
-	}
-
-	public void setCheckFrequency(Float checkFrequency) {
-		this.checkFrequency = checkFrequency;
-	}
-
-	public String getMeasurementUnit() {
-		return measurementUnit;
-	}
-
-	public void setMeasurementUnit(String measurementUnit) {
-		this.measurementUnit = measurementUnit;
-	}
-	
-	public Float getCurrentThreshold() {
-		return currentThreshold;
-	}
-
-	public void setCurrentThreshold(Float currentThreshold) {
-		this.currentThreshold = currentThreshold;
-	}
-
-	public Float getDangerThreshold() {
-		return dangerThreshold;
-	}
-
-	public void setDangerThreshold(Float dangerThreshold) {
-		this.dangerThreshold = dangerThreshold;
-	}
-
-	public Float getPositionX() {
-		return positionX;
-	}
-
-	public void setPositionX(Float positionX) {
-		this.positionX = positionX;
-	}
-
-	public Float getPositionY() {
-		return positionY;
-	}
-	
-	public void setPositionY(Float positionY) {
-		this.positionY = positionY;
-	}
-
-	public Location getLocation() {
-		return location;
-	}
-
-	public void setLocation(Location location) {
-		this.location = location;
-	}
-
-	@Override
-	public String toString() {
-		return "Sensor [id=" + id + ", sensorActivity=" + sensorActivity + ", sensorType=" + sensorType
-				+ ", locationId=" + locationId + ", ipAddress=" + ipAddress + ", macAddress=" + macAddress
-				+ ", serialNumber=" + serialNumber + ", hardwareVersion=" + hardwareVersion + ", softwareVersion="
-				+ softwareVersion + ", creationDate=" + creationDate + ", lastMessageDate=" + lastMessageDate
-				+ ", lastConfigurationDate=" + lastConfigurationDate + ", beginTime=" + beginTime + ", endTime="
-				+ endTime + ", checkFrequency=" + checkFrequency + ", measurementUnit=" + measurementUnit
-				+ ", dangerThreshold=" + dangerThreshold + ", positionX=" + positionX + ", positionY=" + positionY
-				+ "]";
-	}
-	
-	public boolean raiseDangerAlert() {
-		return currentThreshold >= dangerThreshold;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Sensor other = (Sensor) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
-
-	
-	
 }

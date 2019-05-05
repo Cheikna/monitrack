@@ -19,6 +19,8 @@ public class DAOFactory {
 			dao =  new PersonDAO(connection);
 		else if(entityClass.equals(Location.class))
 			dao = new LocationDAO(connection);
+		else if(entityClass.equals(SensorShop.class))
+			dao = new SensorShopDAO(connection);
 		else
 			throw new UnknownClassException(entityClass);		
 		
