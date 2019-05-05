@@ -14,7 +14,7 @@ public enum SensorType {
 	GAS("Gas", "Gaz", false),
 	GLASS_BREAKAGE("Glass breakage", "Bris de vitre", false),
 	ACOUSTIC("Acoustic", "Sonore", false),
-	MANUAL_TRIGGER("Manuel trigger", "Déclencheur d'alarme manuel", true),
+	MANUAL_TRIGGER("Manuel alarm trigger", "Déclencheur d'alarme manuel", true),
 	ACCESS_CONTROL("Access controle", "Contrôle d'accès", true),
 	FLOOD("Flood", "Inondation", false);
 	
