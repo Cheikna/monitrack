@@ -123,7 +123,7 @@ public class SensorConfigurationDAO extends DAO<SensorConfiguration> {
 
 	private Location getSensorLocation(Integer sensorLocationId) {
 		LocationDAO locationDAO = new LocationDAO(connection);
-		Location location = locationDAO.find(Arrays.asList("ID_LOCATION"), Arrays.asList(sensorLocationId.toString())).get(0);
+		Location location = locationDAO.find(Arrays.asList("ID_LOCATION"), Arrays.asList(sensorLocationId.toString()), null).get(0);
 		return location;
 	}
 	

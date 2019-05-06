@@ -26,10 +26,11 @@ public class SensorConfigurationDAOTest {
 		Connection connection = DataSource.getConnection();
 		@SuppressWarnings("unchecked")
 		SensorConfiguration sensor = ((List<SensorConfiguration>)DAOFactory.execute(connection,
-				SensorConfiguration.class, RequestType.SELECT, null, null, null)).get(0);
+				SensorConfiguration.class, RequestType.SELECT, null, null, null, null)).get(0);
 		System.out.println(sensor);
 		sensor.setSensorActivity(SensorActivity.NOT_CONFIGURED);
-		DAOFactory.execute(connection, sensor.getClass(), RequestType.UPDATE, sensor, null, null);
+		DAOFactory.execute(connection, sensor.getClass(), RequestType.UPDATE, sensor, null, null, null);
+		DataSource.putConnection(connection);
 	}
 
 }

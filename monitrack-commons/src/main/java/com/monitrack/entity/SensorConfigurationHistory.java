@@ -44,10 +44,10 @@ public class SensorConfigurationHistory {
 	}
 	
 	// Constructor used to register in the database
-	public SensorConfigurationHistory(SensorConfiguration sensor, String description, SensorAction actionDone) {
+	public SensorConfigurationHistory(SensorConfiguration sensor, Timestamp dangerTime, String description, SensorAction actionDone) {
 		this(0, sensor.getSensorConfigurationId(), sensor.getCurrentThreshold(),
 					sensor.getMinDangerThreshold(), sensor.getMaxDangerThreshold(),
-					sensor.getDangerStartDate(), Util.getCurrentTimestamp(), description, actionDone);
+					dangerTime, Util.getCurrentTimestamp(), description, actionDone);
 	}
 
 	public int getIdHistory() {

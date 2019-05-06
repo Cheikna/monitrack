@@ -8,4 +8,4 @@
 ---/__|" '' "| /___/\----           |    (^^^^^) |
    |''|"'||'"| |' '||               |    ( ||| ) | 
    `""`""))""`"`""""`               ^^^^^^^^^^^^^
- Tap (1) for 100 beds or less    Tap (2) for more than 100 beds
+ Tap (1) for 50 beds or less    Tap (2) for more than 50 beds
