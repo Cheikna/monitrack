@@ -2,23 +2,21 @@ package com.monitrack.mock.runnable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.monitrack.entity.Message;
-import com.monitrack.entity.SensorConfiguration;
-import com.monitrack.enumeration.SensorActivity;
-import com.monitrack.enumeration.SensorState;
 import com.monitrack.mock.util.MockUtil;
 
 public class SensorSignal implements Runnable {
 	
 	private static final Logger log = LoggerFactory.getLogger(SensorSignal.class);
-	private SensorConfiguration sensorConfiguration;
-	private boolean isInSendingWarningMessageMode;
+	private int sensorId;
+	private float thresholdReached;
+	private long interval;
 	private boolean sendMessage;
 
-	public SensorSignal(SensorConfiguration sensorConfiguration) {
-		this.sensorConfiguration = sensorConfiguration;	
-		isInSendingWarningMessageMode = false;
+	public SensorSignal(int sensorId, float thresholdReached, long interval) {
+		this.sensorId = sensorId;
+		this.thresholdReached = thresholdReached;
+		this.interval = interval;
 		sendMessage = false;
 	}
 
@@ -26,7 +24,12 @@ public class SensorSignal implements Runnable {
 	public void run() {
 		try {
 			while(true) {
-				sendSignal();				
+				if(sendMessage) {
+					boolean messageSent = MockUtil.sendMessage(new Message(sensorId, thresholdReached));
+					if(!messageSent)
+						throw new Exception("The server can not be reached at this time");
+					Thread.sleep(interval - 500);
+				}					
 			}
 		} catch (Exception e) {
 			log.error(e.getMessage());
@@ -34,25 +37,36 @@ public class SensorSignal implements Runnable {
 		
 	}
 	
-	public void sendSignal() throws Exception {
-		if(sendMessage) {
-			if(sensorConfiguration.getSensorActivity() == SensorActivity.ENABLED) {
-				boolean messageSent = MockUtil.sendMessage(new Message(sensorConfiguration));
-				if(!messageSent)
-					throw new Exception("The server can not be reached at this time");
-				Thread.sleep(sensorConfiguration.getCheckFrequency().longValue() - 100);
-			}					
-		}
-	}
-	
 	public void setSendMessage(boolean sendMessage) {
 		this.sendMessage = sendMessage;
 	}
 
-	public SensorConfiguration getSensorConfiguration() {
-		return sensorConfiguration;
+	public int getSensorId() {
+		return sensorId;
 	}
-	
-	
+
+	public void setSensorId(int sensorId) {
+		this.sensorId = sensorId;
+	}
+
+	public float getThresholdReached() {
+		return thresholdReached;
+	}
+
+	public void setThresholdReached(float thresholdReached) {
+		this.thresholdReached = thresholdReached;
+	}
+
+	public long getInterval() {
+		return interval;
+	}
+
+	public void setInterval(long interval) {
+		this.interval = interval;
+	}
+
+	public boolean isSendMessage() {
+		return sendMessage;
+	}
 
 }

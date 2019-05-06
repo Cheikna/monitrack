@@ -8,6 +8,7 @@ import com.monitrack.enumeration.ConnectionState;
 import com.monitrack.enumeration.RequestSender;
 import com.monitrack.enumeration.RequestType;
 import com.monitrack.enumeration.SensorActivity;
+import com.monitrack.enumeration.SensorType;
 import com.monitrack.socket.client.ClientSocket;
 import com.monitrack.util.JsonUtil;
 
@@ -21,7 +22,7 @@ public class MockUtil {
 			ConnectionState connectionState = clientSocket.start();
 			if(connectionState == ConnectionState.SUCCESS) {
 				String serializedObject = JsonUtil.serializeObject(message, message.getClass(), "");
-				String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, message.getClass(), serializedObject, null, null, RequestSender.SENSOR);
+				String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, message.getClass(), serializedObject, null, null,null, RequestSender.SENSOR);
 				clientSocket.sendRequestToServer(jsonRequest);		
 				return true;
 			}
@@ -33,6 +34,28 @@ public class MockUtil {
 		}
 		return false;
 		
+	}
+	
+	public static String[] getSensorTypeAsStringArray() {
+		SensorType[] types = SensorType.values();
+		int size = types.length;
+		String[] res = new String[size + 1];
+		res[0] = "-";
+		for(int i = 0; i < size ; i++) {
+			res[i+1] = types[i].name();			
+		}
+		return res;
+	}
+	
+	public static String[] getSensorActivityAsStringArray() {
+		SensorActivity[] activities = SensorActivity.values();
+		int size = activities.length;
+		String[] res = new String[size + 1];
+		res[0] = "-";
+		for(int i = 0; i < size ; i++) {
+			res[i+1] = activities[i].name();			
+		}
+		return res;
 	}
 
 }

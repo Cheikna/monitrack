@@ -70,7 +70,7 @@ public class SensorsTableModel extends AbstractTableModel implements ListSelecti
 	private void loadDatabaseDatas() {
 		datas = emptyDatas.clone();
 		try {
-			String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, SensorConfiguration.class, null, null, null, null);
+			String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, SensorConfiguration.class, null, null, null, null, null);
 			String response = MonitrackGuiUtil.sendRequest(jsonRequest);
 			sensors = (List<SensorConfiguration>) JsonUtil.deserializeObject(response);
 			filteredSensors = new ArrayList<>(sensors);

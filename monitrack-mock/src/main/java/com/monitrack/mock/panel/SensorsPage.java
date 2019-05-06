@@ -4,7 +4,6 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -12,10 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-
-import com.monitrack.enumeration.SensorActivity;
-import com.monitrack.enumeration.SensorType;
 import com.monitrack.mock.listener.SensorsTableModel;
+import com.monitrack.mock.util.MockUtil;
 
 public class SensorsPage extends JPanel {
 
@@ -23,15 +20,15 @@ public class SensorsPage extends JPanel {
 	private final Insets insets = new Insets(5,10,0,0);
 	private final Insets defaultInsets = new Insets(0,0,0,0);
 	private GridBagConstraints c;
-	//private SensorsTableListener sensorsTableListener;
 
 	/***************** Filter bar **********************/
 	private JTextField idTextField;
-	private JComboBox<SensorType> sensorTypeComboBox;
-	private JComboBox<SensorActivity> sensorActivityComboBox;
+	private JComboBox<String> sensorTypeComboBox;
+	private JComboBox<String> sensorActivityComboBox;
 	private JTextField locationTextField;
 	private JButton validateFiltersButton;
-	private JButton loadDatasButton;
+	private JButton loadDatasFromDatabaseButton;
+	private JButton loadDatasFromServerCacheButton;
 
 	/****************** Table **************************/
 	private JScrollPane sensorsTableScrollPane;
@@ -58,37 +55,15 @@ public class SensorsPage extends JPanel {
 		initSensorsTable();
 		c.insets = defaultInsets;
 		initRateChoiceBar();
-		/*c.gridx = 0;
-		c.gridy = 0;
-		c.gridwidth = 1;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		add(new JButton("Super"), c);
-		c.gridx = 0;
-		c.gridy = 1;
-		c.fill = GridBagConstraints.BOTH;
-		c.gridwidth = 1;
-		c.weightx = 0.4;
-		c.weighty = 1;
-		add(sensorsTableScrollPane, c);
-		c.gridx = 1;
-		c.gridy = 1;
-		c.weightx = 0.1;
-		add(new JButton("de"), c);
-		c.gridx = 2;
-		c.gridy = 1;
-		c.weightx = 0.1;
-		add(new JButton("la"), c);*/
 	}
 
 	private void initFiltersBar() {
 		idTextField = new JTextField(5);
-		sensorTypeComboBox = new JComboBox<SensorType>(SensorType.values());
-		sensorActivityComboBox = new JComboBox<SensorActivity>(SensorActivity.values());
+		sensorTypeComboBox = new JComboBox<String>(MockUtil.getSensorTypeAsStringArray());
+		sensorActivityComboBox = new JComboBox<String>(MockUtil.getSensorActivityAsStringArray());
 		locationTextField = new JTextField(15);
 		validateFiltersButton = new JButton("Validate");
 		validateFiltersButton.addActionListener(sensorsTableModel);
-		loadDatasButton = new JButton("Load datas");
-		loadDatasButton.addActionListener(sensorsTableModel);
 
 		c.insets = insets;
 		c.gridx = 0;
@@ -125,15 +100,23 @@ public class SensorsPage extends JPanel {
 	}
 
 	private void initSensorsTable() {	
+		loadDatasFromDatabaseButton = new JButton("Load datas from database");
+		loadDatasFromDatabaseButton.addActionListener(sensorsTableModel);
+		loadDatasFromServerCacheButton = new JButton("Load datas from server cache");
+		loadDatasFromServerCacheButton.addActionListener(sensorsTableModel);
 
 		c.weighty = 1;
 		c.gridy = 2;
 		c.gridx = 0;
-		c.gridwidth = 7;
+		c.gridwidth = 8;
 		c.gridheight = 2;
-		add(sensorsTableScrollPane, c);		
+		add(sensorsTableScrollPane, c);	
+		c.gridwidth = 4;
 		c.gridy = 10;
-		add(loadDatasButton, c);
+		c.insets = new Insets(0,0,0,30);
+		add(loadDatasFromDatabaseButton, c);
+		c.gridx = 4;
+		add(loadDatasFromServerCacheButton, c);
 	}
 
 	private void initRateChoiceBar() {
@@ -146,6 +129,7 @@ public class SensorsPage extends JPanel {
 		rateValueTextField.setFont(new Font("Calibri", Font.PLAIN, 17));
 		rateValueTextField.getDocument().addDocumentListener(sensorsTableModel);
 		add(rateValueLabel, c);
+		c.gridx = 0;
 		c.gridy = 8;
 		c.insets = new Insets(50,0,0,0);
 		c.gridwidth = 1;
@@ -155,7 +139,7 @@ public class SensorsPage extends JPanel {
 		c.gridx = 1;
 		c.gridwidth = 2;
 		add(rateValueTextField, c);
-		startSendingMessageButton = new JButton("Start sending signal");
+		startSendingMessageButton = new JButton("Start sending or update signal");
 		startSendingMessageButton.addActionListener(sensorsTableModel);
 		c.gridx = 3;
 		c.insets = new Insets(50, 25, 0 , 12);
@@ -175,18 +159,17 @@ public class SensorsPage extends JPanel {
 		return idTextField;
 	}
 
-	public JComboBox<SensorType> getSensorTypeComboBox() {
+	public JComboBox<String> getSensorTypeComboBox() {
 		return sensorTypeComboBox;
 	}
 
-	public JComboBox<SensorActivity> getSensorActivityComboBox() {
+	public JComboBox<String> getSensorActivityComboBox() {
 		return sensorActivityComboBox;
 	}
 
 	public JTextField getLocationTextField() {
 		return locationTextField;
 	}
-
 
 	public JTextField getRateValueTextField() {
 		return rateValueTextField;
@@ -204,21 +187,12 @@ public class SensorsPage extends JPanel {
 		return stopSendingMessageButton;
 	}
 
-	public JButton getLoadDatasButton() {
-		return loadDatasButton;
+	public JButton getLoadDatasFromDatabaseButton() {
+		return loadDatasFromDatabaseButton;
 	}
 
-
-	/*northPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	northPanel.add(new JLabel("Rechercher les capteurs par : "));
-	centerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 30, 30));
-	Sensor sensor = new Sensor(8, SensorActivity.ENABLED, SensorType.FLOW, 1, "192.168.20.15", "dsfsd", "dsfsdf", 
-			1.0f, 2.0f, null, null, null, null, null, 2500f, "Decibel", 4.0f, 0.0f, 5.0f, 6.23f, 4.94f);
-	Sensor sensor2 = new Sensor(9, SensorActivity.ENABLED, SensorType.SMOKE, 1, "192.168.20.15", "dsfsd", "dsfsdf", 
-			1.0f, 2.0f, null, null, null, null, null, 0f, "Decibel", 4.0f, 0.0f, 5.0f, 6.23f, 4.94f);*/
-	//centerPanel.add(new SensorInfoPanel(sensor));
-	//centerPanel.add(new SensorInfoPanel(sensor2));		
-
-	//centerPanel = new JPanel(new GridBagLayout());
+	public JButton getLoadDatasFromServerCacheButton() {
+		return loadDatasFromServerCacheButton;
+	}	
 
 }

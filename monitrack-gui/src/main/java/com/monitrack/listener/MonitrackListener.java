@@ -287,7 +287,7 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 				int area = Integer.parseInt(values[4]);
 				location = new Location(name, center, floor, wing, area);
 				String serializedObject = JsonUtil.serializeObject(location, Location.class, "");
-				String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, Location.class, serializedObject, null, null, RequestSender.CLIENT);
+				String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, Location.class, serializedObject, null, null, null, RequestSender.CLIENT);
 				MonitrackGuiUtil.sendRequest(jsonRequest);
 			} 
 			inputStream.close();

@@ -60,7 +60,8 @@ public class MonitrackGuiUtil {
 					throw new NoAvailableConnectionException();
 				}
 				
-				log.info("Response from the server :\n" + JsonUtil.indentJsonOutput(response));
+				//log.info("Response from the server :\n" + JsonUtil.indentJsonOutput(response));
+				log.info("Response from the server :\n" + response);
 			}
 			
 			return response;

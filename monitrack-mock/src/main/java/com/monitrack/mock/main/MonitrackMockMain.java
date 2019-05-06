@@ -6,5 +6,6 @@ public class MonitrackMockMain {
 
 	public static void main(String[] args) {
 		new MockFrame();
+		
 	}
 }

@@ -3,6 +3,7 @@ package com.monitrack.mock.listener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import com.monitrack.mock.dialog.JsonIndenterDialog;
 import com.monitrack.mock.enumeration.Page;
 import com.monitrack.mock.frame.MockFrame;
 
@@ -20,6 +21,9 @@ public class MockFrameListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == mockFrame.getBackToMenuButton()) {
 			mockFrame.changePage(Page.HOME);
+		}
+		else if(e.getSource() == mockFrame.getJsonDialogButton()) {
+			new JsonIndenterDialog(null);
 		}
 
 	}
