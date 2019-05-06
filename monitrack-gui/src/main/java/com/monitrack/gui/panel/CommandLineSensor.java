@@ -2,9 +2,7 @@ package com.monitrack.gui.panel;
 import java.util.List;
 
 import com.monitrack.entity.SensorShop;
-import com.monitrack.enumeration.Energy;
 import com.monitrack.enumeration.RequestType;
-import com.monitrack.enumeration.SensorType;
 import com.monitrack.shared.MonitrackGuiUtil;
 import com.monitrack.util.JsonUtil;
 
