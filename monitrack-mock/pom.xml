@@ -7,12 +7,11 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>monitrack-mock</artifactId>
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
 	<dependencies>
-		<dependency>
-			<groupId>com.monitrack</groupId>
-			<artifactId>monitrack-commons</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
 		<dependency>
 			<groupId>com.monitrack</groupId>
 			<artifactId>monitrack-gui</artifactId>

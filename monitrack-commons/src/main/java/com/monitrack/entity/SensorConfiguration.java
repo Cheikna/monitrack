@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.monitrack.enumeration.SensorActivity;
+import com.monitrack.enumeration.SensorSensitivity;
 import com.monitrack.enumeration.SensorType;
 import com.monitrack.util.Util;
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -14,6 +15,8 @@ public class SensorConfiguration extends Sensor {
 	private Integer sensorConfigurationId;
 	@JsonProperty("sensor_activity")
 	private SensorActivity sensorActivity;
+	@JsonProperty("sensor_sensitivity")
+	private SensorSensitivity sensorSensitivity;
 	@JsonProperty("location_id")	
 	private Integer locationId;
 	@JsonProperty("ip_address")
@@ -46,10 +49,8 @@ public class SensorConfiguration extends Sensor {
 	@JsonProperty("location")
 	private Location location;	
 
-	@JsonIgnore
-	private Timestamp dangerStartDate;
-
-	public SensorConfiguration(Integer sensorConfigurationId, Integer sensorId, SensorActivity sensorActivity, SensorType sensorType, Integer locationId,
+	public SensorConfiguration(Integer sensorConfigurationId, Integer sensorId, SensorActivity sensorActivity, SensorType sensorType, SensorSensitivity sensorSensitivity,
+			Integer locationId,
 			String ipAddress, String macAddress, String serialNumber, Float hardwareVersion, Float softwareVersion,
 			Timestamp creationDate, Timestamp lastMessageDate, Timestamp lastConfigurationDate, Time beginTime,
 			Time endTime, Float checkFrequency, String measurementUnit, Float currentThreshold, Float minDangerThreshold,
@@ -72,6 +73,7 @@ public class SensorConfiguration extends Sensor {
 		this.maxDangerThreshold = maxDangerThreshold;
 		this.positionX = positionX;
 		this.positionY = positionY;
+		this.sensorSensitivity = sensorSensitivity;
 	}
 	
 	public SensorConfiguration() { }
@@ -215,18 +217,14 @@ public class SensorConfiguration extends Sensor {
 	public void setLastMessageDate() {
 		this.setLastMessageDate(Util.getCurrentTimestamp());
 	}
-	
-	@JsonIgnore
-	public Timestamp getDangerStartDate() {
-		return dangerStartDate;
+
+	public SensorSensitivity getSensorSensitivity() {
+		return sensorSensitivity;
 	}
 
-	@JsonIgnore
-	public void setDangerStartDate(Timestamp dangerStartDate) {
-		this.dangerStartDate = dangerStartDate;
+	public void setSensorSensitivity(SensorSensitivity sensorSensitivity) {
+		this.sensorSensitivity = sensorSensitivity;
 	}
-
-
 
 	@Override
 	public String toString() {
@@ -261,15 +259,13 @@ public class SensorConfiguration extends Sensor {
 			return "FIXME"; //FIXME
 		case HUMIDITY:	
 			return "The humidity level " + template;
-		case LIGHT:	
+		case LIGHT:
 			return "The light level " + template;
 		case GAS:	
 			return "The rate of carbone monoxyde in \u00AB" + locationName + "\u00BB is equal to " + currentThreshold 
 					+ "/" + maxDangerThreshold + " " + measurementUnit;
 		case GLASS_BREAKAGE:	
 			return "The glass damage on the window located in \u00AB" + locationName + "\u00BB is equal to " + currentThreshold + "%";
-		case ACOUSTIC:	
-			return "The sound " + template;
 		case MANUAL_TRIGGER:	
 			return "A manual trigger has been triggered in \u00AB" + locationName + "\u00BB";
 		case ACCESS_CONTROL:	
