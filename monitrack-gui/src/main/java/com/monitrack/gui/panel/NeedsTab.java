@@ -510,7 +510,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 		BasketSensorShopFromBuilder.addSensor(quantity, s);
 		this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
 				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType()+
+				" - Type :"+s.getSensorType().getFrenchLabel()+
 				" - Prix : "+arround(s.getSensorPrice(), 2)+
 				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
 				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
@@ -528,7 +528,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 		BasketSensorShopFromBuilder.addSensor(quantity, s);
 		this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
 				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType()+
+				" - Type :"+s.getSensorType().getFrenchLabel()+
 				" - Prix : "+arround(s.getSensorPrice(), 2)+
 				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
 				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
@@ -546,7 +546,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 		BasketSensorShopFromBuilder.addSensor(quantity, s);
 		this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
 				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType()+
+				" - Type :"+s.getSensorType().getFrenchLabel()+
 				" - Prix : "+arround(s.getSensorPrice(), 2)+
 				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
 				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
@@ -564,7 +564,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 		BasketSensorShopFromBuilder.addSensor(quantity, s);
 		this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
 				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType()+
+				" - Type :"+s.getSensorType().getFrenchLabel()+
 				" - Prix : "+arround(s.getSensorPrice(), 2)+
 				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
 				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
@@ -582,7 +582,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 		BasketSensorShopFromBuilder.addSensor(quantity, s);
 		this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
 				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType()+
+				" - Type :"+s.getSensorType().getFrenchLabel()+
 				" - Prix : "+arround(s.getSensorPrice(), 2)+
 				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
 				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
@@ -600,7 +600,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 		BasketSensorShopFromBuilder.addSensor(quantity, s);
 		this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
 				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType()+
+				" - Type :"+s.getSensorType().getFrenchLabel()+
 				" - Prix : "+arround(s.getSensorPrice(), 2)+
 				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
 				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
@@ -618,7 +618,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 		BasketSensorShopFromBuilder.addSensor(quantity, s);
 		this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
 				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType()+
+				" - Type :"+s.getSensorType().getFrenchLabel()+
 				" - Prix : "+arround(s.getSensorPrice(), 2)+
 				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
 				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
@@ -636,7 +636,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 		BasketSensorShopFromBuilder.addSensor(quantity, s);
 		this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
 				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType()+
+				" - Type :"+s.getSensorType().getFrenchLabel()+
 				" - Prix : "+arround(s.getSensorPrice(), 2)+
 				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
 				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
@@ -654,7 +654,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 		BasketSensorShopFromBuilder.addSensor(quantity, s);
 		this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
 				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType()+
+				" - Type :"+s.getSensorType().getFrenchLabel()+
 				" - Prix : "+arround(s.getSensorPrice(), 2)+
 				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
 				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
@@ -672,7 +672,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 		BasketSensorShopFromBuilder.addSensor(quantity, s);
 		this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
 				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType()+
+				" - Type :"+s.getSensorType().getFrenchLabel()+
 				" - Prix : "+arround(s.getSensorPrice(), 2)+
 				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
 				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
@@ -695,7 +695,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 			BasketSensorShopFromBuilder.addSensor(quantity, s);
 			this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
 					" - Marque : "+s.getSensorMark()+
-					" - Type :"+s.getSensorType()+
+					" - Type :"+s.getSensorType().getFrenchLabel()+
 					" - Prix : "+arround(s.getSensorPrice(), 2)+
 					"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
 					"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
@@ -715,7 +715,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 		BasketSensorShopFromBuilder.addSensor(quantity, s);
 		this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
 				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType()+
+				" - Type :"+s.getSensorType().getFrenchLabel()+
 				" - Prix : "+arround(s.getSensorPrice(), 2)+
 				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
 				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
@@ -870,7 +870,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 			{
 				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+
 						" - Marque : "+cl.getSensor().getSensorMark()+
-						"- Type :"+cl.getSensor().getSensorType()+
+						" - Type : "+cl.getSensor().getSensorType()+
 						" - Prix : "+arround(cl.getSensor().getSensorPrice(), 2)+
 						"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+
 						"€/an - Classe énergétique : "+cl.getSensor().getEnergy().getLabel()+
@@ -895,7 +895,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 			{
 				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+
 						" - Marque : "+cl.getSensor().getSensorMark()+
-						"- Type :"+cl.getSensor().getSensorType()+
+						" - Type : "+cl.getSensor().getSensorType()+
 						" - Prix : "+arround(cl.getSensor().getSensorPrice(), 2)+
 						"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+
 						"€/an - Classe énergétique : "+cl.getSensor().getEnergy().getLabel()+
@@ -919,7 +919,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 			{
 				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+
 						" - Marque : "+cl.getSensor().getSensorMark()+
-						"- Type :"+cl.getSensor().getSensorType()+
+						" - Type : "+cl.getSensor().getSensorType()+
 						" - Prix : "+arround(cl.getSensor().getSensorPrice(), 2)+
 						"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+
 						"€/an - Classe énergétique : "+cl.getSensor().getEnergy().getLabel()+
@@ -949,7 +949,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 			{
 				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+
 						" - Marque : "+cl.getSensor().getSensorMark()+
-						"- Type :"+cl.getSensor().getSensorType()+
+						" - Type : "+cl.getSensor().getSensorType()+
 						" - Prix : "+arround(cl.getSensor().getSensorPrice(), 2)+
 						"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+
 						"€/an - Classe énergétique : "+cl.getSensor().getEnergy().getLabel()+
