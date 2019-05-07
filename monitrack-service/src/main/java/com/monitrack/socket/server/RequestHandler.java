@@ -5,19 +5,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.sql.Connection;
 import java.util.List;
 
 import org.apache.commons.lang3.math.NumberUtils;
+import org.joda.time.DateTimeConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.monitrack.connection.pool.implementation.DataSource;
 import com.monitrack.dao.implementation.DAOFactory;
-import com.monitrack.datacenter.DataCenter;
+import com.monitrack.datacenter.AlertCenter;
 import com.monitrack.entity.Message;
 import com.monitrack.entity.SensorConfiguration;
 import com.monitrack.enumeration.ConnectionState;
@@ -46,13 +46,13 @@ public class RequestHandler implements Runnable {
 	private Connection connection;
 	//For the JSON
 	private ObjectMapper mapper;
-	private DataCenter dataCenter;
+	private AlertCenter alertCenter;
+	private final int oneSecondMs = DateTimeConstants.MILLIS_PER_SECOND;
 
-	public RequestHandler(Socket socket, Connection connection, DataCenter dataCenter) {
+	public RequestHandler(Socket socket, Connection connection, AlertCenter alertCenter) {
 		this.socket = socket;
 		this.connection = connection;
-		this.dataCenter = dataCenter;
-		this.dataCenter.setConnection(connection);
+		this.alertCenter = alertCenter;
 		mapper = new ObjectMapper();
 	}
 
@@ -61,17 +61,19 @@ public class RequestHandler implements Runnable {
 
 		try 
 		{		
-			InetSocketAddress socketAddress = (InetSocketAddress)socket.getRemoteSocketAddress();
-			log.info("Client connected with the IP " + socketAddress.getAddress());
 			readFromClient = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
 			writeToClient = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true);
 			
+			String[] ipAddressAndVersion = readFromClient.readLine().split(Util.getVersionSpliter());
+
+			log.info("Client connected with the IP " + ipAddressAndVersion[0]);
+			
 			//Check client application version
-			String clientVersion = readFromClient.readLine();
+			String clientVersion = ipAddressAndVersion[1];
 			String serverVersion = MonitrackServiceUtil.getApplicationVersion();
 			
 			//Check if the client has the same version than the server
-			if(!clientVersion.equalsIgnoreCase("v" + serverVersion))
+			if(!clientVersion.equalsIgnoreCase(serverVersion))
 			{
 				writeToClient.println(ConnectionState.DEPRECATED_VERSION.getCode() + "v" + serverVersion);
 			}
@@ -88,7 +90,7 @@ public class RequestHandler implements Runnable {
 			if(requestOfClient.trim().equalsIgnoreCase(reservedConnectionCode))
 			{
 				int reservedTimeInMilliseconds = NumberUtils.toInt(Util.getPropertyValueFromPropertiesFile("reserved_time_ms"), 17000);
-				String reservedTime = (new Integer(reservedTimeInMilliseconds / 1000)).toString();
+				String reservedTime = (new Integer(reservedTimeInMilliseconds / oneSecondMs)).toString();
 				log.info("A client has reserved a connection for " + reservedTime + " sec\n");
 				String message = "Votre connexion ne sera pas utilisable par les autres durant " + reservedTime + " sec-" + reservedTime;
 				writeToClient.println(message);
@@ -102,18 +104,21 @@ public class RequestHandler implements Runnable {
 				RequestSender requestSender = RequestSender.getValueOf(JsonUtil.getJsonNodeValue(JSONField.REQUEST_SENDER, requestOfClient));
 
 				if(requestSender == RequestSender.CLIENT) {
-					log.info("Request received from the client :\n" + JsonUtil.indentJsonOutput(requestOfClient) + "\n");
+					//log.info("Request received from the client :\n" + JsonUtil.indentJsonOutput(requestOfClient) + "\n");
+					log.info("Request received from the client :\n" + requestOfClient + "\n");
 					String responseToClient = executeClientRequest(json);
-					log.info("Response to the client :\n" + JsonUtil.indentJsonOutput(responseToClient) + "\n");
+					log.info("Response to the client :\n" + requestOfClient + "\n");
+					//log.info("Response to the client :\n" + JsonUtil.indentJsonOutput(responseToClient) + "\n");
 					writeToClient.println(responseToClient);						
 				}
 				else if(requestSender == RequestSender.SENSOR) {
 					Message message = (Message)getObjectFromJson(json);
-					dataCenter.processMessage(message);
+					alertCenter.processMessage(message);
 					writeToClient.println("");
 				} 
 				else if(requestSender == RequestSender.CLIENT_FOR_SENSOR_UPDATE) {
-					List<SensorConfiguration> sensorConfigurations = dataCenter.getCacheSensorsByState(SensorState.DANGER);
+					SensorState state = SensorState.valueOf(JsonUtil.getJsonNodeValue(JSONField.CACHE_SENSOR_STATE, requestOfClient));
+					List<SensorConfiguration> sensorConfigurations = alertCenter.getCacheSensorsByState(state);
 					String serializedObjects = JsonUtil.serializeObject(sensorConfigurations, SensorConfiguration.class, "");
 					writeToClient.println(serializedObjects);					
 				}
@@ -152,21 +157,25 @@ public class RequestHandler implements Runnable {
 			String fieldsStringFromJson = requestNode.get(JSONField.REQUESTED_FIELDS.getLabel()).toString();
 			// The values of the filters we want to filter
 			String valuesStringFromJson = requestNode.get(JSONField.REQUIRED_VALUES.getLabel()).toString();
+			// The tests
+			String testsStringFromJson = requestNode.get(JSONField.REQUIRED_TESTS.getLabel()).toString();
 
 			List<String> fields = null;
 			List<String> requiredValues = null;
+			List<String> tests = null;
 
 			if(fieldsStringFromJson != null && valuesStringFromJson != null)
 			{
 				fields = mapper.readValue(fieldsStringFromJson, mapper.getTypeFactory().constructCollectionType(List.class, String.class));
-				requiredValues = mapper.readValue(valuesStringFromJson, mapper.getTypeFactory().constructCollectionType(List.class, String.class));		
+				requiredValues = mapper.readValue(valuesStringFromJson, mapper.getTypeFactory().constructCollectionType(List.class, String.class));	
+				tests = mapper.readValue(testsStringFromJson, mapper.getTypeFactory().constructCollectionType(List.class, String.class));		
 			}	
 			
 			Object deserializedObject = getObjectFromJson(json);
 			
 			RequestType requestType = RequestType.getRequestType(requestNode.get(JSONField.REQUEST_TYPE.getLabel()).textValue());
 			
-			Object objectResult = DAOFactory.execute(connection, entityClass, requestType, deserializedObject, fields, requiredValues); 
+			Object objectResult = DAOFactory.execute(connection, entityClass, requestType, deserializedObject, fields, requiredValues, tests); 
 			
 			result = JsonUtil.serializeObject(objectResult, entityClass, "");
 

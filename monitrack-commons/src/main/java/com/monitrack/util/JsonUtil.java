@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.monitrack.enumeration.JSONField;
 import com.monitrack.enumeration.RequestSender;
 import com.monitrack.enumeration.RequestType;
+import com.monitrack.enumeration.SensorState;
 
 public class JsonUtil {
 
@@ -64,7 +65,7 @@ public class JsonUtil {
 				 */
 				node.put(JSONField.ENTITY.getLabel(), className);
 				node.putPOJO(JSONField.DATAS.getLabel(), object);
-				log.info("Serialization into JSON succedeed");
+				//log.info("Serialization into JSON succedeed");
 			}
 			else
 			{
@@ -128,6 +129,18 @@ public class JsonUtil {
 		return jsonConvertedToObject;		
 	}
 
+	@SuppressWarnings("rawtypes")
+	public static String serializeRequest(RequestType requestType, Class entityClass,String serializedObject, 
+			List<String> requestedFields, List<String> requiredValues,  List<String> requiredTests, RequestSender requestSender)
+	{
+		return serializeRequest(requestType, entityClass, serializedObject, requestedFields, requiredValues,
+				requiredTests, requestSender, null);
+	}
+
+	public static String serializeSensorsUpdateRequest(SensorState sensorState) {
+		return serializeRequest(null, null,null, null,null, null, RequestSender.CLIENT_FOR_SENSOR_UPDATE, sensorState);
+	}
+	
 	/**
 	 * 
 	 * @param serializedObject
@@ -138,16 +151,22 @@ public class JsonUtil {
 	 * @throws IOException
 	 */
 	@SuppressWarnings("rawtypes")
-	public static String serializeRequest(RequestType requestType, Class entityClass,String serializedObject, 
-			List<String> requestedFields, List<String> requiredValues, RequestSender requestSender)
+	private static String serializeRequest(RequestType requestType, Class entityClass,String serializedObject, 
+			List<String> requestedFields, List<String> requiredValues, List<String> requiredTests, 
+			RequestSender requestSender, SensorState sensorCacheState)
 	{
 		String objectToJSON = null;
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode rootNode = mapper.createObjectNode();
 
-		try {
-			if(requestSender != RequestSender.CLIENT_FOR_SENSOR_UPDATE) {
-
+		try 
+		{
+			if(requestSender == RequestSender.CLIENT_FOR_SENSOR_UPDATE) 
+			{
+				rootNode.putPOJO(JSONField.CACHE_SENSOR_STATE.getLabel(), sensorCacheState);
+			} 
+			else 
+			{
 				if(requestType == null || entityClass == null)
 					throw new IOException("The request type and the entity class cannot be null !");
 
@@ -178,11 +197,11 @@ public class JsonUtil {
 				 */
 				requestNode.putPOJO(JSONField.REQUESTED_FIELDS.getLabel(), requestedFields);
 				requestNode.putPOJO(JSONField.REQUIRED_VALUES.getLabel(), requiredValues);
+				requestNode.putPOJO(JSONField.REQUIRED_TESTS.getLabel(), requiredTests);
 
 
 				rootNode.putPOJO(JSONField.REQUEST_INFO.getLabel(), requestNode);
-				rootNode.putPOJO(JSONField.SERIALIZED_OBJECT.getLabel(), serializedObjectNode);
-
+				rootNode.putPOJO(JSONField.SERIALIZED_OBJECT.getLabel(), serializedObjectNode);				
 			}
 			
 			requestSender = (requestSender == null) ? RequestSender.CLIENT : requestSender;
@@ -194,10 +213,6 @@ public class JsonUtil {
 
 		return objectToJSON;
 	}	
-
-	public static String serializeSensorsUpdateRequest() {
-		return serializeRequest(null, null,null, null,null, RequestSender.CLIENT_FOR_SENSOR_UPDATE);
-	}
 
 	/**
 	 * Indents a jsonString in order to be more readable

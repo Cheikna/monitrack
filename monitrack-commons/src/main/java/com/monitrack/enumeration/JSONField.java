@@ -16,6 +16,8 @@ public enum JSONField {
 	
 	REQUIRED_VALUES("required_values"),
 	
+	REQUIRED_TESTS("required_tests"),
+	
 	REQUESTED_ENTITY("requested_entity"),
 	
 	SERIALIZED_OBJECT("serialized_object"),
