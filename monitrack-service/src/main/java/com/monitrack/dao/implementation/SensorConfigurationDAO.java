@@ -68,7 +68,36 @@ public class SensorConfigurationDAO extends DAO<SensorConfiguration> {
 
 	@Override
 	public void update(SensorConfiguration obj) {
-		// FIXME Auto-generated method stub
+		synchronized (lock) {
+			// Checks if the connection is not null before using it
+			if (connection != null) {
+				try {
+					PreparedStatement preparedStatement = connection
+							.prepareStatement("UPDATE " + tableName + " SET ACTIVITY = ?, ID_LOCATION = ?, IP_ADDRESS = ?, " + 
+									"START_ACTIVITY_TIME = ?, END_ACTIVITY_TIME = ?, CHECK_FREQUENCY = ?, " + 
+									"MEASUREMENT_UNIT = ?, CURRENT_THRESHOLD = ?, MIN_DANGER_THRESHOLD = ?,"+ 
+									"MAX_DANGER_THRESHOLD = ?, POSITION_X = ? AND POSITION_Y = ? "
+									+ " WHERE ID_SENSOR_CONFIGURATION = ?");
+					preparedStatement.setString(1, obj.getSensorActivity().toString());
+					preparedStatement.setInt(2, obj.getLocationId());
+					preparedStatement.setString(3, obj.getIpAddress());
+					preparedStatement.setTime(4, obj.getBeginTime());
+					preparedStatement.setTime(5, obj.getEndTime());
+					preparedStatement.setFloat(6, obj.getCheckFrequency());
+					preparedStatement.setString(7, obj.getMeasurementUnit());
+					preparedStatement.setFloat(8, obj.getCurrentThreshold());
+					preparedStatement.setFloat(9, obj.getMinDangerThreshold());
+					preparedStatement.setFloat(10, obj.getMaxDangerThreshold());
+					preparedStatement.setFloat(11, obj.getPositionX());
+					preparedStatement.setFloat(12, obj.getPositionY());
+					preparedStatement.setInt(13, obj.getSensorConfigurationId());
+					preparedStatement.execute();
+				} catch (Exception e) {
+					log.error("An error occurred during the creation of a person : " + e.getMessage());
+					e.printStackTrace();
+				}
+			}
+		}
 
 	}
 

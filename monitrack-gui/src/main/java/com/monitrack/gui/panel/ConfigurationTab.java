@@ -15,7 +15,6 @@ import javax.swing.ScrollPaneConstants;
 
 import com.monitrack.enumeration.Images;
 import com.monitrack.listener.ConfigurationTabListener;
-import com.monitrack.listener.LocationsTabListener;
 
 public class ConfigurationTab extends JPanel{
 
@@ -24,14 +23,10 @@ public class ConfigurationTab extends JPanel{
 	/***** Menu Panels *****/
 	private JPanel northPanel;
 	private JPanel northPanelActionsChoice;
-	private JPanel northPanelForCreate;
-	private JPanel northPanelForModify;
-	private JPanel northPanelForDelete;
 	private JPanel northPanelForShow;
 	
 	private JComboBox<String> actionsCombobox;
 	private JComboBox<String> modifyLocationsCombobox;
-	private JComboBox<String> deleteLocationsCombobox;
 	
 	/***** Components of the overview menu *****/
 	private JComboBox<String> filter1ForShowCombobox;
@@ -45,13 +40,9 @@ public class ConfigurationTab extends JPanel{
 
 
 	/***** Buttons for the CRUD (Create, Read, Update and Delete) *****/ 
-	private JButton createButton;
-	private JButton modifyButton;
-	private JButton deleteButton;
 	private JButton showButton;
 
 	/***** Dialog for creating a location *****/
-	private JPanel createLocationPopupPanel;
 	private JTextField newLocationNameTextField;
 	private JTextField newFloorTextField;
 	private JTextField newLocationSizeTextField;
@@ -68,6 +59,7 @@ public class ConfigurationTab extends JPanel{
 	private JTextField oldBuildingWingTextField;
 	private JComboBox<String> modifiedBuildingWingCombobox;
 
+	
 	public ConfigurationTab()
 	{
 		setLayout(new BorderLayout());
@@ -76,6 +68,16 @@ public class ConfigurationTab extends JPanel{
 		northPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
 
+		//Panel to choose the CRUD Operation to do
+		northPanelActionsChoice = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JLabel actionLabel = new JLabel("Action : ");
+		String[] items = {"Visualiser les capteurs"};
+		actionsCombobox = new JComboBox<String>(items);
+		actionsCombobox.addActionListener(listener);
+		northPanelActionsChoice.add(actionLabel);
+		northPanelActionsChoice.add(actionsCombobox);
+		
+		
 		textArea = new JTextArea();
 		textArea.setEditable(false);
 		textArea.setFont(textAreaFont);
@@ -84,6 +86,7 @@ public class ConfigurationTab extends JPanel{
 
 		setShowMenu();
 
+		actionsCombobox.setSelectedItem(items[0]);
 		
 		add(northPanel, BorderLayout.NORTH);
 		add(scroll, BorderLayout.CENTER);
@@ -93,8 +96,8 @@ public class ConfigurationTab extends JPanel{
 	{
 		northPanelForShow = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-		String[] filters1 = {"-", "Nom", "Aile"};
-		String[] filters2 = {"-", "Etage", "Superficie"};
+		String[] filters1 = {"-", "Type", "Id"};
+		String[] filters2 = {"-", "Fin d'activité", "Début d'activité"};
 		filter1ForShowCombobox = new JComboBox<>(filters1);
 		filter1ForShowCombobox.addActionListener(listener);
 		filter2ForShowCombobox = new JComboBox<>(filters2);
@@ -113,4 +116,212 @@ public class ConfigurationTab extends JPanel{
 		
 		northPanelForShow.add(showButton);
 	}
+
+	public JPanel getNorthPanel() {
+		return northPanel;
+	}
+
+	public void setNorthPanel(JPanel northPanel) {
+		this.northPanel = northPanel;
+	}
+
+	public JPanel getNorthPanelActionsChoice() {
+		return northPanelActionsChoice;
+	}
+
+	public void setNorthPanelActionsChoice(JPanel northPanelActionsChoice) {
+		this.northPanelActionsChoice = northPanelActionsChoice;
+	}
+
+	public JPanel getNorthPanelForShow() {
+		return northPanelForShow;
+	}
+
+	public void setNorthPanelForShow(JPanel northPanelForShow) {
+		this.northPanelForShow = northPanelForShow;
+	}
+
+	public JComboBox<String> getActionsCombobox() {
+		return actionsCombobox;
+	}
+
+	public void setActionsCombobox(JComboBox<String> actionsCombobox) {
+		this.actionsCombobox = actionsCombobox;
+	}
+
+	public JComboBox<String> getModifyLocationsCombobox() {
+		return modifyLocationsCombobox;
+	}
+
+	public void setModifyLocationsCombobox(JComboBox<String> modifyLocationsCombobox) {
+		this.modifyLocationsCombobox = modifyLocationsCombobox;
+	}
+
+	public JComboBox<String> getFilter1ForShowCombobox() {
+		return filter1ForShowCombobox;
+	}
+
+	public void setFilter1ForShowCombobox(JComboBox<String> filter1ForShowCombobox) {
+		this.filter1ForShowCombobox = filter1ForShowCombobox;
+	}
+
+	public JComboBox<String> getFilter2ForShowCombobox() {
+		return filter2ForShowCombobox;
+	}
+
+	public void setFilter2ForShowCombobox(JComboBox<String> filter2ForShowCombobox) {
+		this.filter2ForShowCombobox = filter2ForShowCombobox;
+	}
+
+	public JTextField getFilter1TextField() {
+		return filter1TextField;
+	}
+
+	public void setFilter1TextField(JTextField filter1TextField) {
+		this.filter1TextField = filter1TextField;
+	}
+
+	public JTextField getFilter2TextField() {
+		return filter2TextField;
+	}
+
+	public void setFilter2TextField(JTextField filter2TextField) {
+		this.filter2TextField = filter2TextField;
+	}
+
+	public ConfigurationTabListener getListener() {
+		return listener;
+	}
+
+	public void setListener(ConfigurationTabListener listener) {
+		this.listener = listener;
+	}
+
+	public JTextArea getTextArea() {
+		return textArea;
+	}
+
+	public void setTextArea(JTextArea textArea) {
+		this.textArea = textArea;
+	}
+
+	public JButton getShowButton() {
+		return showButton;
+	}
+
+	public void setShowButton(JButton showButton) {
+		this.showButton = showButton;
+	}
+
+	public JTextField getNewLocationNameTextField() {
+		return newLocationNameTextField;
+	}
+
+	public void setNewLocationNameTextField(JTextField newLocationNameTextField) {
+		this.newLocationNameTextField = newLocationNameTextField;
+	}
+
+	public JTextField getNewFloorTextField() {
+		return newFloorTextField;
+	}
+
+	public void setNewFloorTextField(JTextField newFloorTextField) {
+		this.newFloorTextField = newFloorTextField;
+	}
+
+	public JTextField getNewLocationSizeTextField() {
+		return newLocationSizeTextField;
+	}
+
+	public void setNewLocationSizeTextField(JTextField newLocationSizeTextField) {
+		this.newLocationSizeTextField = newLocationSizeTextField;
+	}
+
+	public JComboBox<String> getNewBuildingWingCombobox() {
+		return newBuildingWingCombobox;
+	}
+
+	public void setNewBuildingWingCombobox(JComboBox<String> newBuildingWingCombobox) {
+		this.newBuildingWingCombobox = newBuildingWingCombobox;
+	}
+
+	public JPanel getModifyLocationPopupPanel() {
+		return modifyLocationPopupPanel;
+	}
+
+	public void setModifyLocationPopupPanel(JPanel modifyLocationPopupPanel) {
+		this.modifyLocationPopupPanel = modifyLocationPopupPanel;
+	}
+
+	public JTextField getOldNameTextField() {
+		return oldNameTextField;
+	}
+
+	public void setOldNameTextField(JTextField oldNameTextField) {
+		this.oldNameTextField = oldNameTextField;
+	}
+
+	public JTextField getModifiedNameTextField() {
+		return modifiedNameTextField;
+	}
+
+	public void setModifiedNameTextField(JTextField modifiedNameTextField) {
+		this.modifiedNameTextField = modifiedNameTextField;
+	}
+
+	public JTextField getOldFloorTextField() {
+		return oldFloorTextField;
+	}
+
+	public void setOldFloorTextField(JTextField oldFloorTextField) {
+		this.oldFloorTextField = oldFloorTextField;
+	}
+
+	public JTextField getModifiedFloorTextField() {
+		return modifiedFloorTextField;
+	}
+
+	public void setModifiedFloorTextField(JTextField modifiedFloorTextField) {
+		this.modifiedFloorTextField = modifiedFloorTextField;
+	}
+
+	public JTextField getOldLocationSizeTextField() {
+		return oldLocationSizeTextField;
+	}
+
+	public void setOldLocationSizeTextField(JTextField oldLocationSizeTextField) {
+		this.oldLocationSizeTextField = oldLocationSizeTextField;
+	}
+
+	public JTextField getModifiedLocationSizeTextField() {
+		return modifiedLocationSizeTextField;
+	}
+
+	public void setModifiedLocationSizeTextField(JTextField modifiedLocationSizeTextField) {
+		this.modifiedLocationSizeTextField = modifiedLocationSizeTextField;
+	}
+
+	public JTextField getOldBuildingWingTextField() {
+		return oldBuildingWingTextField;
+	}
+
+	public void setOldBuildingWingTextField(JTextField oldBuildingWingTextField) {
+		this.oldBuildingWingTextField = oldBuildingWingTextField;
+	}
+
+	public JComboBox<String> getModifiedBuildingWingCombobox() {
+		return modifiedBuildingWingCombobox;
+	}
+
+	public void setModifiedBuildingWingCombobox(JComboBox<String> modifiedBuildingWingCombobox) {
+		this.modifiedBuildingWingCombobox = modifiedBuildingWingCombobox;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	
+	
+	
+	
 }
