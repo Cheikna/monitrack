@@ -23,16 +23,19 @@ public class ConfigurationTab extends JPanel{
 	/***** Menu Panels *****/
 	private JPanel northPanel;
 	private JPanel northPanelActionsChoice;
+	private JPanel northPanelForConfigure;
 	private JPanel northPanelForShow;
 	
 	private JComboBox<String> actionsCombobox;
-	private JComboBox<String> modifyLocationsCombobox;
+	private JComboBox<String> configureSensorsCombobox;
 	
 	/***** Components of the overview menu *****/
 	private JComboBox<String> filter1ForShowCombobox;
 	private JComboBox<String> filter2ForShowCombobox;
 	private JTextField filter1TextField;
 	private JTextField filter2TextField;
+	
+	private JTextField filter3TextField;
 
 	private ConfigurationTabListener listener;
 
@@ -41,6 +44,7 @@ public class ConfigurationTab extends JPanel{
 
 	/***** Buttons for the CRUD (Create, Read, Update and Delete) *****/ 
 	private JButton showButton;
+	private JButton configureButton;
 
 	/***** Dialog for creating a location *****/
 	private JTextField newLocationNameTextField;
@@ -71,7 +75,7 @@ public class ConfigurationTab extends JPanel{
 		//Panel to choose the CRUD Operation to do
 		northPanelActionsChoice = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JLabel actionLabel = new JLabel("Action : ");
-		String[] items = {"Visualiser les capteurs"};
+		String[] items = {"Visualiser les capteurs","Configurer un capteur"};
 		actionsCombobox = new JComboBox<String>(items);
 		actionsCombobox.addActionListener(listener);
 		northPanelActionsChoice.add(actionLabel);
@@ -85,6 +89,9 @@ public class ConfigurationTab extends JPanel{
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);		
 
 		setShowMenu();
+		setConfigurationMenu();
+		
+		//setConfigureSensorPopupPanel();
 
 		actionsCombobox.setSelectedItem(items[0]);
 		
@@ -97,7 +104,7 @@ public class ConfigurationTab extends JPanel{
 		northPanelForShow = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
 		String[] filters1 = {"-", "Type", "Id"};
-		String[] filters2 = {"-", "Fin d'activité", "Début d'activité"};
+		String[] filters2 = {"-", "Activation", "Adresse IP"};
 		filter1ForShowCombobox = new JComboBox<>(filters1);
 		filter1ForShowCombobox.addActionListener(listener);
 		filter2ForShowCombobox = new JComboBox<>(filters2);
@@ -115,6 +122,22 @@ public class ConfigurationTab extends JPanel{
 		showButton.addActionListener(listener);
 		
 		northPanelForShow.add(showButton);
+	}
+	
+	
+	private void setConfigurationMenu()
+	{
+		northPanelForConfigure = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		configureSensorsCombobox = new JComboBox<>();
+		configureButton = new JButton("Modifier");
+		configureButton.addActionListener(listener);
+		configureButton.setIcon(Images.MODIFY_ICON.getIcon());
+		filter3TextField = new JTextField(7);
+		northPanelForConfigure.add(new JLabel("Sélectionner un capteur : "));
+		northPanelForConfigure.add(configureSensorsCombobox);
+		northPanelForShow.add(filter3TextField);
+		northPanelForConfigure.add(configureButton);
+
 	}
 
 	public JPanel getNorthPanel() {
@@ -147,14 +170,6 @@ public class ConfigurationTab extends JPanel{
 
 	public void setActionsCombobox(JComboBox<String> actionsCombobox) {
 		this.actionsCombobox = actionsCombobox;
-	}
-
-	public JComboBox<String> getModifyLocationsCombobox() {
-		return modifyLocationsCombobox;
-	}
-
-	public void setModifyLocationsCombobox(JComboBox<String> modifyLocationsCombobox) {
-		this.modifyLocationsCombobox = modifyLocationsCombobox;
 	}
 
 	public JComboBox<String> getFilter1ForShowCombobox() {
@@ -319,6 +334,30 @@ public class ConfigurationTab extends JPanel{
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public JPanel getNorthPanelForConfigure() {
+		return northPanelForConfigure;
+	}
+
+	public void setNorthPanelForConfigure(JPanel northPanelForConfigure) {
+		this.northPanelForConfigure = northPanelForConfigure;
+	}
+
+	public JButton getConfigureButton() {
+		return configureButton;
+	}
+
+	public void setConfigureButton(JButton configureButton) {
+		this.configureButton = configureButton;
+	}
+
+	public JComboBox<String> getConfigureSensorsCombobox() {
+		return configureSensorsCombobox;
+	}
+
+	public void setConfigureSensorsCombobox(JComboBox<String> configureSensorsCombobox) {
+		this.configureSensorsCombobox = configureSensorsCombobox;
 	}
 	
 	

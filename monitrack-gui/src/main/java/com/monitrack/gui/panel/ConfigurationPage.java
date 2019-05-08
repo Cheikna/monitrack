@@ -5,8 +5,6 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import com.monitrack.enumeration.Images;
-
 public class ConfigurationPage extends JPanel{
 	
 	private static final long serialVersionUID = 1L;
@@ -17,4 +15,5 @@ public class ConfigurationPage extends JPanel{
 		tabbedPane.addTab("Configuration des capteurs", new ConfigurationTab());
 		add(tabbedPane, BorderLayout.CENTER);
 	}
+	
 }

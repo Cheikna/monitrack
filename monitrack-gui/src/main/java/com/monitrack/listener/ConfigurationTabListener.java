@@ -6,12 +6,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.security.auth.login.Configuration;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +20,6 @@ import com.monitrack.enumeration.RequestType;
 import com.monitrack.exception.DeprecatedVersionException;
 import com.monitrack.exception.NoAvailableConnectionException;
 import com.monitrack.gui.panel.ConfigurationTab;
-import com.monitrack.gui.panel.LocationsTab;
 import com.monitrack.shared.MonitrackGuiUtil;
 import com.monitrack.util.JsonUtil;
 
@@ -58,7 +55,14 @@ public class ConfigurationTabListener implements ActionListener {
 					
 					if(combo.getSelectedItem().equals("Visualiser les capteurs"))
 					{
+						
 						configurationTab.getNorthPanel().add(configurationTab.getNorthPanelForShow());
+						
+					} else if(combo.getSelectedItem().equals("Configurer un capteur"))
+					
+					{	
+						setComboboxWithSensors(configurationTab.getConfigureSensorsCombobox());
+						configurationTab.getNorthPanel().add(configurationTab.getNorthPanelForConfigure());				
 					}
 				}
 			}
@@ -67,7 +71,10 @@ public class ConfigurationTabListener implements ActionListener {
 				JButton clickedButton = (JButton)e.getSource();
 				if(clickedButton == configurationTab.getShowButton())
 				{
-					displayLocations();
+					displaySensors();
+				}
+				else if(clickedButton == configurationTab.getConfigureButton()){
+					//configureSensor();
 				}
 			}
 		}
@@ -81,9 +88,28 @@ public class ConfigurationTabListener implements ActionListener {
 		configurationTab.repaint();
 	}
 		
+	@SuppressWarnings("unchecked")
+	private void setComboboxWithSensors(JComboBox<String> combobox)
+	{
+		String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, SensorConfiguration.class, null, null, null, RequestSender.CLIENT);
+		try 
+		{
+			String response = MonitrackGuiUtil.sendRequest(jsonRequest);
+			sensors = (List<SensorConfiguration>)JsonUtil.deserializeObject(response);
+			combobox.removeAllItems();
+			for(SensorConfiguration sensorConfiguration : sensors)
+			{
+				combobox.addItem(sensorConfiguration.toString());
+			}
+		} 
+		catch (Exception e) 
+		{
+			log.error(e.getMessage());
+		}
+	}
 	
 		@SuppressWarnings("unchecked")
-		private void displayLocations() throws NoAvailableConnectionException, IOException, DeprecatedVersionException
+		private void displaySensors() throws NoAvailableConnectionException, IOException, DeprecatedVersionException
 		{
 			fields.clear();
 			values.clear();
@@ -99,7 +125,7 @@ public class ConfigurationTabListener implements ActionListener {
 				
 				if(filter1.equalsIgnoreCase("id"))
 				{
-					field = "ID_SENSOR";
+					field = "ID_SENSOR_CONFIGURATION";
 				} else if (filter1.equalsIgnoreCase("activity")) {
 					field = "ACTIVITY";
 				}
@@ -115,17 +141,18 @@ public class ConfigurationTabListener implements ActionListener {
 
 			if(!filter2.equals("-")) 
 			{
-				String field = "END_ACTIVITY_TIME";
-				if(filter2.equalsIgnoreCase("Début d'activité"))
+				String field = "ACTIVITY";
+				if(filter2.equalsIgnoreCase("Adresse IP"))
 				{
-					field = "START_ACTIVITY_TIME";
+					field = "IP_ADDRESS";
 				}
 				
-				int value = NumberUtils.toInt(configurationTab.getFilter2TextField().getText(), -2);
-				if(value != -2)
+				String value2 = configurationTab.getFilter2TextField().getText().trim();
+				
+				if(value2.length() > 0)
 				{
 					fields.add(field);
-					values.add(String.valueOf(value));
+					values.add(value2);
 				}
 
 			}
