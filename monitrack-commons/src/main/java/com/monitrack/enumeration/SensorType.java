@@ -4,33 +4,34 @@ package com.monitrack.enumeration;
 public enum SensorType {
 	
 	//FIXME - Cheikna : Why do not I remove the english label and make a "this.toString().toLowerCase()" in the constructor ?
-	SMOKE("Smoke", "Fumée", false),	
-	FLOW("Flow", "Présence", false),	
-	DOOR("Door", "Porte", false),	
-	TEMPERATURE("Temperature", "Température", false),	
-	WINDOW("Window", "Fenêtre", false),	
-	HUMIDITY("Humidity", "Humidité", false),	
-	LIGHT("Light", "Lumière", false),
-	GAS("Gas", "Gaz", false),
-	GLASS_BREAKAGE("Glass breakage", "Bris de vitre", false),
-	ACOUSTIC("Acoustic", "Sonore", false),
-	MANUAL_TRIGGER("Manuel alarm trigger", "Déclencheur d'alarme manuel", true),
-	ACCESS_CONTROL("Access controle", "Contrôle d'accès", true),
-	FLOOD("Flood", "Inondation", false);
+	SMOKE("Smoke", "Fumée", 2, 3),	
+	FLOW("Flow", "Présence", 5, 7),	
+	DOOR("Door", "Porte", 11, 13),	
+	TEMPERATURE("Temperature", "Température", 17,19),	
+	WINDOW("Window", "Fenêtre", 23,29),	
+	HUMIDITY("Humidity", "Humidité", 31, 37),	
+	LIGHT("Light", "Lumière", 41,43),
+	GAS("Gas", "Gaz", 47,53),
+	MANUAL_TRIGGER("Manuel alarm trigger", "Déclencheur d'alarme manuel", 73,79),
+	ACCESS_CONTROL("Access controle", "Contrôle d'accès", 83,89),
+	FLOOD("Flood", "Inondation", 97, 101);
 	
+	// Checks if each multiplication of two numbers of more give a different number
 	
 	private String englishLabel;
 	private String frenchLabel;	
-	private boolean isManual;
+	private Integer normalCode;
+	private Integer dangerCode;
 	
 	/**
 	 * @param englishLabel
 	 * @param frenchLabel
 	 */
-	SensorType(String englishLabel, String frenchLabel, boolean isManual) {
+	SensorType(String englishLabel, String frenchLabel, Integer normalCode, Integer dangerCode) {
 		this.englishLabel = englishLabel;
 		this.frenchLabel = frenchLabel;
-		this.isManual = isManual;
+		this.normalCode = normalCode;
+		this.dangerCode = dangerCode;
 	}
 
 	public static SensorType getSensorType(String sensorType)
@@ -43,23 +44,20 @@ public enum SensorType {
 		}
 		return null;
 	}
-	
-	/**
-	 * @return the englishLabel
-	 */
+
 	public String getEnglishLabel() {
 		return englishLabel;
 	}
-
-
-	/**
-	 * @return the frenchLabel
-	 */
+	
 	public String getFrenchLabel() {
 		return frenchLabel;
 	}
 
-	public boolean isManual() {
-		return isManual;
+	public Integer getNormalCode() {
+		return normalCode;
+	}
+
+	public Integer getDangerCode() {
+		return dangerCode;
 	}
 }
