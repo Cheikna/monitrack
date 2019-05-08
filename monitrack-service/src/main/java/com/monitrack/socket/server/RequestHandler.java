@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.sql.Connection;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.joda.time.DateTimeConstants;
@@ -20,6 +21,7 @@ import com.monitrack.dao.implementation.DAOFactory;
 import com.monitrack.datacenter.AlertCenter;
 import com.monitrack.entity.Message;
 import com.monitrack.entity.SensorConfiguration;
+import com.monitrack.entity.SensorConfigurationHistory;
 import com.monitrack.enumeration.ConnectionState;
 import com.monitrack.enumeration.JSONField;
 import com.monitrack.enumeration.RequestSender;
@@ -117,10 +119,13 @@ public class RequestHandler implements Runnable {
 					writeToClient.println("");
 				} 
 				else if(requestSender == RequestSender.CLIENT_FOR_SENSOR_UPDATE) {
-					SensorState state = SensorState.valueOf(JsonUtil.getJsonNodeValue(JSONField.CACHE_SENSOR_STATE, requestOfClient));
+					/*SensorState state = SensorState.valueOf(JsonUtil.getJsonNodeValue(JSONField.CACHE_SENSOR_STATE, requestOfClient));
 					List<SensorConfiguration> sensorConfigurations = alertCenter.getCacheSensorsByState(state);
 					String serializedObjects = JsonUtil.serializeObject(sensorConfigurations, SensorConfiguration.class, "");
-					writeToClient.println(serializedObjects);					
+					writeToClient.println(serializedObjects);*/		
+					Map<SensorState, List<SensorConfiguration>> map =  alertCenter.getAllActiveSensorByState();
+					String serializedObject = JsonUtil.serializeCacheSensorsMap(map);
+					writeToClient.println(serializedObject);
 				}
 							
 			}
@@ -178,6 +183,10 @@ public class RequestHandler implements Runnable {
 			Object objectResult = DAOFactory.execute(connection, entityClass, requestType, deserializedObject, fields, requiredValues, tests); 
 			
 			result = JsonUtil.serializeObject(objectResult, entityClass, "");
+			
+			if(entityClass.equals(SensorConfigurationHistory.class)) {
+				alertCenter.updateSensorsList();
+			}
 
 		} 
 		catch (Exception e) 

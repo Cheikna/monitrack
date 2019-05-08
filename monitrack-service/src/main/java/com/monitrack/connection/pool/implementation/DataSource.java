@@ -6,10 +6,12 @@ import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.monitrack.connection.pool.abstracts.IJDBCConnectionPool;
+
 public class DataSource {
 	
 	private static final Logger log = LoggerFactory.getLogger(DataSource.class);
-	private static JDBCConnectionPool connectionPool = new JDBCConnectionPool();
+	private static IJDBCConnectionPool connectionPool = new JDBCConnectionPool();
 
 	public DataSource() {}
 	

@@ -22,6 +22,7 @@ public class MockUtil {
 			ConnectionState connectionState = clientSocket.start();
 			if(connectionState == ConnectionState.SUCCESS) {
 				String serializedObject = JsonUtil.serializeObject(message, message.getClass(), "");
+				//In this case we do not care about the request type because the RequestHandler will see that it comes from a sensor
 				String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, message.getClass(), serializedObject, null, null,null, RequestSender.SENSOR);
 				clientSocket.sendRequestToServer(jsonRequest);		
 				return true;

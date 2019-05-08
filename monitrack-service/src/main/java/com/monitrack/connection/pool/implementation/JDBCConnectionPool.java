@@ -36,13 +36,15 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 	
 
 	public void fillConnectionsList() throws SQLException {		
-				
+			
+		System.out.print("[");
         for (int i = 0; i < numberOfConnections; i++ )
         {
         	Connection createdConnection = this.createConnection(); 
         	if(createdConnection != null) {
                 connections.addElement(createdConnection);
-                log.info("A connection has been created and is being added to the pool. (" + ( (i+1) + "/" + numberOfConnections) + ")" );
+                System.out.print("=");
+                //log.info("A connection has been created and is being added to the pool. (" + ( (i+1) + "/" + numberOfConnections) + ")" );
         	}
         	else {
         		log.error("An error occurs during the creation of a connection because the connection equals to null !");
@@ -53,6 +55,7 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
         		throw new SQLException("A connection is equal to null !");
         	}
         }
+        System.out.println("] " + numberOfConnectionsCreated + " connection(s) created");
         displayConnectionPoolState();
 	}
 
