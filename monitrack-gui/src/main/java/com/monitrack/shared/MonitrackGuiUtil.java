@@ -1,6 +1,11 @@
 package com.monitrack.shared;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.swing.JOptionPane;
 
@@ -22,6 +27,7 @@ public class MonitrackGuiUtil {
 	
 	private static final String APPLICATION_VERSION = Util.getPropertyValueFromPropertiesFile("version");
 	private static String serverVersion = "";
+	
 	
 	public static void showComingSoonMesage() {
 		JOptionPane.showMessageDialog(null, "Cette fonctionnalité sera bientôt disponible.", "Bientôt disponible", JOptionPane.INFORMATION_MESSAGE, Images.COMING_SOON.getIcon());
@@ -86,7 +92,4 @@ public class MonitrackGuiUtil {
 	public static void setServerVersion(String serverVersion) {
 		MonitrackGuiUtil.serverVersion = serverVersion;
 	}
-	
-	
-
 }
