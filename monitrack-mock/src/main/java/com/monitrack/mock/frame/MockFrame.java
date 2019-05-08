@@ -20,6 +20,7 @@ public class MockFrame extends JFrame {
 	private JPanel centerPanel;
 	private JButton backToMenuButton;
 	private MockFrameListener listener;
+	private JButton jsonDialogButton;
 	
 	public MockFrame() {
 		super("Monitrack Mock");
@@ -37,7 +38,11 @@ public class MockFrame extends JFrame {
 		
 		backToMenuButton = new JButton("Retour au menu");
 		backToMenuButton.addActionListener(listener);
+		
+		jsonDialogButton = new JButton("Indent Json");
+		jsonDialogButton.addActionListener(listener);
 
+		this.getContentPane().add(jsonDialogButton, BorderLayout.NORTH);
 		this.getContentPane().add(centerPanel, BorderLayout.CENTER);		
 		this.getContentPane().add(backToMenuButton, BorderLayout.SOUTH);
 		
@@ -50,6 +55,10 @@ public class MockFrame extends JFrame {
 
 	public JButton getBackToMenuButton() {
 		return backToMenuButton;
+	}
+
+	public JButton getJsonDialogButton() {
+		return jsonDialogButton;
 	}
 	
 

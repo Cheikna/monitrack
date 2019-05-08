@@ -37,7 +37,7 @@ public class SensorsTableModel extends AbstractTableModel implements ListSelecti
 	private JTable parentTable;
 	private SensorsPage sensorsPage;
 	private static final long serialVersionUID = 1L;
-	private String[] header = {"ID", "TYPE", "ACTIVITY", "LOCATION ID", "MAC ADDRESS", "CURRENT THRESHOLD", "THRESHOLD MIN", "THRESHOLD MAX", "STATE"};
+	private String[] header = {"ID", "TYPE", "ACTIVITY", "LOCATION ID", "MAC ADDRESS", "THRESHOLD MIN", "THRESHOLD MAX", "STATE"};
 	private String [][] datas;
 	private String [][] emptyDatas;
 	private final int numberOfRows = 500;
@@ -93,7 +93,7 @@ public class SensorsTableModel extends AbstractTableModel implements ListSelecti
 			String jsonRequest = null;
 			for(SensorState state : states) {
 				String stateName = state.name();
-				jsonRequest = JsonUtil.serializeSensorsUpdateRequest(state);
+				jsonRequest = JsonUtil.serializeSensorsUpdateRequest();
 				String response = MonitrackGuiUtil.sendRequest(jsonRequest);
 				List<SensorConfiguration> sensors = (List<SensorConfiguration>)JsonUtil.deserializeObject(response);
 				for(SensorConfiguration sensor : sensors) {		
@@ -144,12 +144,10 @@ public class SensorsTableModel extends AbstractTableModel implements ListSelecti
 		String activity = sensorConfiguration.getSensorActivity().name();
 		String locationId = sensorConfiguration.getLocationId().toString();
 		String macAddress = sensorConfiguration.getMacAddress();
-		String currentThreshold = sensorConfiguration.getCurrentThreshold().toString();
 		String minThreshold = sensorConfiguration.getMinDangerThreshold().toString();
 		String maxThreshold = sensorConfiguration.getMaxDangerThreshold().toString();
 		datas[firstEmptyIndex] = new String[]{id, type, activity, locationId, 
-				macAddress, currentThreshold, 
-				minThreshold, maxThreshold, 
+				macAddress, minThreshold, maxThreshold, 
 		state};
 		firstEmptyIndex++;
 		updateTable(); 
@@ -281,7 +279,6 @@ public class SensorsTableModel extends AbstractTableModel implements ListSelecti
 				signal.setSendMessage(sendSignal);
 			}
 			else {
-				lastSensorSelected.setCurrentThreshold(currentThresholdValue);
 				signal = new SensorSignal(id, currentThresholdValue, lastSensorSelected.getCheckFrequency().longValue());	
 				signal.setSendMessage(sendSignal);		
 				sensorSignalMap.put(id, signal);
