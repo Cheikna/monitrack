@@ -68,7 +68,7 @@ public class RequestHandler implements Runnable {
 			
 			String[] ipAddressAndVersion = readFromClient.readLine().split(Util.getVersionSpliter());
 
-			log.info("Client connected with the IP " + ipAddressAndVersion[0]);
+			//log.info("Client connected with the IP " + ipAddressAndVersion[0]);
 			
 			//Check client application version
 			String clientVersion = ipAddressAndVersion[1];
@@ -118,13 +118,17 @@ public class RequestHandler implements Runnable {
 					alertCenter.processMessage(message);
 					writeToClient.println("");
 				} 
-				else if(requestSender == RequestSender.CLIENT_FOR_SENSOR_UPDATE) {
+				else if(requestSender == RequestSender.CLIENT_FOR_SENSOR_STATE) {
 					/*SensorState state = SensorState.valueOf(JsonUtil.getJsonNodeValue(JSONField.CACHE_SENSOR_STATE, requestOfClient));
 					List<SensorConfiguration> sensorConfigurations = alertCenter.getCacheSensorsByState(state);
 					String serializedObjects = JsonUtil.serializeObject(sensorConfigurations, SensorConfiguration.class, "");
 					writeToClient.println(serializedObjects);*/		
 					Map<SensorState, List<SensorConfiguration>> map =  alertCenter.getAllActiveSensorByState();
 					String serializedObject = JsonUtil.serializeCacheSensorsMap(map);
+					writeToClient.println(serializedObject);
+				}
+				else if(requestSender == RequestSender.CLIENT_FOR_ACTIVE_SENSOR) {
+					String serializedObject = JsonUtil.serializeObject(alertCenter.getActiveSensors(), SensorConfiguration.class, "");
 					writeToClient.println(serializedObject);
 				}
 							

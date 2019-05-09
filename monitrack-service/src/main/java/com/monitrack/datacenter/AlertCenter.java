@@ -28,6 +28,7 @@ import com.monitrack.enumeration.SensorActivity;
 import com.monitrack.enumeration.SensorSensitivity;
 import com.monitrack.enumeration.SensorState;
 import com.monitrack.enumeration.SensorType;
+import com.monitrack.util.ComplementarySensorConfig;
 import com.monitrack.util.Util;
 /**
  * 
@@ -44,11 +45,9 @@ public class AlertCenter {
 	private final long updateListFrequency = DateTimeConstants.MILLIS_PER_MINUTE;
 	private final long sleepTime = DateTimeConstants.MILLIS_PER_SECOND;
 
-	private final String alignFormat = "%-4s| %-4d | %-9s |%-8s| %-13s |%-6s|%n";
-	private final String horizontalBorder      = "    +------+-----------+--------+---------------+------+%n";
-	private final String header			 	   = "    |  ID  |   State   | Warn.  | Curr. Thresh. | Unit |%n";
-	//private final String alignFormatActivityChecker = "| %-4d | %-20s | %-9s |%-8s|%n";
-	//private final String headerActivityChecker = "|  ID  |         Type         |   State   | Warn.  |%n";
+	private final String alignFormat = "%-4s| %-4d | %-13s |%-8s| %-13s |%-6s|%n";
+	private final String horizontalBorder      = "    +------+---------------+--------+---------------+------+%n";
+	private final String header			 	   = "    |  ID  |     State     | Warn.  | Curr. Thresh. | Unit |%n";
 
 	/******** Element for searching in the database *******/
 	private final List<String> fieldsForActiveSensors = Arrays.asList("ACTIVITY");
@@ -430,5 +429,9 @@ public class AlertCenter {
 			}
 		});
 		thread.start();
+	}
+
+	public List<SensorConfiguration> getActiveSensors() {
+		return activeSensors;
 	}
 }

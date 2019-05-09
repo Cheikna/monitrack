@@ -1,7 +1,6 @@
 package com.monitrack.entity;
 import java.sql.Time;
 import java.sql.Timestamp;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.monitrack.enumeration.SensorActivity;
@@ -36,8 +35,6 @@ public class SensorConfiguration extends Sensor {
 	private Float checkFrequency;
 	@JsonProperty("measurement_unit")
 	private String measurementUnit;	
-	@JsonProperty("current_threshold")
-	private Float currentThreshold;
 	@JsonProperty("min_danger_threshold")
 	private Float minDangerThreshold;
 	@JsonProperty("max_danger_threshold")
@@ -53,7 +50,7 @@ public class SensorConfiguration extends Sensor {
 			Integer locationId,
 			String ipAddress, String macAddress, String serialNumber, Float hardwareVersion, Float softwareVersion,
 			Timestamp creationDate, Timestamp lastMessageDate, Timestamp lastConfigurationDate, Time beginTime,
-			Time endTime, Float checkFrequency, String measurementUnit, Float currentThreshold, Float minDangerThreshold,
+			Time endTime, Float checkFrequency, String measurementUnit, Float minDangerThreshold,
 			Float maxDangerThreshold, Float positionX,
 			Float positionY) {
 		super(sensorId, sensorType, macAddress, serialNumber, hardwareVersion, softwareVersion);
@@ -68,9 +65,14 @@ public class SensorConfiguration extends Sensor {
 		this.endTime = endTime;
 		this.checkFrequency = checkFrequency;
 		this.measurementUnit = measurementUnit;
-		this.currentThreshold = currentThreshold;
-		this.minDangerThreshold = minDangerThreshold;
-		this.maxDangerThreshold = maxDangerThreshold;
+		if(sensorType.getIsItBinary()) {
+			this.minDangerThreshold = 0f;
+			this.maxDangerThreshold = 1f;
+		} else {
+			this.minDangerThreshold = minDangerThreshold;
+			this.maxDangerThreshold = maxDangerThreshold;			
+		}
+		
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.sensorSensitivity = sensorSensitivity;
@@ -166,14 +168,6 @@ public class SensorConfiguration extends Sensor {
 		this.measurementUnit = measurementUnit;
 	}
 
-	public Float getCurrentThreshold() {
-		return currentThreshold;
-	}
-
-	public void setCurrentThreshold(Float currentThreshold) {
-		this.currentThreshold = currentThreshold;
-	}
-
 	public Float getMinDangerThreshold() {
 		return minDangerThreshold;
 	}
@@ -236,45 +230,6 @@ public class SensorConfiguration extends Sensor {
 				+ endTime + ", checkFrequency=" + checkFrequency + ", measurementUnit=" + measurementUnit
 				+ ", maxDangerThreshold=" + maxDangerThreshold + ", positionX=" + positionX + ", positionY=" + positionY
 				+ "]";
-	}
-	
-	
-
-	@JsonIgnore
-	public String getStateInfo() throws Exception {
-		String locationName = (location != null) ? location.getNameLocation() : "Location undefined";
-		String template = "in \u00AB" + locationName + "\u00BB is equal to " + currentThreshold + "/" + maxDangerThreshold + " " + measurementUnit;
-		
-		switch(sensorType) {
-		case FLOW:
-			return "There is (are) currently " + currentThreshold.intValue() + " person(s) in \u00AB" + locationName + "\u00BB";
-		case SMOKE:	
-			return "The smoke rate " + template;
-		case DOOR:	
-			return "FIXME"; //FIXME
-		case TEMPERATURE:	
-			return "The temperature in \u00AB" + locationName + "\u00BB is equal to " + currentThreshold 
-					+ "(min:" + minDangerThreshold + measurementUnit +" - max: " + maxDangerThreshold + measurementUnit + ")";
-		case WINDOW:	
-			return "FIXME"; //FIXME
-		case HUMIDITY:	
-			return "The humidity level " + template;
-		case LIGHT:
-			return "The light level " + template;
-		case GAS:	
-			return "The rate of carbone monoxyde in \u00AB" + locationName + "\u00BB is equal to " + currentThreshold 
-					+ "/" + maxDangerThreshold + " " + measurementUnit;
-		case GLASS_BREAKAGE:	
-			return "The glass damage on the window located in \u00AB" + locationName + "\u00BB is equal to " + currentThreshold + "%";
-		case MANUAL_TRIGGER:	
-			return "A manual trigger has been triggered in \u00AB" + locationName + "\u00BB";
-		case ACCESS_CONTROL:	
-			return "Someone is trying to access to the \u00AB" + locationName + "\u00BB";
-		case FLOOD:	
-			return "The water level " + template;
-		default:
-			throw new Exception("The type of the sensor was not found");
-		}
 	}
 
 	@Override

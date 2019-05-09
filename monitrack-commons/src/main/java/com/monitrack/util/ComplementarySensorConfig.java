@@ -1,4 +1,4 @@
-package com.monitrack.datacenter;
+package com.monitrack.util;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -7,17 +7,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+
+import org.javatuples.Pair;
+
 import com.monitrack.enumeration.SensorType;
 
 public class ComplementarySensorConfig {
 
 	private Map<SensorType, List<SensorType>> sensorsTypeCombinaisons;
-	private Map<Integer, String> messagesByComplementarySensorsType;
+	private Map<Integer, Pair<String, String>> messagesByComplementarySensorsType;
 	private Set<Integer> codes;
 	private int finalCode;
 
 	public ComplementarySensorConfig() {
-		messagesByComplementarySensorsType = Collections.synchronizedMap(new HashMap<Integer, String>());
+		messagesByComplementarySensorsType = Collections.synchronizedMap(new HashMap<Integer, Pair<String, String>>());
 		sensorsTypeCombinaisons = Collections.synchronizedMap(new HashMap<SensorType, List<SensorType>>());
 		codes = Collections.synchronizedSet(new TreeSet<Integer>());
 		finalCode = 1;
@@ -29,45 +32,47 @@ public class ComplementarySensorConfig {
 		// Smoke sensor raises a danger alert
 		messagesByComplementarySensorsType.put(SensorType.SMOKE.getDangerCode() * SensorType.DOOR.getDangerCode()
 				* SensorType.FLOW.getDangerCode() * SensorType.TEMPERATURE.getDangerCode(), 
-				"The smoke sensor detects an danger alert. Futhermore the door is open, there are people and the temperature is raising. Call the fireman !");
+				new Pair<String, String>("The smoke sensor detects an danger alert. Futhermore the door is open, there are people and the temperature is raising. Call the fireman !",
+						""));
 		
 		messagesByComplementarySensorsType.put(SensorType.SMOKE.getDangerCode() * SensorType.DOOR.getDangerCode(), 
-				"There are smoke and a door is open. The smoke will spread !");
+				new Pair<String, String>("There are smoke and a door is open. The smoke will spread !",""));
 		
 		messagesByComplementarySensorsType.put(SensorType.SMOKE.getDangerCode()	* SensorType.FLOW.getDangerCode(), 
-				"There are smoke and people. Be fast !");
+				new Pair<String, String>("There are smoke and people. Be fast !",""));
 
 		messagesByComplementarySensorsType.put(SensorType.SMOKE.getDangerCode() * SensorType.TEMPERATURE.getDangerCode(), 
-				"There are smoke and the temperature is hight. Call the fireman !");
+				new Pair<String, String>("There are smoke and the temperature is hight. Call the fireman !",""));
 		
 		messagesByComplementarySensorsType.put(SensorType.SMOKE.getDangerCode() * SensorType.DOOR.getDangerCode()
 				* SensorType.FLOW.getDangerCode(), 
-				"There are smoke and people in the room !");
+				new Pair<String, String>("There are smoke and people in the room !",""));
 
 		messagesByComplementarySensorsType.put(SensorType.SMOKE.getDangerCode() * SensorType.DOOR.getDangerCode()
 				* SensorType.TEMPERATURE.getDangerCode(), 
-				"The smoke sensor detects a danger alert. Futhermore there are people and the temperature is raising. Call the fireman !");
+				new Pair<String, String>("The smoke sensor detects a danger alert. Futhermore there are people and the temperature is raising. Call the fireman !",""));
 
 		messagesByComplementarySensorsType.put(SensorType.SMOKE.getDangerCode()	* SensorType.FLOW.getDangerCode() 
 				* SensorType.TEMPERATURE.getDangerCode(), 
-				"There are smoke, people and the temperature is high. Call the fireman and bring a doctor !");
+				new Pair<String, String>("There are smoke, people and the temperature is high. Call the fireman and bring a doctor !",""));
 		
 		//Temperature sensor raises a danger alert
 		messagesByComplementarySensorsType.put(SensorType.TEMPERATURE.getDangerCode() * SensorType.WINDOW.getDangerCode(), 
-				"The temperature is not normal and the windoww is open.");
+				new Pair<String, String>("The temperature is not normal and the windoww is open.",""));
 		
 		//Light sensor raises a danger alert
 		messagesByComplementarySensorsType.put(SensorType.LIGHT.getDangerCode() * SensorType.FLOW.getNormalCode(), 
-				"A light is on. However, there is no one in this room");
+				new Pair<String, String>("A light is on. However, there is no one in this room",
+						"La lumière est allumé. Mais il n'y a personne dans la salle"));
 		
 		//Gas sensor raises a danger alert
 		messagesByComplementarySensorsType.put(SensorType.GAS.getDangerCode() * SensorType.LIGHT.getDangerCode(),
-				"There are some harmful gas in the room and the light is on. An explosion can happen");
+				new Pair<String, String>("There are some harmful gas in the room and the light is on. An explosion can happen",""));
 		messagesByComplementarySensorsType.put(SensorType.GAS.getDangerCode() * SensorType.FLOW.getDangerCode(),
-				"There are some harmful gas in the room and there are people sleeping. They are in danger !");
+				new Pair<String, String>("There are some harmful gas in the room and there are people sleeping. They are in danger !",""));
 		messagesByComplementarySensorsType.put(SensorType.GAS.getDangerCode() * SensorType.LIGHT.getDangerCode() 
 				* SensorType.FLOW.getDangerCode(),
-				"There are some harmful gas in the room, people and the light is on. They are in danger !");
+				new Pair<String, String>("There are some harmful gas in the room, people and the light is on. They are in danger !",""));
 		
 	}
 
@@ -81,7 +86,7 @@ public class ComplementarySensorConfig {
 	}
 	
 	public String getMessage() {
-		String message =  messagesByComplementarySensorsType.get(finalCode);
+		String message =  messagesByComplementarySensorsType.get(finalCode).getValue0();
 		finalCode = 1;
 		codes.clear();		
 		return message;

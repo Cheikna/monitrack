@@ -90,12 +90,12 @@ public class SensorConfigurationDAO extends DAO<SensorConfiguration> {
 					preparedStatement.setTime(4, obj.getBeginTime());
 					preparedStatement.setTime(5, obj.getEndTime());
 					preparedStatement.setFloat(6, obj.getCheckFrequency());
-					preparedStatement.setFloat(8, obj.getMinDangerThreshold());
-					preparedStatement.setFloat(9, obj.getMaxDangerThreshold());
-					preparedStatement.setFloat(10, obj.getPositionX());
-					preparedStatement.setFloat(11, obj.getPositionY());
-					preparedStatement.setString(12, obj.getSensorSensitivity().toString());
-					preparedStatement.setInt(13, obj.getSensorConfigurationId());
+					preparedStatement.setFloat(7, obj.getMinDangerThreshold());
+					preparedStatement.setFloat(8, obj.getMaxDangerThreshold());
+					preparedStatement.setFloat(9, obj.getPositionX());
+					preparedStatement.setFloat(10, obj.getPositionY());
+					preparedStatement.setString(11, obj.getSensorSensitivity().toString());
+					preparedStatement.setInt(12, obj.getSensorConfigurationId());
 					preparedStatement.execute();
 				} catch (Exception e) {
 					log.error("An error occurred during the creation of a sensor configuration : " + e.getMessage());
