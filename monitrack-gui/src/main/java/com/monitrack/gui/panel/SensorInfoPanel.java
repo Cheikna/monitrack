@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.monitrack.entity.Location;
 import com.monitrack.entity.SensorConfiguration;
 import com.monitrack.enumeration.SensorState;
 import com.monitrack.listener.SensorInfoListener;
@@ -44,7 +45,15 @@ public class SensorInfoPanel extends JPanel {
 		label.setFont(font);
 		label.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		sensorInfoCenterPanel.add(label);
-		sensorInfoCenterPanel.add(new JLabel("@mac : "));
+		JLabel typeLabel = new JLabel("Type : " + sensor.getSensorType().getFrenchLabel());
+		typeLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+		typeLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		sensorInfoCenterPanel.add(typeLabel);
+		sensorInfoCenterPanel.add(new JLabel("@mac : " + sensor.getMacAddress()));
+		sensorInfoCenterPanel.add(new JLabel("Numéro lieu : " + sensor.getLocationId()));
+		Location location = sensor.getLocation();
+		String locationName = (location != null) ? location.getNameLocation() : "";
+		sensorInfoCenterPanel.add(new JLabel("Nom lieu : " + locationName));
 		sensorInfoCenterPanel.setBackground(stateColor);
 		add(sensorInfoCenterPanel, BorderLayout.CENTER);
 		add(sendReparatorButton, BorderLayout.SOUTH);
@@ -65,6 +74,7 @@ public class SensorInfoPanel extends JPanel {
 				
 			}
 		});
+		
 		if(sensorState != SensorState.NORMAL)
 			thread.start();
 	}

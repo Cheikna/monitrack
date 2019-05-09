@@ -22,7 +22,7 @@ public class SensorInfoListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		try {
 			if(e.getSource() == sensorInfoPanel.getSendReparatorButton()) {
-				Message message = new Message(sensorInfoPanel.getSensor().getSensorConfigurationId(), 0f);
+				Message message = new Message(sensorInfoPanel.getSensor().getSensorConfigurationId(), sensorInfoPanel.getSensor().getMinDangerThreshold());
 				String serializedObject = JsonUtil.serializeObject(message, message.getClass(), "");
 				String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, message.getClass(), serializedObject, null, null,null, RequestSender.SENSOR);
 				MonitrackGuiUtil.sendRequest(jsonRequest);
