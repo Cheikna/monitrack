@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import org.slf4j.Logger;
@@ -31,6 +32,8 @@ public class ClientSocket {
 	private final int TIMEOUT = 5000;
 
 	private Socket socket;
+	private InetAddress ipAddress;
+	private final String versionSpliter = Util.getVersionSpliter();
 
 	public ClientSocket() {
 
@@ -43,7 +46,7 @@ public class ClientSocket {
 		
 		try 
 		{
-			log.info("Connection to the server " + SERVER_IP + ":" + PORT_NUMBER + "...");
+			//log.info("Connection to the server " + SERVER_IP + ":" + PORT_NUMBER + "...");
 
 			// Connection to a socket
 			socket = new Socket(SERVER_IP, PORT_NUMBER);
@@ -57,12 +60,12 @@ public class ClientSocket {
 			
 			readFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
 			writeToServer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true);	
-			
-			//Send the client application version to the server. The letter 'v' will indicate that it is the version that we are sending
-			writeToServer.println("v" + MonitrackGuiUtil.getApplicationVersion());
+			ipAddress = InetAddress.getLocalHost();
+			//Send the client application version to the server. The spliter will indicate that it is the version that we are sending
+			writeToServer.println(ipAddress + versionSpliter + MonitrackGuiUtil.getApplicationVersion());
 			
 			//Check if we are using the good version of the application
-			String[] serverCheck = readFromServer.readLine().split("v");
+			String[] serverCheck = readFromServer.readLine().split(versionSpliter);
 			if(serverCheck.length >= 2)
 			{
 				String code = serverCheck[0];
@@ -75,7 +78,7 @@ public class ClientSocket {
 				
 			}
 			
-			log.info("You are connected to the server for your next request");
+			//log.info("You are connected to the server for your next request");
 
 			connectionState = ConnectionState.SUCCESS;
 		}
@@ -112,11 +115,11 @@ public class ClientSocket {
 
 		if(requestToSendToServer.trim().equals(ConnectionState.RESERVED_CONNECTION.getCode().toString()))
 			log.info("You are trying to reserve a connection");
-		else {
+		/*else {
 			//log.info("Request sent to the server :\n" + JsonUtil.indentJsonOutput(requestToSendToServer));
 			log.info("Request sent to the server :\n" + requestToSendToServer);
 			
-		}
+		}*/
 
 		// Sends the request to the server
 		writeToServer.println(requestToSendToServer);
@@ -137,7 +140,7 @@ public class ClientSocket {
 			if(socket != null)
 			{
 				socket.close();
-				log.info("The communication with the server is closed");
+				log.debug("The communication with the server is closed");
 			}
 		} catch (IOException e) {
 			log.error(e.getMessage());

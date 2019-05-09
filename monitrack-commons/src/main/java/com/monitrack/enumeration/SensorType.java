@@ -72,4 +72,11 @@ public enum SensorType {
 	public Boolean getIsItBinary() {
 		return isItBinary;
 	}
+	
+	public int getCorrectCode(SensorState state) {
+		if(state == SensorState.DANGER)
+			return this.dangerCode;
+		else
+			return this.normalCode;
+	}
 }

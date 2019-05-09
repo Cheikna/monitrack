@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.monitrack.entity.SensorConfiguration;
+import com.monitrack.enumeration.RequestSender;
 import com.monitrack.enumeration.RequestType;
 import com.monitrack.enumeration.SensorState;
 import com.monitrack.mock.panel.SensorsPage;
@@ -93,7 +94,7 @@ public class SensorsTableModel extends AbstractTableModel implements ListSelecti
 			String jsonRequest = null;
 			for(SensorState state : states) {
 				String stateName = state.name();
-				jsonRequest = JsonUtil.serializeSensorsUpdateRequest();
+				jsonRequest = JsonUtil.serializeSensorsFromCacheRequest(RequestSender.CLIENT_FOR_SENSOR_STATE);
 				String response = MonitrackGuiUtil.sendRequest(jsonRequest);
 				List<SensorConfiguration> sensors = (List<SensorConfiguration>)JsonUtil.deserializeObject(response);
 				for(SensorConfiguration sensor : sensors) {		
