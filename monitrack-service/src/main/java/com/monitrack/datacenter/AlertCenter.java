@@ -155,14 +155,7 @@ public class AlertCenter {
 				log.info("The sensor n°" + sensorId + " has reached " + thresholdReached + "/" + sensorConfiguration.getMaxDangerThreshold());
 
 				//Checks the state of the sensor just with the data received from the message
-				Float maxThreshold = sensorConfiguration.getMaxDangerThreshold();
-				Float minThreshold = sensorConfiguration.getMinDangerThreshold();
-				if (thresholdReached >= maxThreshold || thresholdReached < minThreshold)
-					sensorState = SensorState.WARNING;
-				else if(thresholdReached == minThreshold || sensorConfiguration.getSensorType().getIsGapAcceptable())
-					sensorState = SensorState.NORMAL;
-				else					
-					sensorState = SensorState.CAUTION;
+				sensorState = checkSensorState(sensorConfiguration, thresholdReached);
 
 				CacheInfo info = cacheInfoBySensor.get(sensorId);
 				//If the info is in the cache
@@ -228,8 +221,19 @@ public class AlertCenter {
 				System.out.format(horizontalBorder);
 				System.out.format(header);
 				System.out.format(horizontalBorder);
-				System.out.format(alignFormat, "" , sensorId, info.getSensorState().name(), info.getWarningCount() + "/" + maxWarningMessage, thresholdReached + "/" + sensorConfiguration.getMaxDangerThreshold(),
-						"Unit");
+				if(sensorConfiguration.getSensorType().getIsItBinary()) {
+					String detectedOrNot = "DETECTED";
+					if(info.getSensorState() != SensorState.DANGER) {
+						detectedOrNot = "NOT_DETECTED";
+					}
+					
+					System.out.format(alignFormat, "" , sensorId, detectedOrNot, info.getWarningCount() + "/" + maxWarningMessage, thresholdReached + "/" + sensorConfiguration.getMaxDangerThreshold(),
+							"Unit");
+				}
+				else {
+					System.out.format(alignFormat, "" , sensorId, info.getSensorState().name(), info.getWarningCount() + "/" + maxWarningMessage, thresholdReached + "/" + sensorConfiguration.getMaxDangerThreshold(),
+							"Unit");					
+				}
 				System.out.format(horizontalBorder);
 				System.out.println(message);
 			} else {
@@ -240,6 +244,23 @@ public class AlertCenter {
 			log.error(e.getMessage());
 			e.printStackTrace();
 		}
+	}
+
+	private SensorState checkSensorState(SensorConfiguration sensorConfiguration, float thresholdReached) {
+		Float maxThreshold = sensorConfiguration.getMaxDangerThreshold();
+		Float minThreshold = sensorConfiguration.getMinDangerThreshold();
+		
+		SensorType type = sensorConfiguration.getSensorType();
+		if(type == SensorType.LIGHT) {
+			//Searchs if the flow sensor detect someone
+		}
+		
+		if (thresholdReached >= maxThreshold || thresholdReached < minThreshold)
+			return SensorState.WARNING;
+		else if(thresholdReached == minThreshold || sensorConfiguration.getSensorType().getIsGapAcceptable())
+			return SensorState.NORMAL;
+		else					
+			return SensorState.CAUTION;
 	}
 
 	@SuppressWarnings("unchecked")

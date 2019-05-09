@@ -35,6 +35,9 @@ public class SensorConfigurationDAO extends DAO<SensorConfiguration> {
 			// Checks if the connection is not null before using it
 			if (connection != null) {
 				try {
+					//Creates the elements in the sensor table so that we can have the foreign key
+					obj.setSensorId(SensorDAO.createSensor(obj, connection));
+					
 					PreparedStatement preparedStatement = connection
 							.prepareStatement("INSERT INTO " + tableName + " (ID_SENSOR, ACTIVITY, ID_LOCATION, IP_ADDRESS, "
 									+ " START_ACTIVITY_TIME, END_ACTIVITY_TIME, CHECK_FREQUENCY, "
