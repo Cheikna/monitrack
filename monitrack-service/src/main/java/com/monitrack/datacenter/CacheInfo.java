@@ -7,7 +7,7 @@ import com.monitrack.util.Util;
 
 public class CacheInfo {
 	
-	private int dangerCount;
+	private int warningCount;
 	private Timestamp lastMessageDate;
 	private Timestamp firstDangerMessageDate;
 	private SensorState sensorState;
@@ -16,7 +16,7 @@ public class CacheInfo {
 	private float threasholdReached;
 	
 	public CacheInfo(Timestamp lastMessageDate, Timestamp firstDangerMessageDate, SensorState sensorState, float threasholdReached) {
-		this.dangerCount = (sensorState == SensorState.WARNING) ? 1 : 0;
+		this.warningCount = (sensorState == SensorState.WARNING) ? 1 : 0;
 		this.lastMessageDate = lastMessageDate;
 		this.firstDangerMessageDate = firstDangerMessageDate;
 		this.sensorState = sensorState;
@@ -54,11 +54,11 @@ public class CacheInfo {
 	}
 
 	public SensorState addWarning(int maxWarningCount, Timestamp messageDate) {
-		this.dangerCount++;
+		this.warningCount++;
 		
-		if(this.dangerCount >= maxWarningCount) {
+		if(this.warningCount >= maxWarningCount) {
 			sensorState = SensorState.DANGER;
-			if(dangerCount == maxWarningCount && messageDate != null) {
+			if(warningCount == maxWarningCount && messageDate != null) {
 				firstDangerMessageDate = messageDate;
 			}			
 		}	
@@ -73,7 +73,7 @@ public class CacheInfo {
 	}
 	
 	public void reset() {
-		this.dangerCount = 0;
+		this.warningCount = 0;
 		firstDangerMessageDate = null;
 		sensorState = SensorState.NORMAL;
 		history = 0;
@@ -81,7 +81,7 @@ public class CacheInfo {
 	}
 
 	public int getWarningCount() {
-		return dangerCount;
+		return warningCount;
 	}
 
 	public int getHistory() {

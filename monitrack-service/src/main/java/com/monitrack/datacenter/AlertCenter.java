@@ -136,7 +136,6 @@ public class AlertCenter {
 	public synchronized void processMessage(Message receivedMessage) {
 		try {	
 			int sensorId = receivedMessage.getSensorId();
-			String dangerStr = " ";
 			SensorState sensorState = null;
 			log.info("Message reveived from the sensor n°" + sensorId);
 			Timestamp messageDate = receivedMessage.getCreationDate();
@@ -160,8 +159,10 @@ public class AlertCenter {
 				Float minThreshold = sensorConfiguration.getMinDangerThreshold();
 				if (thresholdReached >= maxThreshold || thresholdReached < minThreshold)
 					sensorState = SensorState.WARNING;
-				else					
+				else if(thresholdReached == minThreshold || sensorConfiguration.getSensorType().getIsGapAcceptable())
 					sensorState = SensorState.NORMAL;
+				else					
+					sensorState = SensorState.CAUTION;
 
 				CacheInfo info = cacheInfoBySensor.get(sensorId);
 				//If the info is in the cache
@@ -200,6 +201,8 @@ public class AlertCenter {
 							// Removes the warning and Removes the first danger alert date
 							info.reset();							
 						}
+						else
+							info.setSensorState(sensorState);
 					}
 					// Case : the last alert in the cache was too old or there was not any message in the cache
 					else 
@@ -208,6 +211,8 @@ public class AlertCenter {
 							// Sets the numbers of warning message sent by this sensor
 							info.addWarning(maxWarningMessage);
 						}
+						else
+							info.setSensorState(sensorState);
 					}
 					
 				} else {
@@ -223,7 +228,7 @@ public class AlertCenter {
 				System.out.format(horizontalBorder);
 				System.out.format(header);
 				System.out.format(horizontalBorder);
-				System.out.format(alignFormat, dangerStr , sensorId, sensorState.name(), info.getWarningCount() + "/" + maxWarningMessage, thresholdReached + "/" + sensorConfiguration.getMaxDangerThreshold(),
+				System.out.format(alignFormat, "" , sensorId, info.getSensorState().name(), info.getWarningCount() + "/" + maxWarningMessage, thresholdReached + "/" + sensorConfiguration.getMaxDangerThreshold(),
 						"Unit");
 				System.out.format(horizontalBorder);
 				System.out.println(message);
@@ -304,12 +309,15 @@ public class AlertCenter {
 			@Override
 			public void run() {
 				try {
+					//Sleeps this thread so that the active sensors list can be filled
+					Thread.sleep(sleepTime);
 					while(true) {					
 						for(SensorConfiguration sensor : activeSensors) {
 							int id = sensor.getSensorConfigurationId();
 							CacheInfo info = cacheInfoBySensor.get(id);
 							if(info == null) {
 								info = new CacheInfo(null, null, SensorState.MISSING, 0);
+								cacheInfoBySensor.put(id, info);
 							}
 							else {
 								Timestamp lastMessageDate = info.getLastMessageDate();
@@ -392,7 +400,7 @@ public class AlertCenter {
 							iterator.remove();
 						}
 					}
-					log.info("The caches have been cleared");
+					log.info("The cache has been cleared");
 				} catch (Exception e) {
 					log.error(e.getMessage());
 					e.printStackTrace();
@@ -402,6 +410,4 @@ public class AlertCenter {
 		});
 		thread.start();
 	}
-	
-
 }
