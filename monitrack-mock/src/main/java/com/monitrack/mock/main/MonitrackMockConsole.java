@@ -125,13 +125,13 @@ public class MonitrackMockConsole {
 	public void showAllSensors() {
 		SensorType[] types = SensorType.values();
 		SensorConfiguration s1 = new SensorConfiguration(0,0, SensorActivity.ENABLED, SensorType.FLOW, SensorSensitivity.HIGH,1, "192.168.20.15", "dsfsd", "dsfsdf", 
-				1.0f, 2.0f, null, null, null, null, null, 0f, "Decibel",0f,  0.0f, 5.0f, 6.23f, 4.94f);
+				1.0f, 2.0f, null, null, null, null, null, 0f, "Decibel",  0.0f, 5.0f, 6.23f, 4.94f);
 		SensorConfiguration s2 = new SensorConfiguration(0,0, SensorActivity.ENABLED, SensorType.FLOW, SensorSensitivity.HIGH,2, "192.168.20.15", "dsfsd", "dsfsdf", 
-				1.0f, 2.0f, null, null, null, null, null, 0f, "Decibel",0f,  0.0f, 5.0f, 6.23f, 4.94f);
+				1.0f, 2.0f, null, null, null, null, null, 0f, "Decibel", 0.0f, 5.0f, 6.23f, 4.94f);
 		SensorConfiguration s3 = new SensorConfiguration(0,0, SensorActivity.ENABLED, SensorType.FLOW, SensorSensitivity.HIGH,3, "192.168.20.15", "dsfsd", "dsfsdf", 
-				1.0f, 2.0f, null, null, null, null, null, 0f, "Decibel",0f,  0.0f, 5.0f, 6.23f, 4.94f);
+				1.0f, 2.0f, null, null, null, null, null, 0f, "Decibel",  0.0f, 5.0f, 6.23f, 4.94f);
 		SensorConfiguration s4 = new SensorConfiguration(0,0, SensorActivity.NOT_CONFIGURED, SensorType.FLOW, SensorSensitivity.HIGH,1, "192.168.20.15", "dsfsd", "dsfsdf", 
-				1.0f, 2.0f, null, null, null, null, null, 0f, "Decibel",0f,  0.0f, 5.0f, 6.23f, 4.94f);
+				1.0f, 2.0f, null, null, null, null, null, 0f, "Decibel",  0.0f, 5.0f, 6.23f, 4.94f);
 		sensors = Arrays.asList(s1, s2, s3, s4);
 		Collections.sort(sensors, new SensorByLocationIdComparator());
 		System.out.println("List of the sensors :");
