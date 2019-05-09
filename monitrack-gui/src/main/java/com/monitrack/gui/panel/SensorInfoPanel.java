@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import com.monitrack.entity.Location;
 import com.monitrack.entity.SensorConfiguration;
 import com.monitrack.enumeration.SensorState;
+import com.monitrack.enumeration.SensorType;
 import com.monitrack.listener.SensorInfoListener;
 
 public class SensorInfoPanel extends JPanel {
@@ -38,7 +39,8 @@ public class SensorInfoPanel extends JPanel {
 		sensorInfoCenterPanel = new JPanel();
 		listener = new SensorInfoListener(this);
 		sensorInfoCenterPanel.setLayout(new BoxLayout(sensorInfoCenterPanel, BoxLayout.Y_AXIS));
-		sendReparatorButton = new JButton("Envoyer l'équipe de maintenance");
+		String buttonText = getButtonText(sensor.getSensorType());		
+		sendReparatorButton = new JButton(buttonText);
 		sendReparatorButton.setEnabled(sensorState == SensorState.DANGER);
 		sendReparatorButton.addActionListener(listener);
 		JLabel label = new JLabel("Capteur n°" + sensor.getSensorConfigurationId());
@@ -79,6 +81,14 @@ public class SensorInfoPanel extends JPanel {
 			thread.start();
 	}
 	
+	private String getButtonText(SensorType sensorType) {
+		if(sensorType == SensorType.LIGHT) {
+			return "Eteindre la lumière";
+		}
+		else
+			return "Envoyer l'équipe d'intervention";
+	}
+
 	public void paintComponent(Graphics g) {
         super.paintComponent(g);
 		if(showColor)
