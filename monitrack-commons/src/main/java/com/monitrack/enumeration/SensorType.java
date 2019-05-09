@@ -11,7 +11,7 @@ public enum SensorType {
 	WINDOW("Window", "Fenêtre", 23,29, false),	
 	HUMIDITY("Humidity", "Humidité", 31, 37, false),	
 	LIGHT("Light", "Lumière", 41,43, true),
-	GAS("Gas", "Gaz", 47,53, false),
+	GAS("Gas", "Gaz", 47,53, false), // isOnOff
 	MANUAL_TRIGGER("Manuel alarm trigger", "Déclencheur d'alarme manuel", 73,79, false),
 	ACCESS_CONTROL("Access controle", "Contrôle d'accès", 83,89, false),
 	FLOOD("Flood", "Inondation", 97, 101, false);
