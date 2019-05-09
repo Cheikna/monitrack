@@ -110,6 +110,7 @@ public class BasketSensor {
 					null);
 			String response = MonitrackGuiUtil.sendRequest(jsonRequest);
 			// Retrieves all the sensor from the database
+			@SuppressWarnings("unchecked")
 			List<SensorShop> shops = (List<SensorShop>) JsonUtil.deserializeObject(response);
 			System.out.println("1 : création de trois capteurs");
 			SensorShop s1 = shops.get(0);
