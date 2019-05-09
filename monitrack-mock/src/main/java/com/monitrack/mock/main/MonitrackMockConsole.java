@@ -1,7 +1,6 @@
 package com.monitrack.mock.main;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -12,17 +11,16 @@ import org.apache.commons.lang3.math.NumberUtils;
 
 import com.monitrack.comparator.SensorByLocationIdComparator;
 import com.monitrack.entity.SensorConfiguration;
-import com.monitrack.enumeration.SensorActivity;
-import com.monitrack.enumeration.SensorSensitivity;
-import com.monitrack.enumeration.SensorType;
+import com.monitrack.enumeration.RequestSender;
 import com.monitrack.mock.runnable.SensorSignal;
+import com.monitrack.shared.MonitrackGuiUtil;
 import com.monitrack.util.JsonUtil;
 
 public class MonitrackMockConsole {
 	
-	private final String alignFormat = "|%-6d| %-9s | %-13s |%-17s|%-17s|%n";
-	private final String horizontalBorder      = "+------+-----------+---------------+-----------------+-----------------+%n";
-	private final String header			 	   = "|  ID  |    TYPE   |  LOCATION ID  |     ACTIVITY    | SENDING MESSAGE |%n";
+	private final String alignFormat = "|%-6d| %-15s | %-13s |%-17s|%-17s|%n";
+	private final String horizontalBorder      = "+------+-----------------+---------------+-----------------+-----------------+%n";
+	private final String header			 	   = "|  ID  |       TYPE      |  LOCATION ID  |     ACTIVITY    | SENDING MESSAGE |%n";
 
 	private Map<Integer, SensorSignal> sensorSignalMap;
 	private List<SensorConfiguration> sensors;
@@ -35,16 +33,34 @@ public class MonitrackMockConsole {
 		sensors = new ArrayList<SensorConfiguration>();
 		sc = new Scanner(System.in);
 		System.out.println("Welcome to Monitrack mock");
+		String jsonRequest = JsonUtil.serializeSensorsFromCacheRequest(RequestSender.CLIENT_FOR_ACTIVE_SENSOR);
+		Thread sensorListUpdater = new Thread(new Runnable() {			
+			@SuppressWarnings("unchecked")
+			@Override
+			public void run() {
+				while(true) {
+					try {
+						sensors = (List<SensorConfiguration>)JsonUtil.deserializeObject(MonitrackGuiUtil.sendRequest(jsonRequest));
+						Thread.sleep(10000);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				
+			}
+		});
+		sensorListUpdater.start();
+
 		displayMainMenu();
 		
 	}
 	
-	public float chooseAction(float minIncluded, float maxIncluded) {
-		float choice = defaultNumber;
+	private int chooseAction(float minIncluded, float maxIncluded) {
+		int choice = defaultNumber;
 		boolean isChoiceCorrect = true;do {
 			isChoiceCorrect = true;
 			System.out.print("Enter your choice : ");
-			choice = NumberUtils.toFloat(sc.nextLine(), defaultNumber);
+			choice = NumberUtils.toInt(sc.nextLine(), defaultNumber);
 			if(choice == defaultNumber || choice < minIncluded || choice > maxIncluded) {
 				System.out.println("The action choosen is incorrect");
 				isChoiceCorrect = false;
@@ -54,7 +70,7 @@ public class MonitrackMockConsole {
 		return choice;
 	}
 	
-	public void displayMainMenu() {
+	private void displayMainMenu() {
 		System.out.println("\nMenu - Choose an action :");
 		System.out.println("1: Generate location");
 		System.out.println("2: Generate some person for the Nurse house");
@@ -62,10 +78,10 @@ public class MonitrackMockConsole {
 		System.out.println("4: Indent Json");
 		choice = chooseAction(1, 4);		
 		if(choice == 1) {
-			
+			generateLocations();
 		}
 		else if(choice == 2) {
-			
+			generatePersons();
 		} else if(choice == 3) {
 			sensorManipulationMenu();
 		}
@@ -83,56 +99,69 @@ public class MonitrackMockConsole {
 	
 	
 	
-	public void sensorManipulationMenu() {
+	private void sensorManipulationMenu() {
+
+		showAllSensors();
 		System.out.println("\nWhat do you want to do ?");
 		System.out.println("1. Generate only active sensors");
-		System.out.println("2. Generate only unactive sensors");
-		System.out.println("3. Generate not configured sensors");
-		System.out.println("4. Generate sensors randomly");
-		System.out.println("5. Enable all sensors");
-		System.out.println("6. Disable all sensors");
-		System.out.println("7. Start sending message");
-		System.out.println("8. Stop sending message");
-		System.out.println("9. Show all sensors");
-		System.out.println("10. Back to main menu");
-		choice = chooseAction(1, 10);		
+		System.out.println("2. Generate not configured sensors");
+		System.out.println("3. Generate sensors randomly");
+		System.out.println("4. Enable all sensors");
+		System.out.println("5. Start sending message");
+		System.out.println("6. Update the threshold sent for sensors");
+		System.out.println("7. Stop sending message");
+		choice = chooseAction(1, 7);
+		
 		if(choice == 1) {
-			
-		} else if (choice == 5) {
-			showAllSensors();
-			// Propose which sensor to select
-		} else if (choice == 6) {
-			showAllSensors();
-		} else if(choice == 7) {
-			showAllSensors();
+			System.out.println("This operation may take a long time...");
+			generateSensors(true);
+		} else if (choice == 2) {
+			System.out.println("This operation may take a long time...");
+			generateSensors(false);
+		} else if (choice == 3) {
+			System.out.println("This operation may take a long time...");
+			generateSensors(null);
+		} else if (choice == 4) {
+			System.out.println("This operation may take a long time...");
+			enableAllSensors();
+		} else if(choice == 5) {
 			startStopSendingMessage(true);
-		}else if(choice == 8) {
-			showAllSensors();
+		} else if (choice == 6) {
+			updateThresholdSent();
+		} else if(choice == 7) {
 			startStopSendingMessage(false);
 		}
 		displayMainMenu();
 	}
 	
-	public void generatePersons() {
+	private void generatePersons() {
 		
 		//FIXME Show the persons inserted
 	}
-	public void generateLocations() {
+	
+	private void generateLocations() {
 		
 		//FIXME Show the location inserted
 	}
 	
-	public void showAllSensors() {
-		SensorType[] types = SensorType.values();
-		SensorConfiguration s1 = new SensorConfiguration(0,0, SensorActivity.ENABLED, SensorType.FLOW, SensorSensitivity.HIGH,1, "192.168.20.15", "dsfsd", "dsfsdf", 
-				1.0f, 2.0f, null, null, null, null, null, 0f, "Decibel",  0.0f, 5.0f, 6.23f, 4.94f);
-		SensorConfiguration s2 = new SensorConfiguration(0,0, SensorActivity.ENABLED, SensorType.FLOW, SensorSensitivity.HIGH,2, "192.168.20.15", "dsfsd", "dsfsdf", 
-				1.0f, 2.0f, null, null, null, null, null, 0f, "Decibel", 0.0f, 5.0f, 6.23f, 4.94f);
-		SensorConfiguration s3 = new SensorConfiguration(0,0, SensorActivity.ENABLED, SensorType.FLOW, SensorSensitivity.HIGH,3, "192.168.20.15", "dsfsd", "dsfsdf", 
-				1.0f, 2.0f, null, null, null, null, null, 0f, "Decibel",  0.0f, 5.0f, 6.23f, 4.94f);
-		SensorConfiguration s4 = new SensorConfiguration(0,0, SensorActivity.NOT_CONFIGURED, SensorType.FLOW, SensorSensitivity.HIGH,1, "192.168.20.15", "dsfsd", "dsfsdf", 
-				1.0f, 2.0f, null, null, null, null, null, 0f, "Decibel",  0.0f, 5.0f, 6.23f, 4.94f);
-		sensors = Arrays.asList(s1, s2, s3, s4);
+	private void generateSensors(Boolean configured) {
+		if(configured == null) {
+			//FIXME generate random sensor
+		}
+		else if(configured) {
+			// FIXME generate only configured sensor
+		}
+		else {
+			//FIXME generate not configured sensors
+		}
+	}
+	
+	private void enableAllSensors() {
+		//FIXME
+	}
+	
+	private void showAllSensors() {
+		
 		Collections.sort(sensors, new SensorByLocationIdComparator());
 		System.out.println("List of the sensors :");
 		System.out.format(horizontalBorder);
@@ -147,14 +176,14 @@ public class MonitrackMockConsole {
 		System.out.format(horizontalBorder);
 	}
 	
-	public boolean isSendingMessage(int sensorId) {
+	private boolean isSendingMessage(int sensorId) {
 		SensorSignal signal = sensorSignalMap.get(sensorId);
 		if(signal == null)
 			return false;
 		return signal.isSendMessage();
 	}
 	
-	public void startStopSendingMessage(boolean sendSignal) {
+	private void startStopSendingMessage(boolean sendSignal) {
 		//Show all sensors who are sending message
 		String action = "";
 		if(sendSignal) {			
@@ -197,6 +226,41 @@ public class MonitrackMockConsole {
 			
 	}
 	
+	private void updateThresholdSent() {
+		System.out.println("\nModify the threshold :");
+		System.out.println("1. Set the threshold with predefine values");
+		System.out.println("2. Choose your own values");
+		int choice = chooseAction(1, 2);
+		if(choice == 1) {
+			//FIXME
+		} else if(choice == 2) {
+			boolean isCorrect = true;
+			int id = 0;
+			float threshold = 0f;
+			do {
+				isCorrect = true;
+				System.out.print("Enter the id of the sensor : ");
+				id = NumberUtils.toInt(sc.nextLine(), defaultNumber);
+				if(id == defaultNumber) {
+					System.out.println("The id entered is incorrect !");
+					isCorrect = false;
+				}
+				else {
+					System.out.print("Enter your threshold : ");
+					threshold = NumberUtils.toFloat(sc.nextLine(), defaultNumber);
+					if(threshold == defaultNumber) {
+						System.out.println("The threshold is incorrect !");
+						isCorrect = false;
+					}					
+				}
+				
+				
+			} while(!isCorrect);			
+			
+			setSignal(id, threshold);
+		}
+	}
+	
 	private void setSignal(SensorConfiguration sensor, boolean sendSignal, float threshold) {
 		int id = sensor.getSensorConfigurationId();
 		SensorSignal signal = null;
@@ -212,6 +276,15 @@ public class MonitrackMockConsole {
 			Thread thread = new Thread(signal);
 			thread.start();
 		}	
+	}
+	
+	private void setSignal(int id, float threshold) {
+		if(sensorSignalMap.containsKey(id)){
+			sensorSignalMap.get(id).setThresholdReached(threshold);
+		}
+		else {
+			System.out.println("The sensor with the id n°" + id + " must be in sending message mode before changing this value");
+		}
 	}
 	
 	private SensorConfiguration findSensorById(int id) {
