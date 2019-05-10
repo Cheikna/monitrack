@@ -22,13 +22,27 @@ public enum SensorType {
 	private String frenchLabel;	
 	private Integer normalCode;
 	private Integer dangerCode;
+	/** 
+	 * Accepts some variation like for the temperature because we do not want to raise an alert
+	 * each time the temperature changes
+	 */
 	private Boolean isGapAcceptable;
+	/**
+	 * Checks if the sensors has only two values. For instance a door can only be opened or closed,
+	 * same for the window. In the room there can be people or not, we do not count the number of
+	 * people in the room
+	 */
 	private Boolean isItBinary;
 	private SensorAction actionAssociatedToStopDanger;
 
 	/**
+	 * 
 	 * @param englishLabel
 	 * @param frenchLabel
+	 * @param normalCode
+	 * @param dangerCode
+	 * @param isGapAcceptable
+	 * @param isItBinary
 	 */
 	SensorType(String englishLabel, String frenchLabel, Integer normalCode, Integer dangerCode, Boolean isGapAcceptable, Boolean isItBinary) {
 		this.englishLabel = englishLabel;
@@ -37,6 +51,7 @@ public enum SensorType {
 		this.dangerCode = dangerCode;
 		this.isGapAcceptable = isGapAcceptable;
 		this.isItBinary = isItBinary;
+		this.actionAssociatedToStopDanger = setActionAssociatedToStopDanger();
 	}
 
 	public static SensorType getSensorType(String sensorType)
@@ -85,38 +100,16 @@ public enum SensorType {
 		return actionAssociatedToStopDanger;
 	}
 
-	public void setActionAssociatedToStopDanger() {
+	public SensorAction setActionAssociatedToStopDanger() {
 		switch(this) {
-		case FLOW:
-			break;
-		}
-		if(this == SensorType.FLOW){
-		}
-		else if(sensorType == SensorType.SMOKE){	
-
-		}
-		else if(sensorType == SensorType.DOOR){	
-		}
-		else if(sensorType == SensorType.TEMPERATURE){	
-
-		}
-		else if(sensorType == SensorType.WINDOW){	
-
-		}
-		else if(sensorType == SensorType.HUMIDITY){	
-
-		}
-		else if(sensorType == SensorType.LIGHT){
-
-		}
-		else if(sensorType == SensorType.GAS){
-
-		}
-		else if(sensorType == SensorType.MANUAL_TRIGGER){
-
-		}
-		else if(sensorType == SensorType.FLOOD){
-
+		case DOOR:
+			return SensorAction.CLOSE_DOOR;
+		case LIGHT:
+			return SensorAction.SWITCH_OFF_LIGHT;
+		case WINDOW:
+			return SensorAction.CLOSE_WINDOW;
+		default:
+			return SensorAction.STOP_DANGER_ALERT;
 		}
 	}
 

@@ -8,6 +8,8 @@ public enum SensorAction {
 	
 	CLOSE_DOOR,
 	
+	CLOSE_WINDOW,
+	
 	SWITCH_OFF_LIGHT,
 	
 	FAKE_ALERT;
