@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import com.monitrack.connection.pool.implementation.DataSource;
 import com.monitrack.dao.implementation.DAOFactory;
 import com.monitrack.entity.Message;
+import com.monitrack.entity.Person;
 import com.monitrack.entity.SensorConfiguration;
 import com.monitrack.entity.SensorConfigurationHistory;
 import com.monitrack.enumeration.RequestType;
@@ -28,6 +29,7 @@ import com.monitrack.enumeration.SensorActivity;
 import com.monitrack.enumeration.SensorSensitivity;
 import com.monitrack.enumeration.SensorState;
 import com.monitrack.enumeration.SensorType;
+import com.monitrack.shared.MonitrackServiceUtil;
 import com.monitrack.util.ComplementarySensorConfig;
 import com.monitrack.util.Util;
 /**
@@ -48,7 +50,9 @@ public class AlertCenter {
 	private final String alignFormat = "%-4s| %-4d |%-16s|%-16s|%-8s| %-13s |%-6s|%n";
 	private final String horizontalBorder      = "    +------+-----------------+-----------------+--------+---------------+------+%n";
 	private final String header			 	   = "    |  ID  |      Type       |      State      | Warn.  | Curr. Thresh. | Unit |%n";
-
+	private final String badgeUp = MonitrackServiceUtil.getASCII("badge-up.txt");
+	private final String badgeDown = MonitrackServiceUtil.getASCII("badge-down.txt");
+	
 	/******** Element for searching in the database *******/
 	private final List<String> fieldsForActiveSensors = Arrays.asList("ACTIVITY");
 	private final List<String> testsForActiveSensors = Arrays.asList("=");
@@ -58,11 +62,14 @@ public class AlertCenter {
 	private Map<Integer, CacheInfo> cacheInfoBySensor;
 	private List<SensorConfiguration> activeSensors;	
 	
+	private List<Person> persons;
+	
 	private ComplementarySensorConfig complementarySensorConfig;
 
 	private final long sensorActivityCheckerSleepTime = DateTimeConstants.MILLIS_PER_MINUTE * NumberUtils.toLong(Util.getPropertyValueFromPropertiesFile("sensor_activity_checker_in_minute"));
 	private final long sensorStateCacheClearerSleepTime = DateTimeConstants.MILLIS_PER_DAY / NumberUtils.toLong(Util.getPropertyValueFromPropertiesFile("cache_clear_per_day"));
-
+	private final long codeRetrieverSleepTime = DateTimeConstants.MILLIS_PER_DAY;
+	
 	private Thread listUpdaterThread;
 	private long counter;
 	private int maxWarningMessage;
@@ -70,6 +77,7 @@ public class AlertCenter {
 	public AlertCenter() {				
 		cacheInfoBySensor = Collections.synchronizedMap(new HashMap<Integer, CacheInfo>()); 
 		activeSensors = Collections.synchronizedList(new ArrayList<SensorConfiguration>());
+		persons = Collections.synchronizedList(new ArrayList<Person>());
 		counter = 0;
 		complementarySensorConfig = new ComplementarySensorConfig();
 		clearCacheSensorStateBySensor();
@@ -80,6 +88,8 @@ public class AlertCenter {
 		activeSensorListUpdater();
 		//Starts the thread which check if all active sensor sent a message
 		sensorActivityChecker();
+		//Retrieves all the resident codes
+		codeRetriver();
 	}
 
 	/**
@@ -151,7 +161,6 @@ public class AlertCenter {
 			if(sensorConfiguration != null) {
 				String message = "";
 				maxWarningMessage = SensorSensitivity.getNumberOfMessages(sensorConfiguration.getSensorSensitivity());
-				log.info("The sensor n°" + sensorId + " has reached " + thresholdReached + "/" + sensorConfiguration.getMaxDangerThreshold());
 
 				//Checks the state of the sensor just with the data received from the message
 				sensorState = checkSensorState(sensorConfiguration, thresholdReached);
@@ -245,18 +254,30 @@ public class AlertCenter {
 	private SensorState checkSensorState(SensorConfiguration sensorConfiguration, float thresholdReached) {
 		Float maxThreshold = sensorConfiguration.getMaxDangerThreshold();
 		Float minThreshold = sensorConfiguration.getMinDangerThreshold();
-		
+		int sensorId = sensorConfiguration.getSensorConfigurationId();
 		SensorType type = sensorConfiguration.getSensorType();
-		if(type == SensorType.LIGHT) {
-			//Searchs if the flow sensor detect someone
+		if(type == SensorType.ACCESS_CONTROL) 
+		{
+			log.info("A code to enter in location n°" + sensorConfiguration.getLocationId() + " has been entered");
+			System.out.println(badgeUp);
+			System.out.println("     " + thresholdReached);
+			System.out.println(badgeDown);
+			//FIXME retrieve all the code from the database and check if the code correspond to someone
+			return null;
+		} 
+		else 
+		{
+
+			log.info("The sensor n°" + sensorId + " has reached " + thresholdReached + "/" + sensorConfiguration.getMaxDangerThreshold());
+			if (thresholdReached >= maxThreshold || thresholdReached < minThreshold)
+				return SensorState.WARNING;
+			else if(thresholdReached == minThreshold || sensorConfiguration.getSensorType().getIsGapAcceptable())
+				return SensorState.NORMAL;
+			else					
+				return SensorState.CAUTION;
 		}
 		
-		if (thresholdReached >= maxThreshold || thresholdReached < minThreshold)
-			return SensorState.WARNING;
-		else if(thresholdReached == minThreshold || sensorConfiguration.getSensorType().getIsGapAcceptable())
-			return SensorState.NORMAL;
-		else					
-			return SensorState.CAUTION;
+		
 	}
 
 	@SuppressWarnings("unchecked")
@@ -424,5 +445,29 @@ public class AlertCenter {
 
 	public List<SensorConfiguration> getActiveSensors() {
 		return activeSensors;
+	}
+	
+	/**
+	 * Retrieves all the code of the person of the nurses house this thread must be updated once a day
+	 */
+	private void codeRetriver() {
+		Thread thread = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				while(true) {
+					try {
+						Connection connection = DataSource.getConnection();
+						persons = (List<Person>)DAOFactory.execute(connection, Person.class, RequestType.SELECT, null, null, null, null);		
+						DataSource.putConnection(connection);
+						Thread.sleep(codeRetrieverSleepTime);
+					} catch (InterruptedException e) {
+						log.error(e.getMessage());
+					}
+				}
+			}
+		});
+		thread.start();
+		
 	}
 }
