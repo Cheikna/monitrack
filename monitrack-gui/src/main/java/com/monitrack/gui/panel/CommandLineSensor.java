@@ -23,17 +23,27 @@ public class CommandLineSensor {
 	
 	public double totalSensorPrice()
 	{
-		double résultat = 0;
-		résultat = this.quantity*this.sensor.getSensorPrice();
-		return résultat;
+		double result = 0;
+		result = this.quantity*this.sensor.getSensorPrice();
+		return result;
 	}
 
 	//MontantTTC
 	public double totalSensorInterviewPrice()
 	{
-		double résultat = 0;
-		résultat = this.quantity*this.sensor.getSensorInterviewPrice();
-		return résultat;
+		double result = 0;
+		result = this.quantity*this.sensor.getSensorInterviewPrice();
+		return result;
+	}
+	
+	public double provisional(int year)
+	{
+		double result = 0;
+		double nbSensorForPeriod = 0;
+		result = (this.quantity*this.sensor.getSensorInterviewPrice()) * year;
+		nbSensorForPeriod = this.quantity*(year/this.sensor.getLifeTime());
+		result += (nbSensorForPeriod * this.sensor.getSensorPrice());
+		return result;
 	}
 	
 	public static void main(String[] args)
@@ -57,6 +67,7 @@ public class CommandLineSensor {
 			System.out.println("Durée de vie moyenne de s1:"+s1.getLifeTime());
 			System.out.println("Classe énergétique de s1 : "+s1.getEnergy().getLabel());
 			System.out.println("cout de maintenance de la lc : " + lc1.totalSensorInterviewPrice() + "€");
+			System.out.println("Prévisionnel de la lc : "+ lc1.provisional(30));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
