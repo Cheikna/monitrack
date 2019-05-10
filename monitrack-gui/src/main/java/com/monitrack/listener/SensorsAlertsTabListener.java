@@ -42,8 +42,7 @@ public class SensorsAlertsTabListener implements ActionListener {
 			SensorState state = (SensorState)entry.getKey();
 			List<SensorConfiguration> sensors = (List<SensorConfiguration>) entry.getValue();
 			for(SensorConfiguration sensor : sensors) {
-				if(state == SensorState.DANGER)
-					complementarySensorConfig.addClientCode(sensor.getLocationId(), sensor.getSensorType().getCorrectCode(state));
+				complementarySensorConfig.addClientCode(sensor.getLocationId(), sensor.getSensorType().getCorrectCode(state));
 				sensorsAlertsTab.getSensorsPanel().add(new SensorInfoPanel(sensor, state));
 			}
 		}
