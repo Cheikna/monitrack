@@ -54,7 +54,7 @@ public class SensorInfoPanel extends JPanel {
 		sensorInfoCenterPanel.add(typeLabel);
 		sensorInfoCenterPanel.add(new JLabel("@mac : " + sensor.getMacAddress()));
 		String ipAddress = "undefined";
-		if(sensor.getSensorActivity() == SensorActivity.ENABLED || sensorState != SensorState.MISSING)
+		if(sensor.getSensorActivity() == SensorActivity.ENABLED && sensorState != SensorState.MISSING)
 			ipAddress = sensor.getIpAddress();
 		sensorInfoCenterPanel.add(new JLabel("@ip : " + ipAddress));
 		sensorInfoCenterPanel.add(new JLabel("Numéro lieu : " + sensor.getLocationId()));
