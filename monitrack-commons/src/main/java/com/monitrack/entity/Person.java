@@ -2,117 +2,85 @@ package com.monitrack.entity;
 
 import java.sql.Timestamp;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.monitrack.enumeration.UserProfile;
 
 public class Person {
 
+	@JsonProperty("id")
 	private int idPerson;
-	private String namePerson;
-	private String userName;
+	@JsonProperty("last_name")
+	private String lastName;
+	@JsonProperty("first_name")
+	private String firstName;
+	@JsonProperty("user_profile")
+	private UserProfile userProfile;
+	@JsonProperty("password")
 	private String password;
-	private UserProfile userProfil;
+	@JsonProperty("creation_date")
 	private Timestamp creationDate;
 	
 	
 	public Person() {
 		
 	}
-
-	/**
-	 * Constructor used to retrieved a Person from the database
-	 * 
-	 * @param idPerson
-	 * @param namePerson
-	 * @param creationDate
-	 */
-	public Person(int idPerson, String namePerson, String userName, String password, UserProfile userProfil, Timestamp creationDate) {
+  
+	public Person(int idPerson, String lastName, String firstName, UserProfile userProfile, String password,
+			Timestamp creationDate) {
 		this.idPerson = idPerson;
-		this.namePerson = namePerson;
-		this.userName = userName;
+		this.lastName = lastName;
+		this.firstName = firstName;
+		this.userProfile = userProfile;
 		this.password = password;
-		this.userProfil = userProfil;
 		this.creationDate = creationDate;
 	}
-  
-	/**
-	 * Constructor used when creating a Person from the Graphical User Interface
-	 * 
-	 * @param namePerson
-	 */
-	public Person(String namePerson,  String userName, String password, UserProfile userProfil) {
-		this(0, namePerson,userName, password, userProfil, new Timestamp(System.currentTimeMillis()));
-		/*this.namePerson = namePerson;
-		this.creationDate = new Timestamp(System.currentTimeMillis());*/
-	}
 
-	@JsonGetter("id")
 	public int getIdPerson() {
 		return idPerson;
 	}
 
-	@JsonSetter("id")
 	public void setIdPerson(int idPerson) {
 		this.idPerson = idPerson;
 	}
 
-	@JsonGetter("name")
-	public String getNamePerson() {
-		return namePerson;
+	public String getLastName() {
+		return lastName;
 	}
 
-	@JsonSetter("name")
-	public void setNamePerson(String namePerson) {
-		this.namePerson = namePerson;
-	}	
-	
-	
-	@JsonGetter("user_name")
-	public String getUserName() {
-		return userName;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
-	@JsonSetter("user_name")
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	@JsonGetter("password")
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public UserProfile getUserProfile() {
+		return userProfile;
+	}
+
+	public void setUserProfile(UserProfile userProfile) {
+		this.userProfile = userProfile;
+	}
+
 	public String getPassword() {
 		return password;
 	}
 
-	@JsonSetter("password")
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
-	@JsonGetter("user_profil")
-	public UserProfile getUserProfil() {
-		return userProfil;
-	}
-
-	@JsonSetter("user_profil")
-	public void setUserProfil(UserProfile userProfil) {
-		this.userProfil = userProfil;
-	}
-
-	@JsonGetter("creation_date")
 	public Timestamp getCreationDate() {
 		return creationDate;
 	}
 
-	@JsonSetter("creation_date")
 	public void setCreationDate(Timestamp creationDate) {
 		this.creationDate = creationDate;
-	}
-
-	@Override
-	public String toString() {
-		return idPerson + "#" + namePerson + " - créée le " + creationDate + " avec un profil de type " + userProfil;
-		/*return "Person [idPerson=" + idPerson + ", namePerson=" + namePerson + ", creationDate=" + creationDate
-				+ "]";*/
 	}
 
 	@Override
@@ -120,11 +88,11 @@ public class Person {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
+		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + idPerson;
-		result = prime * result + ((namePerson == null) ? 0 : namePerson.hashCode());
+		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
-		result = prime * result + ((userProfil == null) ? 0 : userProfil.hashCode());
+		result = prime * result + ((userProfile == null) ? 0 : userProfile.hashCode());
 		return result;
 	}
 
@@ -142,31 +110,33 @@ public class Person {
 				return false;
 		} else if (!creationDate.equals(other.creationDate))
 			return false;
+		if (firstName == null) {
+			if (other.firstName != null)
+				return false;
+		} else if (!firstName.equals(other.firstName))
+			return false;
 		if (idPerson != other.idPerson)
 			return false;
-		if (namePerson == null) {
-			if (other.namePerson != null)
+		if (lastName == null) {
+			if (other.lastName != null)
 				return false;
-		} else if (!namePerson.equals(other.namePerson))
+		} else if (!lastName.equals(other.lastName))
 			return false;
 		if (password == null) {
 			if (other.password != null)
 				return false;
 		} else if (!password.equals(other.password))
 			return false;
-		if (userName == null) {
-			if (other.userName != null)
-				return false;
-		} else if (!userName.equals(other.userName))
-			return false;
-		if (userProfil != other.userProfil)
+		if (userProfile != other.userProfile)
 			return false;
 		return true;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
-	
+	@Override
+	public String toString() {
+		return "Person [idPerson=" + idPerson + ", lastName=" + lastName + ", firstName=" + firstName + ", userProfile="
+				+ userProfile + ", password=" + password + ", creationDate=" + creationDate + "]";
+	}
+
 
 }

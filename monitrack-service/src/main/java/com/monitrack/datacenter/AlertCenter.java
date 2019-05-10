@@ -47,7 +47,7 @@ public class AlertCenter {
 	private final long updateListFrequency = DateTimeConstants.MILLIS_PER_MINUTE;
 	private final long sleepTime = DateTimeConstants.MILLIS_PER_SECOND;
 
-	private final String alignFormat = "%-4s| %-4d |%-16s|%-16s|%-8s| %-13s |%-6s|%n";
+	private final String alignFormat = "%-4s| %-4d |%-17s|%-17s|%-8s| %-13s |%-6s|%n";
 	private final String horizontalBorder      = "    +------+-----------------+-----------------+--------+---------------+------+%n";
 	private final String header			 	   = "    |  ID  |      Type       |      State      | Warn.  | Curr. Thresh. | Unit |%n";
 	private final String badgeUp = MonitrackServiceUtil.getASCII("badge-up.txt");
@@ -193,9 +193,9 @@ public class AlertCenter {
 							// Case : The reparator have done their jobs
 							if(numberOfWarning >= maxWarningMessage) {
 								System.err.println(" /!\\ The maintainers repaired the sensor n°" + sensorId + " /!\\" );
-								saveSensorConfigurationHistory(sensorConfiguration, sensorConfiguration.getSensorType().getActionAssociatedToStopDanger(), "", dangerTime, true);
+								saveSensorConfigurationHistory(sensorConfiguration, SensorType.getActionAssociatedToStopDanger(sensorConfiguration.getSensorType()), "", dangerTime, true);
 							}
-							else if(numberOfWarning > 0 && numberOfWarning < maxWarningMessage) {
+							else if(numberOfWarning > 0 && numberOfWarning < maxWarningMessage && !sensorConfiguration.getSensorType().getIsItBinary()) {
 								log.info("A fake alert is detected for the sensor n°" + sensorId);
 								saveSensorConfigurationHistory(sensorConfiguration, SensorAction.FAKE_ALERT, "", dangerTime, true);
 							}
@@ -251,19 +251,26 @@ public class AlertCenter {
 		}
 	}
 
-	private SensorState checkSensorState(SensorConfiguration sensorConfiguration, float thresholdReached) {
+	private SensorState checkSensorState(SensorConfiguration sensorConfiguration, Float thresholdReached) {
 		Float maxThreshold = sensorConfiguration.getMaxDangerThreshold();
 		Float minThreshold = sensorConfiguration.getMinDangerThreshold();
 		int sensorId = sensorConfiguration.getSensorConfigurationId();
 		SensorType type = sensorConfiguration.getSensorType();
 		if(type == SensorType.ACCESS_CONTROL) 
 		{
-			log.info("A code to enter in location n°" + sensorConfiguration.getLocationId() + " has been entered");
-			System.out.println(badgeUp);
-			System.out.println("     " + thresholdReached);
+			int locationId = sensorConfiguration.getLocationId();
+			log.info("A code to enter in location n°" + locationId + " has been entered");
+			System.out.print(badgeUp);
+			System.out.println(" Code entered : " + thresholdReached.intValue());
 			System.out.println(badgeDown);
-			//FIXME retrieve all the code from the database and check if the code correspond to someone
-			return null;
+			for(Person person : persons) {
+				if(person.getPassword().equalsIgnoreCase(String.valueOf(thresholdReached.intValue()))) {
+					log.info("The person called " + person.getLastName() + " " + person.getFirstName() + " has entered a good password for location n°" + locationId);
+					return SensorState.NORMAL;
+				}
+			}
+			log.info("Someone has typed a wrong password to enter in location n°" + locationId);
+			return SensorState.WARNING;
 		} 
 		else 
 		{
@@ -453,6 +460,7 @@ public class AlertCenter {
 	private void codeRetriver() {
 		Thread thread = new Thread(new Runnable() {
 			
+			@SuppressWarnings("unchecked")
 			@Override
 			public void run() {
 				while(true) {
@@ -461,7 +469,7 @@ public class AlertCenter {
 						persons = (List<Person>)DAOFactory.execute(connection, Person.class, RequestType.SELECT, null, null, null, null);		
 						DataSource.putConnection(connection);
 						Thread.sleep(codeRetrieverSleepTime);
-					} catch (InterruptedException e) {
+					} catch (Exception e) {
 						log.error(e.getMessage());
 					}
 				}
