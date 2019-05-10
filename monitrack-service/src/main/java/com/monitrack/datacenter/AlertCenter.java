@@ -224,8 +224,7 @@ public class AlertCenter {
 				if(type.getIsItBinary()) {
 					String messageForBinary = type.getMessageAccordingToState(info.getSensorState());
 					
-					System.out.format(alignFormat, "" , sensorId, type.name(), messageForBinary, info.getWarningCount() + "/" + maxWarningMessage, thresholdReached + "/" + sensorConfiguration.getMaxDangerThreshold(),
-							"");
+					System.out.format(alignFormat, "" , sensorId, type.name(), messageForBinary, info.getWarningCount() + "/" + maxWarningMessage, "", "");
 				}
 				else {
 					System.out.format(alignFormat, "" , sensorId, type.name(), info.getSensorState().name(), info.getWarningCount() + "/" + maxWarningMessage, thresholdReached + "/" + sensorConfiguration.getMaxDangerThreshold(),
