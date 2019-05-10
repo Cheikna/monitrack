@@ -5,12 +5,12 @@ public enum SensorType {
 
 	//FIXME - Cheikna : Why do not I remove the english label and make a "this.toString().toLowerCase()" in the constructor ?
 	SMOKE("Smoke", "Fumée", 2, 3, false, false),	
-	FLOW("Flow", "Présence", 5, 7, false, true),	
-	DOOR("Door", "Porte", 11, 13, false, true),	
+	FLOW("Flow", "Présence", 5, 7, false, true, "EMPTY", "NOT_EMPTY"),	
+	DOOR("Door", "Porte", 11, 13, false, true, "CLOSED", "OPEN"),	
 	TEMPERATURE("Temperature", "Température", 17,19, true, false),	
-	WINDOW("Window", "Fenêtre", 23,29, false, true),	
+	WINDOW("Window", "Fenêtre", 23,29, false, true, "CLOSED", "OPEN"),	
 	HUMIDITY("Humidity", "Humidité", 31, 37, false, false),	
-	LIGHT("Light", "Lumière", 41,43, true, true),
+	LIGHT("Light", "Lumière", 41,43, true, true, "SWITCHED_OFF", "SWITCHED_ON"),
 	GAS("Gas", "Gaz", 47,53, false, false),
 	MANUAL_TRIGGER("Manuel alarm trigger", "Déclencheur d'alarme manuel", 73,79, false, true),
 	ACCESS_CONTROL("Access controle", "Contrôle d'accès", 83,89, false, true),
@@ -30,10 +30,17 @@ public enum SensorType {
 	/**
 	 * Checks if the sensors has only two values. For instance a door can only be opened or closed,
 	 * same for the window. In the room there can be people or not, we do not count the number of
-	 * people in the room
+	 * people in the room. Consequently, these sensors has only two states
 	 */
 	private Boolean isItBinary;
 	private SensorAction actionAssociatedToStopDanger;
+	
+	/**
+	 * The message is for the type which are binary (=which can only have two value)
+	 * Because it is not interesting to have the precise value for those sensor
+	 */
+	private String normalMessage;
+	private String dangerMessage;
 
 	/**
 	 * 
@@ -52,6 +59,12 @@ public enum SensorType {
 		this.isGapAcceptable = isGapAcceptable;
 		this.isItBinary = isItBinary;
 		this.actionAssociatedToStopDanger = setActionAssociatedToStopDanger();
+	}
+	
+	SensorType(String englishLabel, String frenchLabel, Integer normalCode, Integer dangerCode, Boolean isGapAcceptable, Boolean isItBinary, String normalMessage, String dangerMessage) {
+		this(englishLabel, frenchLabel, normalCode, dangerCode, isGapAcceptable, isItBinary);
+		this.normalMessage = normalMessage;
+		this.dangerMessage = dangerMessage;
 	}
 
 	public static SensorType getSensorType(String sensorType)
@@ -113,5 +126,9 @@ public enum SensorType {
 		}
 	}
 
-
+	public String getMessageAccordingToState(SensorState state) {
+		if(state == SensorState.DANGER)
+			return this.dangerMessage;
+		return this.normalMessage;
+	}	
 }

@@ -184,7 +184,7 @@ public class AlertCenter {
 							// Case : The reparator have done their jobs
 							if(numberOfWarning >= maxWarningMessage) {
 								System.err.println(" /!\\ The maintainers repaired the sensor n°" + sensorId + " /!\\" );
-								saveSensorConfigurationHistory(sensorConfiguration, SensorAction.STOP_DANGER_ALERT, "", dangerTime, true);
+								saveSensorConfigurationHistory(sensorConfiguration, sensorConfiguration.getSensorType().getActionAssociatedToStopDanger(), "", dangerTime, true);
 							}
 							else if(numberOfWarning > 0 && numberOfWarning < maxWarningMessage) {
 								log.info("A fake alert is detected for the sensor n°" + sensorId);
@@ -220,14 +220,12 @@ public class AlertCenter {
 				System.out.format(horizontalBorder);
 				System.out.format(header);
 				System.out.format(horizontalBorder);
-				if(sensorConfiguration.getSensorType().getIsItBinary()) {
-					String detectedOrNot = "DETECTED";
-					if(info.getSensorState() != SensorState.DANGER) {
-						detectedOrNot = "NOT_DETECTED";
-					}
+				SensorType type = sensorConfiguration.getSensorType();
+				if(type.getIsItBinary()) {
+					String messageForBinary = type.getMessageAccordingToState(info.getSensorState());
 					
-					System.out.format(alignFormat, "" , sensorId, detectedOrNot, info.getWarningCount() + "/" + maxWarningMessage, thresholdReached + "/" + sensorConfiguration.getMaxDangerThreshold(),
-							"Unit");
+					System.out.format(alignFormat, "" , sensorId, messageForBinary, info.getWarningCount() + "/" + maxWarningMessage, thresholdReached + "/" + sensorConfiguration.getMaxDangerThreshold(),
+							"");
 				}
 				else {
 					System.out.format(alignFormat, "" , sensorId, info.getSensorState().name(), info.getWarningCount() + "/" + maxWarningMessage, thresholdReached + "/" + sensorConfiguration.getMaxDangerThreshold(),
@@ -370,25 +368,19 @@ public class AlertCenter {
 			int locationId = alertLauncherSensor.getLocationId();
 			SensorType alertLauncherSensorType = alertLauncherSensor.getSensorType();
 			complementarySensorConfig.addCodeType(alertLauncherSensorType.getDangerCode());
-			SensorType typeOfListSensor = null;
-			boolean isGoodCombinaison = false;
+			SensorType currentSensorType = null;
 			for(SensorConfiguration sensor : activeSensors) {
 				//Checks if the sensor is in the same room and it is not himself
 				if(sensor.getLocationId() == locationId && !sensor.equals(alertLauncherSensor)) {
-					typeOfListSensor = sensor.getSensorType();
-					isGoodCombinaison = complementarySensorConfig.isComplementary(alertLauncherSensorType, typeOfListSensor);
-					
-					if(isGoodCombinaison) {
-						CacheInfo info = cacheInfoBySensor.get(sensor.getSensorConfigurationId());
-						if(info != null && info.getSensorState() == SensorState.DANGER) {
-							complementarySensorConfig.addCodeType(typeOfListSensor.getDangerCode());
-						}
-					}
+					currentSensorType = sensor.getSensorType();
+					CacheInfo info = cacheInfoBySensor.get(sensor.getSensorConfigurationId());
+					SensorState state = info.getSensorState();
+					complementarySensorConfig.addCodeType(currentSensorType.getCorrectCode(state));
 				}
 			}
 			
-			String message = complementarySensorConfig.getMessage();
-			return (message == null) ? "" : " >>> " + message;
+			String message = complementarySensorConfig.getMessageForLocation();
+			return message;
 		}
 	}
 
