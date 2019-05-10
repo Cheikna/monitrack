@@ -10,6 +10,11 @@ import org.javatuples.Pair;
 
 import com.monitrack.enumeration.SensorType;
 
+/**
+ * Cette classe permettra de connaitre l'état d'un pièce et ainsi d'avoir
+ * des messages pour les capteurs qui s'y trouvent et fonctionne donc comme un moyen
+ * de communication entre les capteurs
+ */
 public class ComplementarySensorConfig {
 
 	private Map<Integer, Pair<String, String>> messagesByComplementarySensorsType;
@@ -36,7 +41,7 @@ public class ComplementarySensorConfig {
 		
 		messagesByComplementarySensorsType.put(SensorType.SMOKE.getDangerCode() * SensorType.DOOR.getDangerCode(), 
 				new Pair<String, String>("There are smoke and a door is open. The smoke will spread !",
-						"Il y a de la fummée et le porte est ouverte. La fumée risque de se propager rapidement !"));		
+						"Il y a de la fumée et le porte est ouverte. La fumée risque de se propager rapidement !"));		
 
 		messagesByComplementarySensorsType.put(SensorType.SMOKE.getDangerCode() * SensorType.TEMPERATURE.getDangerCode(), 
 				new Pair<String, String>("There are smoke and the temperature is high. Call the fireman !",
@@ -50,7 +55,7 @@ public class ComplementarySensorConfig {
 		//Light sensor raises a danger alert
 		messagesByComplementarySensorsType.put(SensorType.LIGHT.getDangerCode() * SensorType.FLOW.getNormalCode(), 
 				new Pair<String, String>("A light is on. However, there is no one in this room",
-						"La lumière est allumé. Mais il n'y a personne dans la salle"));
+						"La lumière est allumée. Mais il n'y a personne dans la salle"));
 		
 		//Gas sensor raises a danger alert
 		messagesByComplementarySensorsType.put(SensorType.GAS.getDangerCode() * SensorType.LIGHT.getDangerCode(),
