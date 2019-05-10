@@ -2,7 +2,7 @@ package com.monitrack.enumeration;
 
 
 public enum SensorType {
-	
+
 	//FIXME - Cheikna : Why do not I remove the english label and make a "this.toString().toLowerCase()" in the constructor ?
 	SMOKE("Smoke", "Fumée", 2, 3, false, false),	
 	FLOW("Flow", "Présence", 5, 7, false, true),	
@@ -15,16 +15,17 @@ public enum SensorType {
 	MANUAL_TRIGGER("Manuel alarm trigger", "Déclencheur d'alarme manuel", 73,79, false, true),
 	ACCESS_CONTROL("Access controle", "Contrôle d'accès", 83,89, false, true),
 	FLOOD("Flood", "Inondation", 97, 101, false, false);
-	
+
 	// Checks if each multiplication of two numbers of more give a different number
-	
+
 	private String englishLabel;
 	private String frenchLabel;	
 	private Integer normalCode;
 	private Integer dangerCode;
 	private Boolean isGapAcceptable;
 	private Boolean isItBinary;
-	
+	private SensorAction actionAssociatedToStopDanger;
+
 	/**
 	 * @param englishLabel
 	 * @param frenchLabel
@@ -52,7 +53,7 @@ public enum SensorType {
 	public String getEnglishLabel() {
 		return englishLabel;
 	}
-	
+
 	public String getFrenchLabel() {
 		return frenchLabel;
 	}
@@ -72,11 +73,52 @@ public enum SensorType {
 	public Boolean getIsItBinary() {
 		return isItBinary;
 	}
-	
+
 	public int getCorrectCode(SensorState state) {
 		if(state == SensorState.DANGER)
 			return this.dangerCode;
 		else
 			return this.normalCode;
 	}
+
+	public SensorAction getActionAssociatedToStopDanger() {
+		return actionAssociatedToStopDanger;
+	}
+
+	public void setActionAssociatedToStopDanger() {
+		switch(this) {
+		case FLOW:
+			break;
+		}
+		if(this == SensorType.FLOW){
+		}
+		else if(sensorType == SensorType.SMOKE){	
+
+		}
+		else if(sensorType == SensorType.DOOR){	
+		}
+		else if(sensorType == SensorType.TEMPERATURE){	
+
+		}
+		else if(sensorType == SensorType.WINDOW){	
+
+		}
+		else if(sensorType == SensorType.HUMIDITY){	
+
+		}
+		else if(sensorType == SensorType.LIGHT){
+
+		}
+		else if(sensorType == SensorType.GAS){
+
+		}
+		else if(sensorType == SensorType.MANUAL_TRIGGER){
+
+		}
+		else if(sensorType == SensorType.FLOOD){
+
+		}
+	}
+
+
 }

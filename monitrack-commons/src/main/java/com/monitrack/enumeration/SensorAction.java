@@ -6,6 +6,10 @@ public enum SensorAction {
 	
 	STOP_DANGER_ALERT, 
 	
+	CLOSE_DOOR,
+	
+	SWITCH_OFF_LIGHT,
+	
 	FAKE_ALERT;
 	
 	public static SensorAction getValueOf(String str) {
