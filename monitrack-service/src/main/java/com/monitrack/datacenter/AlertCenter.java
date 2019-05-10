@@ -45,9 +45,9 @@ public class AlertCenter {
 	private final long updateListFrequency = DateTimeConstants.MILLIS_PER_MINUTE;
 	private final long sleepTime = DateTimeConstants.MILLIS_PER_SECOND;
 
-	private final String alignFormat = "%-4s| %-4d | %-15s |%-8s| %-13s |%-6s|%n";
-	private final String horizontalBorder      = "    +------+-----------------+--------+---------------+------+%n";
-	private final String header			 	   = "    |  ID  |      State      | Warn.  | Curr. Thresh. | Unit |%n";
+	private final String alignFormat = "%-4s| %-4d |%-16s|%-16s|%-8s| %-13s |%-6s|%n";
+	private final String horizontalBorder      = "    +------+-----------------+-----------------+--------+---------------+------+%n";
+	private final String header			 	   = "    |  ID  |      Type       |      State      | Warn.  | Curr. Thresh. | Unit |%n";
 
 	/******** Element for searching in the database *******/
 	private final List<String> fieldsForActiveSensors = Arrays.asList("ACTIVITY");
@@ -224,11 +224,11 @@ public class AlertCenter {
 				if(type.getIsItBinary()) {
 					String messageForBinary = type.getMessageAccordingToState(info.getSensorState());
 					
-					System.out.format(alignFormat, "" , sensorId, messageForBinary, info.getWarningCount() + "/" + maxWarningMessage, thresholdReached + "/" + sensorConfiguration.getMaxDangerThreshold(),
+					System.out.format(alignFormat, "" , sensorId, type.name(), messageForBinary, info.getWarningCount() + "/" + maxWarningMessage, thresholdReached + "/" + sensorConfiguration.getMaxDangerThreshold(),
 							"");
 				}
 				else {
-					System.out.format(alignFormat, "" , sensorId, info.getSensorState().name(), info.getWarningCount() + "/" + maxWarningMessage, thresholdReached + "/" + sensorConfiguration.getMaxDangerThreshold(),
+					System.out.format(alignFormat, "" , sensorId, type.name(), info.getSensorState().name(), info.getWarningCount() + "/" + maxWarningMessage, thresholdReached + "/" + sensorConfiguration.getMaxDangerThreshold(),
 							"Unit");					
 				}
 				System.out.format(horizontalBorder);
