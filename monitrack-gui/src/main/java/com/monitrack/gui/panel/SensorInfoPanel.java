@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 
 import com.monitrack.entity.Location;
 import com.monitrack.entity.SensorConfiguration;
+import com.monitrack.enumeration.SensorActivity;
 import com.monitrack.enumeration.SensorState;
 import com.monitrack.enumeration.SensorType;
 import com.monitrack.listener.SensorInfoListener;
@@ -52,6 +53,10 @@ public class SensorInfoPanel extends JPanel {
 		typeLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		sensorInfoCenterPanel.add(typeLabel);
 		sensorInfoCenterPanel.add(new JLabel("@mac : " + sensor.getMacAddress()));
+		String ipAddress = "undefined";
+		if(sensor.getSensorActivity() == SensorActivity.ENABLED || sensorState != SensorState.MISSING)
+			ipAddress = sensor.getIpAddress();
+		sensorInfoCenterPanel.add(new JLabel("@ip : " + ipAddress));
 		sensorInfoCenterPanel.add(new JLabel("Numéro lieu : " + sensor.getLocationId()));
 		Location location = sensor.getLocation();
 		String locationName = (location != null) ? location.getNameLocation() : "";
