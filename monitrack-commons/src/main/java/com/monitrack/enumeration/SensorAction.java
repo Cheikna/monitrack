@@ -10,6 +10,8 @@ public enum SensorAction {
 	
 	CLOSE_WINDOW,
 	
+	UNLOCK_CODE,
+	
 	SWITCH_OFF_LIGHT,
 	
 	FAKE_ALERT;

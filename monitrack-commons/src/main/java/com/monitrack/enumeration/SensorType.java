@@ -13,7 +13,7 @@ public enum SensorType {
 	LIGHT("Light", "Lumière", 41,43, true, true, "SWITCHED_OFF", "SWITCHED_ON"),
 	GAS("Gas", "Gaz", 47,53, false, false),
 	MANUAL_TRIGGER("Manuel alarm trigger", "Déclencheur d'alarme manuel", 73,79, false, true),
-	ACCESS_CONTROL("Access controle", "Contrôle d'accès", 83,89, false, true),
+	ACCESS_CONTROL("Access controle", "Contrôle d'accès", 83,89, false, true, "GRANTED", "NOT_GRANTED"),
 	FLOOD("Flood", "Inondation", 97, 101, false, false);
 
 	// Checks if each multiplication of two numbers of more give a different number
@@ -33,7 +33,6 @@ public enum SensorType {
 	 * people in the room. Consequently, these sensors has only two states
 	 */
 	private Boolean isItBinary;
-	private SensorAction actionAssociatedToStopDanger;
 	
 	/**
 	 * The message is for the type which are binary (=which can only have two value)
@@ -58,7 +57,6 @@ public enum SensorType {
 		this.dangerCode = dangerCode;
 		this.isGapAcceptable = isGapAcceptable;
 		this.isItBinary = isItBinary;
-		this.actionAssociatedToStopDanger = setActionAssociatedToStopDanger();
 	}
 	
 	SensorType(String englishLabel, String frenchLabel, Integer normalCode, Integer dangerCode, Boolean isGapAcceptable, Boolean isItBinary, String normalMessage, String dangerMessage) {
@@ -109,25 +107,23 @@ public enum SensorType {
 			return this.normalCode;
 	}
 
-	public SensorAction getActionAssociatedToStopDanger() {
-		return actionAssociatedToStopDanger;
-	}
-
-	public SensorAction setActionAssociatedToStopDanger() {
-		switch(this) {
+	public static SensorAction getActionAssociatedToStopDanger(SensorType type) {
+		switch(type) {
 		case DOOR:
 			return SensorAction.CLOSE_DOOR;
 		case LIGHT:
 			return SensorAction.SWITCH_OFF_LIGHT;
 		case WINDOW:
 			return SensorAction.CLOSE_WINDOW;
+		case ACCESS_CONTROL:
+			return SensorAction.UNLOCK_CODE;
 		default:
 			return SensorAction.STOP_DANGER_ALERT;
 		}
 	}
 
 	public String getMessageAccordingToState(SensorState state) {
-		if(state == SensorState.DANGER)
+		if(state == SensorState.DANGER || (state == SensorState.WARNING && this == SensorType.ACCESS_CONTROL))
 			return this.dangerMessage;
 		return this.normalMessage;
 	}	
