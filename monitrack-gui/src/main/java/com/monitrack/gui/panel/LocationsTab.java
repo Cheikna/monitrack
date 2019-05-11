@@ -8,9 +8,11 @@ import java.awt.GridLayout;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -47,7 +49,8 @@ public class LocationsTab extends JPanel {
 	private LocationsTabListener listener;
 
 	private JTextArea textArea;
-
+	private JList<String> locationsList;
+	private DefaultListModel<String> listModel;
 
 	/***** Buttons for the CRUD (Create, Read, Update and Delete) *****/ 
 	private JButton createButton;
@@ -89,11 +92,18 @@ public class LocationsTab extends JPanel {
 		northPanelActionsChoice.add(actionLabel);
 		northPanelActionsChoice.add(actionsCombobox);
 
-		textArea = new JTextArea();
+		listModel = new DefaultListModel<>();
+		locationsList = new JList<String>(listModel);
+		locationsList.addListSelectionListener(listener);
+		locationsList.setFont(textAreaFont);
+		
+		textArea = new JTextArea(20,30);
 		textArea.setEditable(false);
 		textArea.setFont(textAreaFont);
-		JScrollPane scroll = new JScrollPane(textArea);
+		JScrollPane scroll = new JScrollPane(locationsList);
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);		
+		JScrollPane scroll2 = new JScrollPane(textArea);
+		scroll2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);		
 
 		setCreateMenu();
 		setModifyMenu();
@@ -107,6 +117,7 @@ public class LocationsTab extends JPanel {
 		
 		add(northPanel, BorderLayout.NORTH);
 		add(scroll, BorderLayout.CENTER);
+		add(scroll2, BorderLayout.EAST);
 	}
 
 	private void setCreateMenu()
@@ -368,6 +379,15 @@ public class LocationsTab extends JPanel {
 	 */
 	public JTextField getNewLocationNameTextField() {
 		return newLocationNameTextField;
+	}
+
+	@SuppressWarnings("rawtypes")
+	public JList getLocationsList() {
+		return locationsList;
+	}
+
+	public DefaultListModel<String> getListModel() {
+		return listModel;
 	}
 
 	/**

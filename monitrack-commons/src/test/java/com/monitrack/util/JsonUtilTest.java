@@ -1,20 +1,23 @@
 package com.monitrack.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.monitrack.entity.Person;
-import com.monitrack.enumeration.JSONField;
-import com.monitrack.enumeration.RequestType;
+import com.monitrack.entity.AccessControlHistory;
+import com.monitrack.entity.SensorConfiguration;
+import com.monitrack.enumeration.SensorActivity;
+import com.monitrack.enumeration.SensorSensitivity;
+import com.monitrack.enumeration.SensorState;
+import com.monitrack.enumeration.SensorType;
 
 public class JsonUtilTest {
 
@@ -151,5 +154,35 @@ public class JsonUtilTest {
 		assertEquals(message, JsonUtil.getJsonNodeValue(JSONField.ERROR_MESSAGE, json));
 	}	
 	*/
+	@Test
+	public void serializeMapSensorTest() {
+		 Map<SensorState, List<SensorConfiguration>> map = new HashMap<>();
+		 SensorConfiguration s = new SensorConfiguration(1,1, SensorActivity.ENABLED, SensorType.ACCESS_CONTROL, SensorSensitivity.LOW,
+				 1, "2", "00:fe", "", 1.0f, 2.0f, null, null, null, null, null, 5000f, "", 2.0f,5.0f, 0f, 0f);
+		 
+		 List<SensorConfiguration> list = Arrays.asList(s);
+		 map.put(SensorState.DANGER, list);
+		 map.put(SensorState.MISSING, list);
+		 String json = JsonUtil.serializeCacheSensorsMap(map);
+		 System.out.println(JsonUtil.indentJsonOutput(json));
+		 Map<SensorState, List<SensorConfiguration>> map2 = JsonUtil.deserializeCacheSensorsMap(json);
+		 System.out.println("====> " + map2.size());
+		 for(Map.Entry<SensorState, List<SensorConfiguration>> entry : map2.entrySet()) {
+			 System.out.println("===> " + entry.getKey());
+		 }
+	}
+	
+	@Test
+	public void testAccessControlSerialization() {
+		AccessControlHistory accessControl = new AccessControlHistory(0, 2, 1, null, null, Util.getCurrentTimestamp(), false);
+		
+		List<AccessControlHistory> accessControls = Arrays.asList(accessControl);
+		String json = JsonUtil.serializeObject(accessControls, AccessControlHistory.class, "");
+		System.out.println(json);
+		@SuppressWarnings("unchecked")
+		List<AccessControlHistory> accessControl2 = (List<AccessControlHistory>)JsonUtil.deserializeObject(json);
+		assertNotNull(accessControl2);
+		
+	}
 
 }
