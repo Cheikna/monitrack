@@ -27,7 +27,6 @@ public class SensorsAlertsTab extends JPanel{
 	
 	public SensorsAlertsTab() {
 		super(new BorderLayout());
-		System.out.println(Util.getCurrentTimestamp());
 		sensorsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 25, 20));
 		sensorsPanel.setPreferredSize(new Dimension((int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() - 1000,4000));
 		listener = new SensorsAlertsTabListener(this);

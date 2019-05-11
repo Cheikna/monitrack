@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.monitrack.entity.SensorConfiguration;
 import com.monitrack.enumeration.SensorState;
+import com.monitrack.enumeration.SensorType;
 import com.monitrack.gui.panel.SensorInfoPanel;
 import com.monitrack.gui.panel.SensorsAlertsTab;
 import com.monitrack.util.ComplementarySensorConfig;
@@ -42,8 +43,10 @@ public class SensorsAlertsTabListener implements ActionListener {
 			SensorState state = (SensorState)entry.getKey();
 			List<SensorConfiguration> sensors = (List<SensorConfiguration>) entry.getValue();
 			for(SensorConfiguration sensor : sensors) {
-				complementarySensorConfig.addClientCode(sensor.getLocationId(), sensor.getSensorType().getCorrectCode(state));
-				sensorsAlertsTab.getSensorsPanel().add(new SensorInfoPanel(sensor, state));
+				if(state == SensorState.DANGER || (sensor.getSensorType() == SensorType.FLOW)) {
+					complementarySensorConfig.addClientCode(sensor.getLocationId(), sensor.getSensorType().getCorrectCode(state));
+				}
+				sensorsAlertsTab.getSensorsPanel().add(new SensorInfoPanel(sensor, state));					
 			}
 		}
 		String message = complementarySensorConfig.getAllMessagesForClient();

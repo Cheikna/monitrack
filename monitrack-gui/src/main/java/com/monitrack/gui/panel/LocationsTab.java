@@ -100,6 +100,8 @@ public class LocationsTab extends JPanel {
 		textArea = new JTextArea(20,30);
 		textArea.setEditable(false);
 		textArea.setFont(textAreaFont);
+		textArea.setLineWrap(true);
+		textArea.setWrapStyleWord(true);
 		JScrollPane scroll = new JScrollPane(locationsList);
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);		
 		JScrollPane scroll2 = new JScrollPane(textArea);
