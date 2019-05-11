@@ -1216,6 +1216,10 @@ public class NeedsTab extends JPanel implements ActionListener{
 				this.dlmBasketLinesNewHome.removeAllElements();
 				this.basketSensorShopFromBuilderNewHome.clearBasket();
 				this.basketNewHome.clearBasket();
+				this.jlbTotalPriceOfSensorShopBasketNewHome.setText("Prix total des capteurs du panier :");
+				this.jlbTotalInterviewCostOfSensorShopBasketNewHome.setText("Coût total de la maintenance des capteurs du panier : ");
+				this.jlbTotalProvisionnalNewHome.setText("");
+				this.jtfYearsProvisionnalNewHome.setText("");
 				cards.show(cardPanel, "1");
 				cardPanel.repaint();
 				cardPanel.revalidate();
@@ -1231,6 +1235,10 @@ public class NeedsTab extends JPanel implements ActionListener{
 				this.dlmBasketLinesGrowing.removeAllElements();
 				this.basketSensorShopFromBuilderGrowing.clearBasket();
 				this.basketGrowing.clearBasket();
+				this.jlbTotalPriceOfSensorShopBasketGrowing.setText("Prix total des capteurs du panier :");
+				this.jlbTotalInterviewCostOfSensorShopBasketGrowing.setText("Coût total de la maintenance des capteurs du panier : ");
+				this.jlbTotalProvisionnalGrowing.setText("");
+				this.jtfYearsProvisionnalGrowing.setText("");
 				cards.show(cardPanel, "2");
 				cardPanel.repaint();
 				cardPanel.revalidate();
@@ -1242,6 +1250,8 @@ public class NeedsTab extends JPanel implements ActionListener{
 				this.dlmBasketLineAddSensor.removeAllElements();
 				this.jtfProvisionnalAddSensor.setText("");
 				this.jlbTotalProvisionnalAddSensor.setText("");
+				this.jlbTotalPriceAddSensor.setText("Prix total des capteurs du panier :");
+				this.jlbTotalInterviewPriceAddSensor.setText("Coût total de la maintenance des capteurs du panier : ");
 				cards.show(cardPanel, "3");
 				cardPanel.repaint();
 				cardPanel.revalidate();
