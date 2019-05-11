@@ -3,7 +3,6 @@ package com.monitrack.gui.panel;
 
 public class CommandLineArc {
 	private ArchitectureBuilder arc;
-	private double numberOfSensor;
 	
 	public CommandLineArc(ArchitectureBuilder arc){
 		super();
@@ -28,9 +27,7 @@ public class CommandLineArc {
 	{
 		return "Ligne de commande [architecureBuilder=" +arc+ "]";
 	}
-	/**
-	 * @return the numberOfSensor
-	 */
+
 	public double getNumberOfSensor(int scope) {
 		double numberOfSensor = 0;
 		numberOfSensor += arc.getArea() /scope;
@@ -40,12 +37,6 @@ public class CommandLineArc {
 		}
 		else{return Math.round(numberOfSensor);}
 		return Math.round(numberOfSensor);
-	}
-	/**
-	 * @param numberOfSensor the numberOfSensor to set
-	 */
-	public void setNumberOfSensor(double numberOfSensor) {
-		this.numberOfSensor = numberOfSensor;
 	}
 
 	public static void main(String[] args)

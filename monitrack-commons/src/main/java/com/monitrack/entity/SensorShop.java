@@ -13,16 +13,7 @@ public class SensorShop extends Sensor{
 	private float sensorInterviewPrice;
 	private Energy energy;
 	private Integer lifeTime;
-	
-//	public SensorShop(String sensorMark, SensorType sensorType, double sensorPrice, int sensorInterviewPrice)
-//	{
-//		super();
-//		this.sensorMark = sensorMark;
-//		this.sensorType = sensorType;
-//		this.sensorPrice = sensorPrice;
-//		this.sensorInterviewPrice = sensorInterviewPrice;
-//	}
-	
+		
 	public SensorShop(Integer sensorShopId, Integer sensorId, String sensorMark, SensorType sensorType, String macAddress, String serialNumber, Float hardwareVersion,
 			Float softwareVersion, float sensorPrice, float sensorInterviewPrice, Energy energy, Integer lifeTime) {
 		super(sensorId, sensorType, macAddress, serialNumber, hardwareVersion, softwareVersion);
@@ -47,7 +38,7 @@ public class SensorShop extends Sensor{
 
 
 	public String toString(){
-		return "Marque = "+sensorMark+" - Type = "+sensorType.getFrenchLabel()+"- Prix = "+sensorPrice+"€ - Cout de la maintenance = "+sensorInterviewPrice+"€/an - Classe énergétique : "+energy.getLabel()+" - Durée de vie moyenne : "+lifeTime;
+		return "Marque = "+sensorMark+" - Type = "+sensorType.getFrenchLabel()+" - Prix = "+sensorPrice+"€ - Cout de la maintenance = "+sensorInterviewPrice+"€/an - Classe énergétique : "+energy.getLabel()+" - Durée de vie moyenne : "+lifeTime;
 	}
 
 	/**

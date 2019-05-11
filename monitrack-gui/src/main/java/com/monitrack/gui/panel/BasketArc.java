@@ -19,12 +19,12 @@ public class BasketArc {
 		{
 			return "Panier vide";
 		}
-		String résultat = "";
+		String result = "";
 		for (CommandLineArc commandLine : alCommandLineArc)
 		{
-			résultat += commandLine+"\n";
+			result += commandLine+"\n";
 		}
-		return résultat;
+		return result;
 	}
 
 	public void addArc(ArchitectureBuilder arc)

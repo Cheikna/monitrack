@@ -24,12 +24,12 @@ public class BasketSensor {
 		{
 			return "Panier vide";
 		}
-		String résultat = "";
+		String result = "";
 		for (CommandLineSensor commandLine : alCommandLineSensor)
 		{
-			résultat += commandLine+"\n";
+			result += commandLine+"\n";
 		}
-		return résultat;
+		return result;
 	}
 	
 	public void addSensor(int sensorQuantity, SensorShop sensor)
@@ -103,6 +103,19 @@ public class BasketSensor {
 		return result;
 	}
 	
+	public double totalProvisionnal(int year){
+		double result = 0;
+		for(CommandLineSensor cmd : alCommandLineSensor)
+		{
+			if(this.alCommandLineSensor.isEmpty())
+			{
+				return result = 0;
+			}
+			result += cmd.provisional(year);
+		}
+		return result;
+	}
+	
 	public static void main(String[] args)
 	{
 		try {
@@ -110,6 +123,7 @@ public class BasketSensor {
 					null);
 			String response = MonitrackGuiUtil.sendRequest(jsonRequest);
 			// Retrieves all the sensor from the database
+			@SuppressWarnings("unchecked")
 			List<SensorShop> shops = (List<SensorShop>) JsonUtil.deserializeObject(response);
 			System.out.println("1 : création de trois capteurs");
 			SensorShop s1 = shops.get(0);
@@ -129,6 +143,7 @@ public class BasketSensor {
 			System.out.println(bsk);
 			System.out.println(bsk.totalBasketPrice());
 			System.out.println(bsk.totalBasketInterviewPrice());
+			System.out.println(bsk.totalProvisionnal(30));
 			
 
 
