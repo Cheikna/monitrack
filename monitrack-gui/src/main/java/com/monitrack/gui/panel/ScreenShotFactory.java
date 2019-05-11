@@ -1,0 +1,83 @@
+package com.monitrack.gui.panel;
+
+import java.awt.AWTException;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Robot;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+ 
+import javax.imageio.ImageIO;
+ 
+public class ScreenShotFactory {
+ 
+	public static void main(String[] args) {
+		ScreenShotFactory.screenShot(
+ 
+			//Les Dimensions de l'ecran que tu veux
+			new Rectangle(0, 0, 1366, 768),
+ 
+			//Les Dimensions de l'image de l'ecran
+			new Dimension(1366, 768),
+ 
+			//format de l'image resultante 
+			"C:\\Users\\gtaoudiat\\Desktop\\test.png",
+ 
+			ScreenShotFactory.IMAGE_TYPE_PNG);
+	}
+ 
+	public final static String IMAGE_TYPE_JPEG = "jpeg";
+	public final static String IMAGE_TYPE_GIF = "gif";
+	public final static String IMAGE_TYPE_PNG = "png";
+	public static void screenShot(
+ 
+		Rectangle screenArea,
+		Dimension screenshotFinalDimension,
+		String pictureName,
+		String compressionType) {
+ 
+		// la capture d'écran originale
+		BufferedImage buf = null;
+ 
+		// la capture d'écran redimensionnée
+		BufferedImage bufFinal = null; 
+ 
+		try {
+ 
+			// Création de notre capture d'écran
+			buf = new Robot().createScreenCapture(screenArea);
+		} catch (AWTException e) {
+			e.printStackTrace();
+		}
+		// Création de la capture finale
+		bufFinal =
+			new BufferedImage(
+				screenshotFinalDimension.width,
+				screenshotFinalDimension.height,
+				BufferedImage.TYPE_INT_RGB);
+ 
+		// Redimensionnement de la capture originale
+		Graphics2D g = (Graphics2D) bufFinal.getGraphics();
+		g.setRenderingHint(
+			RenderingHints.KEY_INTERPOLATION,
+			RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g.drawImage(
+			buf,
+			0,
+			0,
+			screenshotFinalDimension.width,
+			screenshotFinalDimension.height,
+			null);
+		g.dispose();
+ 
+		// Ecriture de la capture d'écran redimensionnée
+		try {
+			ImageIO.write(bufFinal, compressionType, new File(pictureName));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}
