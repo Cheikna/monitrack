@@ -269,6 +269,7 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 		
 	}
 	*/
+	
 	private static void generateRandomLocations()
 	{
 		try 

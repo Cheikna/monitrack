@@ -10,11 +10,12 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.monitrack.entity.Location;
 import com.monitrack.entity.SensorConfiguration;
+import com.monitrack.enumeration.Images;
 import com.monitrack.enumeration.RequestSender;
 import com.monitrack.enumeration.RequestType;
 import com.monitrack.exception.DeprecatedVersionException;
@@ -61,7 +62,7 @@ public class ConfigurationTabListener implements ActionListener {
 					} else if(combo.getSelectedItem().equals("Configurer un capteur"))
 					
 					{	
-						setComboboxWithSensors(configurationTab.getConfigureSensorsCombobox());
+//						setComboboxWithSensors(configurationTab.getConfigureSensorsCombobox());
 						configurationTab.getNorthPanel().add(configurationTab.getNorthPanelForConfigure());				
 					}
 				}
@@ -74,7 +75,7 @@ public class ConfigurationTabListener implements ActionListener {
 					displaySensors();
 				}
 				else if(clickedButton == configurationTab.getConfigureButton()){
-					//configureSensor();
+					configureSensor();
 				}
 			}
 		}
@@ -87,7 +88,89 @@ public class ConfigurationTabListener implements ActionListener {
 		configurationTab.revalidate();
 		configurationTab.repaint();
 	}
-		
+
+	
+	private void configureSensor() throws NoAvailableConnectionException, IOException, DeprecatedVersionException
+	{
+		int selectedConfigurationIndex = configurationTab.getConfigureSensorsCombobox().getSelectedIndex();
+		if(selectedConfigurationIndex >= 0 && selectedConfigurationIndex < sensors.size())
+		{
+			SensorConfiguration sensorToConfigure = sensors.get(selectedConfigurationIndex);
+
+			configurationTab.getOldMaxDangerThresholdTextField().setText(String.valueOf(sensorToConfigure.getMaxDangerThreshold()));
+			configurationTab.getOldMinDangerThresholdTextField().setText(String.valueOf(sensorToConfigure.getMinDangerThreshold()));
+			configurationTab.getOldActivityTextField().setText(String.valueOf(sensorToConfigure.getSensorActivity()));	
+			configurationTab.getOldVersionTextField().setText(String.valueOf(sensorToConfigure.getSoftwareVersion()));
+
+			int choice = 0;
+			String errorMessage = "";
+
+			errorMessage = "";
+			choice = JOptionPane.showConfirmDialog(configurationTab, configurationTab.getConfigureCaptorPopupPanel(), 
+					"Configurer un capteur", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, Images.CONFIGURER.getIcon());
+
+			String name = configurationTab.getModifiedMaxDangerThresholdTextField().getText().trim();
+			if(name.length() <= 0) {
+				name = configurationTab.getOldMaxDangerThresholdTextField().getText();
+			}
+			/**
+			String floorText =/**.getText().trim();
+			int floor = NumberUtils.toInt(floorText, -10);
+			if(floor == -10 || floor < -1 || floor > 3) {
+				//We display this error only if the user entered something in the field
+				if(floorText.length() > 0)
+					errorMessage += "L'étage doit être un nombre compris entre -1 et 3\n";
+				floor = sensorToConfigure.getFloor();
+			}					
+
+			String areaText = configurationTab.getModifiedLocationSizeTextField().getText().trim();
+			int area = NumberUtils.toInt(areaText, 0);
+			if(area < 40 || area > 200) {
+				//We display this error only if the user entered something in the field
+				if(areaText.length() > 0)
+					errorMessage += "La superficie doit être comprise entre 40m² et 200m² !";
+				area = sensorToConfigure.getArea();
+			}	
+
+			String wing = configurationTab.getModifiedBuildingWingCombobox().getSelectedItem().toString();
+
+			if(errorMessage.trim().length() > 0 && choice == 0)
+			{
+				String message = "Pour certains champs la valeur restera inchangée suite à des erreurs :\n" + errorMessage;
+				JOptionPane.showMessageDialog(configurationTab, message, "Erreur", JOptionPane.INFORMATION_MESSAGE);		
+			}
+*/
+			if(choice == 0)
+			{
+				// Upadates the location which needs to be updated
+				sensorToConfigure.setMaxDangerThreshold(null);
+				sensorToConfigure.setMinDangerThreshold(null);
+				sensorToConfigure.setSensorActivity(null);
+				sensorToConfigure.setSoftwareVersion(null);	
+			}
+
+
+			//Send the request if all fields are correct and the user clicked on OK Button
+			if(choice == 0)
+			{		
+				String serializedObject = JsonUtil.serializeObject(sensorToConfigure, SensorConfiguration.class, "");	
+				String jsonRequest = JsonUtil.serializeRequest(RequestType.UPDATE, SensorConfiguration.class, serializedObject, null, null, RequestSender.CLIENT);
+				MonitrackGuiUtil.sendRequest(jsonRequest);
+				JOptionPane.showMessageDialog(configurationTab, "Votre capteur a bien été mis à jour", "Mise à jour réussie", JOptionPane.INFORMATION_MESSAGE);
+				setComboboxWithSensors(configurationTab.getConfigureSensorsCombobox());
+			}
+
+			
+			// Clear the fields
+			configurationTab.getOldMaxDangerThresholdTextField().setText("");
+			configurationTab.getOldMinDangerThresholdTextField().setText("");
+			configurationTab.getOldActivityTextField().setText("");	
+			configurationTab.getOldVersionTextField().setText("");
+
+
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	private void setComboboxWithSensors(JComboBox<String> combobox)
 	{
@@ -97,9 +180,9 @@ public class ConfigurationTabListener implements ActionListener {
 			String response = MonitrackGuiUtil.sendRequest(jsonRequest);
 			sensors = (List<SensorConfiguration>)JsonUtil.deserializeObject(response);
 			combobox.removeAllItems();
-			for(SensorConfiguration sensorConfiguration : sensors)
+			for(SensorConfiguration sensor : sensors)
 			{
-				combobox.addItem(sensorConfiguration.toString());
+				combobox.addItem(sensor.toString());
 			}
 		} 
 		catch (Exception e) 

@@ -20,5 +20,4 @@ public class HomePage extends JPanel
 		tabbedPane.add("Carte", new MapPage());
 		add(tabbedPane, BorderLayout.CENTER);
 	}
-
 }

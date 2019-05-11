@@ -3,7 +3,10 @@ package com.monitrack.gui.panel;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
+import java.util.List;
 
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -13,13 +16,20 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
+import com.monitrack.entity.Location;
 import com.monitrack.enumeration.Images;
+import com.monitrack.enumeration.RequestSender;
+import com.monitrack.enumeration.RequestType;
 import com.monitrack.listener.ConfigurationTabListener;
+import com.monitrack.shared.MonitrackGuiUtil;
+import com.monitrack.util.JsonUtil;
 
 public class ConfigurationTab extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 	
+	private final String[] status = {"ENABLED", "DISABLED", "NOT_CONFIGURED"};
+
 	/***** Menu Panels *****/
 	private JPanel northPanel;
 	private JPanel northPanelActionsChoice;
@@ -46,22 +56,16 @@ public class ConfigurationTab extends JPanel{
 	private JButton showButton;
 	private JButton configureButton;
 
-	/***** Dialog for creating a location *****/
-	private JTextField newLocationNameTextField;
-	private JTextField newFloorTextField;
-	private JTextField newLocationSizeTextField;
-	private JComboBox<String> newBuildingWingCombobox;
-
 	/***** Dialog for updating a location *****/
-	private JPanel modifyLocationPopupPanel;
-	private JTextField oldNameTextField;
-	private JTextField modifiedNameTextField;
-	private JTextField oldFloorTextField;
-	private JTextField modifiedFloorTextField;
-	private JTextField oldLocationSizeTextField;
-	private JTextField modifiedLocationSizeTextField;
-	private JTextField oldBuildingWingTextField;
-	private JComboBox<String> modifiedBuildingWingCombobox;
+	private JPanel configureCaptorPopupPanel;
+	private JTextField oldMaxDangerThresholdTextField;
+	private JTextField modifiedMaxDangerThresholdTextField;
+	private JTextField oldMinDangerThresholdTextField;
+	private JTextField modifiedMinDangerThresholdTextField;
+	private JTextField oldActivityTextField;
+	private JComboBox<String> modifiedCaptorStatusCombobox;
+	private JTextField oldVersionTextField;
+	private JTextField modifiedVersionTextField;
 
 	
 	public ConfigurationTab()
@@ -91,7 +95,7 @@ public class ConfigurationTab extends JPanel{
 		setShowMenu();
 		setConfigurationMenu();
 		
-		//setConfigureSensorPopupPanel();
+		setConfigureSensorPopupPanel();
 
 		actionsCombobox.setSelectedItem(items[0]);
 		
@@ -128,16 +132,68 @@ public class ConfigurationTab extends JPanel{
 	private void setConfigurationMenu()
 	{
 		northPanelForConfigure = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		configureSensorsCombobox = new JComboBox<>();
-		configureButton = new JButton("Modifier");
-		configureButton.addActionListener(listener);
-		configureButton.setIcon(Images.MODIFY_ICON.getIcon());
 		filter3TextField = new JTextField(7);
-		northPanelForConfigure.add(new JLabel("Sélectionner un capteur : "));
-		northPanelForConfigure.add(configureSensorsCombobox);
-		northPanelForShow.add(filter3TextField);
+		northPanelForConfigure.add(new JLabel("ID du capteur: "));
+		northPanelForConfigure.add(filter3TextField);
+		configureButton = new JButton("Configurer");
+		configureButton.addActionListener(listener);
+	
 		northPanelForConfigure.add(configureButton);
 
+	}
+	
+	
+	private void setConfigureSensorPopupPanel()
+	{
+		configureCaptorPopupPanel = new JPanel(new GridLayout(0, 2, 10, 2));
+
+		oldMaxDangerThresholdTextField= new JTextField(20);
+		oldMaxDangerThresholdTextField.setEditable(false);
+		modifiedMaxDangerThresholdTextField= new JTextField(20);
+		
+		oldMinDangerThresholdTextField = new JTextField(15);
+		oldMinDangerThresholdTextField.setEditable(false);
+		modifiedMinDangerThresholdTextField = new JTextField(15);
+		
+		oldActivityTextField = new JTextField(15);
+		oldActivityTextField.setEditable(false);
+		modifiedCaptorStatusCombobox = new JComboBox<>(status);
+		
+		oldVersionTextField = new JTextField(15);
+		oldVersionTextField.setEditable(false);
+		modifiedVersionTextField = new JTextField(15);
+
+		//Line 1
+		configureCaptorPopupPanel.add(new JLabel("Ancienne limite:"));
+		configureCaptorPopupPanel.add(new JLabel("Nouvelle limite :"));
+		
+		//Line 2
+		configureCaptorPopupPanel.add(oldMaxDangerThresholdTextField);
+		configureCaptorPopupPanel.add(modifiedMaxDangerThresholdTextField);
+		
+		//Line 3
+		configureCaptorPopupPanel.add(new JLabel("Ancien minimum :"));
+		configureCaptorPopupPanel.add(new JLabel("Nouveau minimum :"));
+		
+		//Line 4
+		configureCaptorPopupPanel.add(oldMinDangerThresholdTextField);
+		configureCaptorPopupPanel.add(modifiedMinDangerThresholdTextField);
+		
+		//Line 5
+		configureCaptorPopupPanel.add(new JLabel("Activité :"));
+		configureCaptorPopupPanel.add(new JLabel("Activer le capteur :"));
+		
+		//Line 6
+		configureCaptorPopupPanel.add(oldActivityTextField);
+		configureCaptorPopupPanel.add(modifiedCaptorStatusCombobox);
+		
+		//Line 7
+		configureCaptorPopupPanel.add(new JLabel("Ancienne version de logiciel :"));
+		configureCaptorPopupPanel.add(new JLabel("Nouvelle version de logiciel :"));
+		
+		//Line 8
+		configureCaptorPopupPanel.add(oldVersionTextField);
+		configureCaptorPopupPanel.add(modifiedVersionTextField);
 	}
 
 	public JPanel getNorthPanel() {
@@ -228,110 +284,29 @@ public class ConfigurationTab extends JPanel{
 		this.showButton = showButton;
 	}
 
-	public JTextField getNewLocationNameTextField() {
-		return newLocationNameTextField;
+	
+
+	public JTextField getFilter3TextField() {
+		return filter3TextField;
 	}
 
-	public void setNewLocationNameTextField(JTextField newLocationNameTextField) {
-		this.newLocationNameTextField = newLocationNameTextField;
+	public void setFilter3TextField(JTextField filter3TextField) {
+		this.filter3TextField = filter3TextField;
 	}
 
-	public JTextField getNewFloorTextField() {
-		return newFloorTextField;
+	public JPanel getConfigureCaptorPopupPanel() {
+		return configureCaptorPopupPanel;
 	}
 
-	public void setNewFloorTextField(JTextField newFloorTextField) {
-		this.newFloorTextField = newFloorTextField;
+	public void setConfigureCaptorPopupPanel(JPanel configureCaptorPopupPanel) {
+		this.configureCaptorPopupPanel = configureCaptorPopupPanel;
 	}
 
-	public JTextField getNewLocationSizeTextField() {
-		return newLocationSizeTextField;
+	public String[] getStatus() {
+		return status;
 	}
 
-	public void setNewLocationSizeTextField(JTextField newLocationSizeTextField) {
-		this.newLocationSizeTextField = newLocationSizeTextField;
-	}
-
-	public JComboBox<String> getNewBuildingWingCombobox() {
-		return newBuildingWingCombobox;
-	}
-
-	public void setNewBuildingWingCombobox(JComboBox<String> newBuildingWingCombobox) {
-		this.newBuildingWingCombobox = newBuildingWingCombobox;
-	}
-
-	public JPanel getModifyLocationPopupPanel() {
-		return modifyLocationPopupPanel;
-	}
-
-	public void setModifyLocationPopupPanel(JPanel modifyLocationPopupPanel) {
-		this.modifyLocationPopupPanel = modifyLocationPopupPanel;
-	}
-
-	public JTextField getOldNameTextField() {
-		return oldNameTextField;
-	}
-
-	public void setOldNameTextField(JTextField oldNameTextField) {
-		this.oldNameTextField = oldNameTextField;
-	}
-
-	public JTextField getModifiedNameTextField() {
-		return modifiedNameTextField;
-	}
-
-	public void setModifiedNameTextField(JTextField modifiedNameTextField) {
-		this.modifiedNameTextField = modifiedNameTextField;
-	}
-
-	public JTextField getOldFloorTextField() {
-		return oldFloorTextField;
-	}
-
-	public void setOldFloorTextField(JTextField oldFloorTextField) {
-		this.oldFloorTextField = oldFloorTextField;
-	}
-
-	public JTextField getModifiedFloorTextField() {
-		return modifiedFloorTextField;
-	}
-
-	public void setModifiedFloorTextField(JTextField modifiedFloorTextField) {
-		this.modifiedFloorTextField = modifiedFloorTextField;
-	}
-
-	public JTextField getOldLocationSizeTextField() {
-		return oldLocationSizeTextField;
-	}
-
-	public void setOldLocationSizeTextField(JTextField oldLocationSizeTextField) {
-		this.oldLocationSizeTextField = oldLocationSizeTextField;
-	}
-
-	public JTextField getModifiedLocationSizeTextField() {
-		return modifiedLocationSizeTextField;
-	}
-
-	public void setModifiedLocationSizeTextField(JTextField modifiedLocationSizeTextField) {
-		this.modifiedLocationSizeTextField = modifiedLocationSizeTextField;
-	}
-
-	public JTextField getOldBuildingWingTextField() {
-		return oldBuildingWingTextField;
-	}
-
-	public void setOldBuildingWingTextField(JTextField oldBuildingWingTextField) {
-		this.oldBuildingWingTextField = oldBuildingWingTextField;
-	}
-
-	public JComboBox<String> getModifiedBuildingWingCombobox() {
-		return modifiedBuildingWingCombobox;
-	}
-
-	public void setModifiedBuildingWingCombobox(JComboBox<String> modifiedBuildingWingCombobox) {
-		this.modifiedBuildingWingCombobox = modifiedBuildingWingCombobox;
-	}
-
+	
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -359,6 +334,72 @@ public class ConfigurationTab extends JPanel{
 	public void setConfigureSensorsCombobox(JComboBox<String> configureSensorsCombobox) {
 		this.configureSensorsCombobox = configureSensorsCombobox;
 	}
+
+	public JTextField getOldMaxDangerThresholdTextField() {
+		return oldMaxDangerThresholdTextField;
+	}
+
+	public void setOldMaxDangerThresholdTextField(JTextField oldMaxDangerThresholdTextField) {
+		this.oldMaxDangerThresholdTextField = oldMaxDangerThresholdTextField;
+	}
+
+	public JTextField getModifiedMaxDangerThresholdTextField() {
+		return modifiedMaxDangerThresholdTextField;
+	}
+
+	public void setModifiedMaxDangerThresholdTextField(JTextField modifiedMaxDangerThresholdTextField) {
+		this.modifiedMaxDangerThresholdTextField = modifiedMaxDangerThresholdTextField;
+	}
+
+	public JTextField getOldMinDangerThresholdTextField() {
+		return oldMinDangerThresholdTextField;
+	}
+
+	public void setOldMinDangerThresholdTextField(JTextField oldMinDangerThresholdTextField) {
+		this.oldMinDangerThresholdTextField = oldMinDangerThresholdTextField;
+	}
+
+	public JTextField getModifiedMinDangerThresholdTextField() {
+		return modifiedMinDangerThresholdTextField;
+	}
+
+	public void setModifiedMinDangerThresholdTextField(JTextField modifiedMinDangerThresholdTextField) {
+		this.modifiedMinDangerThresholdTextField = modifiedMinDangerThresholdTextField;
+	}
+
+	public JTextField getOldActivityTextField() {
+		return oldActivityTextField;
+	}
+
+	public void setOldActivityTextField(JTextField oldActivityTextField) {
+		this.oldActivityTextField = oldActivityTextField;
+	}
+
+	public JComboBox<String> getModifiedCaptorStatusCombobox() {
+		return modifiedCaptorStatusCombobox;
+	}
+
+	public void setModifiedCaptorStatusCombobox(JComboBox<String> modifiedCaptorStatusCombobox) {
+		this.modifiedCaptorStatusCombobox = modifiedCaptorStatusCombobox;
+	}
+
+	public JTextField getOldVersionTextField() {
+		return oldVersionTextField;
+	}
+
+	public void setOldVersionTextField(JTextField oldVersionTextField) {
+		this.oldVersionTextField = oldVersionTextField;
+	}
+
+	public JTextField getModifiedVersionTextField() {
+		return modifiedVersionTextField;
+	}
+
+	public void setModifiedVersionTextField(JTextField modifiedVersionTextField) {
+		this.modifiedVersionTextField = modifiedVersionTextField;
+	}
+
+
 	
 	
 	
