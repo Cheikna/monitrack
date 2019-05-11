@@ -5,35 +5,35 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.monitrack.dao.abstracts.DAO;
-import com.monitrack.entity.ManualTriggerHistory;
+import com.monitrack.entity.AccessControlHistory;
 
-public class ManualTriggerHistoryDAO extends DAO<ManualTriggerHistory> {
+public class AccessControlHistoryDAO extends DAO<AccessControlHistory> {
 
-	private static final Logger log = LoggerFactory.getLogger(ManualTriggerHistoryDAO.class);
+	private static final Logger log = LoggerFactory.getLogger(AccessControlHistoryDAO.class);
 	
-	public ManualTriggerHistoryDAO(Connection connection) {
-		super(connection, "MANUAL_TRIGGER_HISTORY");
+	public AccessControlHistoryDAO(Connection connection) {
+		super(connection, "ACCESS_CONTROL_HISTORY");
 	}
 
 	@Override
-	public ManualTriggerHistory create(ManualTriggerHistory obj) {
+	public AccessControlHistory create(AccessControlHistory obj) {
 		synchronized (lock) {
 			// Checks if the connection is not null before using it
 			if (connection != null) {
 				try {
 					PreparedStatement preparedStatement = connection
-							.prepareStatement("INSERT INTO " + tableName + " (ID_SENSOR, ID_LOCATION, CODE_ENTERED, TRIGGERING_DATE, ACCESS_GRANTED)"
-									+ " VALUES (? , ? , ? , ? , ? , ? , ?)", Statement.RETURN_GENERATED_KEYS);
+							.prepareStatement("INSERT INTO " + tableName + " (ID_SENSOR_CONFIGURATION, ID_LOCATION, CODE_ENTERED, PERSON_INFORMATION, TRIGGERING_DATE, ACCESS_GRANTED)"
+									+ " VALUES (? , ? , ? , ? , ? , ?)", Statement.RETURN_GENERATED_KEYS);
 					preparedStatement.setInt(1, obj.getSensorId());
 					preparedStatement.setFloat(2, obj.getLocationId());
 					preparedStatement.setString(3, obj.getCodeEntered());
-					preparedStatement.setTimestamp(4, obj.getTriggeringDate());
+					preparedStatement.setString(4, obj.getPersonInformation());
+					preparedStatement.setTimestamp(5, obj.getTriggeringDate());
 					preparedStatement.setInt(6, obj.accessGranted());
 					preparedStatement.execute();
 					ResultSet rs = preparedStatement.getGeneratedKeys();
@@ -52,9 +52,9 @@ public class ManualTriggerHistoryDAO extends DAO<ManualTriggerHistory> {
 	}
 
 	@Override
-	public void update(ManualTriggerHistory obj) {
+	public void update(AccessControlHistory obj) {
 		try {
-			throw new Exception("A history from the manual trigger can not be updated !");
+			throw new Exception("A history from the access control can not be updated !");
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
@@ -62,7 +62,7 @@ public class ManualTriggerHistoryDAO extends DAO<ManualTriggerHistory> {
 	}
 
 	@Override
-	public void delete(ManualTriggerHistory obj) {
+	public void delete(AccessControlHistory obj) {
 		synchronized (lock) {
 			// Checks if the connection is not null before using it
 			if (connection != null) {
@@ -82,18 +82,18 @@ public class ManualTriggerHistoryDAO extends DAO<ManualTriggerHistory> {
 
 	@SuppressWarnings("finally")
 	@Override
-	protected ManualTriggerHistory getSingleValueFromResultSet(ResultSet rs) {
-		ManualTriggerHistory manualTriggerHistory = null;
+	protected AccessControlHistory getSingleValueFromResultSet(ResultSet rs) {
+		AccessControlHistory accessControlHistory = null;
 		try {
-			manualTriggerHistory = new ManualTriggerHistory(rs.getInt("ID_HISTORY"), rs.getInt("ID_SENSOR"), rs.getInt("ID_LOCATION"),
-					rs.getString("CODE_ENTERED"), rs.getTimestamp("TRIGGERING_DATE"), rs.getInt("ACCESS_GRANTED"));
+			accessControlHistory = new AccessControlHistory(rs.getInt("ID_HISTORY"), rs.getInt("ID_SENSOR_CONFIGURATION"), rs.getInt("ID_LOCATION"),
+					rs.getString("CODE_ENTERED"), rs.getString("PERSON_INFORMATION"), rs.getTimestamp("TRIGGERING_DATE"), (rs.getInt("ACCESS_GRANTED") == 1));
 
 
 		} catch (SQLException e) {
-			log.error("An error occurred when getting one Flow Sensor from the resultSet : " + e.getMessage());
+			log.error("An error occurred when getting one history from the access control from the resultSet : " + e.getMessage());
 		}
 		finally {
-			return manualTriggerHistory;
+			return accessControlHistory;
 		}
 	}
 

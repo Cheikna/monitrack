@@ -2,10 +2,9 @@ package com.monitrack.entity;
 
 import java.sql.Timestamp;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ManualTriggerHistory {
+public class AccessControlHistory {
 	
 	@JsonProperty("history_id")
 	private int historyId;
@@ -15,28 +14,26 @@ public class ManualTriggerHistory {
 	private int locationId;
 	@JsonProperty("code_entered")
 	private String codeEntered;
+	@JsonProperty("person_information")
+	private String personInformation;
 	@JsonProperty("triggering_date")
 	private Timestamp triggeringDate;
 	@JsonProperty("access_granted")
-	private boolean isAccessGranted;
+	private boolean accessGranted;
 	
-	
-	public ManualTriggerHistory(int historyId, int sensorId, int locationId, String codeEntered,
-			Timestamp triggeringDate, boolean isAccessGranted) {
+			
+	public AccessControlHistory(int historyId, int sensorId, int locationId, String codeEntered,
+			String personInformation, Timestamp triggeringDate, boolean accessGranted) {
 		this.historyId = historyId;
 		this.sensorId = sensorId;
 		this.locationId = locationId;
 		this.codeEntered = codeEntered;
+		this.personInformation = personInformation;
 		this.triggeringDate = triggeringDate;
-		this.isAccessGranted = isAccessGranted;
+		this.accessGranted = accessGranted;
 	}
 	
-	public ManualTriggerHistory(int historyId, int sensorId, int locationId, String codeEntered,
-			Timestamp triggeringDate, int accessGranted) {
-		this(historyId, sensorId, locationId, codeEntered, triggeringDate, accessGranted == 1);
-	}
-	
-	public ManualTriggerHistory() {}
+	public AccessControlHistory() {}
 
 	public int getHistoryId() {
 		return historyId;
@@ -78,17 +75,43 @@ public class ManualTriggerHistory {
 		this.triggeringDate = triggeringDate;
 	}
 
-	public boolean isAccessGranted() {
-		return isAccessGranted;
+	public boolean getAccessGranted() {
+		return accessGranted;
 	}
 
-	public void setIsAccessGranted(boolean isAccessGranted) {
-		this.isAccessGranted = isAccessGranted;
+	public void setAccessGranted(boolean accessGranted) {
+		this.accessGranted = accessGranted;
+	}
+
+	public String getPersonInformation() {
+		return personInformation;
+	}
+
+	public void setPersonInformation(String personInformation) {
+		this.personInformation = personInformation;
+	}
+
+	@Override
+	public String toString() {
+		return "AccessControlHistory [historyId=" + historyId + ", sensorId=" + sensorId + ", locationId=" + locationId
+				+ ", codeEntered=" + codeEntered + ", personInformation=" + personInformation + ", triggeringDate="
+				+ triggeringDate + ", isAccessGranted=" + accessGranted + "]";
 	}
 	
-	@JsonIgnore
-	public int accessGranted() {
-		return (isAccessGranted) ? 1 : 0;
+	public String toStringDetailsForLocation() {
+		if(accessGranted) {
+			return personInformation + " est entré(e) dans cette salle le " + triggeringDate + " avec le code " + codeEntered;
+		}
+		else {
+			return "Une personne a essayé d'entrer dans cette salle le " + triggeringDate + " mais elle n'a pas entré le bon code !";
+		}
 	}
+
+	public int accessGranted() {
+		return (accessGranted) ? 1 : 0;
+	}
+	
+	
+	
 	
 }
