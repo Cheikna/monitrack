@@ -173,7 +173,7 @@ public class ConfigurationTabListener implements ActionListener {
 		}
 		Time beginT = null;
 		//if() {
-		//	beginT = Time.valueOf(beginTime);
+			beginT = Time.valueOf(beginTime);
 		//}else {
 		//	errorMessage+="L'heure de début d'activité ne respecte pas le format de temps";
 		//}
@@ -188,7 +188,7 @@ public class ConfigurationTabListener implements ActionListener {
 		}
 		Time endT =null;
 		//if (endTime) {
-		//	endT = Time.valueOf(endTime);
+		endT = Time.valueOf(endTime);
 		//}else {
 		//	errorMessage+="La date de fin d'activité ne respecte pas le format de temps";
 		//}
@@ -230,48 +230,6 @@ public class ConfigurationTabListener implements ActionListener {
 			configurationTab.getModifiedFrequencyTextField().setText("");
 			configurationTab.getModifiedBeginTimeTextField().setText("");
 			configurationTab.getModifiedBeginTimeTextField().setText("");
-
-
-			/*
-			int selectedConfigurationIndex = configurationTab.getConfigureSensorsCombobox().getSelectedIndex();
-			if(selectedConfigurationIndex >= 0 && selectedConfigurationIndex < sensors.size())
-			{
-				SensorConfiguration sensorToConfigure = sensors.get(selectedConfigurationIndex);
-
-				configurationTab.getOldMaxDangerThresholdTextField().setText(String.valueOf(sensorToConfigure.getMaxDangerThreshold()));
-				configurationTab.getOldMinDangerThresholdTextField().setText(String.valueOf(sensorToConfigure.getMinDangerThreshold()));
-				configurationTab.getOldActivityTextField().setText(String.valueOf(sensorToConfigure.getSensorActivity()));	
-				configurationTab.getOldVersionTextField().setText(String.valueOf(sensorToConfigure.getSoftwareVersion()));
-
-
-
-				String name = configurationTab.getModifiedMaxDangerThresholdTextField().getText().trim();
-				if(name.length() <= 0) {
-					name = configurationTab.getOldMaxDangerThresholdTextField().getText();
-				}
-				/**
-				String floorText =/**.getText().trim();
-				int floor = NumberUtils.toInt(floorText, -10);
-				if(floor == -10 || floor < -1 || floor > 3) {
-					//We display this error only if the user entered something in the field
-					if(floorText.length() > 0)
-						errorMessage += "L'étage doit être un nombre compris entre -1 et 3\n";
-					floor = sensorToConfigure.getFloor();
-				}					
-
-				String areaText = configurationTab.getModifiedLocationSizeTextField().getText().trim();
-				int area = NumberUtils.toInt(areaText, 0);
-				if(area < 40 || area > 200) {
-					//We display this error only if the user entered something in the field
-					if(areaText.length() > 0)
-						errorMessage += "La superficie doit être comprise entre 40m² et 200m² !";
-					area = sensorToConfigure.getArea();
-				}	
-
-				String wing = configurationTab.getModifiedBuildingWingCombobox().getSelectedItem().toString();
-
-				
-	*/
 		
 	}
 	
