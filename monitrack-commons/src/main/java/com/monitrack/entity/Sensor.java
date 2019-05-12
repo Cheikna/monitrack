@@ -76,6 +76,7 @@ public abstract class Sensor {
 		return softwareVersion;
 	}
 
+	
 	public void setSoftwareVersion(Float softwareVersion) {
 		this.softwareVersion = softwareVersion;
 	}

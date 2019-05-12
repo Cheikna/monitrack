@@ -12,6 +12,7 @@ public enum SensorActivity {
 	
 	NOT_CONFIGURED;
 	
+	
 	public static SensorActivity getSensorActivity(String sensorActivity)
 	{
 		SensorActivity[] values = SensorActivity.values();

@@ -28,7 +28,7 @@ public class ConfigurationTab extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 	
-	private final String[] status = {"ENABLED", "DISABLED", "NOT_CONFIGURED"};
+	private final String[] status = {"ACTIVÉ", "DESACTIVÉ", "PAS_CONFIGURÉ"};
 
 	/***** Menu Panels *****/
 	private JPanel northPanel;
@@ -66,7 +66,12 @@ public class ConfigurationTab extends JPanel{
 	private JComboBox<String> modifiedCaptorStatusCombobox;
 	private JTextField oldVersionTextField;
 	private JTextField modifiedVersionTextField;
-
+	private JTextField oldFrequencyTextField;
+	private JTextField modifiedFrequencyTextField;
+	private JTextField oldBeginTimeTextField;
+	private JTextField modifiedBeginTimeTextField;
+	private JTextField oldEndTimeTextField;
+	private JTextField modifiedEndTimeTextField;
 	
 	public ConfigurationTab()
 	{
@@ -162,6 +167,18 @@ public class ConfigurationTab extends JPanel{
 		oldVersionTextField = new JTextField(15);
 		oldVersionTextField.setEditable(false);
 		modifiedVersionTextField = new JTextField(15);
+		
+		oldFrequencyTextField = new JTextField(15);
+		oldFrequencyTextField.setEditable(false);
+		modifiedFrequencyTextField = new JTextField(15);
+		
+		oldBeginTimeTextField = new JTextField(15);
+		oldBeginTimeTextField.setEditable(false);
+		modifiedBeginTimeTextField = new JTextField(15);
+		
+		oldEndTimeTextField = new JTextField(15);
+		oldEndTimeTextField.setEditable(false);
+		modifiedEndTimeTextField = new JTextField(15);
 
 		//Line 1
 		configureCaptorPopupPanel.add(new JLabel("Ancienne limite:"));
@@ -194,6 +211,32 @@ public class ConfigurationTab extends JPanel{
 		//Line 8
 		configureCaptorPopupPanel.add(oldVersionTextField);
 		configureCaptorPopupPanel.add(modifiedVersionTextField);
+		
+		//Line 9
+		configureCaptorPopupPanel.add(new JLabel("Ancienne fréquence d'activation d'alerte :"));
+		configureCaptorPopupPanel.add(new JLabel("Nouvelle fréquence d'activation d'alerte :"));
+		
+		//Line 10
+		configureCaptorPopupPanel.add(oldFrequencyTextField);
+		configureCaptorPopupPanel.add(modifiedFrequencyTextField);
+		
+		//Line 11
+		configureCaptorPopupPanel.add(new JLabel("Ancienne heure de début d'activité :"));
+		configureCaptorPopupPanel.add(new JLabel("Nouvelle heure de début d'activité :"));
+		
+		//Line 12
+		configureCaptorPopupPanel.add(oldBeginTimeTextField);
+		configureCaptorPopupPanel.add(modifiedBeginTimeTextField);
+	
+		//Line 13
+		configureCaptorPopupPanel.add(new JLabel("Ancienne heure de fin d'activité :"));
+		configureCaptorPopupPanel.add(new JLabel("Nouvelle heure de fin d'activité :"));
+		
+		//Line 14
+		configureCaptorPopupPanel.add(oldEndTimeTextField);
+		configureCaptorPopupPanel.add(modifiedEndTimeTextField);
+	
+	
 	}
 
 	public JPanel getNorthPanel() {
@@ -399,9 +442,52 @@ public class ConfigurationTab extends JPanel{
 		this.modifiedVersionTextField = modifiedVersionTextField;
 	}
 
+	public JTextField getOldFrequencyTextField() {
+		return oldFrequencyTextField;
+	}
 
-	
-	
-	
+	public void setOldFrequencyTextField(JTextField oldFrequencyTextField) {
+		this.oldFrequencyTextField = oldFrequencyTextField;
+	}
+
+	public JTextField getModifiedFrequencyTextField() {
+		return modifiedFrequencyTextField;
+	}
+
+	public void setModifiedFrequencyTextField(JTextField modifiedFrequencyTextField) {
+		this.modifiedFrequencyTextField = modifiedFrequencyTextField;
+	}
+
+	public JTextField getOldBeginTimeTextField() {
+		return oldBeginTimeTextField;
+	}
+
+	public void setOldBeginTimeTextField(JTextField oldBeginTimeTextField) {
+		this.oldBeginTimeTextField = oldBeginTimeTextField;
+	}
+
+	public JTextField getModifiedBeginTimeTextField() {
+		return modifiedBeginTimeTextField;
+	}
+
+	public void setModifiedBeginTimeTextField(JTextField modifiedBeginTimeTextField) {
+		this.modifiedBeginTimeTextField = modifiedBeginTimeTextField;
+	}
+
+	public JTextField getOldEndTimeTextField() {
+		return oldEndTimeTextField;
+	}
+
+	public void setOldEndTimeTextField(JTextField oldEndTimeTextField) {
+		this.oldEndTimeTextField = oldEndTimeTextField;
+	}
+
+	public JTextField getModifiedEndTimeTextField() {
+		return modifiedEndTimeTextField;
+	}
+
+	public void setModifiedEndTimeTextField(JTextField modifiedEndTimeTextField) {
+		this.modifiedEndTimeTextField = modifiedEndTimeTextField;
+	}
 	
 }
