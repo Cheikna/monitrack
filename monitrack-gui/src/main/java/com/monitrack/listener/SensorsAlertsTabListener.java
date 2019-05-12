@@ -11,17 +11,17 @@ import com.monitrack.enumeration.SensorState;
 import com.monitrack.enumeration.SensorType;
 import com.monitrack.gui.panel.SensorInfoPanel;
 import com.monitrack.gui.panel.SensorsAlertsTab;
-import com.monitrack.util.ComplementarySensorConfig;
+import com.monitrack.util.ComplementarySensorDictionnary;
 import com.monitrack.util.Util;
 
 public class SensorsAlertsTabListener implements ActionListener {
 
 	private SensorsAlertsTab sensorsAlertsTab;
-	private ComplementarySensorConfig complementarySensorConfig;
+	private ComplementarySensorDictionnary complementarySensorDictionnary;
 
 	public SensorsAlertsTabListener(SensorsAlertsTab sensorsAlertsTab) {
 		this.sensorsAlertsTab = sensorsAlertsTab;
-		complementarySensorConfig = new ComplementarySensorConfig();
+		complementarySensorDictionnary = new ComplementarySensorDictionnary();
 
 	}
 
@@ -35,7 +35,7 @@ public class SensorsAlertsTabListener implements ActionListener {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void updatePanel(Map<SensorState, List<SensorConfiguration>> sensorsConfigurationByState) {
-		complementarySensorConfig.resetDangerBountyByLocation();
+		complementarySensorDictionnary.resetDangerBountyByLocation();
 		Iterator iterator = sensorsConfigurationByState.entrySet().iterator();
 		sensorsAlertsTab.getSensorsPanel().removeAll();
 		while(iterator.hasNext()) {
@@ -44,12 +44,12 @@ public class SensorsAlertsTabListener implements ActionListener {
 			List<SensorConfiguration> sensors = (List<SensorConfiguration>) entry.getValue();
 			for(SensorConfiguration sensor : sensors) {
 				if(state == SensorState.DANGER || (sensor.getSensorType() == SensorType.FLOW)) {
-					complementarySensorConfig.addClientCode(sensor.getLocationId(), sensor.getSensorType().getCorrectCode(state));
+					complementarySensorDictionnary.addClientCode(sensor.getLocationId(), sensor.getSensorType().getCorrectCode(state));
 				}
 				sensorsAlertsTab.getSensorsPanel().add(new SensorInfoPanel(sensor, state));					
 			}
 		}
-		String message = complementarySensorConfig.getAllMessagesForClient();
+		String message = complementarySensorDictionnary.getAllMessagesForClient();
 		sensorsAlertsTab.getLastRefreshDateLabel().setText("Dernière actualisation le : " + Util.getCurrentTimestamp());
 		sensorsAlertsTab.getInfosTextArea().setText(message);
 		sensorsAlertsTab.getSensorsPanel().revalidate();

@@ -15,7 +15,7 @@ import com.monitrack.enumeration.SensorType;
  * des messages pour les capteurs qui s'y trouvent et fonctionne donc comme un moyen
  * de communication entre les capteurs
  */
-public class ComplementarySensorConfig {
+public class ComplementarySensorDictionnary {
 
 	private Map<Integer, Pair<String, String>> messagesByComplementarySensorsType;
 	private Map<Integer, Integer> currentDangerBountyByLocation;
@@ -23,7 +23,7 @@ public class ComplementarySensorConfig {
 	private Set<Integer> codesForClient;
 	private int finalCode;
 
-	public ComplementarySensorConfig() {
+	public ComplementarySensorDictionnary() {
 		messagesByComplementarySensorsType = Collections.synchronizedMap(new HashMap<Integer, Pair<String, String>>());
 		currentDangerBountyByLocation = new HashMap<>();
 		codesForServer = Collections.synchronizedSet(new TreeSet<Integer>());
@@ -133,7 +133,6 @@ public class ComplementarySensorConfig {
 					alerts +="\n   #" + entry2.getValue().getValue1();
 				}				 
 			}
-			
 			if(alerts.trim().length() > 0) {
 				result += location;
 				result += alerts;

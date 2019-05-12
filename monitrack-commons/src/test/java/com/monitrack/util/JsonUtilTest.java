@@ -158,7 +158,7 @@ public class JsonUtilTest {
 	public void serializeMapSensorTest() {
 		 Map<SensorState, List<SensorConfiguration>> map = new HashMap<>();
 		 SensorConfiguration s = new SensorConfiguration(1,1, SensorActivity.ENABLED, SensorType.ACCESS_CONTROL, SensorSensitivity.LOW,
-				 1, "2", "00:fe", "", 1.0f, 2.0f, null, null, null, null, null, 5000f, "", 2.0f,5.0f, 0f, 0f);
+				 1, "2", "00:fe", "", 1.0f, 2.0f, null, null, null, null, 5000f, "", 2.0f,5.0f, 0f, 0f);
 		 
 		 List<SensorConfiguration> list = Arrays.asList(s);
 		 map.put(SensorState.DANGER, list);
