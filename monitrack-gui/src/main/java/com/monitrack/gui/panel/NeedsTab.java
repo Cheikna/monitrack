@@ -338,8 +338,8 @@ public class NeedsTab extends JPanel implements ActionListener{
 		basketPanelNewHome.setLayout(null);
 		//TITLE OF SCROLL FOR NEW HOME
 		jlListTitleNewHome = new JLabel("Liste des pièces ajoutées à la nouvelle résidence :");
-		jlListTitleNewHome.setFont(new Font("Calibri", Font.PLAIN, 13));
-		jlListTitleNewHome.setBounds(10, 11, 326, 14);
+		jlListTitleNewHome.setFont(new Font("Calibri", Font.BOLD, 15));
+		jlListTitleNewHome.setBounds(10, 11, 394, 14);
 		basketPanelNewHome.add(jlListTitleNewHome);
 		//SCROLL FOR PRODUCTS OF NEW HOME
 		jspBasketScrollNewHome = new JScrollPane(this.jlBasketLinesNewHome);
@@ -368,8 +368,8 @@ public class NeedsTab extends JPanel implements ActionListener{
 		jpBasketBuilderToSensoShopNewHome.add(jspBasketBuilderToSensoShopNewHome);
 
 		jlbTitleBasketBuilderToSensorShopNewHome = new JLabel("Liste des capteurs générés directement depuis la pièce :");
-		jlbTitleBasketBuilderToSensorShopNewHome.setFont(new Font("Calibri", Font.PLAIN, 12));
-		jlbTitleBasketBuilderToSensorShopNewHome.setBounds(20, 231, 334, 23);
+		jlbTitleBasketBuilderToSensorShopNewHome.setFont(new Font("Calibri", Font.BOLD, 15));
+		jlbTitleBasketBuilderToSensorShopNewHome.setBounds(20, 231, 444, 23);
 		jpNewHome.add(jlbTitleBasketBuilderToSensorShopNewHome);
 
 		jlbTotalPriceOfSensorShopBasketNewHome = new JLabel("Prix total des capteurs du panier :");
@@ -507,8 +507,8 @@ public class NeedsTab extends JPanel implements ActionListener{
 		basketPanelGrowing.setLayout(null);
 		//TITLE OF SCROLL FOR GROWING PANEL
 		jlListTitleGrowing = new JLabel("Liste des pièces ajoutées pour l'agrandissement :");
-		jlListTitleGrowing.setFont(new Font("Calibri", Font.PLAIN, 13));
-		jlListTitleGrowing.setBounds(10, 11, 326, 14);
+		jlListTitleGrowing.setFont(new Font("Calibri", Font.BOLD, 15));
+		jlListTitleGrowing.setBounds(10, 11, 394, 14);
 		basketPanelGrowing.add(jlListTitleGrowing);
 		//SCROLL FOR PRODUCTS OF GROWING PANEL
 		jspBasketScrollGrowing = new JScrollPane(this.jlBasketLinesGrowing);
@@ -537,8 +537,8 @@ public class NeedsTab extends JPanel implements ActionListener{
 		jpBasketBuilderToSensoShopGrowing.add(jspBasketBuilderToSensoShopGrowing);
 
 		jlbTitleBasketBuilderToSensorShopGrowing = new JLabel("Liste des capteurs générés directement depuis la pièce :");
-		jlbTitleBasketBuilderToSensorShopGrowing.setFont(new Font("Calibri", Font.PLAIN, 12));
-		jlbTitleBasketBuilderToSensorShopGrowing.setBounds(20, 231, 334, 23);
+		jlbTitleBasketBuilderToSensorShopGrowing.setFont(new Font("Calibri", Font.BOLD, 15));
+		jlbTitleBasketBuilderToSensorShopGrowing.setBounds(20, 231, 394, 23);
 		jpGrowing.add(jlbTitleBasketBuilderToSensorShopGrowing);
 
 		jlbTotalPriceOfSensorShopBasketGrowing = new JLabel("Prix total des capteurs du panier :");
@@ -1477,7 +1477,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 			{
 				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+
 						" - Marque : "+cl.getSensor().getSensorMark()+
-						" - Type : "+cl.getSensor().getSensorType()+
+						" - Type : "+cl.getSensor().getSensorType().getFrenchLabel()+
 						" - Prix : "+arround(cl.getSensor().getSensorPrice(), 2)+
 						"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+
 						"€/an - Classe énergétique : "+cl.getSensor().getEnergy().getLabel()+
@@ -1501,7 +1501,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 			{
 				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+
 						" - Marque : "+cl.getSensor().getSensorMark()+
-						" - Type : "+cl.getSensor().getSensorType()+
+						" - Type : "+cl.getSensor().getSensorType().getFrenchLabel()+
 						" - Prix : "+arround(cl.getSensor().getSensorPrice(), 2)+
 						"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+
 						"€/an - Classe énergétique : "+cl.getSensor().getEnergy().getLabel()+
@@ -1524,7 +1524,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 			{
 				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+
 						" - Marque : "+cl.getSensor().getSensorMark()+
-						" - Type : "+cl.getSensor().getSensorType()+
+						" - Type : "+cl.getSensor().getSensorType().getFrenchLabel()+
 						" - Prix : "+arround(cl.getSensor().getSensorPrice(), 2)+
 						"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+
 						"€/an - Classe énergétique : "+cl.getSensor().getEnergy().getLabel()+
@@ -1553,7 +1553,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 			{
 				this.dlmBasketLineAddSensor.addElement("Quantité : "+cl.getQuantity()+
 						" - Marque : "+cl.getSensor().getSensorMark()+
-						" - Type : "+cl.getSensor().getSensorType()+
+						" - Type : "+cl.getSensor().getSensorType().getFrenchLabel()+
 						" - Prix : "+arround(cl.getSensor().getSensorPrice(), 2)+
 						"€ - Coût de la maintenance à l'année : "+cl.getSensor().getSensorInterviewPrice()+
 						"€/an - Classe énergétique : "+cl.getSensor().getEnergy().getLabel()+
