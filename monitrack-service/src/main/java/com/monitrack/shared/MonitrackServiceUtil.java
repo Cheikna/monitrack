@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +20,7 @@ public class MonitrackServiceUtil
 	private static final Logger log = LoggerFactory.getLogger(MonitrackServiceUtil.class);
 			
 	private static final String APPLICATION_VERSION = Util.getPropertyValueFromPropertiesFile("version");
+	private static final Long dataPoolLoopSleep = NumberUtils.toLong(Util.getPropertyValueFromPropertiesFile("data_pool_loop_sleep"));
 
 	public static String getASCII(String name)
 	{
@@ -51,8 +53,10 @@ public class MonitrackServiceUtil
 	public static String getApplicationVersion() {
 		return APPLICATION_VERSION;
 	}
-	
-	
+
+	public static Long getDataPoolLoopSleep() {
+		return dataPoolLoopSleep;
+	}
 
 
 }

@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.monitrack.enumeration.Images;
+import com.monitrack.gui.panel.ConfigurationPage;
 import com.monitrack.gui.panel.HomePage;
 import com.monitrack.gui.panel.OpeningPage;
 import com.monitrack.listener.MonitrackListener;
@@ -27,6 +28,8 @@ public class MonitrackFrame extends JFrame
 	private String openingPageName;
 	private HomePage homePage;
 	private String homePageName;
+	private ConfigurationPage configurationPage;
+	private String configurationPageName;
 	
 	//Button to access to the developer mode
 	private JButton developerModeButton;
@@ -101,7 +104,8 @@ public class MonitrackFrame extends JFrame
 		centerPanel = new JPanel(cardLayout);
 
 		openingPage = new OpeningPage(this);
-		homePage = new HomePage();		
+		homePage = new HomePage();	
+		configurationPage = new ConfigurationPage();
 
 		openingPageName = "OPENING_PAGE";
 		centerPanel.add(openingPage, openingPageName);
@@ -109,6 +113,8 @@ public class MonitrackFrame extends JFrame
 		homePageName = "HOME_PAGE";
 		centerPanel.add(homePage, homePageName);
 
+		configurationPageName = "CONFIGURATION_PAGE";
+		centerPanel.add(configurationPage,configurationPageName);
 
 		this.setTitle("MONITRACK version " + MonitrackGuiUtil.getApplicationVersion());
 		cardLayout.show(centerPanel, openingPageName);
@@ -158,6 +164,9 @@ public class MonitrackFrame extends JFrame
 		return homePageName;
 	}
 
+	public String getConfigurationPageName() {
+		return configurationPageName;
+	}
 	/**
 	 * @return the superUserModeButton
 	 */

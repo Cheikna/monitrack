@@ -20,5 +20,4 @@ public class HomePage extends JPanel
 		tabbedPane.addTab("Besoins", new NeedsTab());
 		add(tabbedPane, BorderLayout.CENTER);
 	}
-
 }

@@ -36,6 +36,7 @@ public class OpeningPage extends JPanel {
 		add(goToHomePageButton, BorderLayout.SOUTH);
 	}
 	
+	
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);

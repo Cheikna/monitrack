@@ -27,6 +27,7 @@ public abstract class PersonsTabListener implements ActionListener {
 	private List<String> fields;
 	private List<String> values;	
 	private String personText = "";
+	
 /*
 	public PersonsTabListener(PersonsTab personsTab) {
 		this.personsTab = personsTab;

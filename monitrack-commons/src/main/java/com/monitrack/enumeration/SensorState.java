@@ -2,10 +2,9 @@ package com.monitrack.enumeration;
 
 public enum SensorState {
 	
-	NORMAL,
-	
-	WARNING,
-	
+	NORMAL,	
+	WARNING,	
+	MISSING,	
 	DANGER;
-
+	
 }

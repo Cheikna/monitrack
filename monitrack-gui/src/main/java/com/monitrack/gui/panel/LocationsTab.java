@@ -250,7 +250,6 @@ public class LocationsTab extends JPanel {
 		modifyLocationPopupPanel.add(oldLocationSizeTextField);
 		modifyLocationPopupPanel.add(modifiedLocationSizeTextField);
 	}
-
 	/**
 	 * @return the createLocationPopupPanel
 	 */

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.sql.Connection;
 import java.util.List;
@@ -16,7 +17,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.monitrack.connection.pool.implementation.DataSource;
 import com.monitrack.dao.implementation.DAOFactory;
-import com.monitrack.entity.Sensor;
+import com.monitrack.data.pool.DataPool;
+import com.monitrack.entity.Message;
+import com.monitrack.entity.SensorConfiguration;
 import com.monitrack.enumeration.ConnectionState;
 import com.monitrack.enumeration.JSONField;
 import com.monitrack.enumeration.RequestSender;
@@ -43,10 +46,13 @@ public class RequestHandler implements Runnable {
 	private Connection connection;
 	//For the JSON
 	private ObjectMapper mapper;
+	private DataPool dataPool;
 
-	public RequestHandler(Socket socket, Connection connection) {
+	public RequestHandler(Socket socket, Connection connection, DataPool dataPool) {
 		this.socket = socket;
 		this.connection = connection;
+		this.dataPool = dataPool;
+		this.dataPool.setConnection(connection);
 		mapper = new ObjectMapper();
 	}
 
@@ -55,7 +61,8 @@ public class RequestHandler implements Runnable {
 
 		try 
 		{		
-			log.info("Client connected with the IP " + socket.getRemoteSocketAddress());
+			InetSocketAddress socketAddress = (InetSocketAddress)socket.getRemoteSocketAddress();
+			log.info("Client connected with the IP " + socketAddress.getAddress());
 			readFromClient = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
 			writeToClient = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true);
 			
@@ -99,6 +106,16 @@ public class RequestHandler implements Runnable {
 					String responseToClient = executeClientRequest(json);
 					log.info("Response to the client :\n" + JsonUtil.indentJsonOutput(responseToClient) + "\n");
 					writeToClient.println(responseToClient);						
+				}
+				else if(requestSender == RequestSender.SENSOR) {
+					Message message = (Message)getObjectFromJson(json);
+					dataPool.processMessage(message);
+					writeToClient.println("");
+				} 
+				else if(requestSender == RequestSender.CLIENT_FOR_SENSOR_UPDATE) {
+					List<SensorConfiguration> sensorConfigurations = dataPool.getCacheSensorsByState(SensorState.DANGER);
+					String serializedObjects = JsonUtil.serializeObject(sensorConfigurations, SensorConfiguration.class, "");
+					writeToClient.println(serializedObjects);					
 				}
 							
 			}

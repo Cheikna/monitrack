@@ -3,7 +3,10 @@ package com.monitrack.connection.pool.implementation;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Scanner;
 import java.util.Vector;
+
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,29 +24,12 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
     private int numberOfConnections;
     private int numberOfConnectionsCreated;
     
-    // For display
-    private String[] asciiCharacters;
-    private int numberOfAsciiCharacters;
-    private final String FREE_CREATED_ASCII = MonitrackServiceUtil.getASCII("free_created.txt");
 	
 	public JDBCConnectionPool() {
 		connections = new Vector<Connection>();
-		
-		//Loads the ascii number for a beautiful display
-		asciiCharacters = MonitrackServiceUtil.getASCII("remaining_max_numbers.txt").split("--new-number--\n");
-		numberOfAsciiCharacters = asciiCharacters.length;
-		
 		numberOfConnectionsCreated = 0;
 		log.info("Database URL :\n" + URL);
-		try
-		{
-			numberOfConnections = Integer.parseInt(Util.getPropertyValueFromPropertiesFile("number_of_connections"));
-		}
-		catch(Exception e)
-		{
-			log.error("The number of connections could not be read from the .properties file. Consequently, we will create 2 connections !");
-			numberOfConnections = 2;
-		}
+		numberOfConnections = askPoolConnectionsNumber();
 
 		log.info(numberOfConnections + " connection(s) should be put inside the connection pool.");
 	} 
@@ -153,6 +139,18 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 		return asciiCharacters[number];
 		
 	}*/
+	
+	private int askPoolConnectionsNumber() {
+		int littleInfrastructure = Integer.parseInt(Util.getPropertyValueFromPropertiesFile("number_of_connections_little_infrastructure"));
+		int bigInfrastructure = Integer.parseInt(Util.getPropertyValueFromPropertiesFile("number_of_connections_big_infrastructure"));
+		System.out.println(MonitrackServiceUtil.getASCII("infrastructure_choice.txt"));
+		System.out.print("Please enter your choice depending on your infrastructure [By default 1] : ");
+		Scanner sc = new Scanner(System.in);
+		String choice = sc.nextLine();
+		sc.close();
+		int choiceNumber = NumberUtils.toInt(choice, 1);
+		return (choiceNumber == 2) ? bigInfrastructure : littleInfrastructure;	
+	}
 	
 
 }

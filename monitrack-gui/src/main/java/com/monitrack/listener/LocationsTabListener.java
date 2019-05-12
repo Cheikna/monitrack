@@ -128,7 +128,6 @@ public class LocationsTabListener implements ActionListener {
 	{
 		return JOptionPane.showConfirmDialog(locationsTab, locationsTab.getCreateLocationPopupPanel(), 
 				"Créer un emplacement", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, Images.ADD_ICON.getIcon());
-
 	}
 
 	private void createLocation() throws NoAvailableConnectionException, IOException, DeprecatedVersionException

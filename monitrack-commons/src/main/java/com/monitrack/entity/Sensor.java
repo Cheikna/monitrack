@@ -40,11 +40,11 @@ public abstract class Sensor {
 	
 	public Sensor() {}
 
-	public Integer getId() {
+	public Integer getSensorId() {
 		return sensorId;
 	}
 
-	public void setId(Integer sensorId) {
+	public void setSensorId(Integer sensorId) {
 		this.sensorId = sensorId;
 	}
 
@@ -84,6 +84,7 @@ public abstract class Sensor {
 		return softwareVersion;
 	}
 
+	
 	public void setSoftwareVersion(Float softwareVersion) {
 		this.softwareVersion = softwareVersion;
 	}

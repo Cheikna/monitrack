@@ -2,7 +2,6 @@ package com.monitrack.mock.listener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import com.monitrack.mock.enumeration.Page;
 import com.monitrack.mock.frame.MockFrame;
 import com.monitrack.mock.panel.MockChoicePage;
@@ -17,8 +16,6 @@ public class MockChoiceListener implements ActionListener {
 		this.mockChoicePage = mockChoicePage;
 		this.parentFrame = parentFrame;
 	}
-
-
 
 	@Override
 	public void actionPerformed(ActionEvent e) {

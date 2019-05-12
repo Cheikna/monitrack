@@ -184,27 +184,29 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 				}
 			}
 		} else if (e.getSource() == monitrackFrame.getConfigurationButton()) {
-			JComboBox entitiesCombobox = new JComboBox(new String[]{"Fumée", "Entrée/Sortie", "Présence"});
-			JPanel panel = new JPanel(new GridLayout(0, 1));
-			panel.add(new JLabel("Choisissez le type de capteur à configurer :"));
-			panel.add(entitiesCombobox);
-			int choice = JOptionPane.showConfirmDialog(monitrackFrame, panel, "Configuration de capteurs", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, Images.SUPER.getIcon());
-			
-			if(choice == 0)
-			{
-				String entityChoice = entitiesCombobox.getSelectedItem().toString();
-				
-				if(entityChoice.equalsIgnoreCase("Fumée"))
-				{
-					System.out.println("youhpu");
-				}
-				else if(entityChoice.equalsIgnoreCase("Entrée/Sortie"))
-				{
-							
-				} else if (entityChoice.equalsIgnoreCase("Présence")) {
-					
-				}
-			}
+			monitrackFrame.changePage(monitrackFrame.getConfigurationPageName());
+			monitrackFrame.setVisible(true);
+//			JComboBox entitiesCombobox = new JComboBox(new String[]{"Fumée", "Entrée/Sortie", "Présence"});
+//			JPanel panel = new JPanel(new GridLayout(0, 1));
+//			panel.add(new JLabel("Choisissez le type de capteur à configurer :"));
+//			panel.add(entitiesCombobox);
+//			int choice = JOptionPane.showConfirmDialog(monitrackFrame, panel, "Configuration de capteurs", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, Images.SUPER.getIcon());
+//			
+//			if(choice == 0)
+//			{
+//				String entityChoice = entitiesCombobox.getSelectedItem().toString();
+//				
+//				if(entityChoice.equalsIgnoreCase("Fumée"))
+//				{
+//					System.out.println("youhpu");
+//				}
+//				else if(entityChoice.equalsIgnoreCase("Entrée/Sortie"))
+//				{
+//							
+//				} else if (entityChoice.equalsIgnoreCase("Présence")) {
+//					
+//				}
+//			}
 		}
 	}
 	
@@ -267,6 +269,7 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 		
 	}
 	*/
+	
 	private static void generateRandomLocations()
 	{
 		try 

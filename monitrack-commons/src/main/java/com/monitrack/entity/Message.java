@@ -7,16 +7,13 @@ import com.monitrack.enumeration.SensorState;
 
 public class Message {
 	
-	@JsonProperty("sensor_state")
-	private SensorState sensorState;
 	@JsonProperty("sensor")
-	private Sensor sensor;
+	private SensorConfiguration sensorConfiguration;
 	@JsonProperty("message_creation_date")
 	private Timestamp creationDate;
 
-	public Message(SensorState sensorState, Sensor sensor) {
-		this.sensorState = sensorState;
-		this.sensor = sensor;
+	public Message(SensorConfiguration sensorConfiguration) {
+		this.sensorConfiguration = sensorConfiguration;
 		this.creationDate = new Timestamp(System.currentTimeMillis());
 	}
 	
@@ -24,12 +21,8 @@ public class Message {
 		
 	}
 
-	public SensorState getSensorState() {
-		return sensorState;
-	}
-
-	public Sensor getSensor() {
-		return sensor;
+	public SensorConfiguration getSensor() {
+		return sensorConfiguration;
 	}
 
 	public Timestamp getCreationDate() {
@@ -41,8 +34,7 @@ public class Message {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((creationDate == null) ? 0 : creationDate.hashCode());
-		result = prime * result + ((sensor == null) ? 0 : sensor.hashCode());
-		result = prime * result + ((sensorState == null) ? 0 : sensorState.hashCode());
+		result = prime * result + ((sensorConfiguration == null) ? 0 : sensorConfiguration.hashCode());
 		return result;
 	}
 
@@ -60,12 +52,10 @@ public class Message {
 				return false;
 		} else if (!creationDate.equals(other.creationDate))
 			return false;
-		if (sensor == null) {
-			if (other.sensor != null)
+		if (sensorConfiguration == null) {
+			if (other.sensorConfiguration != null)
 				return false;
-		} else if (!sensor.equals(other.sensor))
-			return false;
-		if (sensorState != other.sensorState)
+		} else if (!sensorConfiguration.equals(other.sensorConfiguration))
 			return false;
 		return true;
 	}
