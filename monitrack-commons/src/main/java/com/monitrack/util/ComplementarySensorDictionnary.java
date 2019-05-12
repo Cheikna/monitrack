@@ -66,6 +66,9 @@ public class ComplementarySensorDictionnary {
 				new Pair<String, String>("There are some harmful gas in the room and there are people. They are in danger !",
 						"Il y a du gaz dans la pièce et également des personnes. Intervenez rapidement !"));
 		
+		messagesByComplementarySensorsType.put(SensorType.GAS.getDangerCode() * SensorType.DOOR.getDangerCode(), 
+				new Pair<String, String>("There are gas and a door is open. The gas will spread !",
+						"Il y a du gaz et le porte est ouverte. Le gaz risque de se propager rapidement !"));
 	}
 	
 	public String getMessageForLocation() {
@@ -88,15 +91,7 @@ public class ComplementarySensorDictionnary {
 		if(added) {
 			finalCode *= code;
 		}
-	}
-	
-	/*public Boolean isComplementary(SensorType alertLauncher, SensorType complementary) {
-		List<SensorType> types = sensorsTypeCombinaisons.get(alertLauncher);
-		if(types == null)
-			return false;
-		return types.contains(complementary);
-	}*/
-	
+	}	
 	
 	/*************** For the client ********************/
 	
@@ -124,7 +119,7 @@ public class ComplementarySensorDictionnary {
 		String location = "";
 		String alerts = "";
 		for(Map.Entry<Integer, Integer> entry : currentDangerBountyByLocation.entrySet()) {
-			location = "\n===>Emplacement n°" + entry.getKey();
+			location = "\n==>Emplacement n°" + entry.getKey();
 			int bounty = entry.getValue();
 			// Searchs for all divisors
 			for(Map.Entry<Integer, Pair<String, String>> entry2 : messagesByComplementarySensorsType.entrySet()) {

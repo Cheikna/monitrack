@@ -51,6 +51,8 @@ public class CacheInfo {
 
 	public void setSensorState(SensorState sensorState) {
 		this.sensorState = sensorState;
+		if(sensorState == SensorState.NORMAL)
+			this.warningCount = 0;
 	}
 
 	public SensorState addWarning(int maxWarningCount, Timestamp messageDate) {

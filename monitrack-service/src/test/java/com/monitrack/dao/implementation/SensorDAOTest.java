@@ -14,12 +14,13 @@ import com.monitrack.enumeration.RequestType;
 import com.monitrack.enumeration.SensorActivity;
 import com.monitrack.enumeration.SensorSensitivity;
 import com.monitrack.enumeration.SensorType;
+import com.monitrack.util.Util;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SensorDAOTest {
 	
 	private static final SensorConfiguration sensorConfiguration = new SensorConfiguration(0,0, SensorActivity.ENABLED, SensorType.FLOW, SensorSensitivity.LOW, 1, "192.168.20.15", "dsfsd", "dsfsdf", 
-			1.0f, 2.0f, null, null, null, null, null, 0f, "Decibel", 4.0f, 5.0f, 6.23f, 4.94f);
+			1.0f, 2.0f, null, null,  null, null, 0f, "Decibel", 4.0f, 5.0f, 6.23f, 4.94f);
 	
 	@Before
 	public void init() {
@@ -37,10 +38,9 @@ public class SensorDAOTest {
 					null);
 			System.out.println(f);*/
 		}
+		@SuppressWarnings("unchecked")
 		List<SensorConfiguration> sensorConfigurations = (List<SensorConfiguration>)DAOFactory.execute(connection, SensorConfiguration.class, RequestType.SELECT, null, null, null, null);
-		for(SensorConfiguration sensorConfiguration : sensorConfigurations) {
-			System.out.println("=====> " + sensorConfiguration);
-		}
+		Util.displayListElements(sensorConfigurations, "=====> ");
 		DataSource.putConnection(connection);
 		
 	}

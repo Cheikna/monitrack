@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import com.monitrack.connection.pool.implementation.DataSource;
 import com.monitrack.dao.implementation.DAOFactory;
+import com.monitrack.entity.AccessControlHistory;
 import com.monitrack.entity.Message;
 import com.monitrack.entity.Person;
 import com.monitrack.entity.SensorConfiguration;
@@ -30,7 +31,7 @@ import com.monitrack.enumeration.SensorSensitivity;
 import com.monitrack.enumeration.SensorState;
 import com.monitrack.enumeration.SensorType;
 import com.monitrack.shared.MonitrackServiceUtil;
-import com.monitrack.util.ComplementarySensorConfig;
+import com.monitrack.util.ComplementarySensorDictionnary;
 import com.monitrack.util.Util;
 /**
  * 
@@ -47,16 +48,16 @@ public class AlertCenter {
 	private final long updateListFrequency = DateTimeConstants.MILLIS_PER_MINUTE;
 	private final long sleepTime = DateTimeConstants.MILLIS_PER_SECOND;
 
-	private final String alignFormat = "%-4s| %-4d |%-17s|%-17s|%-8s| %-13s |%-6s|%n";
-	private final String horizontalBorder      = "    +------+-----------------+-----------------+--------+---------------+------+%n";
-	private final String header			 	   = "    |  ID  |      Type       |      State      | Warn.  | Curr. Thresh. | Unit |%n";
+	private final String alignFormat = "%-4s| %-4d |%-17s|%-17s|%-8s| %-16s |%-6s|%n";
+	private final String horizontalBorder      = "    +------+-----------------+-----------------+--------+------------------+------+%n";
+	private final String header			 	   = "    |  ID  |      Type       |      State      | Warn.  |   Curr. Thresh.  | Unit |%n";
 	private final String badgeUp = MonitrackServiceUtil.getASCII("badge-up.txt");
 	private final String badgeDown = MonitrackServiceUtil.getASCII("badge-down.txt");
 	
 	/******** Element for searching in the database *******/
-	private final List<String> fieldsForActiveSensors = Arrays.asList("ACTIVITY");
-	private final List<String> testsForActiveSensors = Arrays.asList("=");
-	private final List<String> valuesForActiveSensors = Arrays.asList(SensorActivity.ENABLED.toString());
+	private final List<String> fieldsForActiveSensors = Arrays.asList("ACTIVITY", "START_ACTIVITY_TIME", "END_ACTIVITY_TIME");
+	private final List<String> testsForActiveSensors = Arrays.asList("=", "<=", ">=");
+	private List<String> valuesForActiveSensors;
 
 	/********* Map for conserving the sensors warning datas ******/
 	private Map<Integer, CacheInfo> cacheInfoBySensor;
@@ -64,7 +65,7 @@ public class AlertCenter {
 	
 	private List<Person> persons;
 	
-	private ComplementarySensorConfig complementarySensorConfig;
+	private ComplementarySensorDictionnary complementarySensorDictionnary;
 
 	private final long sensorActivityCheckerSleepTime = DateTimeConstants.MILLIS_PER_MINUTE * NumberUtils.toLong(Util.getPropertyValueFromPropertiesFile("sensor_activity_checker_in_minute"));
 	private final long sensorStateCacheClearerSleepTime = DateTimeConstants.MILLIS_PER_DAY / NumberUtils.toLong(Util.getPropertyValueFromPropertiesFile("cache_clear_per_day"));
@@ -74,13 +75,18 @@ public class AlertCenter {
 	private long counter;
 	private int maxWarningMessage;
 
-	public AlertCenter() {				
+	public AlertCenter() {		
 		cacheInfoBySensor = Collections.synchronizedMap(new HashMap<Integer, CacheInfo>()); 
 		activeSensors = Collections.synchronizedList(new ArrayList<SensorConfiguration>());
 		persons = Collections.synchronizedList(new ArrayList<Person>());
 		counter = 0;
-		complementarySensorConfig = new ComplementarySensorConfig();
+		complementarySensorDictionnary = new ComplementarySensorDictionnary();
 		clearCacheSensorStateBySensor();
+	}
+	
+	private void updateSensorsSearchValues() {
+		String nowTimeCasted = "cast('" + Util.getCurrentTimeUTC() +  "' as time)";
+		valuesForActiveSensors = Arrays.asList(SensorActivity.ENABLED.toString(), nowTimeCasted, nowTimeCasted);
 	}
 
 	public void startAlertCenterThreads() {
@@ -159,6 +165,7 @@ public class AlertCenter {
 			}
 
 			if(sensorConfiguration != null) {
+				SensorType type = sensorConfiguration.getSensorType();
 				String message = "";
 				maxWarningMessage = SensorSensitivity.getNumberOfMessages(sensorConfiguration.getSensorSensitivity());
 
@@ -181,7 +188,10 @@ public class AlertCenter {
 								message = checkComplementarySensorsOfLocation(sensorConfiguration);
 								if(!info.isBeginDangerRegistered()) {
 									saveSensorConfigurationHistory(sensorConfiguration, null, "", info.getFirstDangerMessageDate(), false);
-									info.setBeginDangerRegistered(true);									
+									info.setBeginDangerRegistered(true);
+									if(type == SensorType.ACCESS_CONTROL) {
+										saveAccessControlHistory(sensorId, sensorConfiguration.getLocationId(), false, null, null);
+									}
 								}
 							}
 						} 
@@ -195,15 +205,18 @@ public class AlertCenter {
 								System.err.println(" /!\\ The maintainers repaired the sensor n°" + sensorId + " /!\\" );
 								saveSensorConfigurationHistory(sensorConfiguration, SensorType.getActionAssociatedToStopDanger(sensorConfiguration.getSensorType()), "", dangerTime, true);
 							}
-							else if(numberOfWarning > 0 && numberOfWarning < maxWarningMessage && !sensorConfiguration.getSensorType().getIsItBinary()) {
+							else if(numberOfWarning > 0 && numberOfWarning < maxWarningMessage && !type.getIsItBinary() && type != SensorType.ACCESS_CONTROL) {
 								log.info("A fake alert is detected for the sensor n°" + sensorId);
 								saveSensorConfigurationHistory(sensorConfiguration, SensorAction.FAKE_ALERT, "", dangerTime, true);
 							}
 							// Removes the warning and Removes the first danger alert date
 							info.reset();							
 						}
-						else
+						else {
+							if(sensorState == SensorState.CAUTION)
+								info.reset();	
 							info.setSensorState(sensorState);
+						}
 					}
 					// Case : the last alert in the cache was too old or there was not any message in the cache
 					else 
@@ -229,11 +242,16 @@ public class AlertCenter {
 				System.out.format(horizontalBorder);
 				System.out.format(header);
 				System.out.format(horizontalBorder);
-				SensorType type = sensorConfiguration.getSensorType();
 				if(type.getIsItBinary()) {
 					String messageForBinary = type.getMessageAccordingToState(info.getSensorState());
+					if(type == SensorType.ACCESS_CONTROL && info.getSensorState() == SensorState.DANGER) {
+						System.out.format(alignFormat, "" , sensorId, type.name(), "LOCKED", info.getWarningCount() + "/" + maxWarningMessage, "", "");
+					}
+					else {
+						System.out.format(alignFormat, "" , sensorId, type.name(), messageForBinary, info.getWarningCount() + "/" + maxWarningMessage, "", "");
+					}
 					
-					System.out.format(alignFormat, "" , sensorId, type.name(), messageForBinary, info.getWarningCount() + "/" + maxWarningMessage, "", "");
+					
 				}
 				else {
 					System.out.format(alignFormat, "" , sensorId, type.name(), info.getSensorState().name(), info.getWarningCount() + "/" + maxWarningMessage, thresholdReached + "/" + sensorConfiguration.getMaxDangerThreshold(),
@@ -261,11 +279,14 @@ public class AlertCenter {
 			int locationId = sensorConfiguration.getLocationId();
 			log.info("A code to enter in location n°" + locationId + " has been entered");
 			System.out.print(badgeUp);
-			System.out.println(" Code entered : " + thresholdReached.intValue());
+			String codeEntered = String.valueOf(thresholdReached.intValue());
+			System.out.println(" Code entered : " + codeEntered);
 			System.out.println(badgeDown);
 			for(Person person : persons) {
-				if(person.getPassword().equalsIgnoreCase(String.valueOf(thresholdReached.intValue()))) {
-					log.info("The person called " + person.getLastName() + " " + person.getFirstName() + " has entered a good password for location n°" + locationId);
+				if(person.getPassword().equalsIgnoreCase(codeEntered)) {
+					String personInfo = person.getLastName() + " " + person.getFirstName();
+					log.info("The person called " + personInfo + " has entered a good password for location n°" + locationId);
+					saveAccessControlHistory(sensorId, locationId, true, personInfo, codeEntered);
 					return SensorState.NORMAL;
 				}
 			}
@@ -274,17 +295,27 @@ public class AlertCenter {
 		} 
 		else 
 		{
-
-			log.info("The sensor n°" + sensorId + " has reached " + thresholdReached + "/" + sensorConfiguration.getMaxDangerThreshold());
+			//log.info("The sensor n°" + sensorId + " has reached " + thresholdReached + "/" + sensorConfiguration.getMaxDangerThreshold());
 			if (thresholdReached >= maxThreshold || thresholdReached < minThreshold)
 				return SensorState.WARNING;
-			else if(thresholdReached == minThreshold || sensorConfiguration.getSensorType().getIsGapAcceptable())
+			else if(thresholdReached == minThreshold || type.getIsGapAcceptable() || type.getIsItBinary())
 				return SensorState.NORMAL;
 			else					
 				return SensorState.CAUTION;
 		}
 		
 		
+	}
+
+	private void saveAccessControlHistory(int sensorId, int locationId, boolean isAccessGranted, String personInfo, String codeEntered) {
+		Connection connection = DataSource.getConnection();
+		AccessControlHistory accessControl = new AccessControlHistory(0, sensorId, locationId, codeEntered, personInfo, Util.getCurrentTimestamp(), isAccessGranted);
+		try {
+			DAOFactory.execute(connection, AccessControlHistory.class, RequestType.INSERT, accessControl, null, null, null);
+		} catch (Exception e) {
+			log.error("An error occurred during the registration of a access control : " + e.getMessage());
+		}					
+		DataSource.putConnection(connection);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -324,19 +355,16 @@ public class AlertCenter {
 		}	
 	}
 
-	public synchronized void displayUpdatedSensors() {
-		for(SensorConfiguration sensorConfiguration : activeSensors)
-			System.out.println(sensorConfiguration);
-	}
-
 	@SuppressWarnings("unchecked")
 	public void updateSensorsList() {
 		try {	
 			Connection connection = DataSource.getConnection();
-			if(connection != null) {		
+			if(connection != null) {	
+				updateSensorsSearchValues();
 				activeSensors.clear();
 				activeSensors.addAll((List<SensorConfiguration>)DAOFactory.execute(connection, SensorConfiguration.class, RequestType.SELECT, null, fieldsForActiveSensors, valuesForActiveSensors, testsForActiveSensors));
 				log.info("Active sensors list updated");
+				//Util.displayListElements(activeSensors, "====> ");
 				DataSource.putConnection(connection);
 			}
 		} catch (Exception e) {
@@ -394,7 +422,7 @@ public class AlertCenter {
 		{			
 			int locationId = alertLauncherSensor.getLocationId();
 			SensorType alertLauncherSensorType = alertLauncherSensor.getSensorType();
-			complementarySensorConfig.addCodeType(alertLauncherSensorType.getDangerCode());
+			complementarySensorDictionnary.addCodeType(alertLauncherSensorType.getDangerCode());
 			SensorType currentSensorType = null;
 			for(SensorConfiguration sensor : activeSensors) {
 				//Checks if the sensor is in the same room and it is not himself
@@ -402,11 +430,12 @@ public class AlertCenter {
 					currentSensorType = sensor.getSensorType();
 					CacheInfo info = cacheInfoBySensor.get(sensor.getSensorConfigurationId());
 					SensorState state = info.getSensorState();
-					complementarySensorConfig.addCodeType(currentSensorType.getCorrectCode(state));
+					if(state == SensorState.DANGER)
+						complementarySensorDictionnary.addCodeType(currentSensorType.getDangerCode());
 				}
 			}
 			
-			String message = complementarySensorConfig.getMessageForLocation();
+			String message = complementarySensorDictionnary.getMessageForLocation();
 			return message;
 		}
 	}

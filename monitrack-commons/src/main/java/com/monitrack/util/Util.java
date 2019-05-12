@@ -2,8 +2,13 @@ package com.monitrack.util;
 
 import java.io.InputStream;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
+import java.util.TimeZone;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -92,6 +97,13 @@ public class Util {
 	
 	public static String getVersionSpliter() {
 		return getPropertyValueFromPropertiesFile("version_split");
+	}
+	
+	public static String getCurrentTimeUTC() {
+		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+		Calendar calendar = Calendar.getInstance();
+		return dateFormat.format(calendar.getTime());
 	}
 	
 }
