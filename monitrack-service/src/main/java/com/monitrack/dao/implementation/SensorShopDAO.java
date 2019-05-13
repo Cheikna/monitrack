@@ -40,7 +40,7 @@ public class SensorShopDAO extends DAO<SensorShop> {
 		try {
 			sensorShop = new SensorShop(rs.getInt("ID_SENSOR_SHOP"), rs.getInt("ID_SENSOR"), rs.getString("MARK"), SensorType.valueOf(rs.getString("TYPE")),
 					rs.getString("MAC_ADDRESS"), rs.getString("SERIAL_NUMBER"), rs.getFloat("HARDWARE_VERSION"), rs.getFloat("SOFTWARE_VERSION"), rs.getFloat("PURCHASE_COST"), 
-					rs.getFloat("MAINTENANCE_COST"), Energy.getValueOf(rs.getString("ENERGY")), rs.getInt("LIFE_TIME"));
+					rs.getFloat("MAINTENANCE_COST"), Energy.valueOf(rs.getString("ENERGY")), rs.getInt("LIFE_TIME"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
