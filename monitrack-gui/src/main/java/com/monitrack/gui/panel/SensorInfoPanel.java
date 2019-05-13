@@ -2,6 +2,7 @@ package com.monitrack.gui.panel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 
@@ -19,11 +20,11 @@ import com.monitrack.enumeration.SensorType;
 import com.monitrack.listener.SensorInfoListener;
 
 public class SensorInfoPanel extends JPanel {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private SensorConfiguration sensor;
-	
+
 	private Color stateColor;
 	private final Color defaultColor = Color.WHITE;
 	private JButton sendReparatorButton;
@@ -31,9 +32,10 @@ public class SensorInfoPanel extends JPanel {
 	private boolean showColor;
 	private SensorInfoListener listener;
 	private final Font font = new Font("Arial", Font.PLAIN, 25);
-	
+
 	public SensorInfoPanel(SensorConfiguration sensor, SensorState sensorState) {
 		super(new BorderLayout());
+		this.setPreferredSize(new Dimension(300,145));
 		this.sensor = sensor;
 		this.stateColor = sensorState.getColor();
 		this.showColor = true;
@@ -66,7 +68,7 @@ public class SensorInfoPanel extends JPanel {
 		add(sendReparatorButton, BorderLayout.SOUTH);
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));		
 		Thread thread = new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				while(true) {
@@ -78,29 +80,27 @@ public class SensorInfoPanel extends JPanel {
 						e.printStackTrace();
 					}
 				}
-				
+
 			}
 		});
-		
-		if(sensorState != SensorState.NORMAL)
+
+		if(sensorState != SensorState.NORMAL && sensorState != SensorState.MISSING)
 			thread.start();
 	}
-	
+
 	private String getButtonText(SensorType sensorType) {
-		if(sensorType == SensorType.LIGHT) {
+		if(sensorType == SensorType.LIGHT)
 			return "Eteindre la lumière";
-		}
-		else
-			return "Envoyer l'équipe d'intervention";
+		return "Envoyer l'équipe d'intervention";
 	}
 
 	public void paintComponent(Graphics g) {
-        super.paintComponent(g);
+		super.paintComponent(g);
 		if(showColor)
 			sensorInfoCenterPanel.setBackground(stateColor);
 		else
 			sensorInfoCenterPanel.setBackground(defaultColor);
-		
+
 	}
 
 	public SensorConfiguration getSensor() {

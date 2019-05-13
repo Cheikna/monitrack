@@ -380,7 +380,6 @@ public class LocationsTabListener implements ActionListener, ListSelectionListen
 						String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, AccessControlHistory.class, null,
 								fields, values, null, RequestSender.CLIENT);
 						String response = MonitrackGuiUtil.sendRequest(jsonRequest);
-						System.err.println(JsonUtil.indentJsonOutput(response));
 						String historyText = "Informations sur cet emplacement :\n";
 						List<AccessControlHistory> accessHistory = (List<AccessControlHistory>) JsonUtil
 								.deserializeObject(response);

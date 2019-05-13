@@ -8,13 +8,14 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.monitrack.enumeration.ConnectionState;
 import com.monitrack.exception.DeprecatedVersionException;
 import com.monitrack.shared.MonitrackGuiUtil;
-import com.monitrack.util.JsonUtil;
 import com.monitrack.util.Util;
 
 public class ClientSocket {
@@ -29,11 +30,12 @@ public class ClientSocket {
 	 * Maximum delay of response from the server in milliseconds.
 	 * If the server does not response within this delay, we consider this server as not available
 	 */
-	private final int TIMEOUT = 5000;
+	private final int TIMEOUT = NumberUtils.toInt(Util.getPropertyValueFromPropertiesFile("server_response_limit"));
 
 	private Socket socket;
 	private InetAddress ipAddress;
 	private final String versionSpliter = Util.getVersionSpliter();
+	private final String encodageType = Util.getPropertyValueFromPropertiesFile("encodage_type");
 
 	public ClientSocket() {
 
@@ -58,8 +60,8 @@ public class ClientSocket {
 			 */
 			socket.setSoTimeout(TIMEOUT);
 			
-			readFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
-			writeToServer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true);	
+			readFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream(), encodageType));
+			writeToServer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), encodageType), true);	
 			ipAddress = InetAddress.getLocalHost();
 			//Send the client application version to the server. The spliter will indicate that it is the version that we are sending
 			writeToServer.println(ipAddress + versionSpliter + MonitrackGuiUtil.getApplicationVersion());

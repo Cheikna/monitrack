@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,12 +15,14 @@ import com.monitrack.enumeration.SensorState;
 import com.monitrack.gui.panel.SensorsAlertsTab;
 import com.monitrack.shared.MonitrackGuiUtil;
 import com.monitrack.util.JsonUtil;
+import com.monitrack.util.Util;
 
 public class SensorsUpdater implements Runnable {
 	
 	private static final Logger log = LoggerFactory.getLogger(SensorsUpdater.class);
 	private SensorsAlertsTab sensorsAlertsTab;
 	private Map<SensorState, List<SensorConfiguration>> sensorsConfigurationByState;
+	private final long updateFrequency = NumberUtils.toLong(Util.getPropertyValueFromPropertiesFile("refresh_from_server_frequency"));
 	
 	public SensorsUpdater(SensorsAlertsTab sensorsAlertsTab) {
 		this.sensorsAlertsTab = sensorsAlertsTab;
@@ -37,7 +40,7 @@ public class SensorsUpdater implements Runnable {
 					sensorsConfigurationByState.putAll(JsonUtil.deserializeCacheSensorsMap(response));						
 				}
 				sensorsAlertsTab.getListener().updatePanel(sensorsConfigurationByState);
-				Thread.sleep(10000);
+				Thread.sleep(updateFrequency);
 			} catch (Exception e) {
 				log.error(e.getMessage());
 			}

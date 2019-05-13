@@ -9,17 +9,22 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.monitrack.entity.Person;
 import com.monitrack.enumeration.Images;
+import com.monitrack.enumeration.RequestSender;
 import com.monitrack.enumeration.RequestType;
+import com.monitrack.enumeration.UserProfile;
 import com.monitrack.gui.panel.PersonsTab;
 import com.monitrack.shared.MonitrackGuiUtil;
 import com.monitrack.util.JsonUtil;
+import com.monitrack.util.Util;
 
-public abstract class PersonsTabListener implements ActionListener {
+public class PersonsTabListener implements ActionListener {
 
 	private static final Logger log = LoggerFactory.getLogger(PersonsTabListener.class);
 	private PersonsTab personsTab;
@@ -27,7 +32,7 @@ public abstract class PersonsTabListener implements ActionListener {
 	private List<String> fields;
 	private List<String> values;	
 	private String personText = "";
-/*
+
 	public PersonsTabListener(PersonsTab personsTab) {
 		this.personsTab = personsTab;
 		fields = new ArrayList<String>();
@@ -76,16 +81,23 @@ public abstract class PersonsTabListener implements ActionListener {
 				JButton clickedButton = (JButton)e.getSource();
 				if(clickedButton == personsTab.getCreateButton())
 				{
-					String name = personsTab.getNewNameTextField().getText().trim();
-					if(name.length() <= 0)
+					String firstName = personsTab.getNewFirstNameTextField().getText().trim();
+					String lastName = personsTab.getNewLastNameTextField().getText().trim();
+					String password = String.valueOf(personsTab.getNewPasswordField().getPassword()).trim();
+
+					if(firstName.length() <= 0 || firstName.length() <= 0 || password.length() <= 0)
 					{
-						JOptionPane.showMessageDialog(personsTab, "Le nom ne peut pas être vide", "Nom incorect", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(personsTab, "Un ou plusieurs champs sont vides", "Champ(s) invalide(s)", JOptionPane.ERROR_MESSAGE);
+					}
+					else if(password.length() < 4 || NumberUtils.toInt(password, -9) == -9 || password.charAt(0) == '0') {
+						JOptionPane.showMessageDialog(personsTab, "Le mot de passe doit uniquement être composé de chiffre"
+								+ " et ne doit pas commencer par 0 " + password, "Champ(s) invalide(s)", JOptionPane.ERROR_MESSAGE);				
 					}
 					else
 					{
-						Person newPerson = new Person(name, userName, password, );
+						Person newPerson = new Person(0, lastName, firstName, UserProfile.RESIDENT, password, Util.getCurrentTimestamp());
 						String serializedObject = JsonUtil.serializeObject(newPerson, Person.class, "");
-						String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, Person.class, serializedObject, null, null);
+						String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, Person.class, serializedObject, null, null, null, RequestSender.CLIENT);
 						String response = MonitrackGuiUtil.sendRequest(jsonRequest);
 						newPerson = (Person)JsonUtil.deserializeObject(response);
 						JOptionPane.showMessageDialog(personsTab, "Nouvelle personne créée avec l'id n°" + newPerson.getIdPerson(), "Succes", JOptionPane.INFORMATION_MESSAGE, Images.SUCCESS.getIcon());
@@ -102,7 +114,7 @@ public abstract class PersonsTabListener implements ActionListener {
 						// Set the id for the dalog panel
 						personsTab.getIdLabel().setText("ID : " + personToUpadte.getIdPerson());
 						//Set the name of the person in the texfield for the update
-						personsTab.getOldNameTextField().setText(personToUpadte.getNamePerson());
+						personsTab.getOldNameTextField().setText(personToUpadte.getLastName().toUpperCase() + Util.capitalize(personToUpadte.getFirstName()));
 						//Remove old text of the new Name text field
 						personsTab.getModifiedNameTextField().setText("");
 						
@@ -119,9 +131,9 @@ public abstract class PersonsTabListener implements ActionListener {
 							}
 							else
 							{
-								personToUpadte.setNamePerson(newName);
+								personToUpadte.setFirstName(newName);
 								String serializedObject = JsonUtil.serializeObject(personToUpadte, Person.class, "");
-								String jsonRequest = JsonUtil.serializeRequest(RequestType.UPDATE, Person.class, serializedObject, null, null);
+								String jsonRequest = JsonUtil.serializeRequest(RequestType.UPDATE, Person.class, serializedObject, null, null, null, RequestSender.CLIENT);
 								MonitrackGuiUtil.sendRequest(jsonRequest);
 								setComboboxWithPersons(personsTab.getModifyPersonsCombobox());
 							}
@@ -135,7 +147,7 @@ public abstract class PersonsTabListener implements ActionListener {
 					{
 						Person personToDelete = persons.get(comboboxIndex);
 						String serializedObject = JsonUtil.serializeObject(personToDelete, personToDelete.getClass(), "");
-						String jsonRequest = JsonUtil.serializeRequest(RequestType.DELETE, Person.class, serializedObject, null, null);
+						String jsonRequest = JsonUtil.serializeRequest(RequestType.DELETE, Person.class, serializedObject, null, null, null, RequestSender.CLIENT);
 						MonitrackGuiUtil.sendRequest(jsonRequest);
 						setComboboxWithPersons(personsTab.getDeletePersonsCombobox());
 					}
@@ -149,7 +161,7 @@ public abstract class PersonsTabListener implements ActionListener {
 					if(correctFilters)
 					{
 						personText = "";
-						String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Person.class, null, fields, values);
+						String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Person.class, null, fields, values, null, RequestSender.CLIENT);
 						System.out.println(JsonUtil.indentJsonOutput(jsonRequest));
 						String response = MonitrackGuiUtil.sendRequest(jsonRequest);
 						persons = (List<Person>)JsonUtil.deserializeObject(response);
@@ -191,7 +203,7 @@ public abstract class PersonsTabListener implements ActionListener {
 	@SuppressWarnings("unchecked")
 	private void setComboboxWithPersons(JComboBox<String> combobox)
 	{
-		String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Person.class, null, null, null);
+		String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Person.class, null, null, null, null, RequestSender.CLIENT);
 		try 
 		{
 			String response = MonitrackGuiUtil.sendRequest(jsonRequest);
@@ -242,5 +254,4 @@ public abstract class PersonsTabListener implements ActionListener {
 		}
 		return true;
 	}
-*/
 }

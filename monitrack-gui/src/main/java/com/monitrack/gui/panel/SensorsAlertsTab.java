@@ -5,15 +5,15 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.TextArea;
 import java.awt.Toolkit;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
 import com.monitrack.listener.SensorsAlertsTabListener;
-import com.monitrack.util.Util;
 
 public class SensorsAlertsTab extends JPanel{
 
@@ -23,7 +23,7 @@ public class SensorsAlertsTab extends JPanel{
 	private JPanel sensorsPanel;
 	private SensorsAlertsTabListener listener;
 	private JLabel lastRefreshDateLabel;
-	private TextArea infosTextArea;
+	private JTextArea infosTextArea;
 	
 	public SensorsAlertsTab() {
 		super(new BorderLayout());
@@ -41,13 +41,16 @@ public class SensorsAlertsTab extends JPanel{
 		
 		JScrollPane scroll = new JScrollPane(sensorsPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		
-		infosTextArea = new TextArea(20, 55);
+		infosTextArea = new JTextArea(20, 35);
 		infosTextArea.setFont(new Font("Calibri", Font.PLAIN, 20));
+		infosTextArea.setLineWrap(true);
+		infosTextArea.setWrapStyleWord(true);
+		infosTextArea.setEditable(false);
 		JScrollPane scrollTextArea = new JScrollPane(infosTextArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		add(northPanel, BorderLayout.NORTH);
 		add(scroll, BorderLayout.CENTER);
-		add(infosTextArea, BorderLayout.EAST);
+		add(scrollTextArea, BorderLayout.EAST);
 	}
 
 
@@ -72,7 +75,7 @@ public class SensorsAlertsTab extends JPanel{
 		return createSensorButton;
 	}
 
-	public TextArea getInfosTextArea() {
+	public JTextArea getInfosTextArea() {
 		return infosTextArea;
 	}
 	

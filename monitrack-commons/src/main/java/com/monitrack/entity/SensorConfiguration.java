@@ -22,8 +22,6 @@ public class SensorConfiguration extends Sensor {
 	private String ipAddress;
 	@JsonProperty("creation_date")
 	private Timestamp creationDate;
-	@JsonProperty("date_of_last_message")
-	private Timestamp lastMessageDate;
 	@JsonProperty("last_configuration_date")
 	private Timestamp lastConfigurationDate;
 	@JsonProperty("time_of_begin_activity")
@@ -49,7 +47,7 @@ public class SensorConfiguration extends Sensor {
 	public SensorConfiguration(Integer sensorConfigurationId, Integer sensorId, SensorActivity sensorActivity, SensorType sensorType, SensorSensitivity sensorSensitivity,
 			Integer locationId,
 			String ipAddress, String macAddress, String serialNumber, Float hardwareVersion, Float softwareVersion,
-			Timestamp creationDate, Timestamp lastMessageDate, Timestamp lastConfigurationDate, Time beginTime,
+			Timestamp creationDate, Timestamp lastConfigurationDate, Time beginTime,
 			Time endTime, Float checkFrequency, String measurementUnit, Float minDangerThreshold,
 			Float maxDangerThreshold, Float positionX,
 			Float positionY) {
@@ -59,7 +57,6 @@ public class SensorConfiguration extends Sensor {
 		this.locationId = locationId;
 		this.ipAddress = ipAddress;
 		this.creationDate = (creationDate != null) ? creationDate : Util.getCurrentTimestamp();
-		this.lastMessageDate = lastMessageDate;
 		this.lastConfigurationDate = lastConfigurationDate;
 		this.beginTime = beginTime;
 		this.endTime = endTime;
@@ -119,15 +116,7 @@ public class SensorConfiguration extends Sensor {
 	public void setCreationDate(Timestamp creationDate) {
 		this.creationDate = creationDate;
 	}
-
-	public Timestamp getLastMessageDate() {
-		return lastMessageDate;
-	}
-
-	public void setLastMessageDate(Timestamp lastMessageDate) {
-		this.lastMessageDate = lastMessageDate;
-	}
-
+	
 	public Timestamp getLastConfigurationDate() {
 		return lastConfigurationDate;
 	}
@@ -207,11 +196,6 @@ public class SensorConfiguration extends Sensor {
 	public void setLocation(Location location) {
 		this.location = location;
 	}
-
-	public void setLastMessageDate() {
-		this.setLastMessageDate(Util.getCurrentTimestamp());
-	}
-
 	public SensorSensitivity getSensorSensitivity() {
 		return sensorSensitivity;
 	}
@@ -225,7 +209,7 @@ public class SensorConfiguration extends Sensor {
 		return "Sensor [id=" + sensorConfigurationId + ", sensorActivity=" + sensorActivity + ", sensorType=" + sensorType
 				+ ", locationId=" + locationId + ", ipAddress=" + ipAddress + ", macAddress=" + macAddress
 				+ ", serialNumber=" + serialNumber + ", hardwareVersion=" + hardwareVersion + ", softwareVersion="
-				+ softwareVersion + ", creationDate=" + creationDate + ", lastMessageDate=" + lastMessageDate
+				+ softwareVersion + ", creationDate=" + creationDate
 				+ ", lastConfigurationDate=" + lastConfigurationDate + ", beginTime=" + beginTime + ", endTime="
 				+ endTime + ", checkFrequency=" + checkFrequency + ", measurementUnit=" + measurementUnit
 				+ ", maxDangerThreshold=" + maxDangerThreshold + ", positionX=" + positionX + ", positionY=" + positionY

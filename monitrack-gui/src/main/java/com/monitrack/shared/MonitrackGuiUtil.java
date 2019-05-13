@@ -1,11 +1,6 @@
 package com.monitrack.shared;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import javax.swing.JOptionPane;
 
@@ -34,7 +29,8 @@ public class MonitrackGuiUtil {
 	}
 			
 	public static void showNoConnectionMessage() {
-		JOptionPane.showMessageDialog(null, ConnectionState.NO_CONNECTION.getFrenchLabel(), "Erreur", JOptionPane.ERROR_MESSAGE, Images.NO_CONNECTION.getIcon());
+		JOptionPane.showMessageDialog(null, ConnectionState.NO_CONNECTION.getFrenchLabel() + "\n L'application va se fermer !", "Erreur. Le serveur est momentanément indisponible", JOptionPane.ERROR_MESSAGE, Images.NO_CONNECTION.getIcon());
+		System.exit(0);
 	}
 	
 	public static String sendRequest(String jsonRequest) throws NoAvailableConnectionException, IOException, DeprecatedVersionException
@@ -67,7 +63,7 @@ public class MonitrackGuiUtil {
 				}
 				
 				//log.info("Response from the server :\n" + JsonUtil.indentJsonOutput(response));
-				log.info("Response from the server :\n" + response);
+				log.debug("Response from the server :\n" + response);
 			}
 			
 			return response;
