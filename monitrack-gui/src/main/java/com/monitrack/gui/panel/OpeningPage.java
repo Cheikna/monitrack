@@ -16,7 +16,7 @@ public class OpeningPage extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	private Image projectNameImage;
-	//private Image backgroundImage;
+	private Image backgroundImage;
 	private OpeningPageListener listener;
 	
 	private JButton goToHomePageButton;
@@ -29,7 +29,7 @@ public class OpeningPage extends JPanel {
 		listener = new OpeningPageListener(parentFrame, this);
 		
 		projectNameImage = Images.PROJECT_LOGO.getImage();
-		//backgroundImage = Images.BACKGROUND_HOSPITAL.getImage();
+		backgroundImage = Images.BACKGROUND_HOSPITAL.getImage();
 		
 		goToHomePageButton = new JButton("Accéder à la page d'accueil");
 		goToHomePageButton.addActionListener(listener);
@@ -45,8 +45,7 @@ public class OpeningPage extends JPanel {
 		int projectNameWidth = projectNameImage.getWidth(null);
 		int panelWidth = this.getWidth();
 		int leftOffset = (panelWidth - projectNameWidth) / 2;
-		
-		//g2.drawImage(backgroundImage, 0, -40, null);
+		g2.drawImage(backgroundImage, 0, 0,getWidth(), getHeight(), this);
 		g2.drawImage(projectNameImage, leftOffset, 20, null);
 		this.revalidate();
 	}

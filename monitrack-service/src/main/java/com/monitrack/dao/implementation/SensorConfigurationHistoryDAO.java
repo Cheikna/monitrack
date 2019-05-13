@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +37,14 @@ public class SensorConfigurationHistoryDAO extends DAO<SensorConfigurationHistor
 					preparedStatement.setTimestamp(5, obj.getDate());
 					preparedStatement.setTimestamp(6, obj.getEndAlertDate());
 					preparedStatement.setString(7, obj.getDescription());
-					preparedStatement.setString(8, obj.getActionDone().name());
+					SensorAction action = obj.getActionDone();
+					if(action != null) {
+						preparedStatement.setString(8, action.name());						
+					} else {
+						preparedStatement.setString(8, null);
+					}
+					
+
 					preparedStatement.execute();
 					ResultSet rs = preparedStatement.getGeneratedKeys();
 					int lastCreatedId = 0;
@@ -58,7 +64,12 @@ public class SensorConfigurationHistoryDAO extends DAO<SensorConfigurationHistor
 	@Override
 	public void update(SensorConfigurationHistory obj) {
 		try {
-			throw new Exception("A history from the sensor can not be updated !");
+			PreparedStatement preparedStatement = connection
+					.prepareStatement("UPDATE " + tableName + " SET ACTION_DONE = ? , END_ALERT_DATE = ?  WHERE ID_HISTORY = ?");
+			preparedStatement.setString(1, obj.getActionDone().name());
+			preparedStatement.setTimestamp(2, obj.getEndAlertDate());
+			preparedStatement.setInt(3, obj.getIdHistory());
+			preparedStatement.execute();
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
@@ -88,8 +99,8 @@ public class SensorConfigurationHistoryDAO extends DAO<SensorConfigurationHistor
 	protected SensorConfigurationHistory getSingleValueFromResultSet(ResultSet rs) {
 		SensorConfigurationHistory sensorConfigurationHistory = null;
 		try {
-			sensorConfigurationHistory = new SensorConfigurationHistory(rs.getInt("ID_HISTORY"), rs.getInt("ID_SENSOR"), rs.getFloat("MEASURED_THRESHOLD"), rs.getFloat("MIN_DANGER_THRESHOLD"),rs.getFloat("MAX_DANGER_THRESHOLD"),
-					rs.getTimestamp("MEASUREMENT_DATE"), rs.getTimestamp("END_ALERT_DATE"), rs.getString("DESCRIPTION"), SensorAction.valueOf(rs.getString("ACTION_DONE")));
+			sensorConfigurationHistory = new SensorConfigurationHistory(rs.getInt("ID_HISTORY"), rs.getInt("ID_SENSOR_CONFIGURATION"), rs.getFloat("MEASURED_THRESHOLD"), rs.getFloat("MIN_DANGER_THRESHOLD"),rs.getFloat("MAX_DANGER_THRESHOLD"),
+					rs.getTimestamp("MEASUREMENT_DATE"), rs.getTimestamp("END_ALERT_DATE"), rs.getString("DESCRIPTION"), SensorAction.getValueOf(rs.getString("ACTION_DONE")));
 
 
 		} catch (SQLException e) {

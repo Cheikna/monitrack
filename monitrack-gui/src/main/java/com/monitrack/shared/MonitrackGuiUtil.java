@@ -23,12 +23,14 @@ public class MonitrackGuiUtil {
 	private static final String APPLICATION_VERSION = Util.getPropertyValueFromPropertiesFile("version");
 	private static String serverVersion = "";
 	
+	
 	public static void showComingSoonMesage() {
 		JOptionPane.showMessageDialog(null, "Cette fonctionnalité sera bientôt disponible.", "Bientôt disponible", JOptionPane.INFORMATION_MESSAGE, Images.COMING_SOON.getIcon());
 	}
 			
 	public static void showNoConnectionMessage() {
-		JOptionPane.showMessageDialog(null, ConnectionState.NO_CONNECTION.getFrenchLabel(), "Erreur", JOptionPane.ERROR_MESSAGE, Images.NO_CONNECTION.getIcon());
+		JOptionPane.showMessageDialog(null, ConnectionState.NO_CONNECTION.getFrenchLabel() + "\n L'application va se fermer !", "Erreur. Le serveur est momentanément indisponible", JOptionPane.ERROR_MESSAGE, Images.NO_CONNECTION.getIcon());
+		System.exit(0);
 	}
 	
 	public static String sendRequest(String jsonRequest) throws NoAvailableConnectionException, IOException, DeprecatedVersionException
@@ -60,7 +62,8 @@ public class MonitrackGuiUtil {
 					throw new NoAvailableConnectionException();
 				}
 				
-				log.info("Response from the server :\n" + JsonUtil.indentJsonOutput(response));
+				//log.info("Response from the server :\n" + JsonUtil.indentJsonOutput(response));
+				log.debug("Response from the server :\n" + response);
 			}
 			
 			return response;
@@ -85,7 +88,4 @@ public class MonitrackGuiUtil {
 	public static void setServerVersion(String serverVersion) {
 		MonitrackGuiUtil.serverVersion = serverVersion;
 	}
-	
-	
-
 }

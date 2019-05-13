@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -40,7 +41,9 @@ public class PersonsTab extends JPanel {
 	private PersonsTabListener listener;
 
 
-	private JTextField newNameTextField;
+	private JTextField newFirstNameTextField;
+	private JTextField newLastNameTextField;
+	private JPasswordField newPasswordField;
 	private JTextField filter1TextField;
 	private JTextField filter2TextField;
 
@@ -65,7 +68,7 @@ public class PersonsTab extends JPanel {
 	public PersonsTab() {
 		super(new BorderLayout());
 
-		//listener = new PersonsTabListener(this);
+		listener = new PersonsTabListener(this);
 		northPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		textArea = new JTextArea();	
 
@@ -105,9 +108,15 @@ public class PersonsTab extends JPanel {
 		createButton = new JButton("Créer");
 		createButton.addActionListener(listener);
 		newNameLabel = new JLabel("Nouveau nom : ");
-		newNameTextField = new JTextField(15);
+		newFirstNameTextField = new JTextField(15);
+		newLastNameTextField = new JTextField(15);
+		newPasswordField = new JPasswordField(15);
 		northPanelForCreate.add(newNameLabel);
-		northPanelForCreate.add(newNameTextField);
+		northPanelForCreate.add(newFirstNameTextField);
+		northPanelForCreate.add(new JLabel("Nouveau prénom : "));
+		northPanelForCreate.add(newLastNameTextField);
+		northPanelForCreate.add(new JLabel("Nouveau mot de passe : "));
+		northPanelForCreate.add(newPasswordField);
 		northPanelForCreate.add(createButton);	
 	}
 
@@ -171,13 +180,6 @@ public class PersonsTab extends JPanel {
 		modifyPersonPopupPanel.add(oldNameTextField);
 		modifyPersonPopupPanel.add(modifiedNameLabel);
 		modifyPersonPopupPanel.add(modifiedNameTextField);
-	}
-
-	/**
-	 * @return the newNameTextField
-	 */
-	public JTextField getNewNameTextField() {
-		return newNameTextField;
 	}
 
 	/**
@@ -332,8 +334,19 @@ public class PersonsTab extends JPanel {
 	 */
 	public JComboBox<String> getActionsCombobox() {
 		return actionsCombobox;
+	}
+
+	public JTextField getNewFirstNameTextField() {
+		return newFirstNameTextField;
+	}
+
+	public JTextField getNewLastNameTextField() {
+		return newLastNameTextField;
+	}
+
+	public JPasswordField getNewPasswordField() {
+		return newPasswordField;
 	}	
 	
-
 
 }

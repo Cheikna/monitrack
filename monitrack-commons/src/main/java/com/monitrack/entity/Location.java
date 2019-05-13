@@ -133,6 +133,11 @@ public class Location {
 		     + "      => Date de création : " + creationDate + "\n";
 	}
 	
+	public String toStringListItem() {
+		return "- Emplacement n°" + idLocation + " (Nom : " + nameLocation + " >>> Aile : " + wing + " >>> Etage : " + floor
+			 + " >>> Superficie : " + area + " m² >>> Date de création : " + creationDate + ")";
+	}
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */

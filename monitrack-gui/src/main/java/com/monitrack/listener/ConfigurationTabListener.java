@@ -213,7 +213,7 @@ public class ConfigurationTabListener implements ActionListener {
 			if(choice == 0)
 			{		
 				String serializedObject = JsonUtil.serializeObject(sensorToConfigure, SensorConfiguration.class, "");	
-				String jsonRequest = JsonUtil.serializeRequest(RequestType.UPDATE, SensorConfiguration.class, serializedObject, null, null, RequestSender.CLIENT);
+				String jsonRequest = JsonUtil.serializeRequest(RequestType.UPDATE, SensorConfiguration.class, serializedObject, null, null,null, RequestSender.CLIENT);
 				MonitrackGuiUtil.sendRequest(jsonRequest);
 				JOptionPane.showMessageDialog(configurationTab, "Votre capteur a bien été mis à jour", "Mise à jour réussie", JOptionPane.INFORMATION_MESSAGE);
 			}
@@ -251,7 +251,7 @@ public class ConfigurationTabListener implements ActionListener {
 			values.add(value);
 		
 		
-			String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, SensorConfiguration.class, null, fields, values, RequestSender.CLIENT);
+			String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, SensorConfiguration.class, null, fields, values, null, RequestSender.CLIENT);
 			String response = MonitrackGuiUtil.sendRequest(jsonRequest);
 			List<SensorConfiguration> sensorToDisplays = (List<SensorConfiguration>)JsonUtil.deserializeObject(response);
 
@@ -320,7 +320,7 @@ public class ConfigurationTabListener implements ActionListener {
 
 
 
-			String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, SensorConfiguration.class, null, fields, values, RequestSender.CLIENT);
+			String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, SensorConfiguration.class, null, fields, values, null, RequestSender.CLIENT);
 			String response = MonitrackGuiUtil.sendRequest(jsonRequest);
 			List<SensorConfiguration> sensorToDisplay = (List<SensorConfiguration>)JsonUtil.deserializeObject(response);
 

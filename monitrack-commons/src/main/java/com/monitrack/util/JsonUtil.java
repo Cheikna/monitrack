@@ -2,17 +2,22 @@ package com.monitrack.util;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.management.InvalidAttributeValueException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.monitrack.entity.SensorConfiguration;
 import com.monitrack.enumeration.JSONField;
 import com.monitrack.enumeration.RequestSender;
 import com.monitrack.enumeration.RequestType;
+import com.monitrack.enumeration.SensorState;
 
 public class JsonUtil {
 
@@ -64,7 +69,7 @@ public class JsonUtil {
 				 */
 				node.put(JSONField.ENTITY.getLabel(), className);
 				node.putPOJO(JSONField.DATAS.getLabel(), object);
-				log.info("Serialization into JSON succedeed");
+				//log.info("Serialization into JSON succedeed");
 			}
 			else
 			{
@@ -122,32 +127,30 @@ public class JsonUtil {
 			//log.info("Deserialization into Java Object succedeed");
 
 		} catch (Exception e) {
-			log.error("Deserialization into Java Object failed : " + e.getMessage());
+			log.error("Deserialization into Java Object failed or there is no object to deserialize (SELECT clause) : " + e.getMessage());
 		} 
 
 		return jsonConvertedToObject;		
 	}
 
-	/**
-	 * 
-	 * @param serializedObject
-	 * @param entityClass : allows us to know which table is concerned
-	 * @param requestedFields: especially used for select queries
-	 * @param requestedValues: especially used for select queries
-	 * @return
-	 * @throws IOException
-	 */
+	public static String serializeSensorsFromCacheRequest(RequestSender requestSender) {
+		return serializeRequest(null, null,null, null,null, null, requestSender);
+	}
+	
+
 	@SuppressWarnings("rawtypes")
 	public static String serializeRequest(RequestType requestType, Class entityClass,String serializedObject, 
-			List<String> requestedFields, List<String> requiredValues, RequestSender requestSender)
+			List<String> requestedFields, List<String> requiredValues, List<String> requiredTests, 
+			RequestSender requestSender)
 	{
 		String objectToJSON = null;
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode rootNode = mapper.createObjectNode();
 
-		try {
-			if(requestSender != RequestSender.CLIENT_FOR_SENSOR_UPDATE) {
-
+		try 
+		{
+			if(requestSender != RequestSender.CLIENT_FOR_SENSOR_STATE && requestSender != RequestSender.CLIENT_FOR_ACTIVE_SENSOR) 
+			{
 				if(requestType == null || entityClass == null)
 					throw new IOException("The request type and the entity class cannot be null !");
 
@@ -178,11 +181,11 @@ public class JsonUtil {
 				 */
 				requestNode.putPOJO(JSONField.REQUESTED_FIELDS.getLabel(), requestedFields);
 				requestNode.putPOJO(JSONField.REQUIRED_VALUES.getLabel(), requiredValues);
+				requestNode.putPOJO(JSONField.REQUIRED_TESTS.getLabel(), requiredTests);
 
 
 				rootNode.putPOJO(JSONField.REQUEST_INFO.getLabel(), requestNode);
-				rootNode.putPOJO(JSONField.SERIALIZED_OBJECT.getLabel(), serializedObjectNode);
-
+				rootNode.putPOJO(JSONField.SERIALIZED_OBJECT.getLabel(), serializedObjectNode);				
 			}
 			
 			requestSender = (requestSender == null) ? RequestSender.CLIENT : requestSender;
@@ -194,10 +197,6 @@ public class JsonUtil {
 
 		return objectToJSON;
 	}	
-
-	public static String serializeSensorsUpdateRequest() {
-		return serializeRequest(null, null,null, null,null, RequestSender.CLIENT_FOR_SENSOR_UPDATE);
-	}
 
 	/**
 	 * Indents a jsonString in order to be more readable
@@ -247,6 +246,48 @@ public class JsonUtil {
 	public static boolean hasSerializedObjectError(String json)
 	{
 		return !JsonUtil.getJsonNodeValue(JSONField.ERROR_MESSAGE, json).trim().equals("");
+	}
+	
+	public static String serializeCacheSensorsMap(Map<SensorState, List<SensorConfiguration>> map) {
+		String objectToJSON = null;
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode rootNode = mapper.createObjectNode();
+		try {			
+			/*for(Map.Entry<SensorState, List<SensorConfiguration>> entry : map.entrySet()) {
+				rootNode.putPOJO(entry.getKey().name(), entry.getValue());
+			}*/
+			rootNode.putPOJO(JSONField.CACHE_SENSOR_MAP.getLabel(), map);			
+			objectToJSON = mapper.writeValueAsString(rootNode);		
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
+		return objectToJSON;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public static Map<SensorState, List<SensorConfiguration>> deserializeCacheSensorsMap(String objectInJson){
+		TreeMap<SensorState, List<SensorConfiguration>> mapResult = new TreeMap<>();
+		ObjectMapper mapper = new ObjectMapper();
+		List<SensorConfiguration> sensors = null;
+		Class objectClass = SensorConfiguration.class;
+		try {
+			JsonNode jsonAllNode = mapper.readTree(objectInJson).get(JSONField.CACHE_SENSOR_MAP.getLabel());
+			JsonNode node = null;
+			for(SensorState state : SensorState.values()) {
+				node = jsonAllNode.get(state.name());
+				if(node != null) {
+					sensors = mapper.readValue(node.toString(), mapper.getTypeFactory().constructCollectionType(List.class, objectClass)); 
+					//System.out.println("====> " + sensors);
+					if(sensors != null) {
+						mapResult.put(state, sensors);
+					}
+				}
+			}
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
+		return mapResult;
+		
 	}
 
 }

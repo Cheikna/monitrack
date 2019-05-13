@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.monitrack.entity.SensorShop;
+import com.monitrack.enumeration.RequestSender;
 import com.monitrack.enumeration.RequestType;
 import com.monitrack.shared.MonitrackGuiUtil;
 import com.monitrack.util.JsonUtil;
@@ -120,7 +121,7 @@ public class BasketSensor {
 	{
 		try {
 			String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, SensorShop.class, null, null, null,
-					null);
+					null, RequestSender.CLIENT);
 			String response = MonitrackGuiUtil.sendRequest(jsonRequest);
 			// Retrieves all the sensor from the database
 			@SuppressWarnings("unchecked")

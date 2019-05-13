@@ -26,6 +26,7 @@ import javax.swing.JTextField;
 
 import com.monitrack.entity.SensorShop;
 import com.monitrack.enumeration.Energy;
+import com.monitrack.enumeration.RequestSender;
 import com.monitrack.enumeration.RequestType;
 import com.monitrack.enumeration.SensorType;
 import com.monitrack.shared.MonitrackGuiUtil;
@@ -695,7 +696,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 	{
 		try {
 			String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, SensorShop.class, null, null, null,
-					null);
+					null, RequestSender.CLIENT);
 			String response = MonitrackGuiUtil.sendRequest(jsonRequest);
 			// Retrieves all the sensor from the database
 			shops = (List<SensorShop>)JsonUtil.deserializeObject(response);
@@ -835,7 +836,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 				" - Durée de vie moyenne : "+s.getLifeTime());
 	}
 	
-	public void getGlassBreakageSensorFromBuilderNewHome()
+	/*public void getGlassBreakageSensorFromBuilderNewHome()
 	{
 		SensorShop s = getBestSensor(SensorType.GLASS_BREAKAGE);
 		int quantity = 0;
@@ -851,9 +852,9 @@ public class NeedsTab extends JPanel implements ActionListener{
 				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
 				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
 				" - Durée de vie moyenne : "+s.getLifeTime());
-	}
+	}*/
 	
-	public void getAcousticSensorFromBuilderNewHome()
+	/*public void getAcousticSensorFromBuilderNewHome()
 	{
 		SensorShop s = getBestSensor(SensorType.ACOUSTIC);
 		int quantity = 0;
@@ -869,7 +870,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
 				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
 				" - Durée de vie moyenne : "+s.getLifeTime());
-	}
+	}*/
 	
 	public void getManualTriggerSensorFromBuilderNewHome()
 	{
@@ -1059,7 +1060,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 				" - Durée de vie moyenne : "+s.getLifeTime());
 	}
 	
-	public void getGlassBreakageSensorFromBuilderGrowing()
+	/*public void getGlassBreakageSensorFromBuilderGrowing()
 	{
 		SensorShop s = getBestSensor(SensorType.GLASS_BREAKAGE);
 		int quantity = 0;
@@ -1075,9 +1076,9 @@ public class NeedsTab extends JPanel implements ActionListener{
 				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
 				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
 				" - Durée de vie moyenne : "+s.getLifeTime());
-	}
+	}*/
 	
-	public void getAcousticSensorFromBuilderGrowing()
+	/*public void getAcousticSensorFromBuilderGrowing()
 	{
 		SensorShop s = getBestSensor(SensorType.ACOUSTIC);
 		int quantity = 0;
@@ -1093,7 +1094,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
 				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
 				" - Durée de vie moyenne : "+s.getLifeTime());
-	}
+	}*/
 	
 	public void getManualTriggerSensorFromBuilderGrowing()
 	{
@@ -1317,8 +1318,8 @@ public class NeedsTab extends JPanel implements ActionListener{
 				getHumiditySensorFromBuilderNewHome();
 				getLightSensorFromBuilderNewHome();
 				getGasSensorFromBuilderNewHome();
-				getGlassBreakageSensorFromBuilderNewHome();
-				getAcousticSensorFromBuilderNewHome();
+				//getGlassBreakageSensorFromBuilderNewHome();
+				//getAcousticSensorFromBuilderNewHome();
 				getManualTriggerSensorFromBuilderNewHome();
 				getAccessControlSensorFromBuilderNewHome();
 				getFloodSensorFromBuilderNewHome();
@@ -1422,8 +1423,8 @@ public class NeedsTab extends JPanel implements ActionListener{
 				getHumiditySensorFromBuilderGrowing();
 				getLightSensorFromBuilderGrowing();
 				getGasSensorFromBuilderGrowing();
-				getGlassBreakageSensorFromBuilderGrowing();
-				getAcousticSensorFromBuilderGrowing();
+				//getGlassBreakageSensorFromBuilderGrowing();
+				//getAcousticSensorFromBuilderGrowing();
 				getManualTriggerSensorFromBuilderGrowing();
 				getAccessControlSensorFromBuilderGrowing();
 				getFloodSensorFromBuilderGrowing();

@@ -10,8 +10,10 @@ import com.monitrack.enumeration.SensorType;
 
 public class SensorShopDAO extends DAO<SensorShop> {
 
+	private final static String TABLE_NAME = "SENSOR_SHOP";
+	
 	public SensorShopDAO(Connection connection) {
-		super(connection, "SENSOR_SHOP");
+		super(connection, TABLE_NAME);
 	}
 
 	@Override
@@ -44,6 +46,10 @@ public class SensorShopDAO extends DAO<SensorShop> {
 		}
 		
 		return sensorShop;
+	}
+
+	public static String getFinalTableName() {
+		return TABLE_NAME;
 	}
 
 }

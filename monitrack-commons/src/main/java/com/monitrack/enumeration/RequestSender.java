@@ -4,7 +4,9 @@ public enum RequestSender {
 	
 	CLIENT,
 	
-	CLIENT_FOR_SENSOR_UPDATE,
+	CLIENT_FOR_SENSOR_STATE,
+	
+	CLIENT_FOR_ACTIVE_SENSOR,
 	
 	SENSOR;
 

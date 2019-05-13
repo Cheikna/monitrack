@@ -5,15 +5,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.monitrack.enumeration.ConnectionState;
 import com.monitrack.exception.DeprecatedVersionException;
 import com.monitrack.shared.MonitrackGuiUtil;
-import com.monitrack.util.JsonUtil;
 import com.monitrack.util.Util;
 
 public class ClientSocket {
@@ -28,9 +30,12 @@ public class ClientSocket {
 	 * Maximum delay of response from the server in milliseconds.
 	 * If the server does not response within this delay, we consider this server as not available
 	 */
-	private final int TIMEOUT = 5000;
+	private final int TIMEOUT = NumberUtils.toInt(Util.getPropertyValueFromPropertiesFile("server_response_limit"));
 
 	private Socket socket;
+	private InetAddress ipAddress;
+	private final String versionSpliter = Util.getVersionSpliter();
+	private final String encodageType = Util.getPropertyValueFromPropertiesFile("encodage_type");
 
 	public ClientSocket() {
 
@@ -43,7 +48,7 @@ public class ClientSocket {
 		
 		try 
 		{
-			log.info("Connection to the server " + SERVER_IP + ":" + PORT_NUMBER + "...");
+			//log.info("Connection to the server " + SERVER_IP + ":" + PORT_NUMBER + "...");
 
 			// Connection to a socket
 			socket = new Socket(SERVER_IP, PORT_NUMBER);
@@ -55,14 +60,14 @@ public class ClientSocket {
 			 */
 			socket.setSoTimeout(TIMEOUT);
 			
-			readFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
-			writeToServer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true);	
-			
-			//Send the client application version to the server. The letter 'v' will indicate that it is the version that we are sending
-			writeToServer.println("v" + MonitrackGuiUtil.getApplicationVersion());
+			readFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream(), encodageType));
+			writeToServer = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), encodageType), true);	
+			ipAddress = InetAddress.getLocalHost();
+			//Send the client application version to the server. The spliter will indicate that it is the version that we are sending
+			writeToServer.println(ipAddress + versionSpliter + MonitrackGuiUtil.getApplicationVersion());
 			
 			//Check if we are using the good version of the application
-			String[] serverCheck = readFromServer.readLine().split("v");
+			String[] serverCheck = readFromServer.readLine().split(versionSpliter);
 			if(serverCheck.length >= 2)
 			{
 				String code = serverCheck[0];
@@ -75,7 +80,7 @@ public class ClientSocket {
 				
 			}
 			
-			log.info("You are connected to the server for your next request");
+			//log.info("You are connected to the server for your next request");
 
 			connectionState = ConnectionState.SUCCESS;
 		}
@@ -112,11 +117,11 @@ public class ClientSocket {
 
 		if(requestToSendToServer.trim().equals(ConnectionState.RESERVED_CONNECTION.getCode().toString()))
 			log.info("You are trying to reserve a connection");
-		else {
+		/*else {
 			//log.info("Request sent to the server :\n" + JsonUtil.indentJsonOutput(requestToSendToServer));
 			log.info("Request sent to the server :\n" + requestToSendToServer);
 			
-		}
+		}*/
 
 		// Sends the request to the server
 		writeToServer.println(requestToSendToServer);
@@ -137,7 +142,7 @@ public class ClientSocket {
 			if(socket != null)
 			{
 				socket.close();
-				log.info("The communication with the server is closed");
+				log.debug("The communication with the server is closed");
 			}
 		} catch (IOException e) {
 			log.error(e.getMessage());

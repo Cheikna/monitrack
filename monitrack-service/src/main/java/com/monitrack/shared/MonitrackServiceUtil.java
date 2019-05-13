@@ -21,7 +21,7 @@ public class MonitrackServiceUtil
 			
 	private static final String APPLICATION_VERSION = Util.getPropertyValueFromPropertiesFile("version");
 	private static final Long dataPoolLoopSleep = NumberUtils.toLong(Util.getPropertyValueFromPropertiesFile("data_pool_loop_sleep"));
-
+	
 	public static String getASCII(String name)
 	{
 		String ascii = "";
@@ -57,6 +57,5 @@ public class MonitrackServiceUtil
 	public static Long getDataPoolLoopSleep() {
 		return dataPoolLoopSleep;
 	}
-
 
 }

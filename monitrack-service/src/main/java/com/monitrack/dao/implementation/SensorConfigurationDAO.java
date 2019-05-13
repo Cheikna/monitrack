@@ -5,8 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
+import java.sql.Types;
 import java.util.Arrays;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,14 +16,17 @@ import com.monitrack.dao.abstracts.DAO;
 import com.monitrack.entity.SensorConfiguration;
 import com.monitrack.entity.Location;
 import com.monitrack.enumeration.SensorActivity;
+import com.monitrack.enumeration.SensorSensitivity;
 import com.monitrack.enumeration.SensorType;
 
 public class SensorConfigurationDAO extends DAO<SensorConfiguration> {
 
 	private static final Logger log = LoggerFactory.getLogger(SensorConfigurationDAO.class);
+	
+	private static final String TABLE_NAME = "SENSOR_CONFIGURATION";
 
 	public SensorConfigurationDAO(Connection connection) {
-		super(connection, "SENSOR_CONFIGURATION");
+		super(connection, TABLE_NAME);
 	}
 
 	@Override
@@ -31,34 +35,57 @@ public class SensorConfigurationDAO extends DAO<SensorConfiguration> {
 			// Checks if the connection is not null before using it
 			if (connection != null) {
 				try {
+					//Creates the elements in the sensor table so that we can have the foreign key
+					obj.setSensorId(SensorDAO.createSensor(obj, connection));
+					
 					PreparedStatement preparedStatement = connection
 							.prepareStatement("INSERT INTO " + tableName + " (ID_SENSOR, ACTIVITY, ID_LOCATION, IP_ADDRESS, "
 									+ " START_ACTIVITY_TIME, END_ACTIVITY_TIME, CHECK_FREQUENCY, "
-									+ "MEASUREMENT_UNIT, CURRENT_THRESHOLD, MIN_DANGER_THRESHOLD,"
-									+ "MAX_DANGER_THRESHOLD, POSITION_X, POSITION_Y) "
+									+ "MEASUREMENT_UNIT, MIN_DANGER_THRESHOLD,"
+									+ "MAX_DANGER_THRESHOLD, POSITION_X, POSITION_Y, SENSITIVITY) "
 									+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?) ", Statement.RETURN_GENERATED_KEYS);
 					preparedStatement.setInt(1, obj.getSensorId());
 					preparedStatement.setString(2, obj.getSensorActivity().toString());
-					preparedStatement.setInt(3, obj.getLocationId());
+					Integer locationId = obj.getLocationId();
+					if(locationId != null)
+						preparedStatement.setInt(3, locationId);
+					else
+						preparedStatement.setNull(3, Types.INTEGER);
+						
 					preparedStatement.setString(4, obj.getIpAddress());
-					preparedStatement.setTime(5, obj.getBeginTime());
-					preparedStatement.setTime(6, obj.getEndTime());
-					preparedStatement.setFloat(7, obj.getCheckFrequency());
+					Time time = obj.getBeginTime();
+					if(time != null)
+						preparedStatement.setTime(5, time);
+					else
+						preparedStatement.setNull(5, Types.TIME);
+
+					time = obj.getEndTime();
+					if(time != null)
+						preparedStatement.setTime(6, time);
+					else
+						preparedStatement.setNull(6, Types.TIME);
+					
+					Float frequency = obj.getCheckFrequency();
+					if(frequency != null) {
+						preparedStatement.setFloat(7, frequency);
+					}else {
+						preparedStatement.setNull(7, Types.FLOAT);
+					}
+					
 					preparedStatement.setString(8, obj.getMeasurementUnit());
-					preparedStatement.setFloat(9, obj.getCurrentThreshold());
-					preparedStatement.setFloat(10, obj.getMinDangerThreshold());
-					preparedStatement.setFloat(11, obj.getMaxDangerThreshold());
-					preparedStatement.setFloat(12, obj.getPositionX());
-					preparedStatement.setFloat(13, obj.getPositionY());
+					preparedStatement.setFloat(9, obj.getMinDangerThreshold());
+					preparedStatement.setFloat(10, obj.getMaxDangerThreshold());
+					preparedStatement.setFloat(11, obj.getPositionX());
+					preparedStatement.setFloat(12, obj.getPositionY());
+					preparedStatement.setString(13, obj.getSensorSensitivity().toString());
 					preparedStatement.execute();
 					ResultSet rs = preparedStatement.getGeneratedKeys();
 					if (rs.next()) {
 						int id = rs.getInt(1);
 						obj.setSensorConfigurationId(id);
-						//obj.setMacAddress(retrieveMacAddress(id));
 					}
 				} catch (Exception e) {
-					log.error("An error occurred during the creation of a sensor : " + e.getMessage());
+					log.error("An error occurred during the creation of a sensor configuration : " + e.getMessage());
 					e.printStackTrace();
 				}
 			}
@@ -75,8 +102,8 @@ public class SensorConfigurationDAO extends DAO<SensorConfiguration> {
 					PreparedStatement preparedStatement = connection
 							.prepareStatement("UPDATE " + tableName + " SET ACTIVITY = ?, ID_LOCATION = ?, IP_ADDRESS = ?, " + 
 									"START_ACTIVITY_TIME = ?, END_ACTIVITY_TIME = ?, CHECK_FREQUENCY = ?, " + 
-									"MEASUREMENT_UNIT = ?, CURRENT_THRESHOLD = ?, MIN_DANGER_THRESHOLD = ?,"+ 
-									"MAX_DANGER_THRESHOLD = ?, POSITION_X = ? AND POSITION_Y = ? "
+									" MIN_DANGER_THRESHOLD = ?,"+ 
+									"MAX_DANGER_THRESHOLD = ?, POSITION_X = ?, POSITION_Y = ? AND SENSITIVITY=? "
 									+ " WHERE ID_SENSOR_CONFIGURATION = ?");
 					preparedStatement.setString(1, obj.getSensorActivity().toString());
 					preparedStatement.setInt(2, obj.getLocationId());
@@ -84,21 +111,19 @@ public class SensorConfigurationDAO extends DAO<SensorConfiguration> {
 					preparedStatement.setTime(4, obj.getBeginTime());
 					preparedStatement.setTime(5, obj.getEndTime());
 					preparedStatement.setFloat(6, obj.getCheckFrequency());
-					preparedStatement.setString(7, obj.getMeasurementUnit());
-					preparedStatement.setFloat(8, obj.getCurrentThreshold());
-					preparedStatement.setFloat(9, obj.getMinDangerThreshold());
-					preparedStatement.setFloat(10, obj.getMaxDangerThreshold());
-					preparedStatement.setFloat(11, obj.getPositionX());
-					preparedStatement.setFloat(12, obj.getPositionY());
-					preparedStatement.setInt(13, obj.getSensorConfigurationId());
+					preparedStatement.setFloat(7, obj.getMinDangerThreshold());
+					preparedStatement.setFloat(8, obj.getMaxDangerThreshold());
+					preparedStatement.setFloat(9, obj.getPositionX());
+					preparedStatement.setFloat(10, obj.getPositionY());
+					preparedStatement.setString(11, obj.getSensorSensitivity().toString());
+					preparedStatement.setInt(12, obj.getSensorConfigurationId());
 					preparedStatement.execute();
 				} catch (Exception e) {
-					log.error("An error occurred during the creation of a person : " + e.getMessage());
+					log.error("An error occurred during the creation of a sensor configuration : " + e.getMessage());
 					e.printStackTrace();
 				}
 			}
 		}
-
 	}
 
 	@Override
@@ -110,7 +135,7 @@ public class SensorConfigurationDAO extends DAO<SensorConfiguration> {
 				preparedStatement.setInt(1, obj.getSensorConfigurationId());					
 				preparedStatement.execute();
 			} catch (Exception e) {
-				log.error("An error occurred during the delete of a location : " + e.getMessage());
+				log.error("An error occurred during the delete of a sensor configuration : " + e.getMessage());
 				e.printStackTrace();
 			}				
 		}
@@ -119,19 +144,9 @@ public class SensorConfigurationDAO extends DAO<SensorConfiguration> {
 
 	private Location getSensorLocation(Integer sensorLocationId) {
 		LocationDAO locationDAO = new LocationDAO(connection);
-		Location location = locationDAO.find(Arrays.asList("ID_LOCATION"), Arrays.asList(sensorLocationId.toString())).get(0);
+		Location location = locationDAO.find(Arrays.asList("ID_LOCATION"), Arrays.asList(sensorLocationId.toString()), null).get(0);
 		return location;
 	}
-	
-	/*private String retrieveMacAddress(int sensorId) throws SQLException {
-		PreparedStatement preparedStatement = connection.prepareStatement("SELECT MAC_ADDRESS FROM SENSOR WHERE ID_SENSOR = ? ");
-		preparedStatement.setInt(1, sensorId);
-		ResultSet rs = preparedStatement.executeQuery();
-		if (rs.first()) {
-			return rs.getString(1);
-		}
-		return null;
-	}*/
 	
 	@SuppressWarnings("finally")
 	@Override
@@ -139,11 +154,11 @@ public class SensorConfigurationDAO extends DAO<SensorConfiguration> {
 		SensorConfiguration sensorConfiguration = null;
 		try {
 			sensorConfiguration = new SensorConfiguration(rs.getInt("ID_SENSOR_CONFIGURATION"), rs.getInt("ID_SENSOR"), SensorActivity.getSensorActivity(rs.getString("ACTIVITY")), SensorType.getSensorType(rs.getString("TYPE")),
-					rs.getInt("ID_LOCATION"), rs.getString("IP_ADDRESS"),
+					SensorSensitivity.valueOf(rs.getString("SENSITIVITY")), rs.getInt("ID_LOCATION"), rs.getString("IP_ADDRESS"),
 					rs.getString("MAC_ADDRESS"),rs.getString("SERIAL_NUMBER"), rs.getFloat("HARDWARE_VERSION"),rs.getFloat("SOFTWARE_VERSION"),
-					rs.getTimestamp("CREATION_DATE"), rs.getTimestamp("LAST_MESSAGE_DATE"), rs.getTimestamp("LAST_CONFIGURATION_DATE"),
+					rs.getTimestamp("CREATION_DATE"), rs.getTimestamp("LAST_CONFIGURATION_DATE"),
 					rs.getTime("START_ACTIVITY_TIME"),rs.getTime("END_ACTIVITY_TIME"),rs.getFloat("CHECK_FREQUENCY"),
-					rs.getString("MEASUREMENT_UNIT"),rs.getFloat("CURRENT_THRESHOLD"),rs.getFloat("MIN_DANGER_THRESHOLD")
+					rs.getString("MEASUREMENT_UNIT"),rs.getFloat("MIN_DANGER_THRESHOLD")
 					,rs.getFloat("MAX_DANGER_THRESHOLD"),rs.getFloat("POSITION_X"),rs.getFloat("POSITION_Y"));
 
 			sensorConfiguration.setLocation(getSensorLocation(rs.getInt("ID_LOCATION")));
@@ -157,5 +172,10 @@ public class SensorConfigurationDAO extends DAO<SensorConfiguration> {
 		}
 	}
 
+	public static String getFinalTableName() {
+		return TABLE_NAME;
+	}
+
+	
 
 }

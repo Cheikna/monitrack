@@ -1,10 +1,10 @@
 package com.monitrack.entity;
 import java.sql.Time;
 import java.sql.Timestamp;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.monitrack.enumeration.SensorActivity;
+import com.monitrack.enumeration.SensorSensitivity;
 import com.monitrack.enumeration.SensorType;
 import com.monitrack.util.Util;
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -14,14 +14,14 @@ public class SensorConfiguration extends Sensor {
 	private Integer sensorConfigurationId;
 	@JsonProperty("sensor_activity")
 	private SensorActivity sensorActivity;
+	@JsonProperty("sensor_sensitivity")
+	private SensorSensitivity sensorSensitivity;
 	@JsonProperty("location_id")	
 	private Integer locationId;
 	@JsonProperty("ip_address")
 	private String ipAddress;
 	@JsonProperty("creation_date")
 	private Timestamp creationDate;
-	@JsonProperty("date_of_last_message")
-	private Timestamp lastMessageDate;
 	@JsonProperty("last_configuration_date")
 	private Timestamp lastConfigurationDate;
 	@JsonProperty("time_of_begin_activity")
@@ -33,8 +33,6 @@ public class SensorConfiguration extends Sensor {
 	private Float checkFrequency;
 	@JsonProperty("measurement_unit")
 	private String measurementUnit;	
-	@JsonProperty("current_threshold")
-	private Float currentThreshold;
 	@JsonProperty("min_danger_threshold")
 	private Float minDangerThreshold;
 	@JsonProperty("max_danger_threshold")
@@ -46,13 +44,11 @@ public class SensorConfiguration extends Sensor {
 	@JsonProperty("location")
 	private Location location;	
 
-	@JsonIgnore
-	private Timestamp dangerStartDate;
-
-	public SensorConfiguration(Integer sensorConfigurationId, Integer sensorId, SensorActivity sensorActivity, SensorType sensorType, Integer locationId,
+	public SensorConfiguration(Integer sensorConfigurationId, Integer sensorId, SensorActivity sensorActivity, SensorType sensorType, SensorSensitivity sensorSensitivity,
+			Integer locationId,
 			String ipAddress, String macAddress, String serialNumber, Float hardwareVersion, Float softwareVersion,
-			Timestamp creationDate, Timestamp lastMessageDate, Timestamp lastConfigurationDate, Time beginTime,
-			Time endTime, Float checkFrequency, String measurementUnit, Float currentThreshold, Float minDangerThreshold,
+			Timestamp creationDate, Timestamp lastConfigurationDate, Time beginTime,
+			Time endTime, Float checkFrequency, String measurementUnit, Float minDangerThreshold,
 			Float maxDangerThreshold, Float positionX,
 			Float positionY) {
 		super(sensorId, sensorType, macAddress, serialNumber, hardwareVersion, softwareVersion);
@@ -61,17 +57,22 @@ public class SensorConfiguration extends Sensor {
 		this.locationId = locationId;
 		this.ipAddress = ipAddress;
 		this.creationDate = (creationDate != null) ? creationDate : Util.getCurrentTimestamp();
-		this.lastMessageDate = lastMessageDate;
 		this.lastConfigurationDate = lastConfigurationDate;
 		this.beginTime = beginTime;
 		this.endTime = endTime;
 		this.checkFrequency = checkFrequency;
 		this.measurementUnit = measurementUnit;
-		this.currentThreshold = currentThreshold;
-		this.minDangerThreshold = minDangerThreshold;
-		this.maxDangerThreshold = maxDangerThreshold;
+		if(sensorType.getIsItBinary()) {
+			this.minDangerThreshold = 0f;
+			this.maxDangerThreshold = 1f;
+		} else {
+			this.minDangerThreshold = minDangerThreshold;
+			this.maxDangerThreshold = maxDangerThreshold;			
+		}
+		
 		this.positionX = positionX;
 		this.positionY = positionY;
+		this.sensorSensitivity = sensorSensitivity;
 	}
 	
 	public SensorConfiguration() { }
@@ -115,15 +116,7 @@ public class SensorConfiguration extends Sensor {
 	public void setCreationDate(Timestamp creationDate) {
 		this.creationDate = creationDate;
 	}
-
-	public Timestamp getLastMessageDate() {
-		return lastMessageDate;
-	}
-
-	public void setLastMessageDate(Timestamp lastMessageDate) {
-		this.lastMessageDate = lastMessageDate;
-	}
-
+	
 	public Timestamp getLastConfigurationDate() {
 		return lastConfigurationDate;
 	}
@@ -162,14 +155,6 @@ public class SensorConfiguration extends Sensor {
 
 	public void setMeasurementUnit(String measurementUnit) {
 		this.measurementUnit = measurementUnit;
-	}
-
-	public Float getCurrentThreshold() {
-		return currentThreshold;
-	}
-
-	public void setCurrentThreshold(Float currentThreshold) {
-		this.currentThreshold = currentThreshold;
 	}
 
 	public Float getMinDangerThreshold() {
@@ -211,74 +196,24 @@ public class SensorConfiguration extends Sensor {
 	public void setLocation(Location location) {
 		this.location = location;
 	}
-
-	public void setLastMessageDate() {
-		this.setLastMessageDate(Util.getCurrentTimestamp());
-	}
-	
-	@JsonIgnore
-	public Timestamp getDangerStartDate() {
-		return dangerStartDate;
+	public SensorSensitivity getSensorSensitivity() {
+		return sensorSensitivity;
 	}
 
-	@JsonIgnore
-	public void setDangerStartDate(Timestamp dangerStartDate) {
-		this.dangerStartDate = dangerStartDate;
+	public void setSensorSensitivity(SensorSensitivity sensorSensitivity) {
+		this.sensorSensitivity = sensorSensitivity;
 	}
-
-
 
 	@Override
 	public String toString() {
 		return "Sensor [id=" + sensorConfigurationId + ", sensorActivity=" + sensorActivity + ", sensorType=" + sensorType
 				+ ", locationId=" + locationId + ", ipAddress=" + ipAddress + ", macAddress=" + macAddress
 				+ ", serialNumber=" + serialNumber + ", hardwareVersion=" + hardwareVersion + ", softwareVersion="
-				+ softwareVersion + ", creationDate=" + creationDate + ", lastMessageDate=" + lastMessageDate
+				+ softwareVersion + ", creationDate=" + creationDate
 				+ ", lastConfigurationDate=" + lastConfigurationDate + ", beginTime=" + beginTime + ", endTime="
 				+ endTime + ", checkFrequency=" + checkFrequency + ", measurementUnit=" + measurementUnit
 				+ ", maxDangerThreshold=" + maxDangerThreshold + ", positionX=" + positionX + ", positionY=" + positionY
 				+ "]";
-	}
-	
-	
-
-	@JsonIgnore
-	public String getStateInfo() throws Exception {
-		String locationName = (location != null) ? location.getNameLocation() : "Location undefined";
-		String template = "in \u00AB" + locationName + "\u00BB is equal to " + currentThreshold + "/" + maxDangerThreshold + " " + measurementUnit;
-		
-		switch(sensorType) {
-		case FLOW:
-			return "There is (are) currently " + currentThreshold.intValue() + " person(s) in \u00AB" + locationName + "\u00BB";
-		case SMOKE:	
-			return "The smoke rate " + template;
-		case DOOR:	
-			return "FIXME"; //FIXME
-		case TEMPERATURE:	
-			return "The temperature in \u00AB" + locationName + "\u00BB is equal to " + currentThreshold 
-					+ "(min:" + minDangerThreshold + measurementUnit +" - max: " + maxDangerThreshold + measurementUnit + ")";
-		case WINDOW:	
-			return "FIXME"; //FIXME
-		case HUMIDITY:	
-			return "The humidity level " + template;
-		case LIGHT:	
-			return "The light level " + template;
-		case GAS:	
-			return "The rate of carbone monoxyde in \u00AB" + locationName + "\u00BB is equal to " + currentThreshold 
-					+ "/" + maxDangerThreshold + " " + measurementUnit;
-		case GLASS_BREAKAGE:	
-			return "The glass damage on the window located in \u00AB" + locationName + "\u00BB is equal to " + currentThreshold + "%";
-		case ACOUSTIC:	
-			return "The sound " + template;
-		case MANUAL_TRIGGER:	
-			return "A manual trigger has been triggered in \u00AB" + locationName + "\u00BB";
-		case ACCESS_CONTROL:	
-			return "Someone is trying to access to the \u00AB" + locationName + "\u00BB";
-		case FLOOD:	
-			return "The water level " + template;
-		default:
-			throw new Exception("The type of the sensor was not found");
-		}
 	}
 
 	@Override

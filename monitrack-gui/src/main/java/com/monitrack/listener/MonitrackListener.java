@@ -1,5 +1,10 @@
 package com.monitrack.listener;
 
+import java.awt.Desktop;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,14 +22,7 @@ import javax.swing.JTextField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.Desktop;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-
 import com.monitrack.entity.Location;
-import com.monitrack.entity.Person;
 import com.monitrack.enumeration.ConnectionState;
 import com.monitrack.enumeration.Images;
 import com.monitrack.enumeration.RequestSender;
@@ -115,10 +113,10 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 			try 
 			{
 				String[] response = MonitrackGuiUtil.sendRequest(ConnectionState.RESERVED_CONNECTION.getCode().toString()).split("-");
-				String message = response[0];
+				//String message = response[0];
 				String time = response[1];
 				displayConnectionTimeLeft(time);
-				JOptionPane.showMessageDialog(monitrackFrame, message, "Connexion réservée", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(monitrackFrame, "Vous avez réservé une connexion", "Connexion réservée", JOptionPane.INFORMATION_MESSAGE);
 			} 
 			catch (Exception e1) 
 			{
@@ -290,7 +288,7 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 				int area = Integer.parseInt(values[4]);
 				location = new Location(name, center, floor, wing, area);
 				String serializedObject = JsonUtil.serializeObject(location, Location.class, "");
-				String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, Location.class, serializedObject, null, null, RequestSender.CLIENT);
+				String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, Location.class, serializedObject, null, null, null, RequestSender.CLIENT);
 				MonitrackGuiUtil.sendRequest(jsonRequest);
 			} 
 			inputStream.close();

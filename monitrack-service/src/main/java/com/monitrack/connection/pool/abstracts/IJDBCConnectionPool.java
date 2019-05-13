@@ -32,5 +32,11 @@ public interface IJDBCConnectionPool {
 	 * Closes all connections of the connections attributes
 	 */
 	public void closeAllConnections();
+	
+	/**
+	 * 
+	 * @return the remaining number of connections in the pool
+	 */
+	public int getRemaningNumberOfConnections();
 
 }

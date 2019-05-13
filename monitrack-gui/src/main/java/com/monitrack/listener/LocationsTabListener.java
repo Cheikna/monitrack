@@ -4,16 +4,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.monitrack.comparator.AccessControlHistoryByTriggeringDateComparator;
+import com.monitrack.entity.AccessControlHistory;
 import com.monitrack.entity.Location;
 import com.monitrack.enumeration.Images;
 import com.monitrack.enumeration.RequestSender;
@@ -24,7 +30,7 @@ import com.monitrack.gui.panel.LocationsTab;
 import com.monitrack.shared.MonitrackGuiUtil;
 import com.monitrack.util.JsonUtil;
 
-public class LocationsTabListener implements ActionListener {
+public class LocationsTabListener implements ActionListener, ListSelectionListener {
 
 	private static final Logger log = LoggerFactory.getLogger(LocationsTabListener.class);
 
@@ -32,6 +38,8 @@ public class LocationsTabListener implements ActionListener {
 	private List<Location> locations;
 	private List<String> fields;
 	private List<String> values;
+	private List<Location> locationsToDisplayForOverview;
+	private int numberOfLocations;
 
 	public LocationsTabListener(LocationsTab locationsTab)
 	{
@@ -39,6 +47,7 @@ public class LocationsTabListener implements ActionListener {
 		locations = new ArrayList<>();
 		fields = new ArrayList<String>();
 		values = new ArrayList<String>();	
+		numberOfLocations = 0;
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -107,7 +116,7 @@ public class LocationsTabListener implements ActionListener {
 	@SuppressWarnings("unchecked")
 	private void setComboboxWithLocations(JComboBox<String> combobox)
 	{
-		String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Location.class, null, null, null, RequestSender.CLIENT);
+		String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Location.class, null, null, null, null, RequestSender.CLIENT);
 		try 
 		{
 			String response = MonitrackGuiUtil.sendRequest(jsonRequest);
@@ -180,18 +189,19 @@ public class LocationsTabListener implements ActionListener {
 		if(isFormValid && choice == 0)
 		{						
 			String serializedObject = JsonUtil.serializeObject(location, Location.class, null);
-			String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, location.getClass(), serializedObject, null, null, RequestSender.CLIENT);
+			String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, location.getClass(), serializedObject, null, null, null, RequestSender.CLIENT);
 			String response = MonitrackGuiUtil.sendRequest(jsonRequest); 
 
 			Location locationCreated = (Location)JsonUtil.deserializeObject(response);
 			String title = "Emplacement n°" + locationCreated.getIdLocation() + " créé";
-			String message = "Un nouvel emplacement a été crée. Voulez-vous y ajouter des capteurs ?";
+			JOptionPane.showMessageDialog(locationsTab, "Un nouvel emplacement a été créé", title, JOptionPane.INFORMATION_MESSAGE);
+			/*String message = "Un nouvel emplacement a été crée. Voulez-vous y ajouter des capteurs ?";
 			int choice2 = JOptionPane.showConfirmDialog(locationsTab, message, title, JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
 
 			if(choice2 == 0)
 			{
 				MonitrackGuiUtil.showComingSoonMesage();
-			}
+			}*/
 
 		}
 	}
@@ -260,7 +270,7 @@ public class LocationsTabListener implements ActionListener {
 			if(choice == 0)
 			{		
 				String serializedObject = JsonUtil.serializeObject(locationToUpdate, Location.class, "");	
-				String jsonRequest = JsonUtil.serializeRequest(RequestType.UPDATE, Location.class, serializedObject, null, null, RequestSender.CLIENT);
+				String jsonRequest = JsonUtil.serializeRequest(RequestType.UPDATE, Location.class, serializedObject, null, null, null, RequestSender.CLIENT);
 				MonitrackGuiUtil.sendRequest(jsonRequest);
 				JOptionPane.showMessageDialog(locationsTab, "Votre emplacement a bien été mis à jour", "Mise à jour réussie", JOptionPane.INFORMATION_MESSAGE);
 				setComboboxWithLocations(locationsTab.getModifyLocationsCombobox());
@@ -283,7 +293,7 @@ public class LocationsTabListener implements ActionListener {
 		{
 			Location locationToDelete = locations.get(selectedLocationIndex);
 			String serializedObject = JsonUtil.serializeObject(locationToDelete, Location.class, "");
-			String jsonRequest = JsonUtil.serializeRequest(RequestType.DELETE, Location.class, serializedObject, null, null, RequestSender.CLIENT);
+			String jsonRequest = JsonUtil.serializeRequest(RequestType.DELETE, Location.class, serializedObject, null, null, null, RequestSender.CLIENT);
 			MonitrackGuiUtil.sendRequest(jsonRequest);
 			JOptionPane.showMessageDialog(locationsTab, "L'emplacement selectionné a été supprimé", "Emplacement supprimé", JOptionPane.INFORMATION_MESSAGE);			
 			setComboboxWithLocations(locationsTab.getDeleteLocationsCombobox());
@@ -305,14 +315,14 @@ public class LocationsTabListener implements ActionListener {
 		{
 
 			String field = "WING";
-			
+
 			if(filter1.equalsIgnoreCase("nom"))
 			{
 				field = "NAME";
 			}
-			
+
 			String value = locationsTab.getFilter1TextField().getText().trim();
-			
+
 			if(value.length() > 0)
 			{
 				fields.add(field);
@@ -327,7 +337,7 @@ public class LocationsTabListener implements ActionListener {
 			{
 				field = "FLOOR";
 			}
-			
+
 			int value = NumberUtils.toInt(locationsTab.getFilter2TextField().getText(), -2);
 			if(value != -2)
 			{
@@ -337,22 +347,54 @@ public class LocationsTabListener implements ActionListener {
 
 		}
 
-
-
-		String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Location.class, null, fields, values, RequestSender.CLIENT);
+		String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Location.class, null, fields, values, null, RequestSender.CLIENT);
 		String response = MonitrackGuiUtil.sendRequest(jsonRequest);
-		List<Location> locationToDisplay = (List<Location>)JsonUtil.deserializeObject(response);
+		locationsToDisplayForOverview = (List<Location>)JsonUtil.deserializeObject(response);
+		numberOfLocations = locationsToDisplayForOverview.size();
 
-		String locationsText = "";
-		for(Location location : locationToDisplay)
+		locationsTab.getListModel().clear();
+		for(Location location : locationsToDisplayForOverview)
 		{
-			locationsText += location.toStringFull() + "\n";
+			locationsTab.getListModel().addElement(location.toStringListItem());
 		}
+		//locationsTab.getTextArea().setText(locationsText);
 
-		locationsTab.getTextArea().setText(locationsText);
-		
-		if(locationsText.equals(""))
+		if(numberOfLocations <= 0)
 			JOptionPane.showMessageDialog(locationsTab, "Aucune donnée ne correpsond à vos critères", "Pas de données", JOptionPane.INFORMATION_MESSAGE);
+
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+		if(!e.getValueIsAdjusting()) {
+
+			try {
+				if (e.getSource() == locationsTab.getLocationsList()) {
+					int index = locationsTab.getLocationsList().getSelectedIndex();
+					if (index >= 0 && index < numberOfLocations) {
+						List<String> fields = Arrays.asList("ID_LOCATION");
+						int locationId = locationsToDisplayForOverview.get(index).getIdLocation();
+						List<String> values = Arrays.asList(String.valueOf(locationId));
+						String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, AccessControlHistory.class, null,
+								fields, values, null, RequestSender.CLIENT);
+						String response = MonitrackGuiUtil.sendRequest(jsonRequest);
+						String historyText = "Informations sur cet emplacement :\n";
+						List<AccessControlHistory> accessHistory = (List<AccessControlHistory>) JsonUtil
+								.deserializeObject(response);
+						Collections.sort(accessHistory, new AccessControlHistoryByTriggeringDateComparator());
+						for (AccessControlHistory history : accessHistory) {
+							historyText += ">>> " + history.toStringDetailsForLocation() + "\n\n";
+						}
+
+						locationsTab.getTextArea().setText(historyText);
+					}
+				} 
+			} catch (Exception e2) {
+				log.error(e2.getMessage());
+				e2.printStackTrace();
+			}
+		}
 
 	}
 

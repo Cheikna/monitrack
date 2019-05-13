@@ -16,11 +16,17 @@ public enum JSONField {
 	
 	REQUIRED_VALUES("required_values"),
 	
+	REQUIRED_TESTS("required_tests"),
+	
 	REQUESTED_ENTITY("requested_entity"),
 	
 	SERIALIZED_OBJECT("serialized_object"),
 	
 	REQUEST_SENDER("request_sender"),
+	
+	CACHE_SENSOR_STATE("cache_sensor_state"),
+	
+	CACHE_SENSOR_MAP("cache_sensor_list_map"),
 	
 	//The message fields will allow us to know if the serialization or deserialization happened without failures
 	ERROR_MESSAGE("error_message");

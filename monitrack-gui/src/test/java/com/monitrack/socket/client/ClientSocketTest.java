@@ -46,7 +46,7 @@ public class ClientSocketTest {
 			if(connectionState == ConnectionState.SUCCESS)
 			{
 				String serializedObject = JsonUtil.serializeObject(location, location.getClass(), "");				
-				String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, Location.class, serializedObject, null, null, RequestSender.CLIENT);
+				String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, Location.class, serializedObject, null, null, null, RequestSender.CLIENT);
 				String response = clientSocket.sendRequestToServer(jsonRequest);
 				Location location2 = (Location) JsonUtil.deserializeObject(response);
 				assertEquals(location.getNameLocation(), location2.getNameLocation());
@@ -63,7 +63,7 @@ public class ClientSocketTest {
 		}		
 		
 		//We sleep the Thread in order to have time to see the results on the database
-		Thread.sleep(4000);
+		Thread.sleep(2000);
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class ClientSocketTest {
 				values.add(location.getNameLocation());
 				values.add(String.valueOf(location.getFloor()));
 				values.add(String.valueOf(location.getArea()));
-				String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Location.class, null, fields, values, RequestSender.CLIENT);
+				String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Location.class, null, fields, values, null, RequestSender.CLIENT);
 				log.info("Request : " + JsonUtil.indentJsonOutput(jsonRequest));
 				String response = clientSocket.sendRequestToServer(jsonRequest);
 				Location locationRetrived = ((List<Location>)JsonUtil.deserializeObject(response)).get(0);
@@ -112,7 +112,7 @@ public class ClientSocketTest {
 		}
 		
 		//We sleep the Thread in order to have time to see the results on the database
-		Thread.sleep(4000);
+		Thread.sleep(2000);
 	}
 
 	/**
@@ -131,7 +131,7 @@ public class ClientSocketTest {
 			{				
 				location.setIdLocation(id);
 				String serializedObject = JsonUtil.serializeObject(location, location.getClass(), "");
-				String jsonRequest = JsonUtil.serializeRequest(RequestType.DELETE, Location.class, serializedObject, null, null, RequestSender.CLIENT);
+				String jsonRequest = JsonUtil.serializeRequest(RequestType.DELETE, Location.class, serializedObject, null, null, null, RequestSender.CLIENT);
 				clientSocket.sendRequestToServer(jsonRequest);
 			}
 			else
@@ -144,7 +144,7 @@ public class ClientSocketTest {
 		}
 		
 		//We sleep the Thread in order to have time to see the results on the database
-		Thread.sleep(4000);
+		Thread.sleep(2000);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -167,7 +167,7 @@ public class ClientSocketTest {
 				values.add(location.getNameLocation());
 				values.add(String.valueOf(location.getFloor()));
 				values.add(String.valueOf(location.getArea()));
-				String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Location.class, null, fields, values, RequestSender.CLIENT);
+				String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Location.class, null, fields, values, null, RequestSender.CLIENT);
 				log.info("Request : " + JsonUtil.indentJsonOutput(jsonRequest));
 				String response = clientSocket.sendRequestToServer(jsonRequest);
 				List<Location> locationsRetrived = ((List<Location>)JsonUtil.deserializeObject(response));
@@ -183,7 +183,7 @@ public class ClientSocketTest {
 		}
 		
 		//We sleep the Thread in order to have time to see the results on the database
-		Thread.sleep(4000);
+		Thread.sleep(2000);
 	}
 
 	@Test
@@ -227,21 +227,5 @@ public class ClientSocketTest {
 		clientFailThread.start();
 		
 	}
-
-	/*private <T> void displayListElements(List<T> elements)
-	{
-		if(elements != null && elements.size() > 0)
-		{
-			System.out.println("Displaying the elements of the list :\n");
-			for(T element : elements)
-			{
-				System.out.println("===> " + element);
-			}
-		}
-		else
-		{
-			System.out.println("The list is empty !");
-		}
-	}*/
 
 }
