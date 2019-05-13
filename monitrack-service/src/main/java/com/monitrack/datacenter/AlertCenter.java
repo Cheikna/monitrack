@@ -140,10 +140,29 @@ public class AlertCenter {
 	
 	public synchronized Map<SensorState, List<SensorConfiguration>> getAllActiveSensorByState(){
 		Map<SensorState, List<SensorConfiguration>> map = new TreeMap<>();
-
-		for(SensorState state : SensorState.values()) {
-			map.put(state, getCacheSensorsByState(state));			
+		List<SensorConfiguration> sensors = null;
+		Integer sensorId = null;
+		CacheInfo info = null;
+		SensorState state = null;
+		for(SensorConfiguration sensor : activeSensors) {
+			sensorId = sensor.getSensorConfigurationId();
+			info = cacheInfoBySensor.get(sensorId);
+			state = (info != null) ? info.getSensorState() : SensorState.MISSING;
+			sensors = map.get(state);
+			if(sensors != null) {
+				sensors.add(sensor);
+			}
+			else {
+				sensors = new ArrayList<>();
+				sensors.add(sensor);
+			}
+			map.put(state, sensors);
 		}
+		
+		//Take 6 milliseconds more
+		/*for(SensorState state : SensorState.values()) {
+			map.put(state, getCacheSensorsByState(state));			
+		}*/
 		
 		return map;
 	}
@@ -254,8 +273,11 @@ public class AlertCenter {
 					
 				}
 				else {
+					String unit = sensorConfiguration.getMeasurementUnit();
+					if(unit == null)
+						unit = "";
 					System.out.format(alignFormat, "" , sensorId, type.name(), info.getSensorState().name(), info.getWarningCount() + "/" + maxWarningMessage, thresholdReached + "/" + sensorConfiguration.getMaxDangerThreshold(),
-							"Unit");					
+							unit);					
 				}
 				System.out.format(horizontalBorder);
 				System.out.println(message);
