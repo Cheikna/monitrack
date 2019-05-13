@@ -54,15 +54,23 @@ public class SensorInfoPanel extends JPanel {
 		typeLabel.setFont(new Font("Arial", Font.PLAIN, 18));
 		typeLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		sensorInfoCenterPanel.add(typeLabel);
-		sensorInfoCenterPanel.add(new JLabel("@mac : " + sensor.getMacAddress()));
-		String ipAddress = "undefined";
+		JLabel macLabel = new JLabel("@mac : " + sensor.getMacAddress());
+		macLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		sensorInfoCenterPanel.add(macLabel);
+		String ipAddress = "non défini";
 		if(sensor.getSensorActivity() == SensorActivity.ENABLED && sensorState != SensorState.MISSING)
 			ipAddress = sensor.getIpAddress();
-		sensorInfoCenterPanel.add(new JLabel("@ip : " + ipAddress));
-		sensorInfoCenterPanel.add(new JLabel("Numéro lieu : " + sensor.getLocationId()));
+		JLabel ipLabel = new JLabel("@ip : " + ipAddress);
+		ipLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		sensorInfoCenterPanel.add(ipLabel);
+		JLabel numberLocation = new JLabel("Numéro lieu : " + sensor.getLocationId());
+		numberLocation.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		sensorInfoCenterPanel.add(numberLocation);
 		Location location = sensor.getLocation();
 		String locationName = (location != null) ? location.getNameLocation() : "";
-		sensorInfoCenterPanel.add(new JLabel("Nom lieu : " + locationName));
+		JLabel locationLabel = new JLabel("Nom lieu : " + locationName);
+		locationLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		sensorInfoCenterPanel.add(locationLabel);
 		sensorInfoCenterPanel.setBackground(stateColor);
 		add(sensorInfoCenterPanel, BorderLayout.CENTER);
 		add(sendReparatorButton, BorderLayout.SOUTH);

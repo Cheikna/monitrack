@@ -28,6 +28,7 @@ import com.monitrack.enumeration.Images;
 import com.monitrack.enumeration.RequestSender;
 import com.monitrack.enumeration.RequestType;
 import com.monitrack.gui.frame.MonitrackFrame;
+import com.monitrack.gui.panel.ConfigurationTab;
 import com.monitrack.shared.MonitrackGuiUtil;
 import com.monitrack.util.JsonUtil;
 import com.monitrack.util.Util;
@@ -167,7 +168,8 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 				String enteredPassword = String.valueOf(passwordField.getPassword());
 				if(enteredPassword.equals(correctPassword) && enteredUserName.equals(correctUserName))
 				{
-					monitrackFrame.setNorthPanel(false,true);
+					//monitrackFrame.setNorthPanel(false,true);
+					monitrackFrame.getHomePage().addTab("Configuration des capteurs", new ConfigurationTab());
 				}
 				else if(!enteredPassword.equals(correctPassword) && enteredUserName.equals(correctUserName)){
 					JOptionPane.showMessageDialog(null, "Nom d'utilisateur incorrect", "Erreur", JOptionPane.ERROR_MESSAGE);

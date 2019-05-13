@@ -14,7 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.monitrack.enumeration.Images;
-import com.monitrack.gui.panel.ConfigurationPage;
 import com.monitrack.gui.panel.HomePage;
 import com.monitrack.gui.panel.OpeningPage;
 import com.monitrack.listener.MonitrackListener;
@@ -28,7 +27,6 @@ public class MonitrackFrame extends JFrame
 	private String openingPageName;
 	private HomePage homePage;
 	private String homePageName;
-	private ConfigurationPage configurationPage;
 	private String configurationPageName;
 	
 	//Button to access to the developer mode
@@ -105,16 +103,12 @@ public class MonitrackFrame extends JFrame
 
 		openingPage = new OpeningPage(this);
 		homePage = new HomePage();	
-		configurationPage = new ConfigurationPage();
 
 		openingPageName = "OPENING_PAGE";
 		centerPanel.add(openingPage, openingPageName);
 
 		homePageName = "HOME_PAGE";
 		centerPanel.add(homePage, homePageName);
-
-		configurationPageName = "CONFIGURATION_PAGE";
-		centerPanel.add(configurationPage,configurationPageName);
 
 		this.setTitle("MONITRACK version " + MonitrackGuiUtil.getApplicationVersion());
 		cardLayout.show(centerPanel, openingPageName);
@@ -216,6 +210,10 @@ public class MonitrackFrame extends JFrame
 	 */
 	public JLabel getTimerLabel() {
 		return timerLabel;
+	}
+
+	public HomePage getHomePage() {
+		return homePage;
 	}
 	
 }

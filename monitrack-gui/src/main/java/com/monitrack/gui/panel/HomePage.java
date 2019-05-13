@@ -11,11 +11,12 @@ import com.monitrack.runnable.SensorsUpdater;
 public class HomePage extends JPanel
 {
 	private static final long serialVersionUID = 1L;
+	private JTabbedPane tabbedPane;
 
 	public HomePage()
 	{
 		super(new BorderLayout());
-		JTabbedPane tabbedPane = new JTabbedPane();
+		tabbedPane = new JTabbedPane();
 		tabbedPane.add("Personnes", new PersonsTab());
 		tabbedPane.addTab("Emplacements surveillés", Images.LOCATION_ICON.getIcon(), new LocationsTab());
 		tabbedPane.add("Carte", new MapPage());
@@ -26,6 +27,9 @@ public class HomePage extends JPanel
 		
 		Thread thread = new Thread(new SensorsUpdater(sensorsAlertsTab));
 		thread.start();
-		tabbedPane.setSelectedIndex(3);
+	}
+	
+	public void addTab(String name, JPanel panel) {
+		tabbedPane.add(name, panel);
 	}
 }
