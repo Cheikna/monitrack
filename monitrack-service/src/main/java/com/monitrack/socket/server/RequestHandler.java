@@ -188,6 +188,7 @@ public class RequestHandler implements Runnable {
 		
 		// Retrieves the DAO according to the entity we want
 		DAO dao = DAOFactory.getDAO(connection, entityClass);
+		System.out.println("################################################ Une requete select: DA0 = " + dao);
 		/* The dao.find() method will return a list of object that we serialize directly.
 		 * We serialize the list directly in order to avoid to cast the object
 		 */

@@ -1,25 +1,5 @@
 package com.monitrack.gui.panel;
 
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -46,8 +26,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.monitrack.entity.Location;
+import com.monitrack.entity.LocationSensors;
+import com.monitrack.entity.Sensor;
+import com.monitrack.entity.SensorConfiguration;
 import com.monitrack.enumeration.Images;
 import com.monitrack.enumeration.RequestType;
+import com.monitrack.enumeration.SensorType;
 import com.monitrack.shared.MonitrackGuiUtil;
 //import com.monitrack.dao.implementation.MapDAO;
 import com.monitrack.util.JsonUtil;
@@ -59,39 +43,112 @@ public class MapPage extends JPanel implements MouseListener {
 	private static final Rectangle poly2 = new Rectangle(430, 268, 340, 170);
 	JOptionPane jop1;
 	ArrayList<String> mylist = new ArrayList<String>();
-	
-	
-	
-	private final String[] buildingWinds = {"NORD", "SUD", "OUEST", "EST"};
+
+	private final String[] buildingWinds = { "NORD", "SUD", "OUEST", "EST" };
 	private JPanel createLocationPopupPanel;
 	private JTextField newLocationNameTextField;
 	private JTextField newFloorTextField;
 	private JTextField newLocationSizeTextField;
 	private JComboBox<String> newBuildingWingCombobox;
-	
+	List<LocationSensors> locationSensors;
+	List<Location> locations;
 
+	public void drawLocations(Graphics2D g2) {
+		for(Location location : locations) {
+			drawLocation(location, g2);
+		}
+	}
+	
+	public void drawLocation(Location location, Graphics2D g2) {
+
+		Rectangle poly1 = new Rectangle(55, 268, 310, 340);
+		g2.drawRect(poly1.x, poly1.y, poly1.width, poly1.height);
+	}
+	
 	public MapPage() {
-		
+
 		planImage = Images.MAP.getImage();
 		this.addMouseListener(this);
-		
-		
 
 		try {
-		String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Location.class, null, null, null);
-	    String response = MonitrackGuiUtil.sendRequest(jsonRequest);
-	    List<Location> locations;
-     	locations = (List<Location>) JsonUtil.deserializeObject(response);
-      for (Location location : locations) {
-      mylist.add(location.getIdLocation() + " - " + location.getNameLocation().toString());
-     
-     	
-	}
-		}catch(Exception e){
-		e.printStackTrace();
-	}
+			String jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, Location.class, null, null, null);
+			String response = MonitrackGuiUtil.sendRequest(jsonRequest);
+
+			locations = (List<Location>) JsonUtil.deserializeObject(response);
+			List<SensorConfiguration> sensors = null;
+
+			try {
+				//FIXME Cheikna : do not forget to remove this
+				jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, SensorConfiguration.class, null, null,
+						null);
+				response = MonitrackGuiUtil.sendRequest(jsonRequest);
+				sensors = (List<SensorConfiguration>) JsonUtil.deserializeObject(response);
+				for (SensorConfiguration s : sensors) {
+					System.out.println("===========> " + s);
+				} 
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 	
+			/*for (Location location : locations) {
+				mylist.add(location.getIdLocation() + " - " + location.getNameLocation().toString());
+
+			}*/
+			
+			/*
+			// récuperer toute les location avec les champs sensors remplis
+			jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, LocationSensors.class, null, null, null);
+			response = MonitrackGuiUtil.sendRequest(jsonRequest);
+			locationSensors = (List<LocationSensors>) JsonUtil.deserializeObject(response);
+
+			List<Integer> sensorIds = new ArrayList();
+			List<SensorConfiguration> mySensors;
+			// on va affecter les sensorLocation aux locations
+			for(Location location : locations) {
+				mySensors = new ArrayList();
+				// parcourir tous les sensor_location et trouver le meme id location
+				for(LocationSensors l : locationSensors) {
+					// si on a trouvé, on cree le senseur
+					if(l.getIdLocation() == location.getIdLocation()) {
+						sensorIds.add(l.getIdSensor());
+						// retrouver le sensor qui correspond à l'id
+						for(SensorConfiguration sensor : sensors) {
+							if(sensor.getSensorId() == l.getIdSensor()) {
+								mySensors.add(sensor);
+								break;
+							}
+						}
+					}
+				}
+			}*/
+			
+			//Rectangle poly1 = new Rectangle(55, 268, 310, 340);
+			//Rectangle poly2 = new Rectangle(430, 268, 340, 170);
+			// TODO à supprimer
+			
+			Location location = locations.get(0);
+			locations.clear();
+			locations.add(location);
+			location.setX(55);
+			location.setY(268);
+			location.setWidth(310);
+			location.setHeight(340);
+			List<Sensor> ss = new ArrayList<>();
+			sensors.get(0).setSensorType(SensorType.ACCESS_CONTROL);
+			sensors.get(1).setSensorType(SensorType.DOOR);
+			ss.add(sensors.get(0));
+			ss.add(sensors.get(1));
+			locations.get(0).setSensors(ss);
+			
+
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
+
 	private static final long serialVersionUID = 7378770185814371929L;
 	private BufferedImage buffer = null;
 	Point p = null;
@@ -122,14 +179,46 @@ public class MapPage extends JPanel implements MouseListener {
 		p = e.getPoint();
 		testLocation(p, poly1, "mouseClicked - data 1");
 		testLocation(p, poly2, "mouseClicked - data 2");
-		
-		if (location(p, poly1) == true) {
-			//new SurfacePolygon(polygon1).setVisible(true);
-			System.out.println("Polygon1");
-			jop1 = new JOptionPane();
-			jop1.showMessageDialog(null, "<HTML><BR>capteurs<BR><HTML>"+ mylist+"Etat:", "Salle de repos_1", JOptionPane.INFORMATION_MESSAGE);
-			
+		Rectangle rect;
+		for(Location location : locations) {
+			rect = new Rectangle(location.getX(), location.getY(), location.getWidth(), location.getHeight());
+			if (location(p, rect) == true) {
+				// new SurfacePolygon(polygon1).setVisible(true);
+				System.out.println("Polygon1");
+				String text;
+				
+				SensorConfiguration sc;
+				// dessiner les senseur
+				for(Sensor sensor : location.getSensors()) {
+					
+					
+					sc = (SensorConfiguration) sensor;
+					text = sc.getSensorType().getFrenchLabel()+"\n";
+					text = text + sc.getSensorId()+"\n";
+
+					JLabel label = new JLabel(text);
+					setLayout(null);
+					add(label);
+					
+				}
+				
+				
+			//	jop1 = new JOptionPane();
+		//		jop1.showMessageDialog(null, "LISTE" + mylist.get(0) + "Etat:", "Salle de repos_1",
+			//			JOptionPane.INFORMATION_MESSAGE);
+				
+	
+			}
 		}
+		/*if (location(p, poly2) == true) {
+			// new SurfacePolygon(polygon1).setVisible(true);
+			System.out.println("Polygon2");
+			jop1 = new JOptionPane();
+			jop1.showMessageDialog(null, "Capteurs  " + "<br>" + mylist.get(1) + "Etat:", "Salle de repos_1",
+					JOptionPane.INFORMATION_MESSAGE);
+
+		}*/
+	//	}
 	}
 
 	@Override
@@ -169,21 +258,12 @@ public class MapPage extends JPanel implements MouseListener {
 		this.revalidate();
 		// g2.drawImage(buffer, 0, 0, buffer.getWidth(), buffer.getHeight(), this);
 		g2.setColor(Color.red);
-		g2.drawRect(poly1.x, poly1.y, poly1.width, poly1.height);
-		g2.drawRect(poly2.x, poly2.y, poly2.width, poly2.height);
+		drawLocations(g2);
+		//g2.drawRect(poly1.x, poly1.y, poly1.width, poly1.height);
+		//g2.drawRect(poly2.x, poly2.y, poly2.width, poly2.height);
 
 	}
 }
-
-
-
-
-
-
-
-
-
-
 
 //
 //// JComboBox<String> cbE = new JComboBox();
@@ -344,10 +424,12 @@ public class MapPage extends JPanel implements MouseListener {
 //// }
 ////
 //// /*
-//// * public void paintComponent(Graphics g){ super.paintComponent(g); Graphics2D
+//// * public void paintComponent(Graphics g){ super.paintComponent(g);
+// Graphics2D
 //// * g2 = (Graphics2D)g;
 //// *
-//// * int planWidth = planImage.getWidth(null); int panelWidth = this.getWidth();
+//// * int planWidth = planImage.getWidth(null); int panelWidth =
+// this.getWidth();
 //// * int leftOffset = (panelWidth - planWidth) / 2;
 //// *
 //// *

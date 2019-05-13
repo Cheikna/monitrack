@@ -1,6 +1,7 @@
 package com.monitrack.entity;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
@@ -17,17 +18,23 @@ public class Location {
 	// The size of the room
 	private int area;
 	private List<Sensor> sensors;
-	
+
+	int x;
+	int y;
+	int width;
+	int height;
+
 	public Location(String nameLocation, String center, int floor, String wing, int area) {
 		this(0, nameLocation, center, new Timestamp(System.currentTimeMillis()), 0, floor, wing, area);
-		
+
 	}
-	
+
 	public Location() {
 		super();
 	}
-	
-	public Location(int idLocation, String nameLocation, String center, Timestamp creationDate, int idSensor, int floor, String wing, int area) {
+
+	public Location(int idLocation, String nameLocation, String center, Timestamp creationDate, int idSensor, int floor,
+			String wing, int area) {
 		this.idLocation = idLocation;
 		this.nameLocation = nameLocation;
 		this.center = center;
@@ -36,104 +43,103 @@ public class Location {
 		this.floor = floor;
 		this.area = area;
 		this.wing = wing;
+		sensors = new ArrayList();
 	}
 
-	
 	@JsonGetter("id")
 	public int getIdLocation() {
 		return idLocation;
 	}
-	
+
 	@JsonSetter("id")
 	public void setIdLocation(int idLocation) {
 		this.idLocation = idLocation;
 	}
-	
+
 	@JsonGetter("name")
 	public String getNameLocation() {
 		return nameLocation;
 	}
-	
+
 	@JsonSetter("name")
 	public void setNameLocation(String nameLocation) {
 		this.nameLocation = nameLocation;
 	}
-	
+
 	@JsonGetter("center")
 	public String getCenter() {
 		return center;
 	}
-	
+
 	@JsonSetter("center")
 	public void setCenter(String center) {
 		this.center = center;
 	}
-	
+
 	@JsonGetter("id_sensor")
 	public int getIdSensor() {
 		return idSensor;
 	}
-	
+
 	@JsonSetter("id_sensor")
 	public void setIdSensor(int idSensor) {
 		this.idSensor = idSensor;
 	}
-	
+
 	@JsonGetter("creation_date")
 	public Timestamp getCreationDate() {
 		return creationDate;
 	}
-	
+
 	@JsonSetter("creation_date")
 	public void setCreationDate(Timestamp creationDate) {
 		this.creationDate = creationDate;
-	}	
-	
+	}
+
 	@JsonGetter("floor")
 	public int getFloor() {
 		return floor;
 	}
-	
+
 	@JsonSetter("floor")
 	public void setFloor(int floor) {
 		this.floor = floor;
 	}
-	
+
 	@JsonGetter("wing")
 	public String getWing() {
 		return wing;
 	}
-	
+
 	@JsonSetter("wing")
 	public void setWing(String wing) {
 		this.wing = wing;
 	}
-	
+
 	@JsonGetter("area")
 	public int getArea() {
 		return area;
 	}
-	
+
 	@JsonSetter("area")
 	public void setArea(int area) {
 		this.area = area;
 	}
-	
+
 	@Override
 	public String toString() {
-		return idLocation + "#" + nameLocation + " - créé le " + creationDate;		
+		return idLocation + "#" + nameLocation + " - créé le " + creationDate;
 	}
-	
+
 	public String toStringFull() {
-		return "- Emplacement n°" + idLocation + " :\n"
-			 + "      => Nom : " + nameLocation + "\n"
-			 + "      => Aile : " + wing + "\n"
-			 + "      => Etage : " + floor + "\n"
-			 + "      => Superficie : " + area + " m²\n"
-		     + "      => Date de création : " + creationDate + "\n";
+		return "- Emplacement n°" + idLocation + " :\n" + "      => Nom : " + nameLocation + "\n" + "      => Aile : "
+				+ wing + "\n" + "      => Etage : " + floor + "\n" + "      => Superficie : " + area + " m²\n"
+				+ "      => Date de création : " + creationDate + "\n";
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -147,7 +153,10 @@ public class Location {
 		result = prime * result + ((nameLocation == null) ? 0 : nameLocation.hashCode());
 		return result;
 	}
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -190,12 +199,44 @@ public class Location {
 	}
 
 	/**
-	 * @param sensors the sensors to set
+	 * @param sensors
+	 *            the sensors to set
 	 */
 	@JsonSetter("sensors")
 	public void setSensors(List<Sensor> sensors) {
 		this.sensors = sensors;
 	}
 
-	
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
 }
