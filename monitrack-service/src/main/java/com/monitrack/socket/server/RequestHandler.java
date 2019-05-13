@@ -50,6 +50,7 @@ public class RequestHandler implements Runnable {
 	private ObjectMapper mapper;
 	private AlertCenter alertCenter;
 	private final int oneSecondMs = DateTimeConstants.MILLIS_PER_SECOND;
+	private final String encodageType = Util.getPropertyValueFromPropertiesFile("encodage_type");
 
 	public RequestHandler(Socket socket, Connection connection, AlertCenter alertCenter) {
 		this.socket = socket;
@@ -63,8 +64,8 @@ public class RequestHandler implements Runnable {
 
 		try 
 		{		
-			readFromClient = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
-			writeToClient = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true);
+			readFromClient = new BufferedReader(new InputStreamReader(socket.getInputStream(), encodageType));
+			writeToClient = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), encodageType), true);
 			
 			String[] ipAddressAndVersion = readFromClient.readLine().split(Util.getVersionSpliter());
 
@@ -87,14 +88,15 @@ public class RequestHandler implements Runnable {
 			//Handle client request if he has the good version of the application
 			String requestOfClient = readFromClient.readLine();
 			String reservedConnectionCode = ConnectionState.RESERVED_CONNECTION.getCode().toString();
+			String ipAddress = ipAddressAndVersion[0];
 			
 			//Checks if the client (= super user) wants to reserve the connection
 			if(requestOfClient.trim().equalsIgnoreCase(reservedConnectionCode))
 			{
-				int reservedTimeInMilliseconds = NumberUtils.toInt(Util.getPropertyValueFromPropertiesFile("reserved_time_ms"), 17000);
+				int reservedTimeInMilliseconds = NumberUtils.toInt(Util.getPropertyValueFromPropertiesFile("reserved_time_ms"));
 				String reservedTime = (new Integer(reservedTimeInMilliseconds / oneSecondMs)).toString();
 				log.info("A client has reserved a connection for " + reservedTime + " sec\n");
-				String message = "Votre connexion ne sera pas utilisable par les autres durant " + reservedTime + " sec-" + reservedTime;
+				String message = reservedTime + " sec-" + reservedTime;
 				writeToClient.println(message);
 				//Sleeps the Thread in order to make the connection no accessible by another person
 				Thread.sleep(reservedTimeInMilliseconds);
@@ -107,9 +109,9 @@ public class RequestHandler implements Runnable {
 
 				if(requestSender == RequestSender.CLIENT) {
 					//log.info("Request received from the client :\n" + JsonUtil.indentJsonOutput(requestOfClient) + "\n");
-					log.info("Request received from the client :\n" + requestOfClient + "\n");
+					log.info("Request received from the client "+ipAddress+":\n" + requestOfClient + "\n");
 					String responseToClient = executeClientRequest(json);
-					log.info("Response to the client :\n" + requestOfClient + "\n");
+					log.info("Response to the client "+ipAddress+" :\n" + responseToClient + "\n");
 					//log.info("Response to the client :\n" + JsonUtil.indentJsonOutput(responseToClient) + "\n");
 					writeToClient.println(responseToClient);						
 				}
@@ -145,11 +147,7 @@ public class RequestHandler implements Runnable {
 		}
 	}
 
-	/**
-	 * 
-	 * @param json
-	 * @return
-	 */
+	
 	@SuppressWarnings("finally")
 	public String executeClientRequest(JsonNode json) 
 	{		
@@ -207,7 +205,7 @@ public class RequestHandler implements Runnable {
 	private Object getObjectFromJson(JsonNode json)
 	{
 		JsonNode serializedObjectNode = json.get(JSONField.SERIALIZED_OBJECT.getLabel());
-		if(serializedObjectNode != null)
+		if(!serializedObjectNode.isNull())
 			return JsonUtil.deserializeObject(serializedObjectNode.toString());
 		return null;
 	}

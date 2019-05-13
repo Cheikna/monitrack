@@ -29,6 +29,8 @@ public abstract class Sensor {
 		this.hardwareVersion = hardwareVersion;
 		this.softwareVersion = softwareVersion;
 	}
+	
+	public Sensor() {}
 
 	public Integer getSensorId() {
 		return sensorId;
@@ -77,5 +79,35 @@ public abstract class Sensor {
 	public void setSoftwareVersion(Float softwareVersion) {
 		this.softwareVersion = softwareVersion;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((sensorId == null) ? 0 : sensorId.hashCode());
+		result = prime * result + ((sensorType == null) ? 0 : sensorType.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Sensor other = (Sensor) obj;
+		if (sensorId == null) {
+			if (other.sensorId != null)
+				return false;
+		} else if (!sensorId.equals(other.sensorId))
+			return false;
+		if (sensorType != other.sensorType)
+			return false;
+		return true;
+	}
+	
+	
 
 }

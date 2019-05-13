@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
+import java.sql.Types;
 import java.util.Arrays;
 
 import org.slf4j.Logger;
@@ -21,8 +23,6 @@ public class SensorConfigurationDAO extends DAO<SensorConfiguration> {
 
 	private static final Logger log = LoggerFactory.getLogger(SensorConfigurationDAO.class);
 	
-	//Cannot use the super "tableName" because we need to be a static
-	// We must have this static attribute
 	private static final String TABLE_NAME = "SENSOR_CONFIGURATION";
 
 	public SensorConfigurationDAO(Connection connection) {
@@ -46,11 +46,32 @@ public class SensorConfigurationDAO extends DAO<SensorConfiguration> {
 									+ "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?) ", Statement.RETURN_GENERATED_KEYS);
 					preparedStatement.setInt(1, obj.getSensorId());
 					preparedStatement.setString(2, obj.getSensorActivity().toString());
-					preparedStatement.setInt(3, obj.getLocationId());
+					Integer locationId = obj.getLocationId();
+					if(locationId != null)
+						preparedStatement.setInt(3, locationId);
+					else
+						preparedStatement.setNull(3, Types.INTEGER);
+						
 					preparedStatement.setString(4, obj.getIpAddress());
-					preparedStatement.setTime(5, obj.getBeginTime());
-					preparedStatement.setTime(6, obj.getEndTime());
-					preparedStatement.setFloat(7, obj.getCheckFrequency());
+					Time time = obj.getBeginTime();
+					if(time != null)
+						preparedStatement.setTime(5, time);
+					else
+						preparedStatement.setNull(5, Types.TIME);
+
+					time = obj.getEndTime();
+					if(time != null)
+						preparedStatement.setTime(6, time);
+					else
+						preparedStatement.setNull(6, Types.TIME);
+					
+					Float frequency = obj.getCheckFrequency();
+					if(frequency != null) {
+						preparedStatement.setFloat(7, frequency);
+					}else {
+						preparedStatement.setNull(7, Types.FLOAT);
+					}
+					
 					preparedStatement.setString(8, obj.getMeasurementUnit());
 					preparedStatement.setFloat(9, obj.getMinDangerThreshold());
 					preparedStatement.setFloat(10, obj.getMaxDangerThreshold());
@@ -135,7 +156,7 @@ public class SensorConfigurationDAO extends DAO<SensorConfiguration> {
 			sensorConfiguration = new SensorConfiguration(rs.getInt("ID_SENSOR_CONFIGURATION"), rs.getInt("ID_SENSOR"), SensorActivity.getSensorActivity(rs.getString("ACTIVITY")), SensorType.getSensorType(rs.getString("TYPE")),
 					SensorSensitivity.valueOf(rs.getString("SENSITIVITY")), rs.getInt("ID_LOCATION"), rs.getString("IP_ADDRESS"),
 					rs.getString("MAC_ADDRESS"),rs.getString("SERIAL_NUMBER"), rs.getFloat("HARDWARE_VERSION"),rs.getFloat("SOFTWARE_VERSION"),
-					rs.getTimestamp("CREATION_DATE"), rs.getTimestamp("LAST_MESSAGE_DATE"), rs.getTimestamp("LAST_CONFIGURATION_DATE"),
+					rs.getTimestamp("CREATION_DATE"), rs.getTimestamp("LAST_CONFIGURATION_DATE"),
 					rs.getTime("START_ACTIVITY_TIME"),rs.getTime("END_ACTIVITY_TIME"),rs.getFloat("CHECK_FREQUENCY"),
 					rs.getString("MEASUREMENT_UNIT"),rs.getFloat("MIN_DANGER_THRESHOLD")
 					,rs.getFloat("MAX_DANGER_THRESHOLD"),rs.getFloat("POSITION_X"),rs.getFloat("POSITION_Y"));

@@ -29,7 +29,7 @@ public class PersonDAO extends DAO<Person>{
 			if (connection != null) {
 				try {
 					PreparedStatement preparedStatement = connection.prepareStatement(
-							"INSERT INTO PERSON (LAST_NAME, FIRST_NAME, ROLE, CODE) "
+							"INSERT INTO PERSON (LAST_NAME, FIRST_NAME, ROLE, PASSWORD) "
 							+ "VALUES (? , ?, ? , ?)", Statement.RETURN_GENERATED_KEYS);
 					preparedStatement.setString(1, person.getLastName());
 					preparedStatement.setString(2, person.getFirstName());

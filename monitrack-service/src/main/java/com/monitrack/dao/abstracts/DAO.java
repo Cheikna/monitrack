@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.math.NumberUtils;
@@ -15,13 +16,13 @@ import com.monitrack.dao.implementation.SensorConfigurationDAO;
 public abstract class DAO<T> {
 	
 	private static final Logger log = LoggerFactory.getLogger(DAO.class);
-	protected static String tableName;
+	protected String tableName;
 	protected final Object lock = new Object();
 	protected Connection connection;	
 
 	public DAO(Connection connection, String tableName) {
 		this.connection = connection;
-		DAO.tableName = tableName;
+		this.tableName = tableName;
 	}
 	
 	/**
@@ -49,17 +50,18 @@ public abstract class DAO<T> {
 	 * @param values : the values required for the fields
 	 * @return
 	 */
-	public synchronized List<T> find(List<String> fields, List<String> values){
+	public synchronized List<T> find(List<String> fields, List<String> values, List<String> tests){
 		List<T> elements = new ArrayList<T>();
 		if (connection != null) {
 			try {
 				String sql = "SELECT * FROM " + tableName;
-				if(tableName.equalsIgnoreCase(SensorConfigurationDAO.tableName))
+				boolean isInnerJoin = false;
+				if(tableName.equalsIgnoreCase(SensorConfigurationDAO.getFinalTableName()))
 				{
-					sql = " table1 inner join SENSOR table2 on table1.ID_SENSOR = table2.ID_SENSOR";
+					isInnerJoin = true;
+					sql += " table1 inner join SENSOR table2 on table1.ID_SENSOR = table2.ID_SENSOR";
 				}
-				sql += getRequestFilters(fields, values);
-				
+				sql += getRequestFilters(fields, values, tests, isInnerJoin);
 				PreparedStatement preparedStatement = connection.prepareStatement(sql);
 				ResultSet rs = preparedStatement.executeQuery();
 				T element;
@@ -70,7 +72,7 @@ public abstract class DAO<T> {
 					}
 				}
 			} catch (Exception e) {
-				log.error("An error occurred when finding all of the persons : " + e.getMessage());
+				log.error("An error occurred when finding all of " + tableName + " : " + e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -84,7 +86,7 @@ public abstract class DAO<T> {
 	 */
 	protected String addNecessaryQuotes(String value)
 	{
-		if(!NumberUtils.isParsable(value))
+		if(!NumberUtils.isParsable(value) && !value.contains("cast"))
 			value = "'" + value + "'";
 		return value;
 	}
@@ -96,7 +98,7 @@ public abstract class DAO<T> {
 	 * @param values
 	 * @return
 	 */
-	protected String getRequestFilters(List<String> fields, List<String> values)
+	protected String getRequestFilters(List<String> fields, List<String> values, List<String> tests, boolean isInnerJoin)
 	{
 		String sql = "";
 		
@@ -105,17 +107,24 @@ public abstract class DAO<T> {
 			int fieldsListSize = fields.size();
 			if(fieldsListSize >= 1 && fieldsListSize == values.size())
 			{
+				if(tests == null || tests.size() != fieldsListSize) {
+					//log.info("All elements of the tests list will be replaced by \"=\" because the tests list has not the same size than the values and fields list");
+					String[] testsArray = new String[fieldsListSize];
+					Arrays.fill(testsArray, "=");
+					tests = Arrays.asList(testsArray);
+				}
+				
 				sql += " WHERE ";
 				int i;
-				
-				for(i = 0; i < fieldsListSize - 1; i++)
-					sql += fields.get(i) + "=" + addNecessaryQuotes(values.get(i)) + " AND ";
-				
-				sql += fields.get(i) + "= " + addNecessaryQuotes(values.get(i));
-			}
-			
+				String alias = (isInnerJoin) ? "table1." : "";
+				for(i = 0; i < fieldsListSize; i++) {
+					String fieldName = fields.get(i);
+					fieldName = (fieldName.equalsIgnoreCase("ID_SENSOR")) ? alias + fieldName : fieldName;
+					sql += fieldName + tests.get(i) + addNecessaryQuotes(values.get(i));
+					sql += (i < fieldsListSize - 1) ? " AND " : "";
+				}				
+			}			
 		}
-		
 		return sql;
 	}
 	

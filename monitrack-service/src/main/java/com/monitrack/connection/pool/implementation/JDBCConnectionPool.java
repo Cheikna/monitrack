@@ -65,7 +65,7 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 			Connection connection = connections.lastElement();
 	        connections.removeElement(connection);
 			//log.info("A connection is being retrieved from the connection pool.");
-			displayConnectionPoolState();
+			//displayConnectionPoolState();
 	        return connection; 
 		}
 		else
@@ -80,7 +80,7 @@ public class JDBCConnectionPool implements IJDBCConnectionPool {
 			connections.addElement(connection);	
 			//log.info("A connection is being added to the connection pool.");			
 		}
-		displayConnectionPoolState();
+		//displayConnectionPoolState();
 		
 	}
 
