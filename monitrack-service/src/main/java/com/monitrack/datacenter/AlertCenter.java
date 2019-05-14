@@ -283,7 +283,7 @@ public class AlertCenter {
 				System.out.format(horizontalBorder);
 				System.out.println(message);
 			} else {
-				log.error("The sensor n°" + sensorId + " sent a message but it should not !");
+				log.error("The sensor n°" + sensorId + " sent a message but it should not ! Maybe this sensor does not exist");
 			}
 
 		} catch (Exception e) {
