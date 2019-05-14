@@ -97,8 +97,13 @@ public class ConfigurationTabListener implements ActionListener {
 	private void configureSensor() throws NoAvailableConnectionException, IOException, DeprecatedVersionException
 	{
 	
+		
 		SensorConfiguration sensorToConfigure = this.sensor;
 
+		if(this.sensor.getSensorType().getIsGapAcceptable()){
+			configurationTab.getModifiedMaxDangerThresholdTextField().setEnabled(false);
+			configurationTab.getModifiedMinDangerThresholdTextField().setEnabled(false);
+		}
 		configurationTab.getOldMaxDangerThresholdTextField().setText(String.valueOf(sensorToConfigure.getMaxDangerThreshold()));
 		configurationTab.getOldMinDangerThresholdTextField().setText(String.valueOf(sensorToConfigure.getMinDangerThreshold()));
 		configurationTab.getOldActivityTextField().setText(String.valueOf(sensorToConfigure.getSensorActivity()));	
@@ -120,16 +125,20 @@ public class ConfigurationTabListener implements ActionListener {
 		if (maxDangerThreshold.length() <= 0) {
 			maxDangerThreshold = configurationTab.getOldMaxDangerThresholdTextField().getText().trim();
 		}
-		float maxDanger = Float.parseFloat(maxDangerThreshold);
-		
+		float maxDanger = NumberUtils.toFloat(maxDangerThreshold,-5000);
+		if(maxDanger==-5000){
+			errorMessage+="Le format que vous avez rentré ne correspond pas à un float";
+		}
 		
 		
 		String minDangerThreshold = configurationTab.getModifiedMinDangerThresholdTextField().getText().trim();
 		if (minDangerThreshold.length() <= 0) {
 			minDangerThreshold = configurationTab.getOldMinDangerThresholdTextField().getText().trim();
 		}
-		float minDanger = Float.parseFloat(minDangerThreshold);
-		
+		float minDanger = NumberUtils.toFloat(minDangerThreshold,-5000);
+		if(minDanger==-5000){
+			errorMessage+="Le format que vous avez rentré ne correspond pas à un float";
+		}
 		
 		
 		String sensorActivity = configurationTab.getModifiedCaptorStatusCombobox().getSelectedItem().toString();
@@ -152,9 +161,11 @@ public class ConfigurationTabListener implements ActionListener {
 		if (softwareVersion.length() <= 0) {
 			softwareVersion = configurationTab.getOldVersionTextField().getText().trim();
 		}
-		float softVer = Float.parseFloat(softwareVersion);
+		float softVer = NumberUtils.toFloat(softwareVersion,-5000);
 		if (softVer>50 || softVer <=0) {
 			errorMessage += "Cette version n''existe pas";
+		} else if(softVer==-5000){
+			errorMessage+="Le format que vous avez rentré ne correspond pas à un float";
 		}
 		
 		
@@ -163,7 +174,12 @@ public class ConfigurationTabListener implements ActionListener {
 		if (checkFrequency.length() <= 0) {
 			checkFrequency = configurationTab.getOldFrequencyTextField().getText().trim();
 		}
-		float frequency = Float.parseFloat(checkFrequency);
+		float frequency = NumberUtils.toFloat(checkFrequency,-5000);
+		if(frequency<1 && frequency!=-5000){
+			errorMessage+="La fréquence doit être supérieure à 1";
+		} else if(frequency==-5000){
+			errorMessage+="Le format que vous avez rentré ne correspond pas à un float";
+		}
 		
 		
 		
@@ -172,7 +188,7 @@ public class ConfigurationTabListener implements ActionListener {
 			beginTime = configurationTab.getOldBeginTimeTextField().getText().trim();
 		}
 		Time beginT = null;
-		//if() {
+		
 			beginT = Time.valueOf(beginTime);
 		//}else {
 		//	errorMessage+="L'heure de début d'activité ne respecte pas le format de temps";
