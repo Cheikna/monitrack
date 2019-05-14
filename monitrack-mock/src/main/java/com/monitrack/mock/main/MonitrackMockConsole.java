@@ -159,88 +159,7 @@ public class MonitrackMockConsole {
 		currentLocationId = 0;
 		numberOfLocations = locations.size();
 	}
-
-//	private boolean isSendingMessage(int sensorId) {
-//		SensorSignal signal = sensorSignalMap.get(sensorId);
-//		if(signal == null)
-//			return false;
-//		return signal.isSendMessage();
-//	}
-//
-//	private void startStopSendingMessage(boolean sendSignal, Boolean isNormalMessage) {
-//		//Show all sensors who are sending message
-//		String action = "";
-//		if(sendSignal) {			
-//			action = "Enter the id of the sensor which will send message (or enter 'all' to select all of them) :";
-//		}
-//		else {
-//			action = "Enter the id of the sensor which will stop to send message (or enter 'all' to select all of them) :";			
-//		}
-//		System.out.print(action);
-//		String choice = sc.nextLine();
-//		if(choice.equalsIgnoreCase("all")) {
-//			for(Map.Entry<Integer, SensorSignal> entry : sensorSignalMap.entrySet()) {
-//				entry.getValue().setSendMessage(sendSignal);
-//			}
-//		}
-//		else {
-//			SensorConfiguration sensor = null;
-//			boolean correct = true;
-//			do {
-//				int id = NumberUtils.toInt(choice, defaultNumber);
-//				if(id == defaultNumber) {
-//					System.out.println("You did not write a correct number");
-//					correct = false;
-//				}
-//				else
-//					correct = true;
-//				if(!correct) {
-//					System.out.print("Enter the id [exit] : ");
-//					choice = sc.nextLine();
-//				}
-//
-//			} while(!correct && !choice.equalsIgnoreCase("exit"));
-//
-//			if(correct) {
-//				String action2 = "Enter the threshold : ";
-//				float minThreshold = sensor.getMinDangerThreshold();
-//				if(sensor.getSensorType() == SensorType.ACCESS_CONTROL) {	
-//					isNormalMessage = null;
-//					action2 = "Enter the password to enter in the room : ";
-//					do {
-//						System.out.print(action2);
-//						minThreshold = NumberUtils.toFloat(sc.nextLine(), defaultNumber);	
-//					}while(minThreshold == defaultNumber);
-//				}
-//
-//
-//				SensorSignal signal = new SensorSignal(sensor.getSensorConfigurationId(), 
-//						minThreshold,
-//						sensor.getMaxDangerThreshold(),
-//						sensor.getCheckFrequency(), isNormalMessage);
-//				signal.setSendMessage(sendSignal);
-//				setSignal(signal, sensor.getSensorType(), minThreshold);
-//			}
-//		}
-//
-//	}
-
-//	private void sendIncorrectPassword() {
-//		System.out.print("Enter the ID of a control access sensor : ");
-//		int id = NumberUtils.toInt(sc.nextLine(), defaultNumber);
-//		SensorConfiguration sensor = findSensorById(id);
-//		if(sensor != null && sensor.getSensorType() == SensorType.ACCESS_CONTROL) {
-//			int maxTries = SensorSensitivity.getNumberOfMessages(sensor.getSensorSensitivity()) + 2;
-//			for(int i = 0; i < maxTries; i++) {
-//				sendMessage(new Message(id, 999999f));
-//			}
-//		}
-//		else {
-//			System.out.println("The sensor does not exist or it is not an access control sensor");
-//		}
-//	}
-
-
+	
 	private void setSignal(SensorSignal newSignal, SensorType type, Float code) {
 		int id = newSignal.getSensorId();
 		SensorSignal signal = null;
@@ -257,52 +176,6 @@ public class MonitrackMockConsole {
 			thread.start();
 		}	
 	}
-
-//	private void sendMessageForSensorsOfALocation() {
-//		System.out.println();
-//		List<Location> locations = getLocations();
-//		Util.displayListElements(locations, "");
-//		boolean isCorrect = true;
-//		Integer locationId = null;
-//		do {
-//			isCorrect = true;
-//			System.out.print("Enter the id of the location to send danger message [exit] : ");
-//			String str = sc.nextLine();
-//			if(!str.equalsIgnoreCase("exit")) {
-//				locationId = NumberUtils.toInt(str, defaultNumber);
-//				if(locationId == defaultNumber)
-//					isCorrect = false;
-//				else {
-//					boolean isIdExists = false;
-//					for(Location loc : locations) {
-//						if(loc.getIdLocation() == locationId) {
-//							isIdExists = true;
-//							break;
-//						}
-//					}
-//
-//					if(!isIdExists) {
-//						System.out.println("The location with the id n°" + locationId + " does not exist");
-//						isCorrect = false;
-//					}
-//					else {
-//						System.out.println("1. Send danger message");
-//						System.out.println("2. Send normal message");
-//						choice = chooseAction(1, 2);
-//						SensorSignal signal = null;
-//						Boolean isNormalMessage = null;
-//						if(choice == 1) {
-//							isNormalMessage = false;
-//						} else if(choice == 2) {
-//							isNormalMessage = true;
-//						}
-//					}
-//
-//				}
-//			}
-//
-//		}while(!isCorrect);
-//	}
 
 	private void generateRandomSensorsConfiguration(boolean isConfigured)
 	{
