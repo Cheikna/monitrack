@@ -40,7 +40,7 @@ public class CommandLineSensor {
 	public double provisional(int year)
 	{
 		double result = 0;
-		double nbSensorForPeriod = 0;
+		double nbSensorForPeriod = 1;
 		result = (this.quantity*this.sensor.getSensorInterviewPrice()) * year;
 		nbSensorForPeriod = this.quantity*(year/this.sensor.getLifeTime());
 		result += (nbSensorForPeriod * this.sensor.getSensorPrice());

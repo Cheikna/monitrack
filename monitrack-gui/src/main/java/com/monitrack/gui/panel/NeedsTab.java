@@ -848,7 +848,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 				" - Durée de vie moyenne : "+s.getLifeTime());
 	}
 	
-	/*public void getGlassBreakageSensorFromBuilderNewHome()
+	public void getGlassBreakageSensorFromBuilderNewHome()
 	{
 		SensorShop s = getBestSensor(SensorType.GLASS_BREAKAGE);
 		int quantity = 0;
@@ -864,7 +864,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
 				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
 				" - Durée de vie moyenne : "+s.getLifeTime());
-	}*/
+	}
 	
 	/*public void getAcousticSensorFromBuilderNewHome()
 	{
@@ -1072,7 +1072,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 				" - Durée de vie moyenne : "+s.getLifeTime());
 	}
 	
-	/*public void getGlassBreakageSensorFromBuilderGrowing()
+	public void getGlassBreakageSensorFromBuilderGrowing()
 	{
 		SensorShop s = getBestSensor(SensorType.GLASS_BREAKAGE);
 		int quantity = 0;
@@ -1088,7 +1088,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
 				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
 				" - Durée de vie moyenne : "+s.getLifeTime());
-	}*/
+	}
 	
 	/*public void getAcousticSensorFromBuilderGrowing()
 	{
@@ -1177,7 +1177,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 		SensorShop bestResult = null;
 		for(SensorShop s : shops)
 		{
-			if(s.getSensorType() == type && s.getEnergy() == Energy.A_PLUS_PLUS && s.getLifeTime() > 4)
+			if(s.getSensorType() == type && s.getEnergy() == Energy.A_PLUS_PLUS && s.getLifeTime() > 1)
 			{
 				if(bestResult == null || s.getSensorPrice() < bestResult.getSensorPrice())
 				{
