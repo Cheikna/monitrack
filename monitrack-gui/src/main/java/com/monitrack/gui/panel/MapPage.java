@@ -16,6 +16,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -40,6 +41,7 @@ import com.monitrack.enumeration.SensorType;
 import com.monitrack.shared.MonitrackGuiUtil;
 //import com.monitrack.dao.implementation.MapDAO;
 import com.monitrack.util.JsonUtil;
+import com.monitrack.util.Util;
 
 public class MapPage extends JPanel implements MouseListener {
 
@@ -71,8 +73,9 @@ public class MapPage extends JPanel implements MouseListener {
 		Float y = location.getPositionY();
 		Float width = location.getWidth();
 		Float height = location.getHeight();
-		g2.drawRect(x.intValue(), y.intValue(), width.intValue(),height.intValue() );
-
+		//g2.drawRect(x.intValue() + 50, y.intValue() + 80, width.intValue(),height.intValue() );
+		g2.drawRect(80, 395, 440, 490);
+		g2.drawRect(660, 395, 500, 250);
 	}
 
 	public MapPage() {
@@ -115,11 +118,11 @@ public class MapPage extends JPanel implements MouseListener {
 			List<Integer> sensorIds = new ArrayList();
 			List<Sensor> mySensors;
 			int[][] poses = {{55, 268, 310, 340}, {430, 268, 340, 170}};
-			Location l1 = locations.get(0);
+			/*Location l1 = locations.get(0);
 			Location l2 = locations.get(1);
 			locations.clear();
 			locations.add(l1);
-			locations.add(l2);
+			locations.add(l2);*/
 			int i = 0;
 			// on va affecter les sensorLocation aux locations
 			for(Location location : locations) {
@@ -240,6 +243,14 @@ public class MapPage extends JPanel implements MouseListener {
 		//testLocation(p, poly1, "mouseClicked - data 1");
 		//testLocation(p, poly2, "mouseClicked - data 2");
 		Rectangle rect;
+		
+		Location loc = new Location(0, "", "", Util.getCurrentTimestamp(), 0, 1, "", 255, 80f,395f, 440,490f);
+		loc.setSensors(new ArrayList<>());
+		locations.add(loc);
+		Location loc2 = new Location(0, "", "", Util.getCurrentTimestamp(), 0, 1, "", 255,660, 395, 500, 250);;
+		loc2.setSensors(new ArrayList<>());
+		locations.add(loc2);
+		
 		for(Location location : locations) {
 			Float x = location.getPositionX();
 			Float y = location.getPositionY();
@@ -250,7 +261,7 @@ public class MapPage extends JPanel implements MouseListener {
 				showSensors(location);
 				
 				JButton jButton = new JButton("Ajouter");
-				jButton.setBounds(x.intValue(), y.intValue(), 100, 50);
+				jButton.setBounds(0, 0, 100, 50);
 				add(jButton);
 				final MapPage mapPage = this;
 				// on a cliquer le bouton ajouter du sensor
@@ -321,8 +332,9 @@ public class MapPage extends JPanel implements MouseListener {
 		// g2.drawImage(buffer, 0, 0, buffer.getWidth(), buffer.getHeight(), this);
 		g2.setColor(Color.red);
 		setLayout(null);
-		drawLocations(g2);
-
+		//drawLocations(g2);
+		g2.drawRect(80, 395, 440, 490);
+		g2.drawRect(660, 395, 500, 250);
 		//g2.drawRect(poly1.x, poly1.y, poly1.width, poly1.height);
 		//g2.drawRect(poly2.x, poly2.y, poly2.width, poly2.height);
 
