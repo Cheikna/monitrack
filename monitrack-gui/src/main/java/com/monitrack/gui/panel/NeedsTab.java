@@ -36,18 +36,18 @@ import javax.swing.JCheckBox;
 
 public class NeedsTab extends JPanel implements ActionListener{
 
-	
 
-//	 /$$      /$$  /$$$$$$  /$$   /$$ /$$$$$$ /$$$$$$$$ /$$$$$$$   /$$$$$$   /$$$$$$  /$$   /$$        /$$$$$ /$$$$$$$$ /$$$$$$$$
-//	| $$$    /$$$ /$$__  $$| $$$ | $$|_  $$_/|__  $$__/| $$__  $$ /$$__  $$ /$$__  $$| $$  /$$/       |__  $$| $$_____/| $$_____/
-//	| $$$$  /$$$$| $$  \ $$| $$$$| $$  | $$     | $$   | $$  \ $$| $$  \ $$| $$  \__/| $$ /$$/           | $$| $$      | $$      
-//	| $$ $$/$$ $$| $$  | $$| $$ $$ $$  | $$     | $$   | $$$$$$$/| $$$$$$$$| $$      | $$$$$/            | $$| $$$$$   | $$$$$   
-//	| $$  $$$| $$| $$  | $$| $$  $$$$  | $$     | $$   | $$__  $$| $$__  $$| $$      | $$  $$       /$$  | $$| $$__/   | $$__/   
-//	| $$\  $ | $$| $$  | $$| $$\  $$$  | $$     | $$   | $$  \ $$| $$  | $$| $$    $$| $$\  $$     | $$  | $$| $$      | $$      
-//	| $$ \/  | $$|  $$$$$$/| $$ \  $$ /$$$$$$   | $$   | $$  | $$| $$  | $$|  $$$$$$/| $$ \  $$ /$$|  $$$$$$/| $$$$$$$$| $$$$$$$$
-//	|__/     |__/ \______/ |__/  \__/|______/   |__/   |__/  |__/|__/  |__/ \______/ |__/  \__/|__/ \______/ |________/|________/
-	                                                                                                                             	                                                                                                                             
-	                                                                                                                            
+
+	//	 /$$      /$$  /$$$$$$  /$$   /$$ /$$$$$$ /$$$$$$$$ /$$$$$$$   /$$$$$$   /$$$$$$  /$$   /$$        /$$$$$ /$$$$$$$$ /$$$$$$$$
+	//	| $$$    /$$$ /$$__  $$| $$$ | $$|_  $$_/|__  $$__/| $$__  $$ /$$__  $$ /$$__  $$| $$  /$$/       |__  $$| $$_____/| $$_____/
+	//	| $$$$  /$$$$| $$  \ $$| $$$$| $$  | $$     | $$   | $$  \ $$| $$  \ $$| $$  \__/| $$ /$$/           | $$| $$      | $$      
+	//	| $$ $$/$$ $$| $$  | $$| $$ $$ $$  | $$     | $$   | $$$$$$$/| $$$$$$$$| $$      | $$$$$/            | $$| $$$$$   | $$$$$   
+	//	| $$  $$$| $$| $$  | $$| $$  $$$$  | $$     | $$   | $$__  $$| $$__  $$| $$      | $$  $$       /$$  | $$| $$__/   | $$__/   
+	//	| $$\  $ | $$| $$  | $$| $$\  $$$  | $$     | $$   | $$  \ $$| $$  | $$| $$    $$| $$\  $$     | $$  | $$| $$      | $$      
+	//	| $$ \/  | $$|  $$$$$$/| $$ \  $$ /$$$$$$   | $$   | $$  | $$| $$  | $$|  $$$$$$/| $$ \  $$ /$$|  $$$$$$/| $$$$$$$$| $$$$$$$$
+	//	|__/     |__/ \______/ |__/  \__/|______/   |__/   |__/  |__/|__/  |__/ \______/ |__/  \__/|__/ \______/ |________/|________/
+
+
 	private static final long serialVersionUID = 1L;
 	//COMBOBOX
 	private JComboBox<String> actionsCombobox;
@@ -122,11 +122,11 @@ public class NeedsTab extends JPanel implements ActionListener{
 	private BasketSensor basketSensorShopFromBuilderNewHome   						= new BasketSensor();
 	private DefaultListModel<String>dlmBasketSensorShopLinesNewHome 		= new DefaultListModel<String>();
 	private JList<String>  			jlBasketSensorShopLinesNewHome			= new JList<String>(dlmBasketSensorShopLinesNewHome);
-	
-	
-	
-	
-	
+
+
+
+
+
 	//PANEL GROWING
 	private JPanel jpGrowing;
 	private JLabel jlTitleGrowing;
@@ -134,7 +134,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 
 	//LEFT PANEL PRODUCT GROWING
 	private JPanel productPaneGrowing;
-	
+
 	//PARTS GROWING
 	private JLabel jlPartsNameGrowing;
 	private JTextField jtfPartsNameGrowing;
@@ -189,8 +189,8 @@ public class NeedsTab extends JPanel implements ActionListener{
 
 
 
-	
-	
+
+
 	//PANEL ADDSENSOR
 	private JLabel jlbTitleAddSensor;
 	private JPanel jpAddSensor;
@@ -204,7 +204,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 	private JButton jbOneMoreAddSensor;
 	private JButton jbOneLessAddSensor;
 	private JButton jbDeleteAddSensor;
-	
+
 	//Provisionnal maker
 	private JLabel jlbProvisionnalYearAddSensor;
 	private JTextField jtfProvisionnalAddSensor;
@@ -224,7 +224,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 	private BasketSensor 					basketAddSensor				= new BasketSensor();
 	private DefaultListModel<String>dlmBasketLineAddSensor 		= new DefaultListModel<String>();
 	private JList<String>  			jlBasketLineAddSensor		= new JList<String>(dlmBasketLineAddSensor);
-	
+
 
 
 	/**
@@ -264,8 +264,8 @@ public class NeedsTab extends JPanel implements ActionListener{
 		cardPanel.setLayout(cards);
 		add(cardPanel, BorderLayout.CENTER);
 
-		
-		
+
+
 		//NEW HOME PANEL SETTINGS AND CONFIGURATION - PRODUCTS AND BASKET TEMPLATE
 		jpNewHome = new JPanel();
 		jpNewHome.setLayout(null);
@@ -394,40 +394,40 @@ public class NeedsTab extends JPanel implements ActionListener{
 		jlbTotalInterviewCostOfSensorShopBasketNewHome.setFont(new Font("Calibri", Font.PLAIN, 15));
 		jlbTotalInterviewCostOfSensorShopBasketNewHome.setBounds(31, 500, 471, 31);
 		jpNewHome.add(jlbTotalInterviewCostOfSensorShopBasketNewHome);
-		
+
 		jbClearSensorShopNewHome = new JButton("Vider la liste de capteurs");
 		jbClearSensorShopNewHome.setFont(new Font("Calibri", Font.PLAIN, 15));
 		jbClearSensorShopNewHome.setBounds(630, 470, 196, 31);
 		jbClearSensorShopNewHome.addActionListener(this);
 		jpNewHome.add(jbClearSensorShopNewHome);
-		
+
 		jlProvisionnalNewHome = new JLabel("Prévisions des coûts sur ");
 		jlProvisionnalNewHome.setFont(new Font("Calibri", Font.PLAIN, 15));
 		jlProvisionnalNewHome.setBounds(20, 534, 168, 43);
 		jpNewHome.add(jlProvisionnalNewHome);
-		
+
 		jtfYearsProvisionnalNewHome = new JTextField();
 		jtfYearsProvisionnalNewHome.setToolTipText("Entrez un nombre d'années (entier - ex : 5 ans)");
 		jtfYearsProvisionnalNewHome.setColumns(10);
 		jtfYearsProvisionnalNewHome.setBounds(189, 539, 66, 32);
 		jpNewHome.add(jtfYearsProvisionnalNewHome);
-		
+
 		jlYearProvisionnalNewHome = new JLabel("ans ");
 		jlYearProvisionnalNewHome.setFont(new Font("Calibri", Font.PLAIN, 15));
 		jlYearProvisionnalNewHome.setBounds(265, 534, 110, 43);
 		jpNewHome.add(jlYearProvisionnalNewHome);
-		
+
 		jbGenerateProvisionnalNewHome = new JButton("Générer les prévisions");
 		jbGenerateProvisionnalNewHome.setFont(new Font("Calibri", Font.PLAIN, 15));
 		jbGenerateProvisionnalNewHome.setBounds(298, 540, 182, 33);
 		jbGenerateProvisionnalNewHome.addActionListener(this);
 		jpNewHome.add(jbGenerateProvisionnalNewHome);
-		
+
 		jlbTotalProvisionnalNewHome = new JLabel("");
 		jlbTotalProvisionnalNewHome.setFont(new Font("Calibri", Font.PLAIN, 15));
 		jlbTotalProvisionnalNewHome.setBounds(77, 566, 387, 32);
 		jpNewHome.add(jlbTotalProvisionnalNewHome);
-		
+
 		jbCapturNewHome = new JButton("Faire une capture du devis");
 		jbCapturNewHome.setFont(new Font("Calibri", Font.PLAIN, 15));
 		jbCapturNewHome.addActionListener(this);
@@ -563,47 +563,47 @@ public class NeedsTab extends JPanel implements ActionListener{
 		jlbTotalInterviewCostOfSensorShopBasketGrowing.setFont(new Font("Calibri", Font.PLAIN, 15));
 		jlbTotalInterviewCostOfSensorShopBasketGrowing.setBounds(31, 500, 471, 31);
 		jpGrowing.add(jlbTotalInterviewCostOfSensorShopBasketGrowing);
-		
+
 		jbClearSensorShopGrowing = new JButton("Vider la liste de capteurs");
 		jbClearSensorShopGrowing.setFont(new Font("Calibri", Font.PLAIN, 15));
 		jbClearSensorShopGrowing.setBounds(630, 470, 196, 31);
 		jbClearSensorShopGrowing.addActionListener(this);
 		jpGrowing.add(jbClearSensorShopGrowing);
-		
+
 		jlProvisionnalGrowing = new JLabel("Prévisions des coûts sur ");
 		jlProvisionnalGrowing.setFont(new Font("Calibri", Font.PLAIN, 15));
 		jlProvisionnalGrowing.setBounds(20, 534, 168, 43);
 		jpGrowing.add(jlProvisionnalGrowing);
-		
+
 		jtfYearsProvisionnalGrowing = new JTextField();
 		jtfYearsProvisionnalGrowing.setToolTipText("Entrez un nombre d'années (entier - ex : 5 ans)");
 		jtfYearsProvisionnalGrowing.setColumns(10);
 		jtfYearsProvisionnalGrowing.setBounds(189, 539, 66, 32);
 		jpGrowing.add(jtfYearsProvisionnalGrowing);
-		
+
 		jlYearProvisionnalGrowing = new JLabel("ans ");
 		jlYearProvisionnalGrowing.setFont(new Font("Calibri", Font.PLAIN, 15));
 		jlYearProvisionnalGrowing.setBounds(265, 534, 110, 43);
 		jpGrowing.add(jlYearProvisionnalGrowing);
-		
+
 		jbGenerateProvisionnalGrowing = new JButton("Générer les prévisions");
 		jbGenerateProvisionnalGrowing.setFont(new Font("Calibri", Font.PLAIN, 15));
 		jbGenerateProvisionnalGrowing.setBounds(298, 540, 182, 33);
 		jbGenerateProvisionnalGrowing.addActionListener(this);
 		jpGrowing.add(jbGenerateProvisionnalGrowing);
-		
+
 		jlbTotalProvisionnalGrowing = new JLabel("");
 		jlbTotalProvisionnalGrowing.setFont(new Font("Calibri", Font.PLAIN, 15));
 		jlbTotalProvisionnalGrowing.setBounds(77, 566, 387, 32);
 		jpGrowing.add(jlbTotalProvisionnalGrowing);
-		
+
 		jbCapturGrowing = new JButton("Faire une capture du devis");
 		jbCapturGrowing.setFont(new Font("Calibri", Font.PLAIN, 15));
 		jbCapturGrowing.addActionListener(this);
 		jbCapturGrowing.setBounds(1151, 333, 207, 23);
 		jpGrowing.add(jbCapturGrowing);
-		
-		
+
+
 
 
 		//PANEL ADDSENSOR
@@ -666,23 +666,23 @@ public class NeedsTab extends JPanel implements ActionListener{
 		jlbTotalInterviewPriceAddSensor.setFont(new Font("Calibri", Font.PLAIN, 15));
 		jlbTotalInterviewPriceAddSensor.setBounds(916, 365, 421, 43);
 		jpAddSensor.add(jlbTotalInterviewPriceAddSensor);
-		
+
 		jlbProvisionnalAddSensor = new JLabel("Prévisions des coûts sur ");
 		jlbProvisionnalAddSensor.setFont(new Font("Calibri", Font.PLAIN, 15));
 		jlbProvisionnalAddSensor.setBounds(892, 401, 168, 43);
 		jpAddSensor.add(jlbProvisionnalAddSensor);
-		
+
 		jtfProvisionnalAddSensor = new JTextField();
 		jtfProvisionnalAddSensor.setToolTipText("Entrez un nombre d'années (entier - ex : 5 ans)");
 		jtfProvisionnalAddSensor.setBounds(1061, 406, 66, 32);
 		jpAddSensor.add(jtfProvisionnalAddSensor);
 		jtfProvisionnalAddSensor.setColumns(10);
-		
+
 		jlbProvisionnalYearAddSensor = new JLabel("ans ");
 		jlbProvisionnalYearAddSensor.setFont(new Font("Calibri", Font.PLAIN, 15));
 		jlbProvisionnalYearAddSensor.setBounds(1137, 401, 110, 43);
 		jpAddSensor.add(jlbProvisionnalYearAddSensor);
-		
+
 		jbGenerateProvisionnalAddSensor = new JButton("Générer les prévisions");
 		jbGenerateProvisionnalAddSensor.setFont(new Font("Calibri", Font.PLAIN, 12));
 		jbGenerateProvisionnalAddSensor.addActionListener(this);
@@ -693,7 +693,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 		jlbTotalProvisionnalAddSensor.setFont(new Font("Calibri", Font.PLAIN, 15));
 		jlbTotalProvisionnalAddSensor.setBounds(950, 442, 387, 32);
 		jpAddSensor.add(jlbTotalProvisionnalAddSensor);
-		
+
 		jbCapturAddSensor = new JButton("Faire une capture du devis");
 		jbCapturAddSensor.setFont(new Font("Calibri", Font.PLAIN, 12));
 		jbCapturAddSensor.addActionListener(this);
@@ -730,16 +730,19 @@ public class NeedsTab extends JPanel implements ActionListener{
 		{
 			quantity += clArc.getNumberOfSensor(40);
 		}
-		basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
-		this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
-				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType().getFrenchLabel()+
-				" - Prix : "+arround(s.getSensorPrice(), 2)+
-				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
-				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
-				" - Durée de vie moyenne : "+s.getLifeTime());
+		if(!(quantity == 0))
+		{
+			basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
+			this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
+					" - Marque : "+s.getSensorMark()+
+					" - Type :"+s.getSensorType().getFrenchLabel()+
+					" - Prix : "+arround(s.getSensorPrice(), 2)+
+					"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
+					"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
+					" - Durée de vie moyenne : "+s.getLifeTime());
+		}
 	}
-	
+
 	public void getFlowSensorFromBuilderNewHome()
 	{
 		SensorShop s = getBestSensor(SensorType.FLOW);
@@ -748,16 +751,19 @@ public class NeedsTab extends JPanel implements ActionListener{
 		{
 			quantity += clArc.getNumberOfSensor(30);
 		}
-		basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
-		this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
-				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType().getFrenchLabel()+
-				" - Prix : "+arround(s.getSensorPrice(), 2)+
-				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
-				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
-				" - Durée de vie moyenne : "+s.getLifeTime());
+		if(!(quantity == 0))
+		{
+			basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
+			this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
+					" - Marque : "+s.getSensorMark()+
+					" - Type :"+s.getSensorType().getFrenchLabel()+
+					" - Prix : "+arround(s.getSensorPrice(), 2)+
+					"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
+					"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
+					" - Durée de vie moyenne : "+s.getLifeTime());
+		}
 	}
-	
+
 	public void getDoorSensorFromBuilderNewHome()
 	{
 		SensorShop s = getBestSensor(SensorType.DOOR);
@@ -766,16 +772,19 @@ public class NeedsTab extends JPanel implements ActionListener{
 		{
 			quantity += clArc.getArc().getDoorsNumber();
 		}
-		basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
-		this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
-				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType().getFrenchLabel()+
-				" - Prix : "+arround(s.getSensorPrice(), 2)+
-				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
-				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
-				" - Durée de vie moyenne : "+s.getLifeTime());
+		if(!(quantity == 0))
+		{
+			basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
+			this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
+					" - Marque : "+s.getSensorMark()+
+					" - Type :"+s.getSensorType().getFrenchLabel()+
+					" - Prix : "+arround(s.getSensorPrice(), 2)+
+					"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
+					"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
+					" - Durée de vie moyenne : "+s.getLifeTime());
+		}
 	}
-	
+
 	public void getTemperatureSensorFromBuilderNewHome()
 	{
 		SensorShop s = getBestSensor(SensorType.TEMPERATURE);
@@ -784,16 +793,19 @@ public class NeedsTab extends JPanel implements ActionListener{
 		{
 			quantity += clArc.getNumberOfSensor(150);
 		}
-		basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
-		this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
-				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType().getFrenchLabel()+
-				" - Prix : "+arround(s.getSensorPrice(), 2)+
-				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
-				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
-				" - Durée de vie moyenne : "+s.getLifeTime());
+		if(!(quantity == 0))
+		{
+			basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
+			this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
+					" - Marque : "+s.getSensorMark()+
+					" - Type :"+s.getSensorType().getFrenchLabel()+
+					" - Prix : "+arround(s.getSensorPrice(), 2)+
+					"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
+					"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
+					" - Durée de vie moyenne : "+s.getLifeTime());
+		}
 	}
-	
+
 	public void getHumiditySensorFromBuilderNewHome()
 	{
 		SensorShop s = getBestSensor(SensorType.HUMIDITY);
@@ -802,16 +814,19 @@ public class NeedsTab extends JPanel implements ActionListener{
 		{
 			quantity += clArc.getNumberOfSensor(40);
 		}
-		basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
-		this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
-				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType().getFrenchLabel()+
-				" - Prix : "+arround(s.getSensorPrice(), 2)+
-				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
-				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
-				" - Durée de vie moyenne : "+s.getLifeTime());
+		if(!(quantity == 0))
+		{
+			basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
+			this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
+					" - Marque : "+s.getSensorMark()+
+					" - Type :"+s.getSensorType().getFrenchLabel()+
+					" - Prix : "+arround(s.getSensorPrice(), 2)+
+					"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
+					"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
+					" - Durée de vie moyenne : "+s.getLifeTime());
+		}
 	}
-	
+
 	public void getLightSensorFromBuilderNewHome()
 	{
 		SensorShop s = getBestSensor(SensorType.LIGHT);
@@ -820,16 +835,19 @@ public class NeedsTab extends JPanel implements ActionListener{
 		{
 			quantity += clArc.getNumberOfSensor(40);
 		}
-		basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
-		this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
-				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType().getFrenchLabel()+
-				" - Prix : "+arround(s.getSensorPrice(), 2)+
-				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
-				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
-				" - Durée de vie moyenne : "+s.getLifeTime());
+		if(!(quantity == 0))
+		{
+			basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
+			this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
+					" - Marque : "+s.getSensorMark()+
+					" - Type :"+s.getSensorType().getFrenchLabel()+
+					" - Prix : "+arround(s.getSensorPrice(), 2)+
+					"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
+					"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
+					" - Durée de vie moyenne : "+s.getLifeTime());
+		}
 	}
-	
+
 	public void getGasSensorFromBuilderNewHome()
 	{
 		SensorShop s = getBestSensor(SensorType.GAS);
@@ -838,16 +856,19 @@ public class NeedsTab extends JPanel implements ActionListener{
 		{
 			quantity += clArc.getNumberOfSensor(40);
 		}
-		basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
-		this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
-				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType().getFrenchLabel()+
-				" - Prix : "+arround(s.getSensorPrice(), 2)+
-				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
-				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
-				" - Durée de vie moyenne : "+s.getLifeTime());
+		if(!(quantity == 0))
+		{
+			basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
+			this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
+					" - Marque : "+s.getSensorMark()+
+					" - Type :"+s.getSensorType().getFrenchLabel()+
+					" - Prix : "+arround(s.getSensorPrice(), 2)+
+					"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
+					"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
+					" - Durée de vie moyenne : "+s.getLifeTime());
+		}
 	}
-	
+
 	public void getGlassBreakageSensorFromBuilderNewHome()
 	{
 		SensorShop s = getBestSensor(SensorType.GLASS_BREAKAGE);
@@ -856,16 +877,19 @@ public class NeedsTab extends JPanel implements ActionListener{
 		{
 			quantity += clArc.getArc().getWindowsNumber();
 		}
-		basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
-		this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
-				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType().getFrenchLabel()+
-				" - Prix : "+arround(s.getSensorPrice(), 2)+
-				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
-				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
-				" - Durée de vie moyenne : "+s.getLifeTime());
+		if(!(quantity == 0))
+		{
+			basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
+			this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
+					" - Marque : "+s.getSensorMark()+
+					" - Type :"+s.getSensorType().getFrenchLabel()+
+					" - Prix : "+arround(s.getSensorPrice(), 2)+
+					"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
+					"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
+					" - Durée de vie moyenne : "+s.getLifeTime());
+		}
 	}
-	
+
 	/*public void getAcousticSensorFromBuilderNewHome()
 	{
 		SensorShop s = getBestSensor(SensorType.ACOUSTIC);
@@ -883,7 +907,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
 				" - Durée de vie moyenne : "+s.getLifeTime());
 	}*/
-	
+
 	public void getManualTriggerSensorFromBuilderNewHome()
 	{
 		SensorShop s = getBestSensor(SensorType.MANUAL_TRIGGER);
@@ -892,16 +916,19 @@ public class NeedsTab extends JPanel implements ActionListener{
 		{
 			quantity += clArc.getArc().getDoorsNumber();
 		}
-		basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
-		this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
-				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType().getFrenchLabel()+
-				" - Prix : "+arround(s.getSensorPrice(), 2)+
-				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
-				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
-				" - Durée de vie moyenne : "+s.getLifeTime());
+		if(!(quantity == 0))
+		{
+			basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
+			this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
+					" - Marque : "+s.getSensorMark()+
+					" - Type :"+s.getSensorType().getFrenchLabel()+
+					" - Prix : "+arround(s.getSensorPrice(), 2)+
+					"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
+					"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
+					" - Durée de vie moyenne : "+s.getLifeTime());
+		}
 	}
-	
+
 	public void getAccessControlSensorFromBuilderNewHome()
 	{
 		SensorShop s = getBestSensor(SensorType.ACCESS_CONTROL);
@@ -926,7 +953,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 		}
 
 	}
-	
+
 	public void getFloodSensorFromBuilderNewHome()
 	{
 		//SensorShop s = getBestSensor(SensorType.FLOOD);
@@ -936,16 +963,19 @@ public class NeedsTab extends JPanel implements ActionListener{
 			quantity += clArc.getNumberOfSensor(150);
 		}
 		SensorShop s = getBestSensor(SensorType.FLOOD);
-		basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
-		this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
-				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType().getFrenchLabel()+
-				" - Prix : "+arround(s.getSensorPrice(), 2)+
-				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
-				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
-				" - Durée de vie moyenne : "+s.getLifeTime());
+		if(!(quantity == 0))
+		{
+			basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
+			this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
+					" - Marque : "+s.getSensorMark()+
+					" - Type :"+s.getSensorType().getFrenchLabel()+
+					" - Prix : "+arround(s.getSensorPrice(), 2)+
+					"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
+					"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
+					" - Durée de vie moyenne : "+s.getLifeTime());
+		}
 	}
-	
+
 	public void getSmokeSensorFromBuilderGrowing()
 	{
 		SensorShop s = getBestSensor(SensorType.SMOKE);
@@ -954,16 +984,19 @@ public class NeedsTab extends JPanel implements ActionListener{
 		{
 			quantity += clArc.getNumberOfSensor(40);
 		}
-		basketSensorShopFromBuilderGrowing.addSensor(quantity, s);
-		this.dlmBasketSensorShopLinesGrowing.addElement("Quantité : "+quantity+
-				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType().getFrenchLabel()+
-				" - Prix : "+arround(s.getSensorPrice(), 2)+
-				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
-				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
-				" - Durée de vie moyenne : "+s.getLifeTime());
+		if(!(quantity == 0))
+		{
+			basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
+			this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
+					" - Marque : "+s.getSensorMark()+
+					" - Type :"+s.getSensorType().getFrenchLabel()+
+					" - Prix : "+arround(s.getSensorPrice(), 2)+
+					"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
+					"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
+					" - Durée de vie moyenne : "+s.getLifeTime());
+		}
 	}
-	
+
 	public void getFlowSensorFromBuilderGrowing()
 	{
 		SensorShop s = getBestSensor(SensorType.FLOW);
@@ -972,16 +1005,19 @@ public class NeedsTab extends JPanel implements ActionListener{
 		{
 			quantity += clArc.getNumberOfSensor(30);
 		}
-		basketSensorShopFromBuilderGrowing.addSensor(quantity, s);
-		this.dlmBasketSensorShopLinesGrowing.addElement("Quantité : "+quantity+
-				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType().getFrenchLabel()+
-				" - Prix : "+arround(s.getSensorPrice(), 2)+
-				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
-				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
-				" - Durée de vie moyenne : "+s.getLifeTime());
+		if(!(quantity == 0))
+		{
+			basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
+			this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
+					" - Marque : "+s.getSensorMark()+
+					" - Type :"+s.getSensorType().getFrenchLabel()+
+					" - Prix : "+arround(s.getSensorPrice(), 2)+
+					"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
+					"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
+					" - Durée de vie moyenne : "+s.getLifeTime());
+		}
 	}
-	
+
 	public void getDoorSensorFromBuilderGrowing()
 	{
 		SensorShop s = getBestSensor(SensorType.DOOR);
@@ -990,16 +1026,20 @@ public class NeedsTab extends JPanel implements ActionListener{
 		{
 			quantity += clArc.getArc().getDoorsNumber();
 		}
-		basketSensorShopFromBuilderGrowing.addSensor(quantity, s);
-		this.dlmBasketSensorShopLinesGrowing.addElement("Quantité : "+quantity+
-				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType().getFrenchLabel()+
-				" - Prix : "+arround(s.getSensorPrice(), 2)+
-				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
-				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
-				" - Durée de vie moyenne : "+s.getLifeTime());
+		if(!(quantity == 0))
+		{
+			basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
+			this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
+					" - Marque : "+s.getSensorMark()+
+					" - Type :"+s.getSensorType().getFrenchLabel()+
+					" - Prix : "+arround(s.getSensorPrice(), 2)+
+					"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
+					"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
+					" - Durée de vie moyenne : "+s.getLifeTime());
+		}
+
 	}
-	
+
 	public void getTemperatureSensorFromBuilderGrowing()
 	{
 		SensorShop s = getBestSensor(SensorType.TEMPERATURE);
@@ -1008,16 +1048,19 @@ public class NeedsTab extends JPanel implements ActionListener{
 		{
 			quantity += clArc.getNumberOfSensor(150);
 		}
-		basketSensorShopFromBuilderGrowing.addSensor(quantity, s);
-		this.dlmBasketSensorShopLinesGrowing.addElement("Quantité : "+quantity+
-				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType().getFrenchLabel()+
-				" - Prix : "+arround(s.getSensorPrice(), 2)+
-				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
-				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
-				" - Durée de vie moyenne : "+s.getLifeTime());
+		if(!(quantity == 0))
+		{
+			basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
+			this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
+					" - Marque : "+s.getSensorMark()+
+					" - Type :"+s.getSensorType().getFrenchLabel()+
+					" - Prix : "+arround(s.getSensorPrice(), 2)+
+					"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
+					"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
+					" - Durée de vie moyenne : "+s.getLifeTime());
+		}
 	}
-	
+
 	public void getHumiditySensorFromBuilderGrowing()
 	{
 		SensorShop s = getBestSensor(SensorType.HUMIDITY);
@@ -1026,16 +1069,19 @@ public class NeedsTab extends JPanel implements ActionListener{
 		{
 			quantity += clArc.getNumberOfSensor(40);
 		}
-		basketSensorShopFromBuilderGrowing.addSensor(quantity, s);
-		this.dlmBasketSensorShopLinesGrowing.addElement("Quantité : "+quantity+
-				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType().getFrenchLabel()+
-				" - Prix : "+arround(s.getSensorPrice(), 2)+
-				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
-				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
-				" - Durée de vie moyenne : "+s.getLifeTime());
+		if(!(quantity == 0))
+		{
+			basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
+			this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
+					" - Marque : "+s.getSensorMark()+
+					" - Type :"+s.getSensorType().getFrenchLabel()+
+					" - Prix : "+arround(s.getSensorPrice(), 2)+
+					"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
+					"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
+					" - Durée de vie moyenne : "+s.getLifeTime());
+		}
 	}
-	
+
 	public void getLightSensorFromBuilderGrowing()
 	{
 		SensorShop s = getBestSensor(SensorType.LIGHT);
@@ -1044,16 +1090,19 @@ public class NeedsTab extends JPanel implements ActionListener{
 		{
 			quantity += clArc.getNumberOfSensor(40);
 		}
-		basketSensorShopFromBuilderGrowing.addSensor(quantity, s);
-		this.dlmBasketSensorShopLinesGrowing.addElement("Quantité : "+quantity+
-				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType().getFrenchLabel()+
-				" - Prix : "+arround(s.getSensorPrice(), 2)+
-				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
-				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
-				" - Durée de vie moyenne : "+s.getLifeTime());
+		if(!(quantity == 0))
+		{
+			basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
+			this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
+					" - Marque : "+s.getSensorMark()+
+					" - Type :"+s.getSensorType().getFrenchLabel()+
+					" - Prix : "+arround(s.getSensorPrice(), 2)+
+					"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
+					"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
+					" - Durée de vie moyenne : "+s.getLifeTime());
+		}
 	}
-	
+
 	public void getGasSensorFromBuilderGrowing()
 	{
 		SensorShop s = getBestSensor(SensorType.GAS);
@@ -1062,16 +1111,19 @@ public class NeedsTab extends JPanel implements ActionListener{
 		{
 			quantity += clArc.getNumberOfSensor(40);
 		}
-		basketSensorShopFromBuilderGrowing.addSensor(quantity, s);
-		this.dlmBasketSensorShopLinesGrowing.addElement("Quantité : "+quantity+
-				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType().getFrenchLabel()+
-				" - Prix : "+arround(s.getSensorPrice(), 2)+
-				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
-				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
-				" - Durée de vie moyenne : "+s.getLifeTime());
+		if(!(quantity == 0))
+		{
+			basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
+			this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
+					" - Marque : "+s.getSensorMark()+
+					" - Type :"+s.getSensorType().getFrenchLabel()+
+					" - Prix : "+arround(s.getSensorPrice(), 2)+
+					"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
+					"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
+					" - Durée de vie moyenne : "+s.getLifeTime());
+		}
 	}
-	
+
 	public void getGlassBreakageSensorFromBuilderGrowing()
 	{
 		SensorShop s = getBestSensor(SensorType.GLASS_BREAKAGE);
@@ -1080,16 +1132,19 @@ public class NeedsTab extends JPanel implements ActionListener{
 		{
 			quantity += clArc.getArc().getWindowsNumber();
 		}
-		basketSensorShopFromBuilderGrowing.addSensor(quantity, s);
-		this.dlmBasketSensorShopLinesGrowing.addElement("Quantité : "+quantity+
-				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType().getFrenchLabel()+
-				" - Prix : "+arround(s.getSensorPrice(), 2)+
-				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
-				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
-				" - Durée de vie moyenne : "+s.getLifeTime());
+		if(!(quantity == 0))
+		{
+			basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
+			this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
+					" - Marque : "+s.getSensorMark()+
+					" - Type :"+s.getSensorType().getFrenchLabel()+
+					" - Prix : "+arround(s.getSensorPrice(), 2)+
+					"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
+					"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
+					" - Durée de vie moyenne : "+s.getLifeTime());
+		}
 	}
-	
+
 	/*public void getAcousticSensorFromBuilderGrowing()
 	{
 		SensorShop s = getBestSensor(SensorType.ACOUSTIC);
@@ -1107,7 +1162,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
 				" - Durée de vie moyenne : "+s.getLifeTime());
 	}*/
-	
+
 	public void getManualTriggerSensorFromBuilderGrowing()
 	{
 		SensorShop s = getBestSensor(SensorType.MANUAL_TRIGGER);
@@ -1116,16 +1171,19 @@ public class NeedsTab extends JPanel implements ActionListener{
 		{
 			quantity += clArc.getArc().getDoorsNumber();
 		}
-		basketSensorShopFromBuilderGrowing.addSensor(quantity, s);
-		this.dlmBasketSensorShopLinesGrowing.addElement("Quantité : "+quantity+
-				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType().getFrenchLabel()+
-				" - Prix : "+arround(s.getSensorPrice(), 2)+
-				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
-				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
-				" - Durée de vie moyenne : "+s.getLifeTime());
+		if(!(quantity == 0))
+		{
+			basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
+			this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
+					" - Marque : "+s.getSensorMark()+
+					" - Type :"+s.getSensorType().getFrenchLabel()+
+					" - Prix : "+arround(s.getSensorPrice(), 2)+
+					"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
+					"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
+					" - Durée de vie moyenne : "+s.getLifeTime());
+		}
 	}
-	
+
 	public void getAccessControlSensorFromBuilderGrowing()
 	{
 		SensorShop s = getBestSensor(SensorType.ACCESS_CONTROL);
@@ -1150,7 +1208,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 		}
 
 	}
-	
+
 	public void getFloodSensorFromBuilderGrowing()
 	{
 		//SensorShop s = getBestSensor(SensorType.FLOOD);
@@ -1160,14 +1218,17 @@ public class NeedsTab extends JPanel implements ActionListener{
 			quantity += clArc.getNumberOfSensor(150);
 		}
 		SensorShop s = getBestSensor(SensorType.FLOOD);
-		basketSensorShopFromBuilderGrowing.addSensor(quantity, s);
-		this.dlmBasketSensorShopLinesGrowing.addElement("Quantité : "+quantity+
-				" - Marque : "+s.getSensorMark()+
-				" - Type :"+s.getSensorType().getFrenchLabel()+
-				" - Prix : "+arround(s.getSensorPrice(), 2)+
-				"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
-				"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
-				" - Durée de vie moyenne : "+s.getLifeTime());
+		if(!(quantity == 0))
+		{
+			basketSensorShopFromBuilderNewHome.addSensor(quantity, s);
+			this.dlmBasketSensorShopLinesNewHome.addElement("Quantité : "+quantity+
+					" - Marque : "+s.getSensorMark()+
+					" - Type :"+s.getSensorType().getFrenchLabel()+
+					" - Prix : "+arround(s.getSensorPrice(), 2)+
+					"€ - Coût de la maintenance à l'année : "+s.getSensorInterviewPrice()+
+					"€/an - Classe énergétique : "+s.getEnergy().getLabel()+
+					" - Durée de vie moyenne : "+s.getLifeTime());
+		}
 	}
 
 
@@ -1191,7 +1252,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 	// Main method to test data retrieving from the database
 	public static void main(String[] args) {
 		new NeedsTab().dataSensors();	
-		}
+	}
 
 
 	public Integer intInside(JTextField jtf)//5
@@ -1212,7 +1273,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 		double power = Math.pow(10.0, nbAfterComma);
 		return Math.round(number*power)/power;
 	}
-	
+
 
 	@Override
 	public void actionPerformed(ActionEvent e)
@@ -1271,34 +1332,34 @@ public class NeedsTab extends JPanel implements ActionListener{
 				cardPanel.revalidate();
 			}
 		}
-		
+
 		//Listener for newHome panel
 		if(e.getSource() == this.jbNewPartsButtonNewHome)
 		{
-				try 
+			try 
+			{
+				int c1 = intInside(jtfPartsSizeNewHome);
+				int c2 = intInside(jtfPartsDoorNumberNewHome);
+				int c3 = intInside(jtfPartsWindowNumberNewHome);
+				basketNewHome.addArc(new ArchitectureBuilder(jtfPartsNameNewHome.getText(), c1, c2, c3,
+						checkBoxAccessControlNewHome.isSelected()));
+				this.dlmBasketLinesNewHome.clear();
+				this.jtfPartsNameNewHome.setText("");
+				this.jtfPartsSizeNewHome.setText("");
+				this.jtfPartsDoorNumberNewHome.setText("");
+				this.jtfPartsWindowNumberNewHome.setText("");
+				for (CommandLineArc cl : basketNewHome.alCommandLineArc) 
 				{
-					int c1 = intInside(jtfPartsSizeNewHome);
-					int c2 = intInside(jtfPartsDoorNumberNewHome);
-					int c3 = intInside(jtfPartsWindowNumberNewHome);
-					basketNewHome.addArc(new ArchitectureBuilder(jtfPartsNameNewHome.getText(), c1, c2, c3,
-							checkBoxAccessControlNewHome.isSelected()));
-					this.dlmBasketLinesNewHome.clear();
-					this.jtfPartsNameNewHome.setText("");
-					this.jtfPartsSizeNewHome.setText("");
-					this.jtfPartsDoorNumberNewHome.setText("");
-					this.jtfPartsWindowNumberNewHome.setText("");
-					for (CommandLineArc cl : basketNewHome.alCommandLineArc) 
-					{
-						this.dlmBasketLinesNewHome.addElement("Nom : " + cl.getArc().getNom() + " - Superficie : "
-								+ cl.getArc().getArea() + "m² - Nombre de portes : " + cl.getArc().getDoorsNumber()
-								+ " - Nombre de fenêtres : " + cl.getArc().getWindowsNumber() + " - Contrôle d'accès : "
-								+ cl.getArc().isAccessControl());
-					} 
+					this.dlmBasketLinesNewHome.addElement("Nom : " + cl.getArc().getNom() + " - Superficie : "
+							+ cl.getArc().getArea() + "m² - Nombre de portes : " + cl.getArc().getDoorsNumber()
+							+ " - Nombre de fenêtres : " + cl.getArc().getWindowsNumber() + " - Contrôle d'accès : "
+							+ cl.getArc().isAccessControl());
 				} 
-				catch (Exception e1) 
-				{
-					JOptionPane.showMessageDialog(this, "Veuillez saisir correctement les données");
-				}
+			} 
+			catch (Exception e1) 
+			{
+				JOptionPane.showMessageDialog(this, "Veuillez saisir correctement les données");
+			}
 		}
 		if(e.getSource() == this.jbDeletePartsNewHome)
 		{
@@ -1331,7 +1392,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 				getHumiditySensorFromBuilderNewHome();
 				getLightSensorFromBuilderNewHome();
 				getGasSensorFromBuilderNewHome();
-				//getGlassBreakageSensorFromBuilderNewHome();
+				getGlassBreakageSensorFromBuilderNewHome();
 				//getAcousticSensorFromBuilderNewHome();
 				getManualTriggerSensorFromBuilderNewHome();
 				getAccessControlSensorFromBuilderNewHome();
@@ -1369,41 +1430,41 @@ public class NeedsTab extends JPanel implements ActionListener{
 				JOptionPane.showMessageDialog(this, "Veuillez saisir correctement le nombre d'années sur lesquelles vous voulez baser les prévisions");
 			}
 		}
-		
+
 		if(e.getSource() == this.jbCapturNewHome)
 		{
 			ScreenShotFactory.screenShot(new Rectangle(0, 0, 1366, 768), new Dimension(1366, 768), "devis.png", ScreenShotFactory.IMAGE_TYPE_JPEG);
 		}
-		
-		
-		
+
+
+
 		//LISTENERS FOR GROWING PANEL
 		if(e.getSource() == this.jbNewPartsButtonGrowing)
 		{
-				try 
+			try 
+			{
+				int c1 = intInside(jtfPartsSizeGrowing);
+				int c2 = intInside(jtfPartsDoorNumberGrowing);
+				int c3 = intInside(jtfPartsWindowNumberGrowing);
+				basketGrowing.addArc(new ArchitectureBuilder(jtfPartsNameGrowing.getText(), c1, c2, c3,
+						checkBoxAccessControlGrowing.isSelected()));
+				this.dlmBasketLinesGrowing.clear();
+				this.jtfPartsNameGrowing.setText("");
+				this.jtfPartsSizeGrowing.setText("");
+				this.jtfPartsDoorNumberGrowing.setText("");
+				this.jtfPartsWindowNumberGrowing.setText("");
+				for (CommandLineArc cl : basketGrowing.alCommandLineArc) 
 				{
-					int c1 = intInside(jtfPartsSizeGrowing);
-					int c2 = intInside(jtfPartsDoorNumberGrowing);
-					int c3 = intInside(jtfPartsWindowNumberGrowing);
-					basketGrowing.addArc(new ArchitectureBuilder(jtfPartsNameGrowing.getText(), c1, c2, c3,
-							checkBoxAccessControlGrowing.isSelected()));
-					this.dlmBasketLinesGrowing.clear();
-					this.jtfPartsNameGrowing.setText("");
-					this.jtfPartsSizeGrowing.setText("");
-					this.jtfPartsDoorNumberGrowing.setText("");
-					this.jtfPartsWindowNumberGrowing.setText("");
-					for (CommandLineArc cl : basketGrowing.alCommandLineArc) 
-					{
-						this.dlmBasketLinesGrowing.addElement("Nom : " + cl.getArc().getNom() + " - Superficie : "
-								+ cl.getArc().getArea() + "m² - Nombre de portes : " + cl.getArc().getDoorsNumber()
-								+ " - Nombre de fenêtres : " + cl.getArc().getWindowsNumber() + " - Contrôle d'accès : "
-								+ cl.getArc().isAccessControl());
-					} 
+					this.dlmBasketLinesGrowing.addElement("Nom : " + cl.getArc().getNom() + " - Superficie : "
+							+ cl.getArc().getArea() + "m² - Nombre de portes : " + cl.getArc().getDoorsNumber()
+							+ " - Nombre de fenêtres : " + cl.getArc().getWindowsNumber() + " - Contrôle d'accès : "
+							+ cl.getArc().isAccessControl());
 				} 
-				catch (Exception e1) 
-				{
-					JOptionPane.showMessageDialog(this, "Veuillez saisir correctement les données");
-				}
+			} 
+			catch (Exception e1) 
+			{
+				JOptionPane.showMessageDialog(this, "Veuillez saisir correctement les données");
+			}
 		}
 		if(e.getSource() == this.jbDeletePartsGrowing)
 		{
@@ -1436,7 +1497,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 				getHumiditySensorFromBuilderGrowing();
 				getLightSensorFromBuilderGrowing();
 				getGasSensorFromBuilderGrowing();
-				//getGlassBreakageSensorFromBuilderGrowing();
+				getGlassBreakageSensorFromBuilderGrowing();
 				//getAcousticSensorFromBuilderGrowing();
 				getManualTriggerSensorFromBuilderGrowing();
 				getAccessControlSensorFromBuilderGrowing();
@@ -1480,7 +1541,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 		}
 
 
-		
+
 		//Listener Panel AddSensor
 		if(e.getSource() == this.jbAddSensorToBasket)
 		{
