@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class Location {
@@ -17,9 +18,17 @@ public class Location {
 	// The size of the room
 	private int area;
 	private List<Sensor> sensorConfigurations;
+	@JsonProperty("position_x")
+	private float positionX;
+	@JsonProperty("position_y")
+	private float positionY;
+	@JsonProperty("width")
+	private float width;
+	@JsonProperty("height")
+	private float height;
 	
 	public Location(String nameLocation, String center, int floor, String wing, int area) {
-		this(0, nameLocation, center, new Timestamp(System.currentTimeMillis()), 0, floor, wing, area);
+		this(0, nameLocation, center, new Timestamp(System.currentTimeMillis()), 0, floor, wing, area,0,0,0,0);
 		
 	}
 	
@@ -27,7 +36,7 @@ public class Location {
 		super();
 	}
 	
-	public Location(int idLocation, String nameLocation, String center, Timestamp creationDate, int idSensor, int floor, String wing, int area) {
+	public Location(int idLocation, String nameLocation, String center, Timestamp creationDate, int idSensor, int floor, String wing, int area, float positionX, float positionY, float width, float height) {
 		this.idLocation = idLocation;
 		this.nameLocation = nameLocation;
 		this.center = center;
@@ -36,6 +45,10 @@ public class Location {
 		this.floor = floor;
 		this.area = area;
 		this.wing = wing;
+		this.positionX = positionX;
+		this.positionY = positionY;
+		this.width = width;
+		this.height = height;
 	}
 
 	
@@ -202,5 +215,36 @@ public class Location {
 		this.sensorConfigurations = sensorConfigurations;
 	}
 
+	public float getPositionX() {
+		return positionX;
+	}
+
+	public void setPositionX(float positionX) {
+		this.positionX = positionX;
+	}
+
+	public float getPositionY() {
+		return positionY;
+	}
+
+	public void setPositionY(float positionY) {
+		this.positionY = positionY;
+	}
+
+	public float getWidth() {
+		return width;
+	}
+
+	public void setWidth(float width) {
+		this.width = width;
+	}
+
+	public float getHeight() {
+		return height;
+	}
+
+	public void setHeight(float height) {
+		this.height = height;
+	}
 	
 }

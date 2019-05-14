@@ -28,8 +28,9 @@ public class LocationDAO extends DAO<Location> {
 			if (connection != null) {
 				try {
 					PreparedStatement preparedStatement = connection
-							.prepareStatement("INSERT INTO LOCATION (NAME, CENTER, ID_SENSOR, CREATION_DATE, FLOOR, WING, AREA)"
-									+ " VALUES (? , ? , ? , ? , ? , ? , ?)", Statement.RETURN_GENERATED_KEYS);
+							.prepareStatement("INSERT INTO LOCATION (NAME, CENTER, ID_SENSOR, CREATION_DATE, FLOOR, WING, AREA,"
+									+ "POSITION_X, POSITION_Y, WIDTH, HEIGHT)"
+									+ " VALUES (? , ? , ? , ? , ? , ? , ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 					preparedStatement.setString(1, location.getNameLocation());
 					preparedStatement.setString(2, location.getCenter());
 					preparedStatement.setInt(3, location.getIdSensor());
@@ -37,6 +38,10 @@ public class LocationDAO extends DAO<Location> {
 					preparedStatement.setInt(5, location.getFloor());
 					preparedStatement.setString(6, location.getWing());
 					preparedStatement.setInt(7, location.getArea());
+					preparedStatement.setFloat(8, location.getPositionX());
+					preparedStatement.setFloat(9, location.getPositionY());
+					preparedStatement.setFloat(10, location.getWidth());
+					preparedStatement.setFloat(11, location.getHeight());
 					preparedStatement.execute();
 					ResultSet rs = preparedStatement.getGeneratedKeys();
 					int lastCreatedId = 0;
@@ -80,14 +85,19 @@ public class LocationDAO extends DAO<Location> {
 			if (connection != null) {
 				try {
 					PreparedStatement preparedStatement = connection.prepareStatement(
-							"UPDATE LOCATION SET NAME = ?, CENTER = ?, FLOOR = ?, WING = ?, AREA = ?"
+							"UPDATE LOCATION SET NAME = ?, CENTER = ?, FLOOR = ?, WING = ?, AREA = ?, "
+							+ "POSITION_X = ?, POSITION_Y = ?, WIDTH = ?, HEIGHT = ?"
 							+ " WHERE ID_LOCATION = ?");
 					preparedStatement.setString(1, location.getNameLocation());
 					preparedStatement.setString(2, location.getCenter());
 					preparedStatement.setInt(3, location.getFloor());
 					preparedStatement.setString(4, location.getWing());
 					preparedStatement.setInt(5, location.getArea());
-					preparedStatement.setInt(6, location.getIdLocation());
+					preparedStatement.setFloat(6, location.getPositionX());
+					preparedStatement.setFloat(7, location.getPositionY());
+					preparedStatement.setFloat(8, location.getWidth());
+					preparedStatement.setFloat(9, location.getHeight());
+					preparedStatement.setInt(10, location.getIdLocation());
 					preparedStatement.execute();
 				} catch (Exception e) {
 					log.error("An error occurred during the update of a location : " + e.getMessage());
@@ -104,7 +114,8 @@ public class LocationDAO extends DAO<Location> {
 		Location location = null;
 		try {
 			location = new Location(rs.getInt("ID_LOCATION"), rs.getString("NAME"), rs.getString("CENTER")
-					, rs.getTimestamp("CREATION_DATE"), rs.getInt("ID_SENSOR"), rs.getInt("FLOOR"), rs.getString("WING"), rs.getInt("AREA"));
+					, rs.getTimestamp("CREATION_DATE"), rs.getInt("ID_SENSOR"), rs.getInt("FLOOR"), rs.getString("WING"), rs.getInt("AREA"),
+					rs.getFloat("POSITION_X"), rs.getFloat("POSITION_Y"), rs.getFloat("WIDTH"), rs.getFloat("HEIGHT"));
 		} catch (SQLException e) {
 			log.error("An error occurred when getting one Location from the resultSet : " + e.getMessage());
 		}
