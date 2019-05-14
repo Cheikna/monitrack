@@ -36,6 +36,18 @@ import javax.swing.JCheckBox;
 
 public class NeedsTab extends JPanel implements ActionListener{
 
+	
+
+//	 /$$      /$$  /$$$$$$  /$$   /$$ /$$$$$$ /$$$$$$$$ /$$$$$$$   /$$$$$$   /$$$$$$  /$$   /$$        /$$$$$ /$$$$$$$$ /$$$$$$$$
+//	| $$$    /$$$ /$$__  $$| $$$ | $$|_  $$_/|__  $$__/| $$__  $$ /$$__  $$ /$$__  $$| $$  /$$/       |__  $$| $$_____/| $$_____/
+//	| $$$$  /$$$$| $$  \ $$| $$$$| $$  | $$     | $$   | $$  \ $$| $$  \ $$| $$  \__/| $$ /$$/           | $$| $$      | $$      
+//	| $$ $$/$$ $$| $$  | $$| $$ $$ $$  | $$     | $$   | $$$$$$$/| $$$$$$$$| $$      | $$$$$/            | $$| $$$$$   | $$$$$   
+//	| $$  $$$| $$| $$  | $$| $$  $$$$  | $$     | $$   | $$__  $$| $$__  $$| $$      | $$  $$       /$$  | $$| $$__/   | $$__/   
+//	| $$\  $ | $$| $$  | $$| $$\  $$$  | $$     | $$   | $$  \ $$| $$  | $$| $$    $$| $$\  $$     | $$  | $$| $$      | $$      
+//	| $$ \/  | $$|  $$$$$$/| $$ \  $$ /$$$$$$   | $$   | $$  | $$| $$  | $$|  $$$$$$/| $$ \  $$ /$$|  $$$$$$/| $$$$$$$$| $$$$$$$$
+//	|__/     |__/ \______/ |__/  \__/|______/   |__/   |__/  |__/|__/  |__/ \______/ |__/  \__/|__/ \______/ |________/|________/
+	                                                                                                                             	                                                                                                                             
+	                                                                                                                            
 	private static final long serialVersionUID = 1L;
 	//COMBOBOX
 	private JComboBox<String> actionsCombobox;
@@ -1200,6 +1212,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 		double power = Math.pow(10.0, nbAfterComma);
 		return Math.round(number*power)/power;
 	}
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e)
@@ -1359,7 +1372,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 		
 		if(e.getSource() == this.jbCapturNewHome)
 		{
-			ScreenShotFactory.screenShot(new Rectangle(0, 0, 1366, 768), new Dimension(1366, 768), "C:\\Users\\gtaoudiat\\Desktop\\devis.png", ScreenShotFactory.IMAGE_TYPE_JPEG);
+			ScreenShotFactory.screenShot(new Rectangle(0, 0, 1366, 768), new Dimension(1366, 768), "devis.png", ScreenShotFactory.IMAGE_TYPE_JPEG);
 		}
 		
 		
@@ -1463,7 +1476,7 @@ public class NeedsTab extends JPanel implements ActionListener{
 		}
 		if(e.getSource() == this.jbCapturGrowing)
 		{
-			ScreenShotFactory.screenShot(new Rectangle(0, 0, 1366, 768), new Dimension(1366, 768), "C:\\Users\\gtaoudiat\\Desktop\\devis.png", ScreenShotFactory.IMAGE_TYPE_JPEG);
+			ScreenShotFactory.screenShot(new Rectangle(0, 0, 1366, 768), new Dimension(1366, 768), "devis.png", ScreenShotFactory.IMAGE_TYPE_JPEG);
 		}
 
 
