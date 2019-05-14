@@ -169,6 +169,7 @@ public class MonitrackMockConsole {
 		else if(sensorSignalMap.containsKey(id)){
 			signal = sensorSignalMap.get(id);
 			signal.clone(newSignal);
+			sensorSignalMap.put(id, newSignal);
 		}
 		else {	
 			sensorSignalMap.put(id, newSignal);
