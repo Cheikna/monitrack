@@ -176,6 +176,4 @@ public class SensorConfigurationDAO extends DAO<SensorConfiguration> {
 		return TABLE_NAME;
 	}
 
-	
-
 }

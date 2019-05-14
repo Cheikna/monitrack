@@ -1,6 +1,8 @@
 package com.monitrack.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.monitrack.enumeration.SensorState;
 import com.monitrack.enumeration.SensorType;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -18,6 +20,8 @@ public abstract class Sensor {
 	protected Float hardwareVersion;
 	@JsonProperty("software_version")
 	protected Float softwareVersion;
+	@JsonIgnore
+	private SensorState state;
 
 //	public Sensor(String sensorMark, SensorType sensorType, double sensorPrice, int sensorInterviewPrice)
 //	{
@@ -115,6 +119,16 @@ public abstract class Sensor {
 		if (sensorType != other.sensorType)
 			return false;
 		return true;
+	}
+
+	public void setState(SensorState state) {
+		this.state = state;
+	}
+
+	public SensorState getState() {
+		if(state == null)
+			return SensorState.NORMAL;
+		return state;
 	}
 	
 	

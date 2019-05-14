@@ -1,9 +1,18 @@
 package com.monitrack.main;
 
+import java.util.List;
+
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.monitrack.entity.Location;
+import com.monitrack.entity.SensorConfiguration;
+import com.monitrack.enumeration.RequestType;
 import com.monitrack.gui.frame.MonitrackFrame;
+import com.monitrack.shared.MonitrackGuiUtil;
+import com.monitrack.util.JsonUtil;
 
 public class MonitrackMain {
 
@@ -23,6 +32,7 @@ public class MonitrackMain {
 				MonitrackFrame monitrack = new MonitrackFrame();
 			}
 		});
+		
 	}	
 	
 }
