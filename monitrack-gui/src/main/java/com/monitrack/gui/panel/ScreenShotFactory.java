@@ -24,7 +24,7 @@ public class ScreenShotFactory {
 			new Dimension(1366, 768),
  
 			//format de l'image resultante 
-			"C:\\Users\\gtaoudiat\\Desktop\\test.png",
+			"test.png",
  
 			ScreenShotFactory.IMAGE_TYPE_PNG);
 	}
