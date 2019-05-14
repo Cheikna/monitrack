@@ -10,6 +10,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
@@ -270,8 +272,9 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 	}
 	*/
 	
-	private static void generateRandomLocations()
+	public static List<Location> generateRandomLocations()
 	{
+		List<Location> locations = new ArrayList<Location>();
 		try 
 		{
 			InputStream inputStream = MonitrackListener.class.getClassLoader().getResourceAsStream("mocks/locations.csv");
@@ -291,7 +294,8 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 				location = new Location(name, center, floor, wing, area);
 				String serializedObject = JsonUtil.serializeObject(location, Location.class, "");
 				String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, Location.class, serializedObject, null, null, null, RequestSender.CLIENT);
-				MonitrackGuiUtil.sendRequest(jsonRequest);
+				String response = MonitrackGuiUtil.sendRequest(jsonRequest);
+				locations.add((Location)JsonUtil.deserializeObject(response));
 			} 
 			inputStream.close();
 		} 
@@ -299,6 +303,7 @@ public class MonitrackListener extends WindowAdapter implements ActionListener {
 		{
 			log.error(e.getMessage());
 		}
+		return locations;
 	}
 
 }

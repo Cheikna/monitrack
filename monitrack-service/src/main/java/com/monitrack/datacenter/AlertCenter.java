@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.math.NumberUtils;
@@ -68,7 +70,7 @@ public class AlertCenter {
 	private ComplementarySensorDictionnary complementarySensorDictionnary;
 
 	private final long sensorActivityCheckerSleepTime = DateTimeConstants.MILLIS_PER_MINUTE * NumberUtils.toLong(Util.getPropertyValueFromPropertiesFile("sensor_activity_checker_in_minute"));
-	private final long sensorStateCacheClearerSleepTime = DateTimeConstants.MILLIS_PER_DAY / NumberUtils.toLong(Util.getPropertyValueFromPropertiesFile("cache_clear_per_day"));
+	//private final long sensorStateCacheClearerSleepTime = DateTimeConstants.MILLIS_PER_DAY / NumberUtils.toLong(Util.getPropertyValueFromPropertiesFile("cache_clear_per_day"));
 	private final long codeRetrieverSleepTime = DateTimeConstants.MILLIS_PER_DAY;
 	
 	private Thread listUpdaterThread;
@@ -81,7 +83,6 @@ public class AlertCenter {
 		persons = Collections.synchronizedList(new ArrayList<Person>());
 		counter = 0;
 		complementarySensorDictionnary = new ComplementarySensorDictionnary();
-		clearCacheSensorStateBySensor();
 	}
 	
 	private void updateSensorsSearchValues() {
@@ -320,7 +321,7 @@ public class AlertCenter {
 			//log.info("The sensor n°" + sensorId + " has reached " + thresholdReached + "/" + sensorConfiguration.getMaxDangerThreshold());
 			if (thresholdReached >= maxThreshold || thresholdReached < minThreshold)
 				return SensorState.WARNING;
-			else if(thresholdReached == minThreshold || type.getIsGapAcceptable() || type.getIsItBinary())
+			else if(thresholdReached.intValue() == minThreshold.intValue() || type.getIsGapAcceptable() || type.getIsItBinary())
 				return SensorState.NORMAL;
 			else					
 				return SensorState.CAUTION;
@@ -388,6 +389,7 @@ public class AlertCenter {
 				log.info("Active sensors list updated");
 				//Util.displayListElements(activeSensors, "====> ");
 				DataSource.putConnection(connection);
+				clearCacheSensorStateBySensor();
 			}
 		} catch (Exception e) {
 			log.error("An error occured during the update of the active sensors list : " + e.getMessage());
@@ -403,7 +405,9 @@ public class AlertCenter {
 
 			@Override
 			public void run() {
+				Set<Integer> missingSensorsId = new HashSet<Integer>();
 				try {
+					missingSensorsId.clear();
 					//Sleeps this thread so that the active sensors list can be filled
 					Thread.sleep(sleepTime);
 					while(true) {					
@@ -413,6 +417,7 @@ public class AlertCenter {
 							if(info == null) {
 								info = new CacheInfo(null, null, SensorState.MISSING, 0);
 								cacheInfoBySensor.put(id, info);
+								missingSensorsId.add(id);
 							}
 							else {
 								Timestamp lastMessageDate = info.getLastMessageDate();
@@ -424,10 +429,20 @@ public class AlertCenter {
 									info.setFirstDangerMessageDate(null);
 									info.setSensorState(SensorState.MISSING);
 									cacheInfoBySensor.put(id, info);
+									missingSensorsId.add(id);
 								}								
 							}								
 						}
 						log.info("All active sensors have been checked");
+						String missingMessage = "";
+						if(missingSensorsId.size() > 0) {
+							missingMessage += "There are some missing sensors : ";
+							for(Integer i : missingSensorsId) {
+								missingMessage += i + "; ";
+							}
+							log.info(missingMessage);
+						}
+						
 						Thread.sleep(sensorActivityCheckerSleepTime);
 					}
 
@@ -451,9 +466,11 @@ public class AlertCenter {
 				if(sensor.getLocationId() == locationId && !sensor.equals(alertLauncherSensor)) {
 					currentSensorType = sensor.getSensorType();
 					CacheInfo info = cacheInfoBySensor.get(sensor.getSensorConfigurationId());
-					SensorState state = info.getSensorState();
-					if(state == SensorState.DANGER)
-						complementarySensorDictionnary.addCodeType(currentSensorType.getDangerCode());
+					if(info != null) {
+						SensorState state = info.getSensorState();
+						if(state == SensorState.DANGER)
+							complementarySensorDictionnary.addCodeType(currentSensorType.getDangerCode());
+					}
 				}
 			}
 			
@@ -466,39 +483,26 @@ public class AlertCenter {
 	 * Empty the cache with contains the sensor state of all sensors
 	 */
 	private void clearCacheSensorStateBySensor() {
-		Thread thread = new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				try {
-					Thread.sleep(sensorStateCacheClearerSleepTime);
-					//Use an Iterator because we want to modify the collection during the loop
-					Iterator<Entry<Integer, CacheInfo>> iterator = cacheInfoBySensor.entrySet().iterator();
-					boolean isInActiveSensorList = false;
-					while (iterator.hasNext()) {
-						Entry<Integer, CacheInfo> entry = (Entry<Integer, CacheInfo>)iterator.next();
-						isInActiveSensorList = false;
-						int id = entry.getKey();
-						for (SensorConfiguration sensor : activeSensors) {
-							if (sensor.getSensorConfigurationId() == id) {
-								isInActiveSensorList = true;
-								break;
-							}
-						}
-
-						if (!isInActiveSensorList) {
-							iterator.remove();
-						}
-					}
-					log.info("The cache has been cleared");
-				} catch (Exception e) {
-					log.error(e.getMessage());
-					e.printStackTrace();
+		//Use an Iterator because we want to modify the collection during the loop
+		Iterator<Entry<Integer, CacheInfo>> iterator = cacheInfoBySensor.entrySet().iterator();
+		boolean isInActiveSensorList = false;
+		while (iterator.hasNext()) {
+			Entry<Integer, CacheInfo> entry = (Entry<Integer, CacheInfo>)iterator.next();
+			isInActiveSensorList = false;
+			int id = entry.getKey();
+			for (SensorConfiguration sensor : activeSensors) {
+				//Allows to remove from the cache the sensors whose start_time and end_time is not correct
+				if (sensor.getSensorConfigurationId() == id) {
+					isInActiveSensorList = true;
+					break;
 				}
-				
 			}
-		});
-		thread.start();
+
+			if (!isInActiveSensorList) {
+				iterator.remove();
+			}
+		}
+		log.info("The cache has been cleared");
 	}
 
 	public List<SensorConfiguration> getActiveSensors() {

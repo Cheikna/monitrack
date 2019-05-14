@@ -26,6 +26,7 @@ import com.monitrack.enumeration.RequestType;
 import com.monitrack.enumeration.SensorActivity;
 import com.monitrack.enumeration.SensorSensitivity;
 import com.monitrack.enumeration.SensorType;
+import com.monitrack.listener.MonitrackListener;
 import com.monitrack.mock.runnable.SensorSignal;
 import com.monitrack.shared.MonitrackGuiUtil;
 import com.monitrack.socket.client.ClientSocket;
@@ -41,11 +42,16 @@ public class MonitrackMockConsole {
 
 	private Map<Integer, SensorSignal> sensorSignalMap;
 	private List<SensorConfiguration> sensors;
+	private List<Location> locations;
+	private int currentLocationId;
+	private int numberOfLocations;
 	private Scanner sc;
 	private final int defaultNumber = -912345566;
 	private float choice = 0;
 
 	public MonitrackMockConsole() {
+		currentLocationId = 0;
+		numberOfLocations = 0;
 		sensorSignalMap = new HashMap<Integer, SensorSignal>();
 		sensors = new ArrayList<SensorConfiguration>();
 		sc = new Scanner(System.in);
@@ -58,7 +64,7 @@ public class MonitrackMockConsole {
 				while(true) {
 					try {
 						sensors = (List<SensorConfiguration>)JsonUtil.deserializeObject(MonitrackGuiUtil.sendRequest(jsonRequest));
-						Thread.sleep(10000);
+						Thread.sleep(5000);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -106,8 +112,8 @@ public class MonitrackMockConsole {
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
-			displayMainMenu();
 		}
+		displayMainMenu();
 	}
 
 
@@ -118,7 +124,7 @@ public class MonitrackMockConsole {
 		System.out.println("\nWhat do you want to do ?");
 		System.out.println("1. Generate only active sensors");
 		System.out.println("2. Generate not configured sensors");
-		System.out.println("3. Enable all sensors");
+		System.out.println("3. Enable all sensors (not available)");
 		System.out.println("4. Send normal message");
 		System.out.println("5. Send danger message");
 		System.out.println("6. Send danger message followed by normal message");
@@ -134,8 +140,8 @@ public class MonitrackMockConsole {
 			System.out.println("This operation may take a long time...");
 			generateRandomSensorsConfiguration(false);
 		} else if (choice == 3) {
-			System.out.println("This operation may take a long time...");
-			enableAllSensors();
+			//System.out.println("This operation may take a long time...");
+			//enableAllSensors();
 		} else if(choice == 4) {
 			startStopSendingMessage(true, true);
 		} else if(choice == 5) {
@@ -172,12 +178,9 @@ public class MonitrackMockConsole {
 	}
 
 	private void generateLocations() {
-
-		//FIXME Show the location inserted
-	}
-
-	private void enableAllSensors() {
-		//FIXME
+		locations = MonitrackListener.generateRandomLocations();
+		currentLocationId = 0;
+		numberOfLocations = locations.size();
 	}
 
 	private void showAllSensors() {
@@ -252,12 +255,13 @@ public class MonitrackMockConsole {
 						minThreshold = NumberUtils.toFloat(sc.nextLine(), defaultNumber);	
 					}while(minThreshold == defaultNumber);
 				}
-				
+
 
 				SensorSignal signal = new SensorSignal(sensor.getSensorConfigurationId(), 
 						minThreshold,
 						sensor.getMaxDangerThreshold(),
 						sensor.getCheckFrequency(), isNormalMessage);
+				signal.setSendMessage(sendSignal);
 				setSignal(signal, sensor.getSensorType(), minThreshold);
 			}
 		}
@@ -345,7 +349,7 @@ public class MonitrackMockConsole {
 							}
 						}
 					}
-					
+
 				}
 			}
 
@@ -373,52 +377,76 @@ public class MonitrackMockConsole {
 			SensorConfiguration sensorConfiguration = null;
 			//This will skip the first line which contains the headers
 			String line = bufferedReader.readLine();
-			System.out.print("Enter the number of sensor to generate : ");
+			/*System.out.print("Enter the number of sensor to generate : ");
 			int number = NumberUtils.toInt(sc.nextLine(), 100);
-			if(number > 190)
-				number = 150;
+			if(number > 100)
+				number = 100;*/
 			int i = 0;
-			if(isConfigured) {
-				while ((line = bufferedReader.readLine()) != null && i < number) 
-				{
-					String[] values = line.split(",");
-					Integer locationId = null;
-					sensorConfiguration = new SensorConfiguration(0,0, SensorActivity.valueOf(values[0]), SensorType.valueOf(values[1]),
-							SensorSensitivity.valueOf(values[2]), locationId, values[4], values[5], values[6], 
-							Float.parseFloat(values[7]), Float.parseFloat(values[8]),
-							Timestamp.valueOf(values[9]), null,
-							Time.valueOf(values[10]), Time.valueOf(values[11]), Float.valueOf(values[12]),
-							values[13], Float.valueOf(values[14]),Float.valueOf(values[15]),
-							Float.valueOf(values[16]), Float.valueOf(values[17]));
 
-					String serializedObject = JsonUtil.serializeObject(sensorConfiguration, SensorConfiguration.class, "");
-					String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, SensorConfiguration.class, serializedObject, null, null, null, RequestSender.CLIENT);
-					MonitrackGuiUtil.sendRequest(jsonRequest);
-					i++;
-				} 
+
+
+			SensorType previousType = null;
+
+			if(currentLocationId < numberOfLocations) {
+				Integer locationId = locations.get(currentLocationId).getIdLocation();
+				currentLocationId++;
+				System.out.println("10 different sensors will be generated for the location n°"+locationId);
+				
+				if(isConfigured) {
+
+					while ((line = bufferedReader.readLine()) != null && i < 11) 
+					{
+						String[] values = line.split(",");
+						SensorType type = SensorType.valueOf(values[1]);
+						if(type != previousType) {
+							previousType = type;
+							sensorConfiguration = new SensorConfiguration(0,0, SensorActivity.valueOf(values[0]), type,
+									SensorSensitivity.valueOf(values[2]), locationId, values[4], values[5], values[6], 
+									Float.parseFloat(values[7]), Float.parseFloat(values[8]),
+									Timestamp.valueOf(values[9]), null,
+									Time.valueOf(values[10]), Time.valueOf(values[11]), Float.valueOf(values[12]),
+									values[13], Float.valueOf(values[14]),Float.valueOf(values[15]),
+									Float.valueOf(values[16]), Float.valueOf(values[17]));
+
+							String serializedObject = JsonUtil.serializeObject(sensorConfiguration, SensorConfiguration.class, "");
+							String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, SensorConfiguration.class, serializedObject, null, null, null, RequestSender.CLIENT);
+							MonitrackGuiUtil.sendRequest(jsonRequest);
+							i++;
+						}
+					} 
+				}
+				else {
+
+
+					while ((line = bufferedReader.readLine()) != null && i < 11) 
+					{
+						String[] values = line.split(",");
+						SensorType type = SensorType.valueOf(values[1]);
+						if( type != previousType) {
+							previousType = type;
+							sensorConfiguration = new SensorConfiguration(0,0, SensorActivity.valueOf(values[0]), type,
+									SensorSensitivity.valueOf(values[2]), locationId, values[4], values[5], values[6], 
+									Float.parseFloat(values[7]), Float.parseFloat(values[8]),
+									Timestamp.valueOf(values[9]), null,
+									null, null, null,
+									values[13], 0f ,0f,
+									Float.valueOf(values[16]), Float.valueOf(values[17]));
+
+							String serializedObject = JsonUtil.serializeObject(sensorConfiguration, SensorConfiguration.class, "");
+							String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, SensorConfiguration.class, serializedObject, null, null, null, RequestSender.CLIENT);
+							MonitrackGuiUtil.sendRequest(jsonRequest);
+							i++;
+						}
+					} 
+				}
 			}
 			else {
-				while ((line = bufferedReader.readLine()) != null) 
-				{
-					String[] values = line.split(",");
-					Integer locationId = null;
-					sensorConfiguration = new SensorConfiguration(0,0, SensorActivity.valueOf(values[0]), SensorType.valueOf(values[1]),
-							SensorSensitivity.valueOf(values[2]), locationId, values[4], values[5], values[6], 
-							Float.parseFloat(values[7]), Float.parseFloat(values[8]),
-							Timestamp.valueOf(values[9]), null,
-							null, null, null,
-							values[13], 0f ,0f,
-							Float.valueOf(values[16]), Float.valueOf(values[17]));
-
-					String serializedObject = JsonUtil.serializeObject(sensorConfiguration, SensorConfiguration.class, "");
-					String jsonRequest = JsonUtil.serializeRequest(RequestType.INSERT, SensorConfiguration.class, serializedObject, null, null, null, RequestSender.CLIENT);
-					MonitrackGuiUtil.sendRequest(jsonRequest);
-				} 
+				System.out.println("You have to generate some locations");
 			}
-
 
 			inputStream.close();
 		} 
+
 		catch (Exception e) 
 		{
 			log.error(e.getMessage());
