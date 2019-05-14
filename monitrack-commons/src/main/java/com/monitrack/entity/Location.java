@@ -143,7 +143,11 @@ public class Location {
 			 + "      => Aile : " + wing + "\n"
 			 + "      => Etage : " + floor + "\n"
 			 + "      => Superficie : " + area + " m²\n"
-		     + "      => Date de création : " + creationDate + "\n";
+		     + "      => Date de création : " + creationDate + "\n"
+	         + "      => Position x : " + positionX + "\n"
+	         + "      => Position y : " + positionY + "\n"
+	         + "      => width : " + width + "\n"
+	         + "      => height : " + height + "\n";
 	}
 	
 	public String toStringListItem() {

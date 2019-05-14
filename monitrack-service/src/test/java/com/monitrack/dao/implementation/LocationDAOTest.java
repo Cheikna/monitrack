@@ -30,7 +30,7 @@ public class LocationDAOTest {
 		}		
 		DataSource.putConnection(connection);
 		for(Location location : locations) {
-			System.out.println(location);
+			System.out.println(location.toStringFull());
 		}
 	}
 
