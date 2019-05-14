@@ -255,9 +255,10 @@ public class ConfigurationTabListener implements ActionListener {
 			String response = MonitrackGuiUtil.sendRequest(jsonRequest);
 			List<SensorConfiguration> sensorToDisplays = (List<SensorConfiguration>)JsonUtil.deserializeObject(response);
 
-			for(SensorConfiguration sensorToDisplay: sensorToDisplays) {
+			/*for(SensorConfiguration sensorToDisplay: sensorToDisplays) {
 				this.sensor=sensorToDisplay;
-			}
+			}*/
+			this.sensor = sensorToDisplays.get(0);
 			
 			configureSensor();
 		} else {

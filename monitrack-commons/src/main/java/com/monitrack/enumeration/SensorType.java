@@ -14,7 +14,8 @@ public enum SensorType {
 	GAS("Gas", "Gaz", 47,53, false, false),
 	MANUAL_TRIGGER("Manuel alarm trigger", "Déclencheur d'alarme manuel", 73,79, false, true, "NOT_TRIGGERED", "TRIGGERED"),
 	ACCESS_CONTROL("Access controle", "Contrôle d'accès", 83,89, false, true, "GRANTED", "NOT_GRANTED"),
-	FLOOD("Flood", "Inondation", 97, 101, false, false);
+	FLOOD("Flood", "Inondation", 97, 101, false, false),
+	GLASS_BREAKAGE("Glass breakage", "Bris de vitre", 97, 101, false, false);
 
 	// Checks if each multiplication of two numbers of more give a different number
 
