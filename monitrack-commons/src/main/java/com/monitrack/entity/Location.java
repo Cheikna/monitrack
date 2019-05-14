@@ -30,7 +30,6 @@ public class Location {
 	}
 
 	public Location() {
-		super();
 	}
 
 	public Location(int idLocation, String nameLocation, String center, Timestamp creationDate, int idSensor, int floor,

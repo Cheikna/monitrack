@@ -107,6 +107,14 @@ public class LocationDAO extends DAO<Location> {
 		try {
 			location = new Location(rs.getInt("ID_LOCATION"), rs.getString("NAME"), rs.getString("CENTER")
 					, rs.getTimestamp("CREATION_DATE"), rs.getInt("ID_SENSOR"), rs.getInt("FLOOR"), rs.getString("WING"), rs.getInt("AREA"));
+			int x = rs.getInt("POSITION_X");
+			int y = rs.getInt("POSITION_Y");
+			int width = rs.getInt("LARGEUR");
+			int height = rs.getInt("HAUTEUR");
+			location.setX(x);
+			location.setY(y);
+			location.setWidth(width);
+			location.setHeight(height);
 		} catch (SQLException e) {
 			log.error("An error occurred when getting one Person from the resultSet : " + e.getMessage());
 		}

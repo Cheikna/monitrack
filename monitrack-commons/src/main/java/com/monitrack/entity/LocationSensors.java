@@ -9,7 +9,9 @@ public class LocationSensors {
 	private int idLocation;
 	private int idSensor;
 	
-	
+	public LocationSensors() {
+		
+	}
 	
 	public LocationSensors(int idLocation, int idSensor) {
 		super();

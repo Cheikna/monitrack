@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.monitrack.enumeration.SensorState;
 import com.monitrack.enumeration.SensorType;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SensorConfiguration extends Sensor {
@@ -45,6 +46,8 @@ public class SensorConfiguration extends Sensor {
 	private Location location;
 	@JsonProperty("sensor_type")
 	private SensorType sensorType;
+	@JsonProperty("sensor_state")
+	private SensorState sensorState;
 
 	public SensorConfiguration(Integer sensorConfigurationId, Integer sensorId, SensorType sensorType, Integer locationId,
 			String ipAddress,
@@ -229,7 +232,17 @@ public class SensorConfiguration extends Sensor {
 		this.setLastMessageDate(new Timestamp(System.currentTimeMillis()));
 	}
 
+	
+	
 
+
+	public SensorState getSensorState() {
+		return sensorState;
+	}
+
+	public void setSensorState(SensorState sensorState) {
+		this.sensorState = sensorState;
+	}
 
 	@Override
 	public String toString() {

@@ -2,6 +2,7 @@ package com.monitrack.gui.panel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -17,7 +18,9 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -31,6 +34,7 @@ import com.monitrack.entity.Sensor;
 import com.monitrack.entity.SensorConfiguration;
 import com.monitrack.enumeration.Images;
 import com.monitrack.enumeration.RequestType;
+import com.monitrack.enumeration.SensorState;
 import com.monitrack.enumeration.SensorType;
 import com.monitrack.shared.MonitrackGuiUtil;
 //import com.monitrack.dao.implementation.MapDAO;
@@ -58,13 +62,14 @@ public class MapPage extends JPanel implements MouseListener {
 			drawLocation(location, g2);
 		}
 	}
-	
+
 	public void drawLocation(Location location, Graphics2D g2) {
 
-		Rectangle poly1 = new Rectangle(55, 268, 310, 340);
-		g2.drawRect(poly1.x, poly1.y, poly1.width, poly1.height);
+		//Rectangle poly1 = new Rectangle(55, 268, 310, 340);
+		g2.drawRect(location.getX(), location.getY(), location.getWidth(), location.getHeight());
+
 	}
-	
+
 	public MapPage() {
 
 		planImage = Images.MAP.getImage();
@@ -89,60 +94,76 @@ public class MapPage extends JPanel implements MouseListener {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
-	
+
+
 			/*for (Location location : locations) {
 				mylist.add(location.getIdLocation() + " - " + location.getNameLocation().toString());
 
 			}*/
-			
-			/*
+
+
 			// récuperer toute les location avec les champs sensors remplis
 			jsonRequest = JsonUtil.serializeRequest(RequestType.SELECT, LocationSensors.class, null, null, null);
 			response = MonitrackGuiUtil.sendRequest(jsonRequest);
 			locationSensors = (List<LocationSensors>) JsonUtil.deserializeObject(response);
 
 			List<Integer> sensorIds = new ArrayList();
-			List<SensorConfiguration> mySensors;
+			List<Sensor> mySensors;
+			int[][] poses = {{55, 268, 310, 340}, {430, 268, 340, 170}};
+			Location l1 = locations.get(0);
+			Location l2 = locations.get(1);
+			locations.clear();
+			locations.add(l1);
+			locations.add(l2);
+			int i = 0;
 			// on va affecter les sensorLocation aux locations
 			for(Location location : locations) {
-				mySensors = new ArrayList();
+				mySensors = new ArrayList<>();
+				location.setSensors(mySensors);
+				
+				location.setX(poses[i][0]);
+				location.setY(poses[i][1]);
+				location.setWidth(poses[i][2]);
+				location.setHeight(poses[i][3]);
 				// parcourir tous les sensor_location et trouver le meme id location
-				for(LocationSensors l : locationSensors) {
-					// si on a trouvé, on cree le senseur
-					if(l.getIdLocation() == location.getIdLocation()) {
-						sensorIds.add(l.getIdSensor());
-						// retrouver le sensor qui correspond à l'id
-						for(SensorConfiguration sensor : sensors) {
-							if(sensor.getSensorId() == l.getIdSensor()) {
-								mySensors.add(sensor);
-								break;
-							}
-						}
+				//for(LocationSensors l : locationSensors) {
+				
+				int j,k ;
+				Random r =new Random();
+				for(SensorConfiguration sensor : sensors) {
+					if(sensor.getLocationId() == location.getIdLocation()) {
+						System.out.println("====> " + sensor);
+						mySensors.add(sensor);
+						j = r.nextInt(SensorType.values().length);
+						k = r.nextInt(SensorState.values().length);
+						sensor.setSensorType(SensorType.values()[j]);
+						sensor.setSensorState(SensorState.values()[k]);
 					}
 				}
-			}*/
-			
+				i++;
+			}
+
+
 			//Rectangle poly1 = new Rectangle(55, 268, 310, 340);
 			//Rectangle poly2 = new Rectangle(430, 268, 340, 170);
 			// TODO à supprimer
-			
-			Location location = locations.get(0);
-			locations.clear();
-			locations.add(location);
-			location.setX(55);
-			location.setY(268);
-			location.setWidth(310);
-			location.setHeight(340);
-			List<Sensor> ss = new ArrayList<>();
-			sensors.get(0).setSensorType(SensorType.ACCESS_CONTROL);
-			sensors.get(1).setSensorType(SensorType.DOOR);
-			ss.add(sensors.get(0));
-			ss.add(sensors.get(1));
-			locations.get(0).setSensors(ss);
-			
 
-			
+//			Location location = locations.get(0);
+//			locations.clear();
+//			locations.add(location);
+//			location.setX(55);
+//			location.setY(268);
+//			location.setWidth(310);
+//			location.setHeight(340);
+//			List<Sensor> ss = new ArrayList<>();
+//			sensors.get(0).setSensorType(SensorType.ACCESS_CONTROL);
+//			sensors.get(1).setSensorType(SensorType.DOOR);
+//			ss.add(sensors.get(0));
+//			ss.add(sensors.get(1));
+//			locations.get(0).setSensors(ss);
+
+
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -172,42 +193,73 @@ public class MapPage extends JPanel implements MouseListener {
 		else
 			return false;
 	}
+	
+	public void showSensor(Location location, SensorConfiguration sc) {
+		String text;
+
+		JPanel panelSensor;
+		panelSensor = new JPanel();
+		
+		text = sc.getSensorType().getFrenchLabel();
+		JLabel label = new JLabel(text);
+		panelSensor.add(label);
+		
+		text = sc.getSensorState().name();
+		label = new JLabel(text);
+		panelSensor.add(label);
+		System.out.println("Position capteur : " + sc.getPositionX().intValue() + ", " + sc.getPositionY().intValue() );
+		panelSensor.setBounds(location.getX() + sc.getPositionX().intValue(), location.getY()+ sc.getPositionY().intValue(), 100, 100);
+
+		add(panelSensor);
+		revalidate();
+	}
+	
+	public void showSensors(Location location) {
+		String text;
+
+		SensorConfiguration sc;
+		JPanel panelSensor;
+		// dessiner les senseur
+		for(Sensor sensor : location.getSensors()) {
+			sc = (SensorConfiguration) sensor;
+			showSensor(location, sc);
+			revalidate();
+		}
+	}
 
 	@SuppressWarnings("static-access")
 	public void mouseClicked(MouseEvent e) {
 		// récupération de la position de la souri
 		p = e.getPoint();
-		testLocation(p, poly1, "mouseClicked - data 1");
-		testLocation(p, poly2, "mouseClicked - data 2");
+		//testLocation(p, poly1, "mouseClicked - data 1");
+		//testLocation(p, poly2, "mouseClicked - data 2");
 		Rectangle rect;
 		for(Location location : locations) {
 			rect = new Rectangle(location.getX(), location.getY(), location.getWidth(), location.getHeight());
-			if (location(p, rect) == true) {
-				// new SurfacePolygon(polygon1).setVisible(true);
-				System.out.println("Polygon1");
-				String text;
+			if (location(p, rect) == true) {				
+				showSensors(location);
 				
-				SensorConfiguration sc;
-				// dessiner les senseur
-				for(Sensor sensor : location.getSensors()) {
-					
-					
-					sc = (SensorConfiguration) sensor;
-					text = sc.getSensorType().getFrenchLabel()+"\n";
-					text = text + sc.getSensorId()+"\n";
-
-					JLabel label = new JLabel(text);
-					setLayout(null);
-					add(label);
-					
-				}
-				
-				
-			//	jop1 = new JOptionPane();
-		//		jop1.showMessageDialog(null, "LISTE" + mylist.get(0) + "Etat:", "Salle de repos_1",
-			//			JOptionPane.INFORMATION_MESSAGE);
-				
-	
+				JButton jButton = new JButton("Ajouter");
+				jButton.setBounds(location.getX(), location.getY(), 100, 50);
+				add(jButton);
+				final MapPage mapPage = this;
+				// on a cliquer le bouton ajouter du sensor
+				jButton.addActionListener(new ActionListener() {			
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						EventQueue.invokeLater(new Runnable() {
+							public void run() {
+								try {
+									SensorForm window = new SensorForm(mapPage, location);
+									window.frame.setVisible(true);
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+							}
+						});
+					}
+				});
+				revalidate();
 			}
 		}
 		/*if (location(p, poly2) == true) {
@@ -218,7 +270,7 @@ public class MapPage extends JPanel implements MouseListener {
 					JOptionPane.INFORMATION_MESSAGE);
 
 		}*/
-	//	}
+		//	}
 	}
 
 	@Override
@@ -258,7 +310,9 @@ public class MapPage extends JPanel implements MouseListener {
 		this.revalidate();
 		// g2.drawImage(buffer, 0, 0, buffer.getWidth(), buffer.getHeight(), this);
 		g2.setColor(Color.red);
+		setLayout(null);
 		drawLocations(g2);
+
 		//g2.drawRect(poly1.x, poly1.y, poly1.width, poly1.height);
 		//g2.drawRect(poly2.x, poly2.y, poly2.width, poly2.height);
 
